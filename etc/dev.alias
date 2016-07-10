@@ -1,0 +1,15 @@
+# dev.alias
+
+
+alias cdd='cd ${HOME}/project/data'
+alias cde='cd ${HOME}/project/etc'
+alias cds='cd ${HOME}/project/src'
+alias cdl='cd ${HOME}/project/log'
+
+alias cdsb='cd ${HOME}/project/sbin'
+
+alias gitp='git push origin master' # dawangfei/wangfei123
+
+alias cdsql='cd ${HOME}/project/sql'
+
+# dev.alias

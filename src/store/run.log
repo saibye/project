@@ -1,0 +1,6308 @@
+let's begin here!
+delete from tbl_30min where stock_id = '300028'
+---index is  000001
+work_one begin 000001
+delete from tbl_30min where stock_id = '000001'
+i'm importing 000001
+work_one end
+---index is  000002
+work_one begin 000002
+delete from tbl_30min where stock_id = '000002'
+i'm importing 000002
+work_one end
+---index is  000004
+work_one begin 000004
+delete from tbl_30min where stock_id = '000004'
+i'm importing 000004
+work_one end
+---index is  000005
+work_one begin 000005
+delete from tbl_30min where stock_id = '000005'
+i'm importing 000005
+work_one end
+---index is  000006
+work_one begin 000006
+delete from tbl_30min where stock_id = '000006'
+i'm importing 000006
+work_one end
+---index is  000007
+work_one begin 000007
+delete from tbl_30min where stock_id = '000007'
+i'm importing 000007
+work_one end
+---index is  000008
+work_one begin 000008
+delete from tbl_30min where stock_id = '000008'
+i'm importing 000008
+work_one end
+---index is  000009
+work_one begin 000009
+delete from tbl_30min where stock_id = '000009'
+i'm importing 000009
+work_one end
+---index is  000010
+work_one begin 000010
+delete from tbl_30min where stock_id = '000010'
+i'm importing 000010
+work_one end
+---index is  000011
+work_one begin 000011
+delete from tbl_30min where stock_id = '000011'
+i'm importing 000011
+work_one end
+---index is  000012
+work_one begin 000012
+delete from tbl_30min where stock_id = '000012'
+i'm importing 000012
+work_one end
+---index is  000014
+work_one begin 000014
+delete from tbl_30min where stock_id = '000014'
+i'm importing 000014
+work_one end
+---index is  000016
+work_one begin 000016
+delete from tbl_30min where stock_id = '000016'
+i'm importing 000016
+work_one end
+---index is  000017
+work_one begin 000017
+delete from tbl_30min where stock_id = '000017'
+i'm importing 000017
+work_one end
+---index is  000018
+work_one begin 000018
+delete from tbl_30min where stock_id = '000018'
+i'm importing 000018
+work_one end
+---index is  000019
+work_one begin 000019
+delete from tbl_30min where stock_id = '000019'
+i'm importing 000019
+work_one end
+---index is  000020
+work_one begin 000020
+delete from tbl_30min where stock_id = '000020'
+i'm importing 000020
+work_one end
+---index is  000021
+work_one begin 000021
+delete from tbl_30min where stock_id = '000021'
+i'm importing 000021
+work_one end
+---index is  000022
+work_one begin 000022
+delete from tbl_30min where stock_id = '000022'
+i'm importing 000022
+work_one end
+---index is  000023
+work_one begin 000023
+delete from tbl_30min where stock_id = '000023'
+i'm importing 000023
+work_one end
+---index is  000025
+work_one begin 000025
+delete from tbl_30min where stock_id = '000025'
+i'm importing 000025
+work_one end
+---index is  000026
+work_one begin 000026
+delete from tbl_30min where stock_id = '000026'
+i'm importing 000026
+work_one end
+---index is  000027
+work_one begin 000027
+delete from tbl_30min where stock_id = '000027'
+i'm importing 000027
+work_one end
+---index is  000028
+work_one begin 000028
+delete from tbl_30min where stock_id = '000028'
+i'm importing 000028
+work_one end
+---index is  000029
+work_one begin 000029
+delete from tbl_30min where stock_id = '000029'
+i'm importing 000029
+work_one end
+---index is  000030
+work_one begin 000030
+delete from tbl_30min where stock_id = '000030'
+i'm importing 000030
+work_one end
+---index is  000031
+work_one begin 000031
+delete from tbl_30min where stock_id = '000031'
+i'm importing 000031
+work_one end
+---index is  000032
+work_one begin 000032
+delete from tbl_30min where stock_id = '000032'
+i'm importing 000032
+work_one end
+---index is  000033
+work_one begin 000033
+delete from tbl_30min where stock_id = '000033'
+i'm importing 000033
+work_one end
+---index is  000034
+work_one begin 000034
+delete from tbl_30min where stock_id = '000034'
+i'm importing 000034
+work_one end
+---index is  000035
+work_one begin 000035
+delete from tbl_30min where stock_id = '000035'
+i'm importing 000035
+work_one end
+---index is  000036
+work_one begin 000036
+delete from tbl_30min where stock_id = '000036'
+i'm importing 000036
+work_one end
+---index is  000037
+work_one begin 000037
+delete from tbl_30min where stock_id = '000037'
+i'm importing 000037
+work_one end
+---index is  000038
+work_one begin 000038
+delete from tbl_30min where stock_id = '000038'
+i'm importing 000038
+work_one end
+---index is  000039
+work_one begin 000039
+delete from tbl_30min where stock_id = '000039'
+i'm importing 000039
+work_one end
+---index is  000040
+work_one begin 000040
+delete from tbl_30min where stock_id = '000040'
+i'm importing 000040
+work_one end
+---index is  000042
+work_one begin 000042
+delete from tbl_30min where stock_id = '000042'
+i'm importing 000042
+work_one end
+---index is  000043
+work_one begin 000043
+delete from tbl_30min where stock_id = '000043'
+i'm importing 000043
+work_one end
+---index is  000045
+work_one begin 000045
+delete from tbl_30min where stock_id = '000045'
+i'm importing 000045
+work_one end
+---index is  000046
+work_one begin 000046
+delete from tbl_30min where stock_id = '000046'
+i'm importing 000046
+work_one end
+---index is  000048
+work_one begin 000048
+delete from tbl_30min where stock_id = '000048'
+i'm importing 000048
+work_one end
+---index is  000049
+work_one begin 000049
+delete from tbl_30min where stock_id = '000049'
+i'm importing 000049
+work_one end
+---index is  000050
+work_one begin 000050
+delete from tbl_30min where stock_id = '000050'
+i'm importing 000050
+work_one end
+---index is  000055
+work_one begin 000055
+delete from tbl_30min where stock_id = '000055'
+i'm importing 000055
+work_one end
+---index is  000056
+work_one begin 000056
+delete from tbl_30min where stock_id = '000056'
+i'm importing 000056
+work_one end
+---index is  000058
+work_one begin 000058
+delete from tbl_30min where stock_id = '000058'
+i'm importing 000058
+work_one end
+---index is  000059
+work_one begin 000059
+delete from tbl_30min where stock_id = '000059'
+i'm importing 000059
+work_one end
+---index is  000060
+work_one begin 000060
+delete from tbl_30min where stock_id = '000060'
+i'm importing 000060
+work_one end
+---index is  000061
+work_one begin 000061
+delete from tbl_30min where stock_id = '000061'
+i'm importing 000061
+work_one end
+---index is  000062
+work_one begin 000062
+delete from tbl_30min where stock_id = '000062'
+i'm importing 000062
+work_one end
+---index is  000063
+work_one begin 000063
+delete from tbl_30min where stock_id = '000063'
+i'm importing 000063
+work_one end
+---index is  000065
+work_one begin 000065
+delete from tbl_30min where stock_id = '000065'
+i'm importing 000065
+work_one end
+---index is  000066
+work_one begin 000066
+delete from tbl_30min where stock_id = '000066'
+i'm importing 000066
+work_one end
+---index is  000068
+work_one begin 000068
+delete from tbl_30min where stock_id = '000068'
+i'm importing 000068
+work_one end
+---index is  000069
+work_one begin 000069
+delete from tbl_30min where stock_id = '000069'
+i'm importing 000069
+work_one end
+---index is  000070
+work_one begin 000070
+delete from tbl_30min where stock_id = '000070'
+i'm importing 000070
+work_one end
+---index is  000078
+work_one begin 000078
+delete from tbl_30min where stock_id = '000078'
+i'm importing 000078
+work_one end
+---index is  000088
+work_one begin 000088
+delete from tbl_30min where stock_id = '000088'
+i'm importing 000088
+work_one end
+---index is  000089
+work_one begin 000089
+delete from tbl_30min where stock_id = '000089'
+i'm importing 000089
+work_one end
+---index is  000090
+work_one begin 000090
+delete from tbl_30min where stock_id = '000090'
+i'm importing 000090
+work_one end
+---index is  000096
+work_one begin 000096
+delete from tbl_30min where stock_id = '000096'
+i'm importing 000096
+work_one end
+---index is  000099
+work_one begin 000099
+delete from tbl_30min where stock_id = '000099'
+i'm importing 000099
+work_one end
+---index is  000100
+work_one begin 000100
+delete from tbl_30min where stock_id = '000100'
+i'm importing 000100
+work_one end
+---index is  000150
+work_one begin 000150
+delete from tbl_30min where stock_id = '000150'
+i'm importing 000150
+work_one end
+---index is  000151
+work_one begin 000151
+delete from tbl_30min where stock_id = '000151'
+i'm importing 000151
+work_one end
+---index is  000153
+work_one begin 000153
+delete from tbl_30min where stock_id = '000153'
+i'm importing 000153
+work_one end
+---index is  000155
+work_one begin 000155
+delete from tbl_30min where stock_id = '000155'
+i'm importing 000155
+work_one end
+---index is  000156
+work_one begin 000156
+delete from tbl_30min where stock_id = '000156'
+i'm importing 000156
+work_one end
+---index is  000157
+work_one begin 000157
+delete from tbl_30min where stock_id = '000157'
+i'm importing 000157
+work_one end
+---index is  000158
+work_one begin 000158
+delete from tbl_30min where stock_id = '000158'
+i'm importing 000158
+work_one end
+---index is  000159
+work_one begin 000159
+delete from tbl_30min where stock_id = '000159'
+i'm importing 000159
+work_one end
+---index is  000166
+work_one begin 000166
+delete from tbl_30min where stock_id = '000166'
+i'm importing 000166
+work_one end
+---index is  000301
+work_one begin 000301
+delete from tbl_30min where stock_id = '000301'
+i'm importing 000301
+work_one end
+---index is  000333
+work_one begin 000333
+delete from tbl_30min where stock_id = '000333'
+i'm importing 000333
+work_one end
+---index is  000338
+work_one begin 000338
+delete from tbl_30min where stock_id = '000338'
+i'm importing 000338
+work_one end
+---index is  000400
+work_one begin 000400
+delete from tbl_30min where stock_id = '000400'
+i'm importing 000400
+work_one end
+---index is  000401
+work_one begin 000401
+delete from tbl_30min where stock_id = '000401'
+i'm importing 000401
+work_one end
+---index is  000402
+work_one begin 000402
+delete from tbl_30min where stock_id = '000402'
+i'm importing 000402
+work_one end
+---index is  000403
+work_one begin 000403
+delete from tbl_30min where stock_id = '000403'
+i'm importing 000403
+work_one end
+---index is  000404
+work_one begin 000404
+delete from tbl_30min where stock_id = '000404'
+i'm importing 000404
+work_one end
+---index is  000407
+work_one begin 000407
+delete from tbl_30min where stock_id = '000407'
+i'm importing 000407
+work_one end
+---index is  000408
+work_one begin 000408
+delete from tbl_30min where stock_id = '000408'
+i'm importing 000408
+work_one end
+---index is  000409
+work_one begin 000409
+delete from tbl_30min where stock_id = '000409'
+i'm importing 000409
+work_one end
+---index is  000410
+work_one begin 000410
+delete from tbl_30min where stock_id = '000410'
+i'm importing 000410
+work_one end
+---index is  000411
+work_one begin 000411
+delete from tbl_30min where stock_id = '000411'
+i'm importing 000411
+work_one end
+---index is  000413
+work_one begin 000413
+delete from tbl_30min where stock_id = '000413'
+i'm importing 000413
+work_one end
+---index is  000415
+work_one begin 000415
+delete from tbl_30min where stock_id = '000415'
+i'm importing 000415
+work_one end
+---index is  000416
+work_one begin 000416
+delete from tbl_30min where stock_id = '000416'
+i'm importing 000416
+work_one end
+---index is  000417
+work_one begin 000417
+delete from tbl_30min where stock_id = '000417'
+i'm importing 000417
+work_one end
+---index is  000418
+work_one begin 000418
+delete from tbl_30min where stock_id = '000418'
+i'm importing 000418
+work_one end
+---index is  000419
+work_one begin 000419
+delete from tbl_30min where stock_id = '000419'
+i'm importing 000419
+work_one end
+---index is  000420
+work_one begin 000420
+delete from tbl_30min where stock_id = '000420'
+i'm importing 000420
+work_one end
+---index is  000421
+work_one begin 000421
+delete from tbl_30min where stock_id = '000421'
+i'm importing 000421
+work_one end
+---index is  000422
+work_one begin 000422
+delete from tbl_30min where stock_id = '000422'
+i'm importing 000422
+work_one end
+---index is  000423
+work_one begin 000423
+delete from tbl_30min where stock_id = '000423'
+i'm importing 000423
+work_one end
+---index is  000425
+work_one begin 000425
+delete from tbl_30min where stock_id = '000425'
+i'm importing 000425
+work_one end
+---index is  000426
+work_one begin 000426
+delete from tbl_30min where stock_id = '000426'
+i'm importing 000426
+work_one end
+---index is  000428
+work_one begin 000428
+delete from tbl_30min where stock_id = '000428'
+i'm importing 000428
+work_one end
+---index is  000429
+work_one begin 000429
+delete from tbl_30min where stock_id = '000429'
+i'm importing 000429
+work_one end
+---index is  000430
+work_one begin 000430
+delete from tbl_30min where stock_id = '000430'
+i'm importing 000430
+work_one end
+---index is  000488
+work_one begin 000488
+delete from tbl_30min where stock_id = '000488'
+i'm importing 000488
+work_one end
+---index is  000498
+work_one begin 000498
+delete from tbl_30min where stock_id = '000498'
+i'm importing 000498
+work_one end
+---index is  000501
+work_one begin 000501
+delete from tbl_30min where stock_id = '000501'
+i'm importing 000501
+work_one end
+---index is  000502
+work_one begin 000502
+delete from tbl_30min where stock_id = '000502'
+i'm importing 000502
+work_one end
+---index is  000503
+work_one begin 000503
+delete from tbl_30min where stock_id = '000503'
+i'm importing 000503
+work_one end
+---index is  000504
+work_one begin 000504
+delete from tbl_30min where stock_id = '000504'
+i'm importing 000504
+work_one end
+---index is  000505
+work_one begin 000505
+delete from tbl_30min where stock_id = '000505'
+i'm importing 000505
+work_one end
+---index is  000506
+work_one begin 000506
+delete from tbl_30min where stock_id = '000506'
+i'm importing 000506
+work_one end
+---index is  000507
+work_one begin 000507
+delete from tbl_30min where stock_id = '000507'
+i'm importing 000507
+work_one end
+---index is  000509
+work_one begin 000509
+delete from tbl_30min where stock_id = '000509'
+i'm importing 000509
+work_one end
+---index is  000510
+work_one begin 000510
+delete from tbl_30min where stock_id = '000510'
+i'm importing 000510
+work_one end
+---index is  000511
+work_one begin 000511
+delete from tbl_30min where stock_id = '000511'
+i'm importing 000511
+work_one end
+---index is  000513
+work_one begin 000513
+delete from tbl_30min where stock_id = '000513'
+i'm importing 000513
+work_one end
+---index is  000514
+work_one begin 000514
+delete from tbl_30min where stock_id = '000514'
+i'm importing 000514
+work_one end
+---index is  000516
+work_one begin 000516
+delete from tbl_30min where stock_id = '000516'
+i'm importing 000516
+work_one end
+---index is  000517
+work_one begin 000517
+delete from tbl_30min where stock_id = '000517'
+i'm importing 000517
+work_one end
+---index is  000518
+work_one begin 000518
+delete from tbl_30min where stock_id = '000518'
+i'm importing 000518
+work_one end
+---index is  000519
+work_one begin 000519
+delete from tbl_30min where stock_id = '000519'
+i'm importing 000519
+work_one end
+---index is  000520
+work_one begin 000520
+delete from tbl_30min where stock_id = '000520'
+i'm importing 000520
+work_one end
+---index is  000521
+work_one begin 000521
+delete from tbl_30min where stock_id = '000521'
+i'm importing 000521
+work_one end
+---index is  000523
+work_one begin 000523
+delete from tbl_30min where stock_id = '000523'
+i'm importing 000523
+work_one end
+---index is  000524
+work_one begin 000524
+delete from tbl_30min where stock_id = '000524'
+i'm importing 000524
+work_one end
+---index is  000525
+work_one begin 000525
+delete from tbl_30min where stock_id = '000525'
+i'm importing 000525
+work_one end
+---index is  000526
+work_one begin 000526
+delete from tbl_30min where stock_id = '000526'
+i'm importing 000526
+work_one end
+---index is  000528
+work_one begin 000528
+delete from tbl_30min where stock_id = '000528'
+i'm importing 000528
+work_one end
+---index is  000529
+work_one begin 000529
+delete from tbl_30min where stock_id = '000529'
+i'm importing 000529
+work_one end
+---index is  000530
+work_one begin 000530
+delete from tbl_30min where stock_id = '000530'
+i'm importing 000530
+work_one end
+---index is  000531
+work_one begin 000531
+delete from tbl_30min where stock_id = '000531'
+i'm importing 000531
+work_one end
+---index is  000532
+work_one begin 000532
+delete from tbl_30min where stock_id = '000532'
+i'm importing 000532
+work_one end
+---index is  000533
+work_one begin 000533
+delete from tbl_30min where stock_id = '000533'
+i'm importing 000533
+work_one end
+---index is  000534
+work_one begin 000534
+delete from tbl_30min where stock_id = '000534'
+i'm importing 000534
+work_one end
+---index is  000536
+work_one begin 000536
+delete from tbl_30min where stock_id = '000536'
+i'm importing 000536
+work_one end
+---index is  000537
+work_one begin 000537
+delete from tbl_30min where stock_id = '000537'
+i'm importing 000537
+work_one end
+---index is  000538
+work_one begin 000538
+delete from tbl_30min where stock_id = '000538'
+i'm importing 000538
+work_one end
+---index is  000539
+work_one begin 000539
+delete from tbl_30min where stock_id = '000539'
+i'm importing 000539
+work_one end
+---index is  000540
+work_one begin 000540
+delete from tbl_30min where stock_id = '000540'
+i'm importing 000540
+work_one end
+---index is  000541
+work_one begin 000541
+delete from tbl_30min where stock_id = '000541'
+i'm importing 000541
+work_one end
+---index is  000543
+work_one begin 000543
+delete from tbl_30min where stock_id = '000543'
+i'm importing 000543
+work_one end
+---index is  000544
+work_one begin 000544
+delete from tbl_30min where stock_id = '000544'
+i'm importing 000544
+work_one end
+---index is  000545
+work_one begin 000545
+delete from tbl_30min where stock_id = '000545'
+i'm importing 000545
+work_one end
+---index is  000546
+work_one begin 000546
+delete from tbl_30min where stock_id = '000546'
+i'm importing 000546
+work_one end
+---index is  000547
+work_one begin 000547
+delete from tbl_30min where stock_id = '000547'
+i'm importing 000547
+work_one end
+---index is  000548
+work_one begin 000548
+delete from tbl_30min where stock_id = '000548'
+i'm importing 000548
+work_one end
+---index is  000550
+work_one begin 000550
+delete from tbl_30min where stock_id = '000550'
+i'm importing 000550
+work_one end
+---index is  000551
+work_one begin 000551
+delete from tbl_30min where stock_id = '000551'
+i'm importing 000551
+work_one end
+---index is  000552
+work_one begin 000552
+delete from tbl_30min where stock_id = '000552'
+i'm importing 000552
+work_one end
+---index is  000553
+work_one begin 000553
+delete from tbl_30min where stock_id = '000553'
+i'm importing 000553
+work_one end
+---index is  000554
+work_one begin 000554
+delete from tbl_30min where stock_id = '000554'
+i'm importing 000554
+work_one end
+---index is  000555
+work_one begin 000555
+delete from tbl_30min where stock_id = '000555'
+i'm importing 000555
+work_one end
+---index is  000557
+work_one begin 000557
+delete from tbl_30min where stock_id = '000557'
+i'm importing 000557
+work_one end
+---index is  000558
+work_one begin 000558
+delete from tbl_30min where stock_id = '000558'
+i'm importing 000558
+work_one end
+---index is  000559
+work_one begin 000559
+delete from tbl_30min where stock_id = '000559'
+i'm importing 000559
+work_one end
+---index is  000560
+work_one begin 000560
+delete from tbl_30min where stock_id = '000560'
+i'm importing 000560
+work_one end
+---index is  000561
+work_one begin 000561
+delete from tbl_30min where stock_id = '000561'
+i'm importing 000561
+work_one end
+---index is  000563
+work_one begin 000563
+delete from tbl_30min where stock_id = '000563'
+i'm importing 000563
+work_one end
+---index is  000564
+work_one begin 000564
+delete from tbl_30min where stock_id = '000564'
+i'm importing 000564
+work_one end
+---index is  000565
+work_one begin 000565
+delete from tbl_30min where stock_id = '000565'
+i'm importing 000565
+work_one end
+---index is  000566
+work_one begin 000566
+delete from tbl_30min where stock_id = '000566'
+i'm importing 000566
+work_one end
+---index is  000567
+work_one begin 000567
+delete from tbl_30min where stock_id = '000567'
+i'm importing 000567
+work_one end
+---index is  000568
+work_one begin 000568
+delete from tbl_30min where stock_id = '000568'
+i'm importing 000568
+work_one end
+---index is  000570
+work_one begin 000570
+delete from tbl_30min where stock_id = '000570'
+i'm importing 000570
+work_one end
+---index is  000571
+work_one begin 000571
+delete from tbl_30min where stock_id = '000571'
+i'm importing 000571
+work_one end
+---index is  000572
+work_one begin 000572
+delete from tbl_30min where stock_id = '000572'
+i'm importing 000572
+work_one end
+---index is  000573
+work_one begin 000573
+delete from tbl_30min where stock_id = '000573'
+i'm importing 000573
+work_one end
+---index is  000576
+work_one begin 000576
+delete from tbl_30min where stock_id = '000576'
+i'm importing 000576
+work_one end
+---index is  000581
+work_one begin 000581
+delete from tbl_30min where stock_id = '000581'
+i'm importing 000581
+work_one end
+---index is  000582
+work_one begin 000582
+delete from tbl_30min where stock_id = '000582'
+i'm importing 000582
+work_one end
+---index is  000584
+work_one begin 000584
+delete from tbl_30min where stock_id = '000584'
+i'm importing 000584
+work_one end
+---index is  000585
+work_one begin 000585
+delete from tbl_30min where stock_id = '000585'
+i'm importing 000585
+work_one end
+---index is  000586
+work_one begin 000586
+delete from tbl_30min where stock_id = '000586'
+i'm importing 000586
+work_one end
+---index is  000587
+work_one begin 000587
+delete from tbl_30min where stock_id = '000587'
+i'm importing 000587
+work_one end
+---index is  000589
+work_one begin 000589
+delete from tbl_30min where stock_id = '000589'
+i'm importing 000589
+work_one end
+---index is  000590
+work_one begin 000590
+delete from tbl_30min where stock_id = '000590'
+i'm importing 000590
+work_one end
+---index is  000591
+work_one begin 000591
+delete from tbl_30min where stock_id = '000591'
+i'm importing 000591
+work_one end
+---index is  000592
+work_one begin 000592
+delete from tbl_30min where stock_id = '000592'
+i'm importing 000592
+work_one end
+---index is  000593
+work_one begin 000593
+delete from tbl_30min where stock_id = '000593'
+i'm importing 000593
+work_one end
+---index is  000595
+work_one begin 000595
+delete from tbl_30min where stock_id = '000595'
+i'm importing 000595
+work_one end
+---index is  000596
+work_one begin 000596
+delete from tbl_30min where stock_id = '000596'
+i'm importing 000596
+work_one end
+---index is  000597
+work_one begin 000597
+delete from tbl_30min where stock_id = '000597'
+i'm importing 000597
+work_one end
+---index is  000598
+work_one begin 000598
+delete from tbl_30min where stock_id = '000598'
+i'm importing 000598
+work_one end
+---index is  000599
+work_one begin 000599
+delete from tbl_30min where stock_id = '000599'
+i'm importing 000599
+work_one end
+---index is  000600
+work_one begin 000600
+delete from tbl_30min where stock_id = '000600'
+i'm importing 000600
+work_one end
+---index is  000601
+work_one begin 000601
+delete from tbl_30min where stock_id = '000601'
+i'm importing 000601
+work_one end
+---index is  000603
+work_one begin 000603
+delete from tbl_30min where stock_id = '000603'
+i'm importing 000603
+work_one end
+---index is  000605
+work_one begin 000605
+delete from tbl_30min where stock_id = '000605'
+i'm importing 000605
+work_one end
+---index is  000606
+work_one begin 000606
+delete from tbl_30min where stock_id = '000606'
+i'm importing 000606
+work_one end
+---index is  000607
+work_one begin 000607
+delete from tbl_30min where stock_id = '000607'
+i'm importing 000607
+work_one end
+---index is  000608
+work_one begin 000608
+delete from tbl_30min where stock_id = '000608'
+i'm importing 000608
+work_one end
+---index is  000609
+work_one begin 000609
+delete from tbl_30min where stock_id = '000609'
+i'm importing 000609
+work_one end
+---index is  000610
+work_one begin 000610
+delete from tbl_30min where stock_id = '000610'
+i'm importing 000610
+work_one end
+---index is  000611
+work_one begin 000611
+delete from tbl_30min where stock_id = '000611'
+i'm importing 000611
+work_one end
+---index is  000612
+work_one begin 000612
+delete from tbl_30min where stock_id = '000612'
+i'm importing 000612
+work_one end
+---index is  000613
+work_one begin 000613
+delete from tbl_30min where stock_id = '000613'
+i'm importing 000613
+work_one end
+---index is  000615
+work_one begin 000615
+delete from tbl_30min where stock_id = '000615'
+i'm importing 000615
+work_one end
+---index is  000616
+work_one begin 000616
+delete from tbl_30min where stock_id = '000616'
+i'm importing 000616
+work_one end
+---index is  000617
+work_one begin 000617
+delete from tbl_30min where stock_id = '000617'
+i'm importing 000617
+work_one end
+---index is  000619
+work_one begin 000619
+delete from tbl_30min where stock_id = '000619'
+i'm importing 000619
+work_one end
+---index is  000620
+work_one begin 000620
+delete from tbl_30min where stock_id = '000620'
+i'm importing 000620
+work_one end
+---index is  000622
+work_one begin 000622
+delete from tbl_30min where stock_id = '000622'
+i'm importing 000622
+work_one end
+---index is  000623
+work_one begin 000623
+delete from tbl_30min where stock_id = '000623'
+i'm importing 000623
+work_one end
+---index is  000625
+work_one begin 000625
+delete from tbl_30min where stock_id = '000625'
+i'm importing 000625
+work_one end
+---index is  000626
+work_one begin 000626
+delete from tbl_30min where stock_id = '000626'
+i'm importing 000626
+work_one end
+---index is  000627
+work_one begin 000627
+delete from tbl_30min where stock_id = '000627'
+i'm importing 000627
+work_one end
+---index is  000628
+work_one begin 000628
+delete from tbl_30min where stock_id = '000628'
+i'm importing 000628
+work_one end
+---index is  000629
+work_one begin 000629
+delete from tbl_30min where stock_id = '000629'
+i'm importing 000629
+work_one end
+---index is  000630
+work_one begin 000630
+delete from tbl_30min where stock_id = '000630'
+i'm importing 000630
+work_one end
+---index is  000631
+work_one begin 000631
+delete from tbl_30min where stock_id = '000631'
+i'm importing 000631
+work_one end
+---index is  000632
+work_one begin 000632
+delete from tbl_30min where stock_id = '000632'
+i'm importing 000632
+work_one end
+---index is  000633
+work_one begin 000633
+delete from tbl_30min where stock_id = '000633'
+i'm importing 000633
+work_one end
+---index is  000635
+work_one begin 000635
+delete from tbl_30min where stock_id = '000635'
+i'm importing 000635
+work_one end
+---index is  000636
+work_one begin 000636
+delete from tbl_30min where stock_id = '000636'
+i'm importing 000636
+work_one end
+---index is  000637
+work_one begin 000637
+delete from tbl_30min where stock_id = '000637'
+i'm importing 000637
+work_one end
+---index is  000638
+work_one begin 000638
+delete from tbl_30min where stock_id = '000638'
+i'm importing 000638
+work_one end
+---index is  000639
+work_one begin 000639
+delete from tbl_30min where stock_id = '000639'
+i'm importing 000639
+work_one end
+---index is  000650
+work_one begin 000650
+delete from tbl_30min where stock_id = '000650'
+i'm importing 000650
+work_one end
+---index is  000651
+work_one begin 000651
+delete from tbl_30min where stock_id = '000651'
+i'm importing 000651
+work_one end
+---index is  000652
+work_one begin 000652
+delete from tbl_30min where stock_id = '000652'
+i'm importing 000652
+work_one end
+---index is  000655
+work_one begin 000655
+delete from tbl_30min where stock_id = '000655'
+i'm importing 000655
+work_one end
+---index is  000656
+work_one begin 000656
+delete from tbl_30min where stock_id = '000656'
+i'm importing 000656
+work_one end
+---index is  000657
+work_one begin 000657
+delete from tbl_30min where stock_id = '000657'
+i'm importing 000657
+work_one end
+---index is  000659
+work_one begin 000659
+delete from tbl_30min where stock_id = '000659'
+i'm importing 000659
+work_one end
+---index is  000661
+work_one begin 000661
+delete from tbl_30min where stock_id = '000661'
+i'm importing 000661
+work_one end
+---index is  000662
+work_one begin 000662
+delete from tbl_30min where stock_id = '000662'
+i'm importing 000662
+work_one end
+---index is  000663
+work_one begin 000663
+delete from tbl_30min where stock_id = '000663'
+i'm importing 000663
+work_one end
+---index is  000665
+work_one begin 000665
+delete from tbl_30min where stock_id = '000665'
+i'm importing 000665
+work_one end
+---index is  000666
+work_one begin 000666
+delete from tbl_30min where stock_id = '000666'
+i'm importing 000666
+work_one end
+---index is  000667
+work_one begin 000667
+delete from tbl_30min where stock_id = '000667'
+i'm importing 000667
+work_one end
+---index is  000668
+work_one begin 000668
+delete from tbl_30min where stock_id = '000668'
+i'm importing 000668
+work_one end
+---index is  000669
+work_one begin 000669
+delete from tbl_30min where stock_id = '000669'
+i'm importing 000669
+work_one end
+---index is  000670
+work_one begin 000670
+delete from tbl_30min where stock_id = '000670'
+i'm importing 000670
+work_one end
+---index is  000671
+work_one begin 000671
+delete from tbl_30min where stock_id = '000671'
+i'm importing 000671
+work_one end
+---index is  000672
+work_one begin 000672
+delete from tbl_30min where stock_id = '000672'
+i'm importing 000672
+work_one end
+---index is  000673
+work_one begin 000673
+delete from tbl_30min where stock_id = '000673'
+i'm importing 000673
+work_one end
+---index is  000676
+work_one begin 000676
+delete from tbl_30min where stock_id = '000676'
+i'm importing 000676
+work_one end
+---index is  000677
+work_one begin 000677
+delete from tbl_30min where stock_id = '000677'
+i'm importing 000677
+work_one end
+---index is  000678
+work_one begin 000678
+delete from tbl_30min where stock_id = '000678'
+i'm importing 000678
+work_one end
+---index is  000679
+work_one begin 000679
+delete from tbl_30min where stock_id = '000679'
+i'm importing 000679
+work_one end
+---index is  000680
+work_one begin 000680
+delete from tbl_30min where stock_id = '000680'
+i'm importing 000680
+work_one end
+---index is  000681
+work_one begin 000681
+delete from tbl_30min where stock_id = '000681'
+i'm importing 000681
+work_one end
+---index is  000682
+work_one begin 000682
+delete from tbl_30min where stock_id = '000682'
+i'm importing 000682
+work_one end
+---index is  000683
+work_one begin 000683
+delete from tbl_30min where stock_id = '000683'
+i'm importing 000683
+work_one end
+---index is  000685
+work_one begin 000685
+delete from tbl_30min where stock_id = '000685'
+i'm importing 000685
+work_one end
+---index is  000686
+work_one begin 000686
+delete from tbl_30min where stock_id = '000686'
+i'm importing 000686
+work_one end
+---index is  000687
+work_one begin 000687
+delete from tbl_30min where stock_id = '000687'
+i'm importing 000687
+work_one end
+---index is  000688
+work_one begin 000688
+delete from tbl_30min where stock_id = '000688'
+i'm importing 000688
+work_one end
+---index is  000690
+work_one begin 000690
+delete from tbl_30min where stock_id = '000690'
+i'm importing 000690
+work_one end
+---index is  000691
+work_one begin 000691
+delete from tbl_30min where stock_id = '000691'
+i'm importing 000691
+work_one end
+---index is  000692
+work_one begin 000692
+delete from tbl_30min where stock_id = '000692'
+i'm importing 000692
+work_one end
+---index is  000693
+work_one begin 000693
+delete from tbl_30min where stock_id = '000693'
+i'm importing 000693
+work_one end
+---index is  000695
+work_one begin 000695
+delete from tbl_30min where stock_id = '000695'
+i'm importing 000695
+work_one end
+---index is  000697
+work_one begin 000697
+delete from tbl_30min where stock_id = '000697'
+i'm importing 000697
+work_one end
+---index is  000698
+work_one begin 000698
+delete from tbl_30min where stock_id = '000698'
+i'm importing 000698
+work_one end
+---index is  000700
+work_one begin 000700
+delete from tbl_30min where stock_id = '000700'
+i'm importing 000700
+work_one end
+---index is  000701
+work_one begin 000701
+delete from tbl_30min where stock_id = '000701'
+i'm importing 000701
+work_one end
+---index is  000702
+work_one begin 000702
+delete from tbl_30min where stock_id = '000702'
+i'm importing 000702
+work_one end
+---index is  000703
+work_one begin 000703
+delete from tbl_30min where stock_id = '000703'
+i'm importing 000703
+work_one end
+---index is  000705
+work_one begin 000705
+delete from tbl_30min where stock_id = '000705'
+i'm importing 000705
+work_one end
+---index is  000707
+work_one begin 000707
+delete from tbl_30min where stock_id = '000707'
+i'm importing 000707
+work_one end
+---index is  000708
+work_one begin 000708
+delete from tbl_30min where stock_id = '000708'
+i'm importing 000708
+work_one end
+---index is  000709
+work_one begin 000709
+delete from tbl_30min where stock_id = '000709'
+i'm importing 000709
+work_one end
+---index is  000710
+work_one begin 000710
+delete from tbl_30min where stock_id = '000710'
+i'm importing 000710
+work_one end
+---index is  000711
+work_one begin 000711
+delete from tbl_30min where stock_id = '000711'
+i'm importing 000711
+work_one end
+---index is  000712
+work_one begin 000712
+delete from tbl_30min where stock_id = '000712'
+i'm importing 000712
+work_one end
+---index is  000713
+work_one begin 000713
+delete from tbl_30min where stock_id = '000713'
+i'm importing 000713
+work_one end
+---index is  000715
+work_one begin 000715
+delete from tbl_30min where stock_id = '000715'
+i'm importing 000715
+work_one end
+---index is  000716
+work_one begin 000716
+delete from tbl_30min where stock_id = '000716'
+i'm importing 000716
+work_one end
+---index is  000717
+work_one begin 000717
+delete from tbl_30min where stock_id = '000717'
+i'm importing 000717
+work_one end
+---index is  000718
+work_one begin 000718
+delete from tbl_30min where stock_id = '000718'
+i'm importing 000718
+work_one end
+---index is  000719
+work_one begin 000719
+delete from tbl_30min where stock_id = '000719'
+i'm importing 000719
+work_one end
+---index is  000720
+work_one begin 000720
+delete from tbl_30min where stock_id = '000720'
+i'm importing 000720
+work_one end
+---index is  000721
+work_one begin 000721
+delete from tbl_30min where stock_id = '000721'
+i'm importing 000721
+work_one end
+---index is  000722
+work_one begin 000722
+delete from tbl_30min where stock_id = '000722'
+i'm importing 000722
+work_one end
+---index is  000723
+work_one begin 000723
+delete from tbl_30min where stock_id = '000723'
+i'm importing 000723
+work_one end
+---index is  000725
+work_one begin 000725
+delete from tbl_30min where stock_id = '000725'
+i'm importing 000725
+work_one end
+---index is  000726
+work_one begin 000726
+delete from tbl_30min where stock_id = '000726'
+i'm importing 000726
+work_one end
+---index is  000727
+work_one begin 000727
+delete from tbl_30min where stock_id = '000727'
+i'm importing 000727
+work_one end
+---index is  000728
+work_one begin 000728
+delete from tbl_30min where stock_id = '000728'
+i'm importing 000728
+work_one end
+---index is  000729
+work_one begin 000729
+delete from tbl_30min where stock_id = '000729'
+i'm importing 000729
+work_one end
+---index is  000731
+work_one begin 000731
+delete from tbl_30min where stock_id = '000731'
+i'm importing 000731
+work_one end
+---index is  000732
+work_one begin 000732
+delete from tbl_30min where stock_id = '000732'
+i'm importing 000732
+work_one end
+---index is  000733
+work_one begin 000733
+delete from tbl_30min where stock_id = '000733'
+i'm importing 000733
+work_one end
+---index is  000735
+work_one begin 000735
+delete from tbl_30min where stock_id = '000735'
+i'm importing 000735
+work_one end
+---index is  000736
+work_one begin 000736
+delete from tbl_30min where stock_id = '000736'
+i'm importing 000736
+work_one end
+---index is  000737
+work_one begin 000737
+delete from tbl_30min where stock_id = '000737'
+i'm importing 000737
+work_one end
+---index is  000738
+work_one begin 000738
+delete from tbl_30min where stock_id = '000738'
+i'm importing 000738
+work_one end
+---index is  000739
+work_one begin 000739
+delete from tbl_30min where stock_id = '000739'
+i'm importing 000739
+work_one end
+---index is  000748
+work_one begin 000748
+delete from tbl_30min where stock_id = '000748'
+i'm importing 000748
+work_one end
+---index is  000750
+work_one begin 000750
+delete from tbl_30min where stock_id = '000750'
+i'm importing 000750
+work_one end
+---index is  000751
+work_one begin 000751
+delete from tbl_30min where stock_id = '000751'
+i'm importing 000751
+work_one end
+---index is  000752
+work_one begin 000752
+delete from tbl_30min where stock_id = '000752'
+i'm importing 000752
+work_one end
+---index is  000753
+work_one begin 000753
+delete from tbl_30min where stock_id = '000753'
+i'm importing 000753
+work_one end
+---index is  000755
+work_one begin 000755
+delete from tbl_30min where stock_id = '000755'
+i'm importing 000755
+work_one end
+---index is  000756
+work_one begin 000756
+delete from tbl_30min where stock_id = '000756'
+i'm importing 000756
+work_one end
+---index is  000757
+work_one begin 000757
+delete from tbl_30min where stock_id = '000757'
+i'm importing 000757
+work_one end
+---index is  000758
+work_one begin 000758
+delete from tbl_30min where stock_id = '000758'
+i'm importing 000758
+work_one end
+---index is  000759
+work_one begin 000759
+delete from tbl_30min where stock_id = '000759'
+i'm importing 000759
+work_one end
+---index is  000760
+work_one begin 000760
+delete from tbl_30min where stock_id = '000760'
+i'm importing 000760
+work_one end
+---index is  000761
+work_one begin 000761
+delete from tbl_30min where stock_id = '000761'
+i'm importing 000761
+work_one end
+---index is  000762
+work_one begin 000762
+delete from tbl_30min where stock_id = '000762'
+i'm importing 000762
+work_one end
+---index is  000766
+work_one begin 000766
+delete from tbl_30min where stock_id = '000766'
+i'm importing 000766
+work_one end
+---index is  000767
+work_one begin 000767
+delete from tbl_30min where stock_id = '000767'
+i'm importing 000767
+work_one end
+---index is  000768
+work_one begin 000768
+delete from tbl_30min where stock_id = '000768'
+i'm importing 000768
+work_one end
+---index is  000776
+work_one begin 000776
+delete from tbl_30min where stock_id = '000776'
+i'm importing 000776
+work_one end
+---index is  000777
+work_one begin 000777
+delete from tbl_30min where stock_id = '000777'
+i'm importing 000777
+work_one end
+---index is  000778
+work_one begin 000778
+delete from tbl_30min where stock_id = '000778'
+i'm importing 000778
+work_one end
+---index is  000779
+work_one begin 000779
+delete from tbl_30min where stock_id = '000779'
+i'm importing 000779
+work_one end
+---index is  000780
+work_one begin 000780
+delete from tbl_30min where stock_id = '000780'
+i'm importing 000780
+work_one end
+---index is  000782
+work_one begin 000782
+delete from tbl_30min where stock_id = '000782'
+i'm importing 000782
+work_one end
+---index is  000783
+work_one begin 000783
+delete from tbl_30min where stock_id = '000783'
+i'm importing 000783
+work_one end
+---index is  000785
+work_one begin 000785
+delete from tbl_30min where stock_id = '000785'
+i'm importing 000785
+work_one end
+---index is  000786
+work_one begin 000786
+delete from tbl_30min where stock_id = '000786'
+i'm importing 000786
+work_one end
+---index is  000788
+work_one begin 000788
+delete from tbl_30min where stock_id = '000788'
+i'm importing 000788
+work_one end
+---index is  000789
+work_one begin 000789
+delete from tbl_30min where stock_id = '000789'
+i'm importing 000789
+work_one end
+---index is  000790
+work_one begin 000790
+delete from tbl_30min where stock_id = '000790'
+i'm importing 000790
+work_one end
+---index is  000791
+work_one begin 000791
+delete from tbl_30min where stock_id = '000791'
+i'm importing 000791
+work_one end
+---index is  000792
+work_one begin 000792
+delete from tbl_30min where stock_id = '000792'
+i'm importing 000792
+work_one end
+---index is  000793
+work_one begin 000793
+delete from tbl_30min where stock_id = '000793'
+i'm importing 000793
+work_one end
+---index is  000795
+work_one begin 000795
+delete from tbl_30min where stock_id = '000795'
+i'm importing 000795
+work_one end
+---index is  000796
+work_one begin 000796
+delete from tbl_30min where stock_id = '000796'
+i'm importing 000796
+work_one end
+---index is  000797
+work_one begin 000797
+delete from tbl_30min where stock_id = '000797'
+i'm importing 000797
+work_one end
+---index is  000798
+work_one begin 000798
+delete from tbl_30min where stock_id = '000798'
+i'm importing 000798
+work_one end
+---index is  000799
+work_one begin 000799
+delete from tbl_30min where stock_id = '000799'
+i'm importing 000799
+work_one end
+---index is  000800
+work_one begin 000800
+delete from tbl_30min where stock_id = '000800'
+i'm importing 000800
+work_one end
+---index is  000801
+work_one begin 000801
+delete from tbl_30min where stock_id = '000801'
+i'm importing 000801
+work_one end
+---index is  000802
+work_one begin 000802
+delete from tbl_30min where stock_id = '000802'
+i'm importing 000802
+work_one end
+---index is  000803
+work_one begin 000803
+delete from tbl_30min where stock_id = '000803'
+i'm importing 000803
+work_one end
+---index is  000806
+work_one begin 000806
+delete from tbl_30min where stock_id = '000806'
+i'm importing 000806
+work_one end
+---index is  000807
+work_one begin 000807
+delete from tbl_30min where stock_id = '000807'
+i'm importing 000807
+work_one end
+---index is  000809
+work_one begin 000809
+delete from tbl_30min where stock_id = '000809'
+i'm importing 000809
+work_one end
+---index is  000810
+work_one begin 000810
+delete from tbl_30min where stock_id = '000810'
+i'm importing 000810
+work_one end
+---index is  000811
+work_one begin 000811
+delete from tbl_30min where stock_id = '000811'
+i'm importing 000811
+work_one end
+---index is  000812
+work_one begin 000812
+delete from tbl_30min where stock_id = '000812'
+i'm importing 000812
+work_one end
+---index is  000813
+work_one begin 000813
+delete from tbl_30min where stock_id = '000813'
+i'm importing 000813
+work_one end
+---index is  000815
+work_one begin 000815
+delete from tbl_30min where stock_id = '000815'
+i'm importing 000815
+work_one end
+---index is  000816
+work_one begin 000816
+delete from tbl_30min where stock_id = '000816'
+i'm importing 000816
+work_one end
+---index is  000818
+work_one begin 000818
+delete from tbl_30min where stock_id = '000818'
+i'm importing 000818
+work_one end
+---index is  000819
+work_one begin 000819
+delete from tbl_30min where stock_id = '000819'
+i'm importing 000819
+work_one end
+---index is  000820
+work_one begin 000820
+delete from tbl_30min where stock_id = '000820'
+i'm importing 000820
+work_one end
+---index is  000821
+work_one begin 000821
+delete from tbl_30min where stock_id = '000821'
+i'm importing 000821
+work_one end
+---index is  000822
+work_one begin 000822
+delete from tbl_30min where stock_id = '000822'
+i'm importing 000822
+work_one end
+---index is  000823
+work_one begin 000823
+delete from tbl_30min where stock_id = '000823'
+i'm importing 000823
+work_one end
+---index is  000825
+work_one begin 000825
+delete from tbl_30min where stock_id = '000825'
+i'm importing 000825
+work_one end
+---index is  000826
+work_one begin 000826
+delete from tbl_30min where stock_id = '000826'
+i'm importing 000826
+work_one end
+---index is  000828
+work_one begin 000828
+delete from tbl_30min where stock_id = '000828'
+i'm importing 000828
+work_one end
+---index is  000829
+work_one begin 000829
+delete from tbl_30min where stock_id = '000829'
+i'm importing 000829
+work_one end
+---index is  000830
+work_one begin 000830
+delete from tbl_30min where stock_id = '000830'
+i'm importing 000830
+work_one end
+---index is  000831
+work_one begin 000831
+delete from tbl_30min where stock_id = '000831'
+i'm importing 000831
+work_one end
+---index is  000833
+work_one begin 000833
+delete from tbl_30min where stock_id = '000833'
+i'm importing 000833
+work_one end
+---index is  000835
+work_one begin 000835
+delete from tbl_30min where stock_id = '000835'
+i'm importing 000835
+work_one end
+---index is  000836
+work_one begin 000836
+delete from tbl_30min where stock_id = '000836'
+i'm importing 000836
+work_one end
+---index is  000837
+work_one begin 000837
+delete from tbl_30min where stock_id = '000837'
+i'm importing 000837
+work_one end
+---index is  000838
+work_one begin 000838
+delete from tbl_30min where stock_id = '000838'
+i'm importing 000838
+work_one end
+---index is  000839
+work_one begin 000839
+delete from tbl_30min where stock_id = '000839'
+i'm importing 000839
+work_one end
+---index is  000848
+work_one begin 000848
+delete from tbl_30min where stock_id = '000848'
+i'm importing 000848
+work_one end
+---index is  000850
+work_one begin 000850
+delete from tbl_30min where stock_id = '000850'
+i'm importing 000850
+work_one end
+---index is  000851
+work_one begin 000851
+delete from tbl_30min where stock_id = '000851'
+i'm importing 000851
+work_one end
+---index is  000852
+work_one begin 000852
+delete from tbl_30min where stock_id = '000852'
+i'm importing 000852
+work_one end
+---index is  000856
+work_one begin 000856
+delete from tbl_30min where stock_id = '000856'
+i'm importing 000856
+work_one end
+---index is  000858
+work_one begin 000858
+delete from tbl_30min where stock_id = '000858'
+i'm importing 000858
+work_one end
+---index is  000859
+work_one begin 000859
+delete from tbl_30min where stock_id = '000859'
+i'm importing 000859
+work_one end
+---index is  000860
+work_one begin 000860
+delete from tbl_30min where stock_id = '000860'
+i'm importing 000860
+work_one end
+---index is  000861
+work_one begin 000861
+delete from tbl_30min where stock_id = '000861'
+i'm importing 000861
+work_one end
+---index is  000862
+work_one begin 000862
+delete from tbl_30min where stock_id = '000862'
+i'm importing 000862
+work_one end
+---index is  000863
+work_one begin 000863
+delete from tbl_30min where stock_id = '000863'
+i'm importing 000863
+work_one end
+---index is  000868
+work_one begin 000868
+delete from tbl_30min where stock_id = '000868'
+i'm importing 000868
+work_one end
+---index is  000869
+work_one begin 000869
+delete from tbl_30min where stock_id = '000869'
+i'm importing 000869
+work_one end
+---index is  000875
+work_one begin 000875
+delete from tbl_30min where stock_id = '000875'
+i'm importing 000875
+work_one end
+---index is  000876
+work_one begin 000876
+delete from tbl_30min where stock_id = '000876'
+i'm importing 000876
+work_one end
+---index is  000877
+work_one begin 000877
+delete from tbl_30min where stock_id = '000877'
+i'm importing 000877
+work_one end
+---index is  000878
+work_one begin 000878
+delete from tbl_30min where stock_id = '000878'
+i'm importing 000878
+work_one end
+---index is  000880
+work_one begin 000880
+delete from tbl_30min where stock_id = '000880'
+i'm importing 000880
+work_one end
+---index is  000881
+work_one begin 000881
+delete from tbl_30min where stock_id = '000881'
+i'm importing 000881
+work_one end
+---index is  000882
+work_one begin 000882
+delete from tbl_30min where stock_id = '000882'
+i'm importing 000882
+work_one end
+---index is  000883
+work_one begin 000883
+delete from tbl_30min where stock_id = '000883'
+i'm importing 000883
+work_one end
+---index is  000885
+work_one begin 000885
+delete from tbl_30min where stock_id = '000885'
+i'm importing 000885
+work_one end
+---index is  000886
+work_one begin 000886
+delete from tbl_30min where stock_id = '000886'
+i'm importing 000886
+work_one end
+---index is  000887
+work_one begin 000887
+delete from tbl_30min where stock_id = '000887'
+i'm importing 000887
+work_one end
+---index is  000888
+work_one begin 000888
+delete from tbl_30min where stock_id = '000888'
+i'm importing 000888
+work_one end
+---index is  000889
+work_one begin 000889
+delete from tbl_30min where stock_id = '000889'
+i'm importing 000889
+work_one end
+---index is  000890
+work_one begin 000890
+delete from tbl_30min where stock_id = '000890'
+i'm importing 000890
+work_one end
+---index is  000892
+work_one begin 000892
+delete from tbl_30min where stock_id = '000892'
+i'm importing 000892
+work_one end
+---index is  000893
+work_one begin 000893
+delete from tbl_30min where stock_id = '000893'
+i'm importing 000893
+work_one end
+---index is  000895
+work_one begin 000895
+delete from tbl_30min where stock_id = '000895'
+i'm importing 000895
+work_one end
+---index is  000897
+work_one begin 000897
+delete from tbl_30min where stock_id = '000897'
+i'm importing 000897
+work_one end
+---index is  000898
+work_one begin 000898
+delete from tbl_30min where stock_id = '000898'
+i'm importing 000898
+work_one end
+---index is  000899
+work_one begin 000899
+delete from tbl_30min where stock_id = '000899'
+i'm importing 000899
+work_one end
+---index is  000900
+work_one begin 000900
+delete from tbl_30min where stock_id = '000900'
+i'm importing 000900
+work_one end
+---index is  000901
+work_one begin 000901
+delete from tbl_30min where stock_id = '000901'
+i'm importing 000901
+work_one end
+---index is  000902
+work_one begin 000902
+delete from tbl_30min where stock_id = '000902'
+i'm importing 000902
+work_one end
+---index is  000903
+work_one begin 000903
+delete from tbl_30min where stock_id = '000903'
+i'm importing 000903
+work_one end
+---index is  000905
+work_one begin 000905
+delete from tbl_30min where stock_id = '000905'
+i'm importing 000905
+work_one end
+---index is  000906
+work_one begin 000906
+delete from tbl_30min where stock_id = '000906'
+i'm importing 000906
+work_one end
+---index is  000908
+work_one begin 000908
+delete from tbl_30min where stock_id = '000908'
+i'm importing 000908
+work_one end
+---index is  000909
+work_one begin 000909
+delete from tbl_30min where stock_id = '000909'
+i'm importing 000909
+work_one end
+---index is  000910
+work_one begin 000910
+delete from tbl_30min where stock_id = '000910'
+i'm importing 000910
+work_one end
+---index is  000911
+work_one begin 000911
+delete from tbl_30min where stock_id = '000911'
+i'm importing 000911
+work_one end
+---index is  000912
+work_one begin 000912
+delete from tbl_30min where stock_id = '000912'
+i'm importing 000912
+work_one end
+---index is  000913
+work_one begin 000913
+delete from tbl_30min where stock_id = '000913'
+i'm importing 000913
+work_one end
+---index is  000915
+work_one begin 000915
+delete from tbl_30min where stock_id = '000915'
+i'm importing 000915
+work_one end
+---index is  000916
+work_one begin 000916
+delete from tbl_30min where stock_id = '000916'
+i'm importing 000916
+work_one end
+---index is  000917
+work_one begin 000917
+delete from tbl_30min where stock_id = '000917'
+i'm importing 000917
+work_one end
+---index is  000918
+work_one begin 000918
+delete from tbl_30min where stock_id = '000918'
+i'm importing 000918
+work_one end
+---index is  000919
+work_one begin 000919
+delete from tbl_30min where stock_id = '000919'
+i'm importing 000919
+work_one end
+---index is  000920
+work_one begin 000920
+delete from tbl_30min where stock_id = '000920'
+i'm importing 000920
+work_one end
+---index is  000921
+work_one begin 000921
+delete from tbl_30min where stock_id = '000921'
+i'm importing 000921
+work_one end
+---index is  000922
+work_one begin 000922
+delete from tbl_30min where stock_id = '000922'
+i'm importing 000922
+work_one end
+---index is  000923
+work_one begin 000923
+delete from tbl_30min where stock_id = '000923'
+i'm importing 000923
+work_one end
+---index is  000925
+work_one begin 000925
+delete from tbl_30min where stock_id = '000925'
+i'm importing 000925
+work_one end
+---index is  000926
+work_one begin 000926
+delete from tbl_30min where stock_id = '000926'
+i'm importing 000926
+work_one end
+---index is  000927
+work_one begin 000927
+delete from tbl_30min where stock_id = '000927'
+i'm importing 000927
+work_one end
+---index is  000928
+work_one begin 000928
+delete from tbl_30min where stock_id = '000928'
+i'm importing 000928
+work_one end
+---index is  000929
+work_one begin 000929
+delete from tbl_30min where stock_id = '000929'
+i'm importing 000929
+work_one end
+---index is  000930
+work_one begin 000930
+delete from tbl_30min where stock_id = '000930'
+i'm importing 000930
+work_one end
+---index is  000931
+work_one begin 000931
+delete from tbl_30min where stock_id = '000931'
+i'm importing 000931
+work_one end
+---index is  000932
+work_one begin 000932
+delete from tbl_30min where stock_id = '000932'
+i'm importing 000932
+work_one end
+---index is  000933
+work_one begin 000933
+delete from tbl_30min where stock_id = '000933'
+i'm importing 000933
+work_one end
+---index is  000935
+work_one begin 000935
+delete from tbl_30min where stock_id = '000935'
+i'm importing 000935
+work_one end
+---index is  000936
+work_one begin 000936
+delete from tbl_30min where stock_id = '000936'
+i'm importing 000936
+work_one end
+---index is  000937
+work_one begin 000937
+delete from tbl_30min where stock_id = '000937'
+i'm importing 000937
+work_one end
+---index is  000938
+work_one begin 000938
+delete from tbl_30min where stock_id = '000938'
+i'm importing 000938
+work_one end
+---index is  000939
+work_one begin 000939
+delete from tbl_30min where stock_id = '000939'
+i'm importing 000939
+work_one end
+---index is  000948
+work_one begin 000948
+delete from tbl_30min where stock_id = '000948'
+i'm importing 000948
+work_one end
+---index is  000949
+work_one begin 000949
+delete from tbl_30min where stock_id = '000949'
+i'm importing 000949
+work_one end
+---index is  000950
+work_one begin 000950
+delete from tbl_30min where stock_id = '000950'
+i'm importing 000950
+work_one end
+---index is  000951
+work_one begin 000951
+delete from tbl_30min where stock_id = '000951'
+i'm importing 000951
+work_one end
+---index is  000952
+work_one begin 000952
+delete from tbl_30min where stock_id = '000952'
+i'm importing 000952
+work_one end
+---index is  000953
+work_one begin 000953
+delete from tbl_30min where stock_id = '000953'
+i'm importing 000953
+work_one end
+---index is  000955
+work_one begin 000955
+delete from tbl_30min where stock_id = '000955'
+i'm importing 000955
+work_one end
+---index is  000957
+work_one begin 000957
+delete from tbl_30min where stock_id = '000957'
+i'm importing 000957
+work_one end
+---index is  000958
+work_one begin 000958
+delete from tbl_30min where stock_id = '000958'
+i'm importing 000958
+work_one end
+---index is  000959
+work_one begin 000959
+delete from tbl_30min where stock_id = '000959'
+i'm importing 000959
+work_one end
+---index is  000960
+work_one begin 000960
+delete from tbl_30min where stock_id = '000960'
+i'm importing 000960
+work_one end
+---index is  000961
+work_one begin 000961
+delete from tbl_30min where stock_id = '000961'
+i'm importing 000961
+work_one end
+---index is  000962
+work_one begin 000962
+delete from tbl_30min where stock_id = '000962'
+i'm importing 000962
+work_one end
+---index is  000963
+work_one begin 000963
+delete from tbl_30min where stock_id = '000963'
+i'm importing 000963
+work_one end
+---index is  000965
+work_one begin 000965
+delete from tbl_30min where stock_id = '000965'
+i'm importing 000965
+work_one end
+---index is  000966
+work_one begin 000966
+delete from tbl_30min where stock_id = '000966'
+i'm importing 000966
+work_one end
+---index is  000967
+work_one begin 000967
+delete from tbl_30min where stock_id = '000967'
+i'm importing 000967
+work_one end
+---index is  000968
+work_one begin 000968
+delete from tbl_30min where stock_id = '000968'
+i'm importing 000968
+work_one end
+---index is  000969
+work_one begin 000969
+delete from tbl_30min where stock_id = '000969'
+i'm importing 000969
+work_one end
+---index is  000970
+work_one begin 000970
+delete from tbl_30min where stock_id = '000970'
+i'm importing 000970
+work_one end
+---index is  000971
+work_one begin 000971
+delete from tbl_30min where stock_id = '000971'
+i'm importing 000971
+work_one end
+---index is  000972
+work_one begin 000972
+delete from tbl_30min where stock_id = '000972'
+i'm importing 000972
+work_one end
+---index is  000973
+work_one begin 000973
+delete from tbl_30min where stock_id = '000973'
+i'm importing 000973
+work_one end
+---index is  000975
+work_one begin 000975
+delete from tbl_30min where stock_id = '000975'
+i'm importing 000975
+work_one end
+---index is  000976
+work_one begin 000976
+delete from tbl_30min where stock_id = '000976'
+i'm importing 000976
+work_one end
+---index is  000977
+work_one begin 000977
+delete from tbl_30min where stock_id = '000977'
+i'm importing 000977
+work_one end
+---index is  000978
+work_one begin 000978
+delete from tbl_30min where stock_id = '000978'
+i'm importing 000978
+work_one end
+---index is  000979
+work_one begin 000979
+delete from tbl_30min where stock_id = '000979'
+i'm importing 000979
+work_one end
+---index is  000980
+work_one begin 000980
+delete from tbl_30min where stock_id = '000980'
+i'm importing 000980
+work_one end
+---index is  000981
+work_one begin 000981
+delete from tbl_30min where stock_id = '000981'
+i'm importing 000981
+work_one end
+---index is  000982
+work_one begin 000982
+delete from tbl_30min where stock_id = '000982'
+i'm importing 000982
+work_one end
+---index is  000983
+work_one begin 000983
+delete from tbl_30min where stock_id = '000983'
+i'm importing 000983
+work_one end
+---index is  000985
+work_one begin 000985
+delete from tbl_30min where stock_id = '000985'
+i'm importing 000985
+work_one end
+---index is  000987
+work_one begin 000987
+delete from tbl_30min where stock_id = '000987'
+i'm importing 000987
+work_one end
+---index is  000988
+work_one begin 000988
+delete from tbl_30min where stock_id = '000988'
+i'm importing 000988
+work_one end
+---index is  000989
+work_one begin 000989
+delete from tbl_30min where stock_id = '000989'
+i'm importing 000989
+work_one end
+---index is  000990
+work_one begin 000990
+delete from tbl_30min where stock_id = '000990'
+i'm importing 000990
+work_one end
+---index is  000993
+work_one begin 000993
+delete from tbl_30min where stock_id = '000993'
+i'm importing 000993
+work_one end
+---index is  000995
+work_one begin 000995
+delete from tbl_30min where stock_id = '000995'
+i'm importing 000995
+work_one end
+---index is  000996
+work_one begin 000996
+delete from tbl_30min where stock_id = '000996'
+i'm importing 000996
+work_one end
+---index is  000997
+work_one begin 000997
+delete from tbl_30min where stock_id = '000997'
+i'm importing 000997
+work_one end
+---index is  000998
+work_one begin 000998
+delete from tbl_30min where stock_id = '000998'
+i'm importing 000998
+work_one end
+---index is  000999
+work_one begin 000999
+delete from tbl_30min where stock_id = '000999'
+i'm importing 000999
+work_one end
+---index is  001696
+work_one begin 001696
+delete from tbl_30min where stock_id = '001696'
+i'm importing 001696
+work_one end
+---index is  001896
+work_one begin 001896
+delete from tbl_30min where stock_id = '001896'
+i'm importing 001896
+work_one end
+---index is  001979
+work_one begin 001979
+delete from tbl_30min where stock_id = '001979'
+i'm importing 001979
+work_one end
+---index is  002001
+work_one begin 002001
+delete from tbl_30min where stock_id = '002001'
+i'm importing 002001
+work_one end
+---index is  002002
+work_one begin 002002
+delete from tbl_30min where stock_id = '002002'
+i'm importing 002002
+work_one end
+---index is  002003
+work_one begin 002003
+delete from tbl_30min where stock_id = '002003'
+i'm importing 002003
+work_one end
+---index is  002004
+work_one begin 002004
+delete from tbl_30min where stock_id = '002004'
+i'm importing 002004
+work_one end
+---index is  002005
+work_one begin 002005
+delete from tbl_30min where stock_id = '002005'
+i'm importing 002005
+work_one end
+---index is  002006
+work_one begin 002006
+delete from tbl_30min where stock_id = '002006'
+i'm importing 002006
+work_one end
+---index is  002007
+work_one begin 002007
+delete from tbl_30min where stock_id = '002007'
+i'm importing 002007
+work_one end
+---index is  002008
+work_one begin 002008
+delete from tbl_30min where stock_id = '002008'
+i'm importing 002008
+work_one end
+---index is  002009
+work_one begin 002009
+delete from tbl_30min where stock_id = '002009'
+i'm importing 002009
+work_one end
+---index is  002010
+work_one begin 002010
+delete from tbl_30min where stock_id = '002010'
+i'm importing 002010
+work_one end
+---index is  002011
+work_one begin 002011
+delete from tbl_30min where stock_id = '002011'
+i'm importing 002011
+work_one end
+---index is  002012
+work_one begin 002012
+delete from tbl_30min where stock_id = '002012'
+i'm importing 002012
+work_one end
+---index is  002013
+work_one begin 002013
+delete from tbl_30min where stock_id = '002013'
+i'm importing 002013
+work_one end
+---index is  002014
+work_one begin 002014
+delete from tbl_30min where stock_id = '002014'
+i'm importing 002014
+work_one end
+---index is  002015
+work_one begin 002015
+delete from tbl_30min where stock_id = '002015'
+i'm importing 002015
+work_one end
+---index is  002016
+work_one begin 002016
+delete from tbl_30min where stock_id = '002016'
+i'm importing 002016
+work_one end
+---index is  002017
+work_one begin 002017
+delete from tbl_30min where stock_id = '002017'
+i'm importing 002017
+work_one end
+---index is  002018
+work_one begin 002018
+delete from tbl_30min where stock_id = '002018'
+i'm importing 002018
+work_one end
+---index is  002019
+work_one begin 002019
+delete from tbl_30min where stock_id = '002019'
+i'm importing 002019
+work_one end
+---index is  002020
+work_one begin 002020
+delete from tbl_30min where stock_id = '002020'
+i'm importing 002020
+work_one end
+---index is  002021
+work_one begin 002021
+delete from tbl_30min where stock_id = '002021'
+i'm importing 002021
+work_one end
+---index is  002022
+work_one begin 002022
+delete from tbl_30min where stock_id = '002022'
+i'm importing 002022
+work_one end
+---index is  002023
+work_one begin 002023
+delete from tbl_30min where stock_id = '002023'
+i'm importing 002023
+work_one end
+---index is  002024
+work_one begin 002024
+delete from tbl_30min where stock_id = '002024'
+i'm importing 002024
+work_one end
+---index is  002025
+work_one begin 002025
+delete from tbl_30min where stock_id = '002025'
+i'm importing 002025
+work_one end
+---index is  002026
+work_one begin 002026
+delete from tbl_30min where stock_id = '002026'
+i'm importing 002026
+work_one end
+---index is  002027
+work_one begin 002027
+delete from tbl_30min where stock_id = '002027'
+i'm importing 002027
+work_one end
+---index is  002028
+work_one begin 002028
+delete from tbl_30min where stock_id = '002028'
+i'm importing 002028
+work_one end
+---index is  002029
+work_one begin 002029
+delete from tbl_30min where stock_id = '002029'
+i'm importing 002029
+work_one end
+---index is  002030
+work_one begin 002030
+delete from tbl_30min where stock_id = '002030'
+i'm importing 002030
+work_one end
+---index is  002031
+work_one begin 002031
+delete from tbl_30min where stock_id = '002031'
+i'm importing 002031
+work_one end
+---index is  002032
+work_one begin 002032
+delete from tbl_30min where stock_id = '002032'
+i'm importing 002032
+work_one end
+---index is  002033
+work_one begin 002033
+delete from tbl_30min where stock_id = '002033'
+i'm importing 002033
+work_one end
+---index is  002034
+work_one begin 002034
+delete from tbl_30min where stock_id = '002034'
+i'm importing 002034
+work_one end
+---index is  002035
+work_one begin 002035
+delete from tbl_30min where stock_id = '002035'
+i'm importing 002035
+work_one end
+---index is  002036
+work_one begin 002036
+delete from tbl_30min where stock_id = '002036'
+i'm importing 002036
+work_one end
+---index is  002037
+work_one begin 002037
+delete from tbl_30min where stock_id = '002037'
+i'm importing 002037
+work_one end
+---index is  002038
+work_one begin 002038
+delete from tbl_30min where stock_id = '002038'
+i'm importing 002038
+work_one end
+---index is  002039
+work_one begin 002039
+delete from tbl_30min where stock_id = '002039'
+i'm importing 002039
+work_one end
+---index is  002040
+work_one begin 002040
+delete from tbl_30min where stock_id = '002040'
+i'm importing 002040
+work_one end
+---index is  002041
+work_one begin 002041
+delete from tbl_30min where stock_id = '002041'
+i'm importing 002041
+work_one end
+---index is  002042
+work_one begin 002042
+delete from tbl_30min where stock_id = '002042'
+i'm importing 002042
+work_one end
+---index is  002043
+work_one begin 002043
+delete from tbl_30min where stock_id = '002043'
+i'm importing 002043
+work_one end
+---index is  002044
+work_one begin 002044
+delete from tbl_30min where stock_id = '002044'
+i'm importing 002044
+work_one end
+---index is  002045
+work_one begin 002045
+delete from tbl_30min where stock_id = '002045'
+i'm importing 002045
+work_one end
+---index is  002046
+work_one begin 002046
+delete from tbl_30min where stock_id = '002046'
+i'm importing 002046
+work_one end
+---index is  002047
+work_one begin 002047
+delete from tbl_30min where stock_id = '002047'
+i'm importing 002047
+work_one end
+---index is  002048
+work_one begin 002048
+delete from tbl_30min where stock_id = '002048'
+i'm importing 002048
+work_one end
+---index is  002049
+work_one begin 002049
+delete from tbl_30min where stock_id = '002049'
+i'm importing 002049
+work_one end
+---index is  002050
+work_one begin 002050
+delete from tbl_30min where stock_id = '002050'
+i'm importing 002050
+work_one end
+---index is  002051
+work_one begin 002051
+delete from tbl_30min where stock_id = '002051'
+i'm importing 002051
+work_one end
+---index is  002052
+work_one begin 002052
+delete from tbl_30min where stock_id = '002052'
+i'm importing 002052
+work_one end
+---index is  002053
+work_one begin 002053
+delete from tbl_30min where stock_id = '002053'
+i'm importing 002053
+work_one end
+---index is  002054
+work_one begin 002054
+delete from tbl_30min where stock_id = '002054'
+i'm importing 002054
+work_one end
+---index is  002055
+work_one begin 002055
+delete from tbl_30min where stock_id = '002055'
+i'm importing 002055
+work_one end
+---index is  002056
+work_one begin 002056
+delete from tbl_30min where stock_id = '002056'
+i'm importing 002056
+work_one end
+---index is  002057
+work_one begin 002057
+delete from tbl_30min where stock_id = '002057'
+i'm importing 002057
+work_one end
+---index is  002058
+work_one begin 002058
+delete from tbl_30min where stock_id = '002058'
+i'm importing 002058
+work_one end
+---index is  002059
+work_one begin 002059
+delete from tbl_30min where stock_id = '002059'
+i'm importing 002059
+work_one end
+---index is  002060
+work_one begin 002060
+delete from tbl_30min where stock_id = '002060'
+i'm importing 002060
+work_one end
+---index is  002061
+work_one begin 002061
+delete from tbl_30min where stock_id = '002061'
+i'm importing 002061
+work_one end
+---index is  002062
+work_one begin 002062
+delete from tbl_30min where stock_id = '002062'
+i'm importing 002062
+work_one end
+---index is  002063
+work_one begin 002063
+delete from tbl_30min where stock_id = '002063'
+i'm importing 002063
+work_one end
+---index is  002064
+work_one begin 002064
+delete from tbl_30min where stock_id = '002064'
+i'm importing 002064
+work_one end
+---index is  002065
+work_one begin 002065
+delete from tbl_30min where stock_id = '002065'
+i'm importing 002065
+work_one end
+---index is  002066
+work_one begin 002066
+delete from tbl_30min where stock_id = '002066'
+i'm importing 002066
+work_one end
+---index is  002067
+work_one begin 002067
+delete from tbl_30min where stock_id = '002067'
+i'm importing 002067
+work_one end
+---index is  002068
+work_one begin 002068
+delete from tbl_30min where stock_id = '002068'
+i'm importing 002068
+work_one end
+---index is  002069
+work_one begin 002069
+delete from tbl_30min where stock_id = '002069'
+i'm importing 002069
+work_one end
+---index is  002070
+work_one begin 002070
+delete from tbl_30min where stock_id = '002070'
+i'm importing 002070
+work_one end
+---index is  002071
+work_one begin 002071
+delete from tbl_30min where stock_id = '002071'
+i'm importing 002071
+work_one end
+---index is  002072
+work_one begin 002072
+delete from tbl_30min where stock_id = '002072'
+i'm importing 002072
+work_one end
+---index is  002073
+work_one begin 002073
+delete from tbl_30min where stock_id = '002073'
+i'm importing 002073
+work_one end
+---index is  002074
+work_one begin 002074
+delete from tbl_30min where stock_id = '002074'
+i'm importing 002074
+work_one end
+---index is  002075
+work_one begin 002075
+delete from tbl_30min where stock_id = '002075'
+i'm importing 002075
+work_one end
+---index is  002076
+work_one begin 002076
+delete from tbl_30min where stock_id = '002076'
+i'm importing 002076
+work_one end
+---index is  002077
+work_one begin 002077
+delete from tbl_30min where stock_id = '002077'
+i'm importing 002077
+work_one end
+---index is  002078
+work_one begin 002078
+delete from tbl_30min where stock_id = '002078'
+i'm importing 002078
+work_one end
+---index is  002079
+work_one begin 002079
+delete from tbl_30min where stock_id = '002079'
+i'm importing 002079
+work_one end
+---index is  002080
+work_one begin 002080
+delete from tbl_30min where stock_id = '002080'
+i'm importing 002080
+work_one end
+---index is  002081
+work_one begin 002081
+delete from tbl_30min where stock_id = '002081'
+i'm importing 002081
+work_one end
+---index is  002082
+work_one begin 002082
+delete from tbl_30min where stock_id = '002082'
+i'm importing 002082
+work_one end
+---index is  002083
+work_one begin 002083
+delete from tbl_30min where stock_id = '002083'
+i'm importing 002083
+work_one end
+---index is  002084
+work_one begin 002084
+delete from tbl_30min where stock_id = '002084'
+i'm importing 002084
+work_one end
+---index is  002085
+work_one begin 002085
+delete from tbl_30min where stock_id = '002085'
+i'm importing 002085
+work_one end
+---index is  002086
+work_one begin 002086
+delete from tbl_30min where stock_id = '002086'
+i'm importing 002086
+work_one end
+---index is  002087
+work_one begin 002087
+delete from tbl_30min where stock_id = '002087'
+i'm importing 002087
+work_one end
+---index is  002088
+work_one begin 002088
+delete from tbl_30min where stock_id = '002088'
+i'm importing 002088
+work_one end
+---index is  002089
+work_one begin 002089
+delete from tbl_30min where stock_id = '002089'
+i'm importing 002089
+work_one end
+---index is  002090
+work_one begin 002090
+delete from tbl_30min where stock_id = '002090'
+i'm importing 002090
+work_one end
+---index is  002091
+work_one begin 002091
+delete from tbl_30min where stock_id = '002091'
+i'm importing 002091
+work_one end
+---index is  002092
+work_one begin 002092
+delete from tbl_30min where stock_id = '002092'
+i'm importing 002092
+work_one end
+---index is  002093
+work_one begin 002093
+delete from tbl_30min where stock_id = '002093'
+i'm importing 002093
+work_one end
+---index is  002094
+work_one begin 002094
+delete from tbl_30min where stock_id = '002094'
+i'm importing 002094
+work_one end
+---index is  002095
+work_one begin 002095
+delete from tbl_30min where stock_id = '002095'
+i'm importing 002095
+work_one end
+---index is  002096
+work_one begin 002096
+delete from tbl_30min where stock_id = '002096'
+i'm importing 002096
+work_one end
+---index is  002097
+work_one begin 002097
+delete from tbl_30min where stock_id = '002097'
+i'm importing 002097
+work_one end
+---index is  002098
+work_one begin 002098
+delete from tbl_30min where stock_id = '002098'
+i'm importing 002098
+work_one end
+---index is  002099
+work_one begin 002099
+delete from tbl_30min where stock_id = '002099'
+i'm importing 002099
+work_one end
+---index is  002100
+work_one begin 002100
+delete from tbl_30min where stock_id = '002100'
+i'm importing 002100
+work_one end
+---index is  002101
+work_one begin 002101
+delete from tbl_30min where stock_id = '002101'
+i'm importing 002101
+work_one end
+---index is  002102
+work_one begin 002102
+delete from tbl_30min where stock_id = '002102'
+i'm importing 002102
+work_one end
+---index is  002103
+work_one begin 002103
+delete from tbl_30min where stock_id = '002103'
+i'm importing 002103
+work_one end
+---index is  002104
+work_one begin 002104
+delete from tbl_30min where stock_id = '002104'
+i'm importing 002104
+work_one end
+---index is  002105
+work_one begin 002105
+delete from tbl_30min where stock_id = '002105'
+i'm importing 002105
+work_one end
+---index is  002106
+work_one begin 002106
+delete from tbl_30min where stock_id = '002106'
+i'm importing 002106
+work_one end
+---index is  002107
+work_one begin 002107
+delete from tbl_30min where stock_id = '002107'
+i'm importing 002107
+work_one end
+---index is  002108
+work_one begin 002108
+delete from tbl_30min where stock_id = '002108'
+i'm importing 002108
+work_one end
+---index is  002109
+work_one begin 002109
+delete from tbl_30min where stock_id = '002109'
+i'm importing 002109
+work_one end
+---index is  002110
+work_one begin 002110
+delete from tbl_30min where stock_id = '002110'
+i'm importing 002110
+work_one end
+---index is  002111
+work_one begin 002111
+delete from tbl_30min where stock_id = '002111'
+i'm importing 002111
+work_one end
+---index is  002112
+work_one begin 002112
+delete from tbl_30min where stock_id = '002112'
+i'm importing 002112
+work_one end
+---index is  002113
+work_one begin 002113
+delete from tbl_30min where stock_id = '002113'
+i'm importing 002113
+work_one end
+---index is  002114
+work_one begin 002114
+delete from tbl_30min where stock_id = '002114'
+i'm importing 002114
+work_one end
+---index is  002115
+work_one begin 002115
+delete from tbl_30min where stock_id = '002115'
+i'm importing 002115
+work_one end
+---index is  002116
+work_one begin 002116
+delete from tbl_30min where stock_id = '002116'
+i'm importing 002116
+work_one end
+---index is  002117
+work_one begin 002117
+delete from tbl_30min where stock_id = '002117'
+i'm importing 002117
+work_one end
+---index is  002118
+work_one begin 002118
+delete from tbl_30min where stock_id = '002118'
+i'm importing 002118
+work_one end
+---index is  002119
+work_one begin 002119
+delete from tbl_30min where stock_id = '002119'
+i'm importing 002119
+work_one end
+---index is  002120
+work_one begin 002120
+delete from tbl_30min where stock_id = '002120'
+i'm importing 002120
+work_one end
+---index is  002121
+work_one begin 002121
+delete from tbl_30min where stock_id = '002121'
+i'm importing 002121
+work_one end
+---index is  002122
+work_one begin 002122
+delete from tbl_30min where stock_id = '002122'
+i'm importing 002122
+work_one end
+---index is  002123
+work_one begin 002123
+delete from tbl_30min where stock_id = '002123'
+i'm importing 002123
+work_one end
+---index is  002124
+work_one begin 002124
+delete from tbl_30min where stock_id = '002124'
+i'm importing 002124
+work_one end
+---index is  002125
+work_one begin 002125
+delete from tbl_30min where stock_id = '002125'
+i'm importing 002125
+work_one end
+---index is  002126
+work_one begin 002126
+delete from tbl_30min where stock_id = '002126'
+i'm importing 002126
+work_one end
+---index is  002127
+work_one begin 002127
+delete from tbl_30min where stock_id = '002127'
+i'm importing 002127
+work_one end
+---index is  002128
+work_one begin 002128
+delete from tbl_30min where stock_id = '002128'
+i'm importing 002128
+work_one end
+---index is  002129
+work_one begin 002129
+delete from tbl_30min where stock_id = '002129'
+i'm importing 002129
+work_one end
+---index is  002130
+work_one begin 002130
+delete from tbl_30min where stock_id = '002130'
+i'm importing 002130
+work_one end
+---index is  002131
+work_one begin 002131
+delete from tbl_30min where stock_id = '002131'
+i'm importing 002131
+work_one end
+---index is  002132
+work_one begin 002132
+delete from tbl_30min where stock_id = '002132'
+i'm importing 002132
+work_one end
+---index is  002133
+work_one begin 002133
+delete from tbl_30min where stock_id = '002133'
+i'm importing 002133
+work_one end
+---index is  002134
+work_one begin 002134
+delete from tbl_30min where stock_id = '002134'
+i'm importing 002134
+work_one end
+---index is  002135
+work_one begin 002135
+delete from tbl_30min where stock_id = '002135'
+i'm importing 002135
+work_one end
+---index is  002136
+work_one begin 002136
+delete from tbl_30min where stock_id = '002136'
+i'm importing 002136
+work_one end
+---index is  002137
+work_one begin 002137
+delete from tbl_30min where stock_id = '002137'
+i'm importing 002137
+work_one end
+---index is  002138
+work_one begin 002138
+delete from tbl_30min where stock_id = '002138'
+i'm importing 002138
+work_one end
+---index is  002139
+work_one begin 002139
+delete from tbl_30min where stock_id = '002139'
+i'm importing 002139
+work_one end
+---index is  002140
+work_one begin 002140
+delete from tbl_30min where stock_id = '002140'
+i'm importing 002140
+work_one end
+---index is  002141
+work_one begin 002141
+delete from tbl_30min where stock_id = '002141'
+i'm importing 002141
+work_one end
+---index is  002142
+work_one begin 002142
+delete from tbl_30min where stock_id = '002142'
+i'm importing 002142
+work_one end
+---index is  002143
+work_one begin 002143
+delete from tbl_30min where stock_id = '002143'
+i'm importing 002143
+work_one end
+---index is  002144
+work_one begin 002144
+delete from tbl_30min where stock_id = '002144'
+i'm importing 002144
+work_one end
+---index is  002145
+work_one begin 002145
+delete from tbl_30min where stock_id = '002145'
+i'm importing 002145
+work_one end
+---index is  002146
+work_one begin 002146
+delete from tbl_30min where stock_id = '002146'
+i'm importing 002146
+work_one end
+---index is  002147
+work_one begin 002147
+delete from tbl_30min where stock_id = '002147'
+i'm importing 002147
+work_one end
+---index is  002148
+work_one begin 002148
+delete from tbl_30min where stock_id = '002148'
+i'm importing 002148
+work_one end
+---index is  002149
+work_one begin 002149
+delete from tbl_30min where stock_id = '002149'
+i'm importing 002149
+work_one end
+---index is  002150
+work_one begin 002150
+delete from tbl_30min where stock_id = '002150'
+i'm importing 002150
+work_one end
+---index is  002151
+work_one begin 002151
+delete from tbl_30min where stock_id = '002151'
+i'm importing 002151
+work_one end
+---index is  002152
+work_one begin 002152
+delete from tbl_30min where stock_id = '002152'
+i'm importing 002152
+work_one end
+---index is  002153
+work_one begin 002153
+delete from tbl_30min where stock_id = '002153'
+i'm importing 002153
+work_one end
+---index is  002154
+work_one begin 002154
+delete from tbl_30min where stock_id = '002154'
+i'm importing 002154
+work_one end
+---index is  002155
+work_one begin 002155
+delete from tbl_30min where stock_id = '002155'
+i'm importing 002155
+work_one end
+---index is  002156
+work_one begin 002156
+delete from tbl_30min where stock_id = '002156'
+i'm importing 002156
+work_one end
+---index is  002157
+work_one begin 002157
+delete from tbl_30min where stock_id = '002157'
+i'm importing 002157
+work_one end
+---index is  002158
+work_one begin 002158
+delete from tbl_30min where stock_id = '002158'
+i'm importing 002158
+work_one end
+---index is  002159
+work_one begin 002159
+delete from tbl_30min where stock_id = '002159'
+i'm importing 002159
+work_one end
+---index is  002160
+work_one begin 002160
+delete from tbl_30min where stock_id = '002160'
+i'm importing 002160
+work_one end
+---index is  002161
+work_one begin 002161
+delete from tbl_30min where stock_id = '002161'
+i'm importing 002161
+work_one end
+---index is  002162
+work_one begin 002162
+delete from tbl_30min where stock_id = '002162'
+i'm importing 002162
+work_one end
+---index is  002163
+work_one begin 002163
+delete from tbl_30min where stock_id = '002163'
+i'm importing 002163
+work_one end
+---index is  002164
+work_one begin 002164
+delete from tbl_30min where stock_id = '002164'
+i'm importing 002164
+work_one end
+---index is  002165
+work_one begin 002165
+delete from tbl_30min where stock_id = '002165'
+i'm importing 002165
+work_one end
+---index is  002166
+work_one begin 002166
+delete from tbl_30min where stock_id = '002166'
+i'm importing 002166
+work_one end
+---index is  002167
+work_one begin 002167
+delete from tbl_30min where stock_id = '002167'
+i'm importing 002167
+work_one end
+---index is  002168
+work_one begin 002168
+delete from tbl_30min where stock_id = '002168'
+i'm importing 002168
+work_one end
+---index is  002169
+work_one begin 002169
+delete from tbl_30min where stock_id = '002169'
+i'm importing 002169
+work_one end
+---index is  002170
+work_one begin 002170
+delete from tbl_30min where stock_id = '002170'
+i'm importing 002170
+work_one end
+---index is  002171
+work_one begin 002171
+delete from tbl_30min where stock_id = '002171'
+i'm importing 002171
+work_one end
+---index is  002172
+work_one begin 002172
+delete from tbl_30min where stock_id = '002172'
+i'm importing 002172
+work_one end
+---index is  002173
+work_one begin 002173
+delete from tbl_30min where stock_id = '002173'
+i'm importing 002173
+work_one end
+---index is  002174
+work_one begin 002174
+delete from tbl_30min where stock_id = '002174'
+i'm importing 002174
+work_one end
+---index is  002175
+work_one begin 002175
+delete from tbl_30min where stock_id = '002175'
+i'm importing 002175
+work_one end
+---index is  002176
+work_one begin 002176
+delete from tbl_30min where stock_id = '002176'
+i'm importing 002176
+work_one end
+---index is  002177
+work_one begin 002177
+delete from tbl_30min where stock_id = '002177'
+i'm importing 002177
+work_one end
+---index is  002178
+work_one begin 002178
+delete from tbl_30min where stock_id = '002178'
+i'm importing 002178
+work_one end
+---index is  002179
+work_one begin 002179
+delete from tbl_30min where stock_id = '002179'
+i'm importing 002179
+work_one end
+---index is  002180
+work_one begin 002180
+delete from tbl_30min where stock_id = '002180'
+i'm importing 002180
+work_one end
+---index is  002181
+work_one begin 002181
+delete from tbl_30min where stock_id = '002181'
+i'm importing 002181
+work_one end
+---index is  002182
+work_one begin 002182
+delete from tbl_30min where stock_id = '002182'
+i'm importing 002182
+work_one end
+---index is  002183
+work_one begin 002183
+delete from tbl_30min where stock_id = '002183'
+i'm importing 002183
+work_one end
+---index is  002184
+work_one begin 002184
+delete from tbl_30min where stock_id = '002184'
+i'm importing 002184
+work_one end
+---index is  002185
+work_one begin 002185
+delete from tbl_30min where stock_id = '002185'
+i'm importing 002185
+work_one end
+---index is  002186
+work_one begin 002186
+delete from tbl_30min where stock_id = '002186'
+i'm importing 002186
+work_one end
+---index is  002187
+work_one begin 002187
+delete from tbl_30min where stock_id = '002187'
+i'm importing 002187
+work_one end
+---index is  002188
+work_one begin 002188
+delete from tbl_30min where stock_id = '002188'
+i'm importing 002188
+work_one end
+---index is  002189
+work_one begin 002189
+delete from tbl_30min where stock_id = '002189'
+i'm importing 002189
+work_one end
+---index is  002190
+work_one begin 002190
+delete from tbl_30min where stock_id = '002190'
+i'm importing 002190
+work_one end
+---index is  002191
+work_one begin 002191
+delete from tbl_30min where stock_id = '002191'
+i'm importing 002191
+work_one end
+---index is  002192
+work_one begin 002192
+delete from tbl_30min where stock_id = '002192'
+i'm importing 002192
+work_one end
+---index is  002193
+work_one begin 002193
+delete from tbl_30min where stock_id = '002193'
+i'm importing 002193
+work_one end
+---index is  002194
+work_one begin 002194
+delete from tbl_30min where stock_id = '002194'
+i'm importing 002194
+work_one end
+---index is  002195
+work_one begin 002195
+delete from tbl_30min where stock_id = '002195'
+i'm importing 002195
+work_one end
+---index is  002196
+work_one begin 002196
+delete from tbl_30min where stock_id = '002196'
+i'm importing 002196
+work_one end
+---index is  002197
+work_one begin 002197
+delete from tbl_30min where stock_id = '002197'
+i'm importing 002197
+work_one end
+---index is  002198
+work_one begin 002198
+delete from tbl_30min where stock_id = '002198'
+i'm importing 002198
+work_one end
+---index is  002199
+work_one begin 002199
+delete from tbl_30min where stock_id = '002199'
+i'm importing 002199
+work_one end
+---index is  002200
+work_one begin 002200
+delete from tbl_30min where stock_id = '002200'
+i'm importing 002200
+work_one end
+---index is  002201
+work_one begin 002201
+delete from tbl_30min where stock_id = '002201'
+i'm importing 002201
+work_one end
+---index is  002202
+work_one begin 002202
+delete from tbl_30min where stock_id = '002202'
+i'm importing 002202
+work_one end
+---index is  002203
+work_one begin 002203
+delete from tbl_30min where stock_id = '002203'
+i'm importing 002203
+work_one end
+---index is  002204
+work_one begin 002204
+delete from tbl_30min where stock_id = '002204'
+i'm importing 002204
+work_one end
+---index is  002205
+work_one begin 002205
+delete from tbl_30min where stock_id = '002205'
+i'm importing 002205
+work_one end
+---index is  002206
+work_one begin 002206
+delete from tbl_30min where stock_id = '002206'
+i'm importing 002206
+work_one end
+---index is  002207
+work_one begin 002207
+delete from tbl_30min where stock_id = '002207'
+i'm importing 002207
+work_one end
+---index is  002208
+work_one begin 002208
+delete from tbl_30min where stock_id = '002208'
+i'm importing 002208
+work_one end
+---index is  002209
+work_one begin 002209
+delete from tbl_30min where stock_id = '002209'
+i'm importing 002209
+work_one end
+---index is  002210
+work_one begin 002210
+delete from tbl_30min where stock_id = '002210'
+i'm importing 002210
+work_one end
+---index is  002211
+work_one begin 002211
+delete from tbl_30min where stock_id = '002211'
+i'm importing 002211
+work_one end
+---index is  002212
+work_one begin 002212
+delete from tbl_30min where stock_id = '002212'
+i'm importing 002212
+work_one end
+---index is  002213
+work_one begin 002213
+delete from tbl_30min where stock_id = '002213'
+i'm importing 002213
+work_one end
+---index is  002214
+work_one begin 002214
+delete from tbl_30min where stock_id = '002214'
+i'm importing 002214
+work_one end
+---index is  002215
+work_one begin 002215
+delete from tbl_30min where stock_id = '002215'
+i'm importing 002215
+work_one end
+---index is  002216
+work_one begin 002216
+delete from tbl_30min where stock_id = '002216'
+i'm importing 002216
+work_one end
+---index is  002217
+work_one begin 002217
+delete from tbl_30min where stock_id = '002217'
+i'm importing 002217
+work_one end
+---index is  002218
+work_one begin 002218
+delete from tbl_30min where stock_id = '002218'
+i'm importing 002218
+work_one end
+---index is  002219
+work_one begin 002219
+delete from tbl_30min where stock_id = '002219'
+i'm importing 002219
+work_one end
+---index is  002220
+work_one begin 002220
+delete from tbl_30min where stock_id = '002220'
+i'm importing 002220
+work_one end
+---index is  002221
+work_one begin 002221
+delete from tbl_30min where stock_id = '002221'
+i'm importing 002221
+work_one end
+---index is  002222
+work_one begin 002222
+delete from tbl_30min where stock_id = '002222'
+i'm importing 002222
+work_one end
+---index is  002223
+work_one begin 002223
+delete from tbl_30min where stock_id = '002223'
+i'm importing 002223
+work_one end
+---index is  002224
+work_one begin 002224
+delete from tbl_30min where stock_id = '002224'
+i'm importing 002224
+work_one end
+---index is  002225
+work_one begin 002225
+delete from tbl_30min where stock_id = '002225'
+i'm importing 002225
+work_one end
+---index is  002226
+work_one begin 002226
+delete from tbl_30min where stock_id = '002226'
+i'm importing 002226
+work_one end
+---index is  002227
+work_one begin 002227
+delete from tbl_30min where stock_id = '002227'
+i'm importing 002227
+work_one end
+---index is  002228
+work_one begin 002228
+delete from tbl_30min where stock_id = '002228'
+i'm importing 002228
+work_one end
+---index is  002229
+work_one begin 002229
+delete from tbl_30min where stock_id = '002229'
+i'm importing 002229
+work_one end
+---index is  002230
+work_one begin 002230
+delete from tbl_30min where stock_id = '002230'
+i'm importing 002230
+work_one end
+---index is  002231
+work_one begin 002231
+delete from tbl_30min where stock_id = '002231'
+i'm importing 002231
+work_one end
+---index is  002232
+work_one begin 002232
+delete from tbl_30min where stock_id = '002232'
+i'm importing 002232
+work_one end
+---index is  002233
+work_one begin 002233
+delete from tbl_30min where stock_id = '002233'
+i'm importing 002233
+work_one end
+---index is  002234
+work_one begin 002234
+delete from tbl_30min where stock_id = '002234'
+i'm importing 002234
+work_one end
+---index is  002235
+work_one begin 002235
+delete from tbl_30min where stock_id = '002235'
+i'm importing 002235
+work_one end
+---index is  002236
+work_one begin 002236
+delete from tbl_30min where stock_id = '002236'
+i'm importing 002236
+work_one end
+---index is  002237
+work_one begin 002237
+delete from tbl_30min where stock_id = '002237'
+i'm importing 002237
+work_one end
+---index is  002238
+work_one begin 002238
+delete from tbl_30min where stock_id = '002238'
+i'm importing 002238
+work_one end
+---index is  002239
+work_one begin 002239
+delete from tbl_30min where stock_id = '002239'
+i'm importing 002239
+work_one end
+---index is  002240
+work_one begin 002240
+delete from tbl_30min where stock_id = '002240'
+i'm importing 002240
+work_one end
+---index is  002241
+work_one begin 002241
+delete from tbl_30min where stock_id = '002241'
+i'm importing 002241
+work_one end
+---index is  002242
+work_one begin 002242
+delete from tbl_30min where stock_id = '002242'
+i'm importing 002242
+work_one end
+---index is  002243
+work_one begin 002243
+delete from tbl_30min where stock_id = '002243'
+i'm importing 002243
+work_one end
+---index is  002244
+work_one begin 002244
+delete from tbl_30min where stock_id = '002244'
+i'm importing 002244
+work_one end
+---index is  002245
+work_one begin 002245
+delete from tbl_30min where stock_id = '002245'
+i'm importing 002245
+work_one end
+---index is  002246
+work_one begin 002246
+delete from tbl_30min where stock_id = '002246'
+i'm importing 002246
+work_one end
+---index is  002247
+work_one begin 002247
+delete from tbl_30min where stock_id = '002247'
+i'm importing 002247
+work_one end
+---index is  002248
+work_one begin 002248
+delete from tbl_30min where stock_id = '002248'
+i'm importing 002248
+work_one end
+---index is  002249
+work_one begin 002249
+delete from tbl_30min where stock_id = '002249'
+i'm importing 002249
+work_one end
+---index is  002250
+work_one begin 002250
+delete from tbl_30min where stock_id = '002250'
+i'm importing 002250
+work_one end
+---index is  002251
+work_one begin 002251
+delete from tbl_30min where stock_id = '002251'
+i'm importing 002251
+work_one end
+---index is  002252
+work_one begin 002252
+delete from tbl_30min where stock_id = '002252'
+i'm importing 002252
+work_one end
+---index is  002253
+work_one begin 002253
+delete from tbl_30min where stock_id = '002253'
+i'm importing 002253
+work_one end
+---index is  002254
+work_one begin 002254
+delete from tbl_30min where stock_id = '002254'
+i'm importing 002254
+work_one end
+---index is  002255
+work_one begin 002255
+delete from tbl_30min where stock_id = '002255'
+i'm importing 002255
+work_one end
+---index is  002256
+work_one begin 002256
+delete from tbl_30min where stock_id = '002256'
+i'm importing 002256
+work_one end
+---index is  002258
+work_one begin 002258
+delete from tbl_30min where stock_id = '002258'
+i'm importing 002258
+work_one end
+---index is  002259
+work_one begin 002259
+delete from tbl_30min where stock_id = '002259'
+i'm importing 002259
+work_one end
+---index is  002260
+work_one begin 002260
+delete from tbl_30min where stock_id = '002260'
+i'm importing 002260
+work_one end
+---index is  002261
+work_one begin 002261
+delete from tbl_30min where stock_id = '002261'
+i'm importing 002261
+work_one end
+---index is  002262
+work_one begin 002262
+delete from tbl_30min where stock_id = '002262'
+i'm importing 002262
+work_one end
+---index is  002263
+work_one begin 002263
+delete from tbl_30min where stock_id = '002263'
+i'm importing 002263
+work_one end
+---index is  002264
+work_one begin 002264
+delete from tbl_30min where stock_id = '002264'
+i'm importing 002264
+work_one end
+---index is  002265
+work_one begin 002265
+delete from tbl_30min where stock_id = '002265'
+i'm importing 002265
+work_one end
+---index is  002266
+work_one begin 002266
+delete from tbl_30min where stock_id = '002266'
+i'm importing 002266
+work_one end
+---index is  002267
+work_one begin 002267
+delete from tbl_30min where stock_id = '002267'
+i'm importing 002267
+work_one end
+---index is  002268
+work_one begin 002268
+delete from tbl_30min where stock_id = '002268'
+i'm importing 002268
+work_one end
+---index is  002269
+work_one begin 002269
+delete from tbl_30min where stock_id = '002269'
+i'm importing 002269
+work_one end
+---index is  002270
+work_one begin 002270
+delete from tbl_30min where stock_id = '002270'
+i'm importing 002270
+work_one end
+---index is  002271
+work_one begin 002271
+delete from tbl_30min where stock_id = '002271'
+i'm importing 002271
+work_one end
+---index is  002272
+work_one begin 002272
+delete from tbl_30min where stock_id = '002272'
+i'm importing 002272
+work_one end
+---index is  002273
+work_one begin 002273
+delete from tbl_30min where stock_id = '002273'
+i'm importing 002273
+work_one end
+---index is  002274
+work_one begin 002274
+delete from tbl_30min where stock_id = '002274'
+i'm importing 002274
+work_one end
+---index is  002275
+work_one begin 002275
+delete from tbl_30min where stock_id = '002275'
+i'm importing 002275
+work_one end
+---index is  002276
+work_one begin 002276
+delete from tbl_30min where stock_id = '002276'
+i'm importing 002276
+work_one end
+---index is  002277
+work_one begin 002277
+delete from tbl_30min where stock_id = '002277'
+i'm importing 002277
+work_one end
+---index is  002278
+work_one begin 002278
+delete from tbl_30min where stock_id = '002278'
+i'm importing 002278
+work_one end
+---index is  002279
+work_one begin 002279
+delete from tbl_30min where stock_id = '002279'
+i'm importing 002279
+work_one end
+---index is  002280
+work_one begin 002280
+delete from tbl_30min where stock_id = '002280'
+i'm importing 002280
+work_one end
+---index is  002281
+work_one begin 002281
+delete from tbl_30min where stock_id = '002281'
+i'm importing 002281
+work_one end
+---index is  002282
+work_one begin 002282
+delete from tbl_30min where stock_id = '002282'
+i'm importing 002282
+work_one end
+---index is  002283
+work_one begin 002283
+delete from tbl_30min where stock_id = '002283'
+i'm importing 002283
+work_one end
+---index is  002284
+work_one begin 002284
+delete from tbl_30min where stock_id = '002284'
+i'm importing 002284
+work_one end
+---index is  002285
+work_one begin 002285
+delete from tbl_30min where stock_id = '002285'
+i'm importing 002285
+work_one end
+---index is  002286
+work_one begin 002286
+delete from tbl_30min where stock_id = '002286'
+i'm importing 002286
+work_one end
+---index is  002287
+work_one begin 002287
+delete from tbl_30min where stock_id = '002287'
+i'm importing 002287
+work_one end
+---index is  002288
+work_one begin 002288
+delete from tbl_30min where stock_id = '002288'
+i'm importing 002288
+work_one end
+---index is  002289
+work_one begin 002289
+delete from tbl_30min where stock_id = '002289'
+i'm importing 002289
+work_one end
+---index is  002290
+work_one begin 002290
+delete from tbl_30min where stock_id = '002290'
+i'm importing 002290
+work_one end
+---index is  002291
+work_one begin 002291
+delete from tbl_30min where stock_id = '002291'
+i'm importing 002291
+work_one end
+---index is  002292
+work_one begin 002292
+delete from tbl_30min where stock_id = '002292'
+i'm importing 002292
+work_one end
+---index is  002293
+work_one begin 002293
+delete from tbl_30min where stock_id = '002293'
+i'm importing 002293
+work_one end
+---index is  002294
+work_one begin 002294
+delete from tbl_30min where stock_id = '002294'
+i'm importing 002294
+work_one end
+---index is  002295
+work_one begin 002295
+delete from tbl_30min where stock_id = '002295'
+i'm importing 002295
+work_one end
+---index is  002296
+work_one begin 002296
+delete from tbl_30min where stock_id = '002296'
+i'm importing 002296
+work_one end
+---index is  002297
+work_one begin 002297
+delete from tbl_30min where stock_id = '002297'
+i'm importing 002297
+work_one end
+---index is  002298
+work_one begin 002298
+delete from tbl_30min where stock_id = '002298'
+i'm importing 002298
+work_one end
+---index is  002299
+work_one begin 002299
+delete from tbl_30min where stock_id = '002299'
+i'm importing 002299
+work_one end
+---index is  002300
+work_one begin 002300
+delete from tbl_30min where stock_id = '002300'
+i'm importing 002300
+work_one end
+---index is  002301
+work_one begin 002301
+delete from tbl_30min where stock_id = '002301'
+i'm importing 002301
+work_one end
+---index is  002302
+work_one begin 002302
+delete from tbl_30min where stock_id = '002302'
+i'm importing 002302
+work_one end
+---index is  002303
+work_one begin 002303
+delete from tbl_30min where stock_id = '002303'
+i'm importing 002303
+work_one end
+---index is  002304
+work_one begin 002304
+delete from tbl_30min where stock_id = '002304'
+i'm importing 002304
+work_one end
+---index is  002305
+work_one begin 002305
+delete from tbl_30min where stock_id = '002305'
+i'm importing 002305
+work_one end
+---index is  002306
+work_one begin 002306
+delete from tbl_30min where stock_id = '002306'
+i'm importing 002306
+work_one end
+---index is  002307
+work_one begin 002307
+delete from tbl_30min where stock_id = '002307'
+i'm importing 002307
+work_one end
+---index is  002308
+work_one begin 002308
+delete from tbl_30min where stock_id = '002308'
+i'm importing 002308
+work_one end
+---index is  002309
+work_one begin 002309
+delete from tbl_30min where stock_id = '002309'
+i'm importing 002309
+work_one end
+---index is  002310
+work_one begin 002310
+delete from tbl_30min where stock_id = '002310'
+i'm importing 002310
+work_one end
+---index is  002311
+work_one begin 002311
+delete from tbl_30min where stock_id = '002311'
+i'm importing 002311
+work_one end
+---index is  002312
+work_one begin 002312
+delete from tbl_30min where stock_id = '002312'
+i'm importing 002312
+work_one end
+---index is  002313
+work_one begin 002313
+delete from tbl_30min where stock_id = '002313'
+i'm importing 002313
+work_one end
+---index is  002314
+work_one begin 002314
+delete from tbl_30min where stock_id = '002314'
+i'm importing 002314
+work_one end
+---index is  002315
+work_one begin 002315
+delete from tbl_30min where stock_id = '002315'
+i'm importing 002315
+work_one end
+---index is  002316
+work_one begin 002316
+delete from tbl_30min where stock_id = '002316'
+i'm importing 002316
+work_one end
+---index is  002317
+work_one begin 002317
+delete from tbl_30min where stock_id = '002317'
+i'm importing 002317
+work_one end
+---index is  002318
+work_one begin 002318
+delete from tbl_30min where stock_id = '002318'
+i'm importing 002318
+work_one end
+---index is  002319
+work_one begin 002319
+delete from tbl_30min where stock_id = '002319'
+i'm importing 002319
+work_one end
+---index is  002320
+work_one begin 002320
+delete from tbl_30min where stock_id = '002320'
+i'm importing 002320
+work_one end
+---index is  002321
+work_one begin 002321
+delete from tbl_30min where stock_id = '002321'
+i'm importing 002321
+work_one end
+---index is  002322
+work_one begin 002322
+delete from tbl_30min where stock_id = '002322'
+i'm importing 002322
+work_one end
+---index is  002323
+work_one begin 002323
+delete from tbl_30min where stock_id = '002323'
+i'm importing 002323
+work_one end
+---index is  002324
+work_one begin 002324
+delete from tbl_30min where stock_id = '002324'
+i'm importing 002324
+work_one end
+---index is  002325
+work_one begin 002325
+delete from tbl_30min where stock_id = '002325'
+i'm importing 002325
+work_one end
+---index is  002326
+work_one begin 002326
+delete from tbl_30min where stock_id = '002326'
+i'm importing 002326
+work_one end
+---index is  002327
+work_one begin 002327
+delete from tbl_30min where stock_id = '002327'
+i'm importing 002327
+work_one end
+---index is  002328
+work_one begin 002328
+delete from tbl_30min where stock_id = '002328'
+i'm importing 002328
+work_one end
+---index is  002329
+work_one begin 002329
+delete from tbl_30min where stock_id = '002329'
+i'm importing 002329
+work_one end
+---index is  002330
+work_one begin 002330
+delete from tbl_30min where stock_id = '002330'
+i'm importing 002330
+work_one end
+---index is  002331
+work_one begin 002331
+delete from tbl_30min where stock_id = '002331'
+i'm importing 002331
+work_one end
+---index is  002332
+work_one begin 002332
+delete from tbl_30min where stock_id = '002332'
+i'm importing 002332
+work_one end
+---index is  002333
+work_one begin 002333
+delete from tbl_30min where stock_id = '002333'
+i'm importing 002333
+work_one end
+---index is  002334
+work_one begin 002334
+delete from tbl_30min where stock_id = '002334'
+i'm importing 002334
+work_one end
+---index is  002335
+work_one begin 002335
+delete from tbl_30min where stock_id = '002335'
+i'm importing 002335
+work_one end
+---index is  002336
+work_one begin 002336
+delete from tbl_30min where stock_id = '002336'
+i'm importing 002336
+work_one end
+---index is  002337
+work_one begin 002337
+delete from tbl_30min where stock_id = '002337'
+i'm importing 002337
+work_one end
+---index is  002338
+work_one begin 002338
+delete from tbl_30min where stock_id = '002338'
+i'm importing 002338
+work_one end
+---index is  002339
+work_one begin 002339
+delete from tbl_30min where stock_id = '002339'
+i'm importing 002339
+work_one end
+---index is  002340
+work_one begin 002340
+delete from tbl_30min where stock_id = '002340'
+i'm importing 002340
+work_one end
+---index is  002341
+work_one begin 002341
+delete from tbl_30min where stock_id = '002341'
+i'm importing 002341
+work_one end
+---index is  002342
+work_one begin 002342
+delete from tbl_30min where stock_id = '002342'
+i'm importing 002342
+work_one end
+---index is  002343
+work_one begin 002343
+delete from tbl_30min where stock_id = '002343'
+i'm importing 002343
+work_one end
+---index is  002344
+work_one begin 002344
+delete from tbl_30min where stock_id = '002344'
+i'm importing 002344
+work_one end
+---index is  002345
+work_one begin 002345
+delete from tbl_30min where stock_id = '002345'
+i'm importing 002345
+work_one end
+---index is  002346
+work_one begin 002346
+delete from tbl_30min where stock_id = '002346'
+i'm importing 002346
+work_one end
+---index is  002347
+work_one begin 002347
+delete from tbl_30min where stock_id = '002347'
+i'm importing 002347
+work_one end
+---index is  002348
+work_one begin 002348
+delete from tbl_30min where stock_id = '002348'
+i'm importing 002348
+work_one end
+---index is  002349
+work_one begin 002349
+delete from tbl_30min where stock_id = '002349'
+i'm importing 002349
+work_one end
+---index is  002350
+work_one begin 002350
+delete from tbl_30min where stock_id = '002350'
+i'm importing 002350
+work_one end
+---index is  002351
+work_one begin 002351
+delete from tbl_30min where stock_id = '002351'
+i'm importing 002351
+work_one end
+---index is  002352
+work_one begin 002352
+delete from tbl_30min where stock_id = '002352'
+i'm importing 002352
+work_one end
+---index is  002353
+work_one begin 002353
+delete from tbl_30min where stock_id = '002353'
+i'm importing 002353
+work_one end
+---index is  002354
+work_one begin 002354
+delete from tbl_30min where stock_id = '002354'
+i'm importing 002354
+work_one end
+---index is  002355
+work_one begin 002355
+delete from tbl_30min where stock_id = '002355'
+i'm importing 002355
+work_one end
+---index is  002356
+work_one begin 002356
+delete from tbl_30min where stock_id = '002356'
+i'm importing 002356
+work_one end
+---index is  002357
+work_one begin 002357
+delete from tbl_30min where stock_id = '002357'
+i'm importing 002357
+work_one end
+---index is  002358
+work_one begin 002358
+delete from tbl_30min where stock_id = '002358'
+i'm importing 002358
+work_one end
+---index is  002359
+work_one begin 002359
+delete from tbl_30min where stock_id = '002359'
+i'm importing 002359
+work_one end
+---index is  002360
+work_one begin 002360
+delete from tbl_30min where stock_id = '002360'
+i'm importing 002360
+work_one end
+---index is  002361
+work_one begin 002361
+delete from tbl_30min where stock_id = '002361'
+i'm importing 002361
+work_one end
+---index is  002362
+work_one begin 002362
+delete from tbl_30min where stock_id = '002362'
+i'm importing 002362
+work_one end
+---index is  002363
+work_one begin 002363
+delete from tbl_30min where stock_id = '002363'
+i'm importing 002363
+work_one end
+---index is  002364
+work_one begin 002364
+delete from tbl_30min where stock_id = '002364'
+i'm importing 002364
+work_one end
+---index is  002365
+work_one begin 002365
+delete from tbl_30min where stock_id = '002365'
+i'm importing 002365
+work_one end
+---index is  002366
+work_one begin 002366
+delete from tbl_30min where stock_id = '002366'
+i'm importing 002366
+work_one end
+---index is  002367
+work_one begin 002367
+delete from tbl_30min where stock_id = '002367'
+i'm importing 002367
+work_one end
+---index is  002368
+work_one begin 002368
+delete from tbl_30min where stock_id = '002368'
+i'm importing 002368
+work_one end
+---index is  002369
+work_one begin 002369
+delete from tbl_30min where stock_id = '002369'
+i'm importing 002369
+work_one end
+---index is  002370
+work_one begin 002370
+delete from tbl_30min where stock_id = '002370'
+i'm importing 002370
+work_one end
+---index is  002371
+work_one begin 002371
+delete from tbl_30min where stock_id = '002371'
+i'm importing 002371
+work_one end
+---index is  002372
+work_one begin 002372
+delete from tbl_30min where stock_id = '002372'
+i'm importing 002372
+work_one end
+---index is  002373
+work_one begin 002373
+delete from tbl_30min where stock_id = '002373'
+i'm importing 002373
+work_one end
+---index is  002374
+work_one begin 002374
+delete from tbl_30min where stock_id = '002374'
+i'm importing 002374
+work_one end
+---index is  002375
+work_one begin 002375
+delete from tbl_30min where stock_id = '002375'
+i'm importing 002375
+work_one end
+---index is  002376
+work_one begin 002376
+delete from tbl_30min where stock_id = '002376'
+i'm importing 002376
+work_one end
+---index is  002377
+work_one begin 002377
+delete from tbl_30min where stock_id = '002377'
+i'm importing 002377
+work_one end
+---index is  002378
+work_one begin 002378
+delete from tbl_30min where stock_id = '002378'
+i'm importing 002378
+work_one end
+---index is  002379
+work_one begin 002379
+delete from tbl_30min where stock_id = '002379'
+i'm importing 002379
+work_one end
+---index is  002380
+work_one begin 002380
+delete from tbl_30min where stock_id = '002380'
+i'm importing 002380
+work_one end
+---index is  002381
+work_one begin 002381
+delete from tbl_30min where stock_id = '002381'
+i'm importing 002381
+work_one end
+---index is  002382
+work_one begin 002382
+delete from tbl_30min where stock_id = '002382'
+i'm importing 002382
+work_one end
+---index is  002383
+work_one begin 002383
+delete from tbl_30min where stock_id = '002383'
+i'm importing 002383
+work_one end
+---index is  002384
+work_one begin 002384
+delete from tbl_30min where stock_id = '002384'
+i'm importing 002384
+work_one end
+---index is  002385
+work_one begin 002385
+delete from tbl_30min where stock_id = '002385'
+i'm importing 002385
+work_one end
+---index is  002386
+work_one begin 002386
+delete from tbl_30min where stock_id = '002386'
+i'm importing 002386
+work_one end
+---index is  002387
+work_one begin 002387
+delete from tbl_30min where stock_id = '002387'
+i'm importing 002387
+work_one end
+---index is  002388
+work_one begin 002388
+delete from tbl_30min where stock_id = '002388'
+i'm importing 002388
+work_one end
+---index is  002389
+work_one begin 002389
+delete from tbl_30min where stock_id = '002389'
+i'm importing 002389
+work_one end
+---index is  002390
+work_one begin 002390
+delete from tbl_30min where stock_id = '002390'
+i'm importing 002390
+work_one end
+---index is  002391
+work_one begin 002391
+delete from tbl_30min where stock_id = '002391'
+i'm importing 002391
+work_one end
+---index is  002392
+work_one begin 002392
+delete from tbl_30min where stock_id = '002392'
+i'm importing 002392
+work_one end
+---index is  002393
+work_one begin 002393
+delete from tbl_30min where stock_id = '002393'
+i'm importing 002393
+work_one end
+---index is  002394
+work_one begin 002394
+delete from tbl_30min where stock_id = '002394'
+i'm importing 002394
+work_one end
+---index is  002395
+work_one begin 002395
+delete from tbl_30min where stock_id = '002395'
+i'm importing 002395
+work_one end
+---index is  002396
+work_one begin 002396
+delete from tbl_30min where stock_id = '002396'
+i'm importing 002396
+work_one end
+---index is  002397
+work_one begin 002397
+delete from tbl_30min where stock_id = '002397'
+i'm importing 002397
+work_one end
+---index is  002398
+work_one begin 002398
+delete from tbl_30min where stock_id = '002398'
+i'm importing 002398
+work_one end
+---index is  002399
+work_one begin 002399
+delete from tbl_30min where stock_id = '002399'
+i'm importing 002399
+work_one end
+---index is  002400
+work_one begin 002400
+delete from tbl_30min where stock_id = '002400'
+i'm importing 002400
+work_one end
+---index is  002401
+work_one begin 002401
+delete from tbl_30min where stock_id = '002401'
+i'm importing 002401
+work_one end
+---index is  002402
+work_one begin 002402
+delete from tbl_30min where stock_id = '002402'
+i'm importing 002402
+work_one end
+---index is  002403
+work_one begin 002403
+delete from tbl_30min where stock_id = '002403'
+i'm importing 002403
+work_one end
+---index is  002404
+work_one begin 002404
+delete from tbl_30min where stock_id = '002404'
+i'm importing 002404
+work_one end
+---index is  002405
+work_one begin 002405
+delete from tbl_30min where stock_id = '002405'
+i'm importing 002405
+work_one end
+---index is  002406
+work_one begin 002406
+delete from tbl_30min where stock_id = '002406'
+i'm importing 002406
+work_one end
+---index is  002407
+work_one begin 002407
+delete from tbl_30min where stock_id = '002407'
+i'm importing 002407
+work_one end
+---index is  002408
+work_one begin 002408
+delete from tbl_30min where stock_id = '002408'
+i'm importing 002408
+work_one end
+---index is  002409
+work_one begin 002409
+delete from tbl_30min where stock_id = '002409'
+i'm importing 002409
+work_one end
+---index is  002410
+work_one begin 002410
+delete from tbl_30min where stock_id = '002410'
+i'm importing 002410
+work_one end
+---index is  002411
+work_one begin 002411
+delete from tbl_30min where stock_id = '002411'
+i'm importing 002411
+work_one end
+---index is  002412
+work_one begin 002412
+delete from tbl_30min where stock_id = '002412'
+i'm importing 002412
+work_one end
+---index is  002413
+work_one begin 002413
+delete from tbl_30min where stock_id = '002413'
+i'm importing 002413
+work_one end
+---index is  002414
+work_one begin 002414
+delete from tbl_30min where stock_id = '002414'
+i'm importing 002414
+work_one end
+---index is  002415
+work_one begin 002415
+delete from tbl_30min where stock_id = '002415'
+i'm importing 002415
+work_one end
+---index is  002416
+work_one begin 002416
+delete from tbl_30min where stock_id = '002416'
+i'm importing 002416
+work_one end
+---index is  002417
+work_one begin 002417
+delete from tbl_30min where stock_id = '002417'
+i'm importing 002417
+work_one end
+---index is  002418
+work_one begin 002418
+delete from tbl_30min where stock_id = '002418'
+i'm importing 002418
+work_one end
+---index is  002419
+work_one begin 002419
+delete from tbl_30min where stock_id = '002419'
+i'm importing 002419
+work_one end
+---index is  002420
+work_one begin 002420
+delete from tbl_30min where stock_id = '002420'
+i'm importing 002420
+work_one end
+---index is  002421
+work_one begin 002421
+delete from tbl_30min where stock_id = '002421'
+i'm importing 002421
+work_one end
+---index is  002422
+work_one begin 002422
+delete from tbl_30min where stock_id = '002422'
+i'm importing 002422
+work_one end
+---index is  002423
+work_one begin 002423
+delete from tbl_30min where stock_id = '002423'
+i'm importing 002423
+work_one end
+---index is  002424
+work_one begin 002424
+delete from tbl_30min where stock_id = '002424'
+i'm importing 002424
+work_one end
+---index is  002425
+work_one begin 002425
+delete from tbl_30min where stock_id = '002425'
+i'm importing 002425
+work_one end
+---index is  002426
+work_one begin 002426
+delete from tbl_30min where stock_id = '002426'
+i'm importing 002426
+work_one end
+---index is  002427
+work_one begin 002427
+delete from tbl_30min where stock_id = '002427'
+i'm importing 002427
+work_one end
+---index is  002428
+work_one begin 002428
+delete from tbl_30min where stock_id = '002428'
+i'm importing 002428
+work_one end
+---index is  002429
+work_one begin 002429
+delete from tbl_30min where stock_id = '002429'
+i'm importing 002429
+work_one end
+---index is  002430
+work_one begin 002430
+delete from tbl_30min where stock_id = '002430'
+i'm importing 002430
+work_one end
+---index is  002431
+work_one begin 002431
+delete from tbl_30min where stock_id = '002431'
+i'm importing 002431
+work_one end
+---index is  002432
+work_one begin 002432
+delete from tbl_30min where stock_id = '002432'
+i'm importing 002432
+work_one end
+---index is  002433
+work_one begin 002433
+delete from tbl_30min where stock_id = '002433'
+i'm importing 002433
+work_one end
+---index is  002434
+work_one begin 002434
+delete from tbl_30min where stock_id = '002434'
+i'm importing 002434
+work_one end
+---index is  002435
+work_one begin 002435
+delete from tbl_30min where stock_id = '002435'
+i'm importing 002435
+work_one end
+---index is  002436
+work_one begin 002436
+delete from tbl_30min where stock_id = '002436'
+i'm importing 002436
+work_one end
+---index is  002437
+work_one begin 002437
+delete from tbl_30min where stock_id = '002437'
+i'm importing 002437
+work_one end
+---index is  002438
+work_one begin 002438
+delete from tbl_30min where stock_id = '002438'
+i'm importing 002438
+work_one end
+---index is  002439
+work_one begin 002439
+delete from tbl_30min where stock_id = '002439'
+i'm importing 002439
+work_one end
+---index is  002440
+work_one begin 002440
+delete from tbl_30min where stock_id = '002440'
+i'm importing 002440
+work_one end
+---index is  002441
+work_one begin 002441
+delete from tbl_30min where stock_id = '002441'
+i'm importing 002441
+work_one end
+---index is  002442
+work_one begin 002442
+delete from tbl_30min where stock_id = '002442'
+i'm importing 002442
+work_one end
+---index is  002443
+work_one begin 002443
+delete from tbl_30min where stock_id = '002443'
+i'm importing 002443
+work_one end
+---index is  002444
+work_one begin 002444
+delete from tbl_30min where stock_id = '002444'
+i'm importing 002444
+work_one end
+---index is  002445
+work_one begin 002445
+delete from tbl_30min where stock_id = '002445'
+i'm importing 002445
+work_one end
+---index is  002446
+work_one begin 002446
+delete from tbl_30min where stock_id = '002446'
+i'm importing 002446
+work_one end
+---index is  002447
+work_one begin 002447
+delete from tbl_30min where stock_id = '002447'
+i'm importing 002447
+work_one end
+---index is  002448
+work_one begin 002448
+delete from tbl_30min where stock_id = '002448'
+i'm importing 002448
+work_one end
+---index is  002449
+work_one begin 002449
+delete from tbl_30min where stock_id = '002449'
+i'm importing 002449
+work_one end
+---index is  002450
+work_one begin 002450
+delete from tbl_30min where stock_id = '002450'
+i'm importing 002450
+work_one end
+---index is  002451
+work_one begin 002451
+delete from tbl_30min where stock_id = '002451'
+i'm importing 002451
+work_one end
+---index is  002452
+work_one begin 002452
+delete from tbl_30min where stock_id = '002452'
+i'm importing 002452
+work_one end
+---index is  002453
+work_one begin 002453
+delete from tbl_30min where stock_id = '002453'
+i'm importing 002453
+work_one end
+---index is  002454
+work_one begin 002454
+delete from tbl_30min where stock_id = '002454'
+i'm importing 002454
+work_one end
+---index is  002455
+work_one begin 002455
+delete from tbl_30min where stock_id = '002455'
+i'm importing 002455
+work_one end
+---index is  002456
+work_one begin 002456
+delete from tbl_30min where stock_id = '002456'
+i'm importing 002456
+work_one end
+---index is  002457
+work_one begin 002457
+delete from tbl_30min where stock_id = '002457'
+i'm importing 002457
+work_one end
+---index is  002458
+work_one begin 002458
+delete from tbl_30min where stock_id = '002458'
+i'm importing 002458
+work_one end
+---index is  002459
+work_one begin 002459
+delete from tbl_30min where stock_id = '002459'
+i'm importing 002459
+work_one end
+---index is  002460
+work_one begin 002460
+delete from tbl_30min where stock_id = '002460'
+i'm importing 002460
+work_one end
+---index is  002461
+work_one begin 002461
+delete from tbl_30min where stock_id = '002461'
+i'm importing 002461
+work_one end
+---index is  002462
+work_one begin 002462
+delete from tbl_30min where stock_id = '002462'
+i'm importing 002462
+work_one end
+---index is  002463
+work_one begin 002463
+delete from tbl_30min where stock_id = '002463'
+i'm importing 002463
+work_one end
+---index is  002464
+work_one begin 002464
+delete from tbl_30min where stock_id = '002464'
+i'm importing 002464
+work_one end
+---index is  002465
+work_one begin 002465
+delete from tbl_30min where stock_id = '002465'
+i'm importing 002465
+work_one end
+---index is  002466
+work_one begin 002466
+delete from tbl_30min where stock_id = '002466'
+i'm importing 002466
+work_one end
+---index is  002467
+work_one begin 002467
+delete from tbl_30min where stock_id = '002467'
+i'm importing 002467
+work_one end
+---index is  002468
+work_one begin 002468
+delete from tbl_30min where stock_id = '002468'
+i'm importing 002468
+work_one end
+---index is  002469
+work_one begin 002469
+delete from tbl_30min where stock_id = '002469'
+i'm importing 002469
+work_one end
+---index is  002470
+work_one begin 002470
+delete from tbl_30min where stock_id = '002470'
+i'm importing 002470
+work_one end
+---index is  002471
+work_one begin 002471
+delete from tbl_30min where stock_id = '002471'
+i'm importing 002471
+work_one end
+---index is  002472
+work_one begin 002472
+delete from tbl_30min where stock_id = '002472'
+i'm importing 002472
+work_one end
+---index is  002473
+work_one begin 002473
+delete from tbl_30min where stock_id = '002473'
+i'm importing 002473
+work_one end
+---index is  002474
+work_one begin 002474
+delete from tbl_30min where stock_id = '002474'
+i'm importing 002474
+work_one end
+---index is  002475
+work_one begin 002475
+delete from tbl_30min where stock_id = '002475'
+i'm importing 002475
+work_one end
+---index is  002476
+work_one begin 002476
+delete from tbl_30min where stock_id = '002476'
+i'm importing 002476
+work_one end
+---index is  002477
+work_one begin 002477
+delete from tbl_30min where stock_id = '002477'
+i'm importing 002477
+work_one end
+---index is  002478
+work_one begin 002478
+delete from tbl_30min where stock_id = '002478'
+i'm importing 002478
+work_one end
+---index is  002479
+work_one begin 002479
+delete from tbl_30min where stock_id = '002479'
+i'm importing 002479
+work_one end
+---index is  002480
+work_one begin 002480
+delete from tbl_30min where stock_id = '002480'
+i'm importing 002480
+work_one end
+---index is  002481
+work_one begin 002481
+delete from tbl_30min where stock_id = '002481'
+i'm importing 002481
+work_one end
+---index is  002482
+work_one begin 002482
+delete from tbl_30min where stock_id = '002482'
+i'm importing 002482
+work_one end
+---index is  002483
+work_one begin 002483
+delete from tbl_30min where stock_id = '002483'
+i'm importing 002483
+work_one end
+---index is  002484
+work_one begin 002484
+delete from tbl_30min where stock_id = '002484'
+i'm importing 002484
+work_one end
+---index is  002485
+work_one begin 002485
+delete from tbl_30min where stock_id = '002485'
+i'm importing 002485
+work_one end
+---index is  002486
+work_one begin 002486
+delete from tbl_30min where stock_id = '002486'
+i'm importing 002486
+work_one end
+---index is  002487
+work_one begin 002487
+delete from tbl_30min where stock_id = '002487'
+i'm importing 002487
+work_one end
+---index is  002488
+work_one begin 002488
+delete from tbl_30min where stock_id = '002488'
+i'm importing 002488
+work_one end
+---index is  002489
+work_one begin 002489
+delete from tbl_30min where stock_id = '002489'
+i'm importing 002489
+work_one end
+---index is  002490
+work_one begin 002490
+delete from tbl_30min where stock_id = '002490'
+i'm importing 002490
+work_one end
+---index is  002491
+work_one begin 002491
+delete from tbl_30min where stock_id = '002491'
+i'm importing 002491
+work_one end
+---index is  002492
+work_one begin 002492
+delete from tbl_30min where stock_id = '002492'
+i'm importing 002492
+work_one end
+---index is  002493
+work_one begin 002493
+delete from tbl_30min where stock_id = '002493'
+i'm importing 002493
+work_one end
+---index is  002494
+work_one begin 002494
+delete from tbl_30min where stock_id = '002494'
+i'm importing 002494
+work_one end
+---index is  002495
+work_one begin 002495
+delete from tbl_30min where stock_id = '002495'
+i'm importing 002495
+work_one end
+---index is  002496
+work_one begin 002496
+delete from tbl_30min where stock_id = '002496'
+i'm importing 002496
+work_one end
+---index is  002497
+work_one begin 002497
+delete from tbl_30min where stock_id = '002497'
+i'm importing 002497
+work_one end
+---index is  002498
+work_one begin 002498
+delete from tbl_30min where stock_id = '002498'
+i'm importing 002498
+work_one end
+---index is  002499
+work_one begin 002499
+delete from tbl_30min where stock_id = '002499'
+i'm importing 002499
+work_one end
+---index is  002500
+work_one begin 002500
+delete from tbl_30min where stock_id = '002500'
+i'm importing 002500
+work_one end
+---index is  002501
+work_one begin 002501
+delete from tbl_30min where stock_id = '002501'
+i'm importing 002501
+work_one end
+---index is  002502
+work_one begin 002502
+delete from tbl_30min where stock_id = '002502'
+i'm importing 002502
+work_one end
+---index is  002503
+work_one begin 002503
+delete from tbl_30min where stock_id = '002503'
+i'm importing 002503
+work_one end
+---index is  002504
+work_one begin 002504
+delete from tbl_30min where stock_id = '002504'
+i'm importing 002504
+work_one end
+---index is  002505
+work_one begin 002505
+delete from tbl_30min where stock_id = '002505'
+i'm importing 002505
+work_one end
+---index is  002506
+work_one begin 002506
+delete from tbl_30min where stock_id = '002506'
+i'm importing 002506
+work_one end
+---index is  002507
+work_one begin 002507
+delete from tbl_30min where stock_id = '002507'
+i'm importing 002507
+work_one end
+---index is  002508
+work_one begin 002508
+delete from tbl_30min where stock_id = '002508'
+i'm importing 002508
+work_one end
+---index is  002509
+work_one begin 002509
+delete from tbl_30min where stock_id = '002509'
+i'm importing 002509
+work_one end
+---index is  002510
+work_one begin 002510
+delete from tbl_30min where stock_id = '002510'
+i'm importing 002510
+work_one end
+---index is  002511
+work_one begin 002511
+delete from tbl_30min where stock_id = '002511'
+i'm importing 002511
+work_one end
+---index is  002512
+work_one begin 002512
+delete from tbl_30min where stock_id = '002512'
+i'm importing 002512
+work_one end
+---index is  002513
+work_one begin 002513
+delete from tbl_30min where stock_id = '002513'
+i'm importing 002513
+work_one end
+---index is  002514
+work_one begin 002514
+delete from tbl_30min where stock_id = '002514'
+i'm importing 002514
+work_one end
+---index is  002515
+work_one begin 002515
+delete from tbl_30min where stock_id = '002515'
+i'm importing 002515
+work_one end
+---index is  002516
+work_one begin 002516
+delete from tbl_30min where stock_id = '002516'
+i'm importing 002516
+work_one end
+---index is  002517
+work_one begin 002517
+delete from tbl_30min where stock_id = '002517'
+i'm importing 002517
+work_one end
+---index is  002518
+work_one begin 002518
+delete from tbl_30min where stock_id = '002518'
+i'm importing 002518
+work_one end
+---index is  002519
+work_one begin 002519
+delete from tbl_30min where stock_id = '002519'
+i'm importing 002519
+work_one end
+---index is  002520
+work_one begin 002520
+delete from tbl_30min where stock_id = '002520'
+i'm importing 002520
+work_one end
+---index is  002521
+work_one begin 002521
+delete from tbl_30min where stock_id = '002521'
+i'm importing 002521
+work_one end
+---index is  002522
+work_one begin 002522
+delete from tbl_30min where stock_id = '002522'
+i'm importing 002522
+work_one end
+---index is  002523
+work_one begin 002523
+delete from tbl_30min where stock_id = '002523'
+i'm importing 002523
+work_one end
+---index is  002524
+work_one begin 002524
+delete from tbl_30min where stock_id = '002524'
+i'm importing 002524
+work_one end
+---index is  002526
+work_one begin 002526
+delete from tbl_30min where stock_id = '002526'
+i'm importing 002526
+work_one end
+---index is  002527
+work_one begin 002527
+delete from tbl_30min where stock_id = '002527'
+i'm importing 002527
+work_one end
+---index is  002528
+work_one begin 002528
+delete from tbl_30min where stock_id = '002528'
+i'm importing 002528
+work_one end
+---index is  002529
+work_one begin 002529
+delete from tbl_30min where stock_id = '002529'
+i'm importing 002529
+work_one end
+---index is  002530
+work_one begin 002530
+delete from tbl_30min where stock_id = '002530'
+i'm importing 002530
+work_one end
+---index is  002531
+work_one begin 002531
+delete from tbl_30min where stock_id = '002531'
+i'm importing 002531
+work_one end
+---index is  002532
+work_one begin 002532
+delete from tbl_30min where stock_id = '002532'
+i'm importing 002532
+work_one end
+---index is  002533
+work_one begin 002533
+delete from tbl_30min where stock_id = '002533'
+i'm importing 002533
+work_one end
+---index is  002534
+work_one begin 002534
+delete from tbl_30min where stock_id = '002534'
+i'm importing 002534
+work_one end
+---index is  002535
+work_one begin 002535
+delete from tbl_30min where stock_id = '002535'
+i'm importing 002535
+work_one end
+---index is  002536
+work_one begin 002536
+delete from tbl_30min where stock_id = '002536'
+i'm importing 002536
+work_one end
+---index is  002537
+work_one begin 002537
+delete from tbl_30min where stock_id = '002537'
+i'm importing 002537
+work_one end
+---index is  002538
+work_one begin 002538
+delete from tbl_30min where stock_id = '002538'
+i'm importing 002538
+work_one end
+---index is  002539
+work_one begin 002539
+delete from tbl_30min where stock_id = '002539'
+i'm importing 002539
+work_one end
+---index is  002540
+work_one begin 002540
+delete from tbl_30min where stock_id = '002540'
+i'm importing 002540
+work_one end
+---index is  002541
+work_one begin 002541
+delete from tbl_30min where stock_id = '002541'
+i'm importing 002541
+work_one end
+---index is  002542
+work_one begin 002542
+delete from tbl_30min where stock_id = '002542'
+i'm importing 002542
+work_one end
+---index is  002543
+work_one begin 002543
+delete from tbl_30min where stock_id = '002543'
+i'm importing 002543
+work_one end
+---index is  002544
+work_one begin 002544
+delete from tbl_30min where stock_id = '002544'
+i'm importing 002544
+work_one end
+---index is  002545
+work_one begin 002545
+delete from tbl_30min where stock_id = '002545'
+i'm importing 002545
+work_one end
+---index is  002546
+work_one begin 002546
+delete from tbl_30min where stock_id = '002546'
+i'm importing 002546
+work_one end
+---index is  002547
+work_one begin 002547
+delete from tbl_30min where stock_id = '002547'
+i'm importing 002547
+work_one end
+---index is  002548
+work_one begin 002548
+delete from tbl_30min where stock_id = '002548'
+i'm importing 002548
+work_one end
+---index is  002549
+work_one begin 002549
+delete from tbl_30min where stock_id = '002549'
+i'm importing 002549
+work_one end
+---index is  002550
+work_one begin 002550
+delete from tbl_30min where stock_id = '002550'
+i'm importing 002550
+work_one end
+---index is  002551
+work_one begin 002551
+delete from tbl_30min where stock_id = '002551'
+i'm importing 002551
+work_one end
+---index is  002552
+work_one begin 002552
+delete from tbl_30min where stock_id = '002552'
+i'm importing 002552
+work_one end
+---index is  002553
+work_one begin 002553
+delete from tbl_30min where stock_id = '002553'
+i'm importing 002553
+work_one end
+---index is  002554
+work_one begin 002554
+delete from tbl_30min where stock_id = '002554'
+i'm importing 002554
+work_one end
+---index is  002555
+work_one begin 002555
+delete from tbl_30min where stock_id = '002555'
+i'm importing 002555
+work_one end
+---index is  002556
+work_one begin 002556
+delete from tbl_30min where stock_id = '002556'
+i'm importing 002556
+work_one end
+---index is  002557
+work_one begin 002557
+delete from tbl_30min where stock_id = '002557'
+i'm importing 002557
+work_one end
+---index is  002558
+work_one begin 002558
+delete from tbl_30min where stock_id = '002558'
+i'm importing 002558
+work_one end
+---index is  002559
+work_one begin 002559
+delete from tbl_30min where stock_id = '002559'
+i'm importing 002559
+work_one end
+---index is  002560
+work_one begin 002560
+delete from tbl_30min where stock_id = '002560'
+i'm importing 002560
+work_one end
+---index is  002561
+work_one begin 002561
+delete from tbl_30min where stock_id = '002561'
+i'm importing 002561
+work_one end
+---index is  002562
+work_one begin 002562
+delete from tbl_30min where stock_id = '002562'
+i'm importing 002562
+work_one end
+---index is  002563
+work_one begin 002563
+delete from tbl_30min where stock_id = '002563'
+i'm importing 002563
+work_one end
+---index is  002564
+work_one begin 002564
+delete from tbl_30min where stock_id = '002564'
+i'm importing 002564
+work_one end
+---index is  002565
+work_one begin 002565
+delete from tbl_30min where stock_id = '002565'
+i'm importing 002565
+work_one end
+---index is  002566
+work_one begin 002566
+delete from tbl_30min where stock_id = '002566'
+i'm importing 002566
+work_one end
+---index is  002567
+work_one begin 002567
+delete from tbl_30min where stock_id = '002567'
+i'm importing 002567
+work_one end
+---index is  002568
+work_one begin 002568
+delete from tbl_30min where stock_id = '002568'
+i'm importing 002568
+work_one end
+---index is  002569
+work_one begin 002569
+delete from tbl_30min where stock_id = '002569'
+i'm importing 002569
+work_one end
+---index is  002570
+work_one begin 002570
+delete from tbl_30min where stock_id = '002570'
+i'm importing 002570
+work_one end
+---index is  002571
+work_one begin 002571
+delete from tbl_30min where stock_id = '002571'
+i'm importing 002571
+work_one end
+---index is  002572
+work_one begin 002572
+delete from tbl_30min where stock_id = '002572'
+i'm importing 002572
+work_one end
+---index is  002573
+work_one begin 002573
+delete from tbl_30min where stock_id = '002573'
+i'm importing 002573
+work_one end
+---index is  002574
+work_one begin 002574
+delete from tbl_30min where stock_id = '002574'
+i'm importing 002574
+work_one end
+---index is  002575
+work_one begin 002575
+delete from tbl_30min where stock_id = '002575'
+i'm importing 002575
+work_one end
+---index is  002576
+work_one begin 002576
+delete from tbl_30min where stock_id = '002576'
+i'm importing 002576
+work_one end
+---index is  002577
+work_one begin 002577
+delete from tbl_30min where stock_id = '002577'
+i'm importing 002577
+work_one end
+---index is  002578
+work_one begin 002578
+delete from tbl_30min where stock_id = '002578'
+i'm importing 002578
+work_one end
+---index is  002579
+work_one begin 002579
+delete from tbl_30min where stock_id = '002579'
+i'm importing 002579
+work_one end
+---index is  002580
+work_one begin 002580
+delete from tbl_30min where stock_id = '002580'
+i'm importing 002580
+work_one end
+---index is  002581
+work_one begin 002581
+delete from tbl_30min where stock_id = '002581'
+i'm importing 002581
+work_one end
+---index is  002582
+work_one begin 002582
+delete from tbl_30min where stock_id = '002582'
+i'm importing 002582
+work_one end
+---index is  002583
+work_one begin 002583
+delete from tbl_30min where stock_id = '002583'
+i'm importing 002583
+work_one end
+---index is  002584
+work_one begin 002584
+delete from tbl_30min where stock_id = '002584'
+i'm importing 002584
+work_one end
+---index is  002585
+work_one begin 002585
+delete from tbl_30min where stock_id = '002585'
+i'm importing 002585
+work_one end
+---index is  002586
+work_one begin 002586
+delete from tbl_30min where stock_id = '002586'
+i'm importing 002586
+work_one end
+---index is  002587
+work_one begin 002587
+delete from tbl_30min where stock_id = '002587'
+i'm importing 002587
+work_one end
+---index is  002588
+work_one begin 002588
+delete from tbl_30min where stock_id = '002588'
+i'm importing 002588
+work_one end
+---index is  002589
+work_one begin 002589
+delete from tbl_30min where stock_id = '002589'
+i'm importing 002589
+work_one end
+---index is  002590
+work_one begin 002590
+delete from tbl_30min where stock_id = '002590'
+i'm importing 002590
+work_one end
+---index is  002591
+work_one begin 002591
+delete from tbl_30min where stock_id = '002591'
+i'm importing 002591
+work_one end
+---index is  002592
+work_one begin 002592
+delete from tbl_30min where stock_id = '002592'
+i'm importing 002592
+work_one end
+---index is  002593
+work_one begin 002593
+delete from tbl_30min where stock_id = '002593'
+i'm importing 002593
+work_one end
+---index is  002594
+work_one begin 002594
+delete from tbl_30min where stock_id = '002594'
+i'm importing 002594
+work_one end
+---index is  002595
+work_one begin 002595
+delete from tbl_30min where stock_id = '002595'
+i'm importing 002595
+work_one end
+---index is  002596
+work_one begin 002596
+delete from tbl_30min where stock_id = '002596'
+i'm importing 002596
+work_one end
+---index is  002597
+work_one begin 002597
+delete from tbl_30min where stock_id = '002597'
+i'm importing 002597
+work_one end
+---index is  002598
+work_one begin 002598
+delete from tbl_30min where stock_id = '002598'
+i'm importing 002598
+work_one end
+---index is  002599
+work_one begin 002599
+delete from tbl_30min where stock_id = '002599'
+i'm importing 002599
+work_one end
+---index is  002600
+work_one begin 002600
+delete from tbl_30min where stock_id = '002600'
+i'm importing 002600
+work_one end
+---index is  002601
+work_one begin 002601
+delete from tbl_30min where stock_id = '002601'
+i'm importing 002601
+work_one end
+---index is  002602
+work_one begin 002602
+delete from tbl_30min where stock_id = '002602'
+i'm importing 002602
+work_one end
+---index is  002603
+work_one begin 002603
+delete from tbl_30min where stock_id = '002603'
+i'm importing 002603
+work_one end
+---index is  002604
+work_one begin 002604
+delete from tbl_30min where stock_id = '002604'
+i'm importing 002604
+work_one end
+---index is  002605
+work_one begin 002605
+delete from tbl_30min where stock_id = '002605'
+i'm importing 002605
+work_one end
+---index is  002606
+work_one begin 002606
+delete from tbl_30min where stock_id = '002606'
+i'm importing 002606
+work_one end
+---index is  002607
+work_one begin 002607
+delete from tbl_30min where stock_id = '002607'
+i'm importing 002607
+work_one end
+---index is  002608
+work_one begin 002608
+delete from tbl_30min where stock_id = '002608'
+i'm importing 002608
+work_one end
+---index is  002609
+work_one begin 002609
+delete from tbl_30min where stock_id = '002609'
+i'm importing 002609
+work_one end
+---index is  002610
+work_one begin 002610
+delete from tbl_30min where stock_id = '002610'
+i'm importing 002610
+work_one end
+---index is  002611
+work_one begin 002611
+delete from tbl_30min where stock_id = '002611'
+i'm importing 002611
+work_one end
+---index is  002612
+work_one begin 002612
+delete from tbl_30min where stock_id = '002612'
+i'm importing 002612
+work_one end
+---index is  002613
+work_one begin 002613
+delete from tbl_30min where stock_id = '002613'
+i'm importing 002613
+work_one end
+---index is  002614
+work_one begin 002614
+delete from tbl_30min where stock_id = '002614'
+i'm importing 002614
+work_one end
+---index is  002615
+work_one begin 002615
+delete from tbl_30min where stock_id = '002615'
+i'm importing 002615
+work_one end
+---index is  002616
+work_one begin 002616
+delete from tbl_30min where stock_id = '002616'
+i'm importing 002616
+work_one end
+---index is  002617
+work_one begin 002617
+delete from tbl_30min where stock_id = '002617'
+i'm importing 002617
+work_one end
+---index is  002618
+work_one begin 002618
+delete from tbl_30min where stock_id = '002618'
+i'm importing 002618
+work_one end
+---index is  002619
+work_one begin 002619
+delete from tbl_30min where stock_id = '002619'
+i'm importing 002619
+work_one end
+---index is  002620
+work_one begin 002620
+delete from tbl_30min where stock_id = '002620'
+i'm importing 002620
+work_one end
+---index is  002621
+work_one begin 002621
+delete from tbl_30min where stock_id = '002621'
+i'm importing 002621
+work_one end
+---index is  002622
+work_one begin 002622
+delete from tbl_30min where stock_id = '002622'
+i'm importing 002622
+work_one end
+---index is  002623
+work_one begin 002623
+delete from tbl_30min where stock_id = '002623'
+i'm importing 002623
+work_one end
+---index is  002624
+work_one begin 002624
+delete from tbl_30min where stock_id = '002624'
+i'm importing 002624
+work_one end
+---index is  002625
+work_one begin 002625
+delete from tbl_30min where stock_id = '002625'
+i'm importing 002625
+work_one end
+---index is  002626
+work_one begin 002626
+delete from tbl_30min where stock_id = '002626'
+i'm importing 002626
+work_one end
+---index is  002627
+work_one begin 002627
+delete from tbl_30min where stock_id = '002627'
+i'm importing 002627
+work_one end
+---index is  002628
+work_one begin 002628
+delete from tbl_30min where stock_id = '002628'
+i'm importing 002628
+work_one end
+---index is  002629
+work_one begin 002629
+delete from tbl_30min where stock_id = '002629'
+i'm importing 002629
+work_one end
+---index is  002630
+work_one begin 002630
+delete from tbl_30min where stock_id = '002630'
+i'm importing 002630
+work_one end
+---index is  002631
+work_one begin 002631
+delete from tbl_30min where stock_id = '002631'
+i'm importing 002631
+work_one end
+---index is  002632
+work_one begin 002632
+delete from tbl_30min where stock_id = '002632'
+i'm importing 002632
+work_one end
+---index is  002633
+work_one begin 002633
+delete from tbl_30min where stock_id = '002633'
+i'm importing 002633
+work_one end
+---index is  002634
+work_one begin 002634
+delete from tbl_30min where stock_id = '002634'
+i'm importing 002634
+work_one end
+---index is  002635
+work_one begin 002635
+delete from tbl_30min where stock_id = '002635'
+i'm importing 002635
+work_one end
+---index is  002636
+work_one begin 002636
+delete from tbl_30min where stock_id = '002636'
+i'm importing 002636
+work_one end
+---index is  002637
+work_one begin 002637
+delete from tbl_30min where stock_id = '002637'
+i'm importing 002637
+work_one end
+---index is  002638
+work_one begin 002638
+delete from tbl_30min where stock_id = '002638'
+i'm importing 002638
+work_one end
+---index is  002639
+work_one begin 002639
+delete from tbl_30min where stock_id = '002639'
+i'm importing 002639
+work_one end
+---index is  002640
+work_one begin 002640
+delete from tbl_30min where stock_id = '002640'
+i'm importing 002640
+work_one end
+---index is  002641
+work_one begin 002641
+delete from tbl_30min where stock_id = '002641'
+i'm importing 002641
+work_one end
+---index is  002642
+work_one begin 002642
+delete from tbl_30min where stock_id = '002642'
+i'm importing 002642
+work_one end
+---index is  002643
+work_one begin 002643
+delete from tbl_30min where stock_id = '002643'
+i'm importing 002643
+work_one end
+---index is  002644
+work_one begin 002644
+delete from tbl_30min where stock_id = '002644'
+i'm importing 002644
+work_one end
+---index is  002645
+work_one begin 002645
+delete from tbl_30min where stock_id = '002645'
+i'm importing 002645
+work_one end
+---index is  002646
+work_one begin 002646
+delete from tbl_30min where stock_id = '002646'
+i'm importing 002646
+work_one end
+---index is  002647
+work_one begin 002647
+delete from tbl_30min where stock_id = '002647'
+i'm importing 002647
+work_one end
+---index is  002648
+work_one begin 002648
+delete from tbl_30min where stock_id = '002648'
+i'm importing 002648
+work_one end
+---index is  002649
+work_one begin 002649
+delete from tbl_30min where stock_id = '002649'
+i'm importing 002649
+work_one end
+---index is  002650
+work_one begin 002650
+delete from tbl_30min where stock_id = '002650'
+i'm importing 002650
+work_one end
+---index is  002651
+work_one begin 002651
+delete from tbl_30min where stock_id = '002651'
+i'm importing 002651
+work_one end
+---index is  002652
+work_one begin 002652
+delete from tbl_30min where stock_id = '002652'
+i'm importing 002652
+work_one end
+---index is  002653
+work_one begin 002653
+delete from tbl_30min where stock_id = '002653'
+i'm importing 002653
+work_one end
+---index is  002654
+work_one begin 002654
+delete from tbl_30min where stock_id = '002654'
+i'm importing 002654
+work_one end
+---index is  002655
+work_one begin 002655
+delete from tbl_30min where stock_id = '002655'
+i'm importing 002655
+work_one end
+---index is  002656
+work_one begin 002656
+delete from tbl_30min where stock_id = '002656'
+i'm importing 002656
+work_one end
+---index is  002657
+work_one begin 002657
+delete from tbl_30min where stock_id = '002657'
+i'm importing 002657
+work_one end
+---index is  002658
+work_one begin 002658
+delete from tbl_30min where stock_id = '002658'
+i'm importing 002658
+work_one end
+---index is  002659
+work_one begin 002659
+delete from tbl_30min where stock_id = '002659'
+i'm importing 002659
+work_one end
+---index is  002660
+work_one begin 002660
+delete from tbl_30min where stock_id = '002660'
+i'm importing 002660
+work_one end
+---index is  002661
+work_one begin 002661
+delete from tbl_30min where stock_id = '002661'
+i'm importing 002661
+work_one end
+---index is  002662
+work_one begin 002662
+delete from tbl_30min where stock_id = '002662'
+i'm importing 002662
+work_one end
+---index is  002663
+work_one begin 002663
+delete from tbl_30min where stock_id = '002663'
+i'm importing 002663
+work_one end
+---index is  002664
+work_one begin 002664
+delete from tbl_30min where stock_id = '002664'
+i'm importing 002664
+work_one end
+---index is  002665
+work_one begin 002665
+delete from tbl_30min where stock_id = '002665'
+i'm importing 002665
+work_one end
+---index is  002666
+work_one begin 002666
+delete from tbl_30min where stock_id = '002666'
+i'm importing 002666
+work_one end
+---index is  002667
+work_one begin 002667
+delete from tbl_30min where stock_id = '002667'
+i'm importing 002667
+work_one end
+---index is  002668
+work_one begin 002668
+delete from tbl_30min where stock_id = '002668'
+i'm importing 002668
+work_one end
+---index is  002669
+work_one begin 002669
+delete from tbl_30min where stock_id = '002669'
+i'm importing 002669
+work_one end
+---index is  002670
+work_one begin 002670
+delete from tbl_30min where stock_id = '002670'
+i'm importing 002670
+work_one end
+---index is  002671
+work_one begin 002671
+delete from tbl_30min where stock_id = '002671'
+i'm importing 002671
+work_one end
+---index is  002672
+work_one begin 002672
+delete from tbl_30min where stock_id = '002672'
+i'm importing 002672
+work_one end
+---index is  002673
+work_one begin 002673
+delete from tbl_30min where stock_id = '002673'
+i'm importing 002673
+work_one end
+---index is  002674
+work_one begin 002674
+delete from tbl_30min where stock_id = '002674'
+i'm importing 002674
+work_one end
+---index is  002675
+work_one begin 002675
+delete from tbl_30min where stock_id = '002675'
+i'm importing 002675
+work_one end
+---index is  002676
+work_one begin 002676
+delete from tbl_30min where stock_id = '002676'
+i'm importing 002676
+work_one end
+---index is  002677
+work_one begin 002677
+delete from tbl_30min where stock_id = '002677'
+i'm importing 002677
+work_one end
+---index is  002678
+work_one begin 002678
+delete from tbl_30min where stock_id = '002678'
+i'm importing 002678
+work_one end
+---index is  002679
+work_one begin 002679
+delete from tbl_30min where stock_id = '002679'
+i'm importing 002679
+work_one end
+---index is  002680
+work_one begin 002680
+delete from tbl_30min where stock_id = '002680'
+i'm importing 002680
+work_one end
+---index is  002681
+work_one begin 002681
+delete from tbl_30min where stock_id = '002681'
+i'm importing 002681
+work_one end
+---index is  002682
+work_one begin 002682
+delete from tbl_30min where stock_id = '002682'
+i'm importing 002682
+work_one end
+---index is  002683
+work_one begin 002683
+delete from tbl_30min where stock_id = '002683'
+i'm importing 002683
+work_one end
+---index is  002684
+work_one begin 002684
+delete from tbl_30min where stock_id = '002684'
+i'm importing 002684
+work_one end
+---index is  002685
+work_one begin 002685
+delete from tbl_30min where stock_id = '002685'
+i'm importing 002685
+work_one end
+---index is  002686
+work_one begin 002686
+delete from tbl_30min where stock_id = '002686'
+i'm importing 002686
+work_one end
+---index is  002687
+work_one begin 002687
+delete from tbl_30min where stock_id = '002687'
+i'm importing 002687
+work_one end
+---index is  002688
+work_one begin 002688
+delete from tbl_30min where stock_id = '002688'
+i'm importing 002688
+work_one end
+---index is  002689
+work_one begin 002689
+delete from tbl_30min where stock_id = '002689'
+i'm importing 002689
+work_one end
+---index is  002690
+work_one begin 002690
+delete from tbl_30min where stock_id = '002690'
+i'm importing 002690
+work_one end
+---index is  002691
+work_one begin 002691
+delete from tbl_30min where stock_id = '002691'
+i'm importing 002691
+work_one end
+---index is  002692
+work_one begin 002692
+delete from tbl_30min where stock_id = '002692'
+i'm importing 002692
+work_one end
+---index is  002693
+work_one begin 002693
+delete from tbl_30min where stock_id = '002693'
+i'm importing 002693
+work_one end
+---index is  002694
+work_one begin 002694
+delete from tbl_30min where stock_id = '002694'
+i'm importing 002694
+work_one end
+---index is  002695
+work_one begin 002695
+delete from tbl_30min where stock_id = '002695'
+i'm importing 002695
+work_one end
+---index is  002696
+work_one begin 002696
+delete from tbl_30min where stock_id = '002696'
+i'm importing 002696
+work_one end
+---index is  002697
+work_one begin 002697
+delete from tbl_30min where stock_id = '002697'
+i'm importing 002697
+work_one end
+---index is  002698
+work_one begin 002698
+delete from tbl_30min where stock_id = '002698'
+i'm importing 002698
+work_one end
+---index is  002699
+work_one begin 002699
+delete from tbl_30min where stock_id = '002699'
+i'm importing 002699
+work_one end
+---index is  002700
+work_one begin 002700
+delete from tbl_30min where stock_id = '002700'
+i'm importing 002700
+work_one end
+---index is  002701
+work_one begin 002701
+delete from tbl_30min where stock_id = '002701'
+i'm importing 002701
+work_one end
+---index is  002702
+work_one begin 002702
+delete from tbl_30min where stock_id = '002702'
+i'm importing 002702
+work_one end
+---index is  002703
+work_one begin 002703
+delete from tbl_30min where stock_id = '002703'
+i'm importing 002703
+work_one end
+---index is  002705
+work_one begin 002705
+delete from tbl_30min where stock_id = '002705'
+i'm importing 002705
+work_one end
+---index is  002706
+work_one begin 002706
+delete from tbl_30min where stock_id = '002706'
+i'm importing 002706
+work_one end
+---index is  002707
+work_one begin 002707
+delete from tbl_30min where stock_id = '002707'
+i'm importing 002707
+work_one end
+---index is  002708
+work_one begin 002708
+delete from tbl_30min where stock_id = '002708'
+i'm importing 002708
+work_one end
+---index is  002709
+work_one begin 002709
+delete from tbl_30min where stock_id = '002709'
+i'm importing 002709
+work_one end
+---index is  002711
+work_one begin 002711
+delete from tbl_30min where stock_id = '002711'
+i'm importing 002711
+work_one end
+---index is  002712
+work_one begin 002712
+delete from tbl_30min where stock_id = '002712'
+i'm importing 002712
+work_one end
+---index is  002713
+work_one begin 002713
+delete from tbl_30min where stock_id = '002713'
+i'm importing 002713
+work_one end
+---index is  002714
+work_one begin 002714
+delete from tbl_30min where stock_id = '002714'
+i'm importing 002714
+work_one end
+---index is  002715
+work_one begin 002715
+delete from tbl_30min where stock_id = '002715'
+i'm importing 002715
+work_one end
+---index is  002716
+work_one begin 002716
+delete from tbl_30min where stock_id = '002716'
+i'm importing 002716
+work_one end
+---index is  002717
+work_one begin 002717
+delete from tbl_30min where stock_id = '002717'
+i'm importing 002717
+work_one end
+---index is  002718
+work_one begin 002718
+delete from tbl_30min where stock_id = '002718'
+i'm importing 002718
+work_one end
+---index is  002719
+work_one begin 002719
+delete from tbl_30min where stock_id = '002719'
+i'm importing 002719
+work_one end
+---index is  002721
+work_one begin 002721
+delete from tbl_30min where stock_id = '002721'
+i'm importing 002721
+work_one end
+---index is  002722
+work_one begin 002722
+delete from tbl_30min where stock_id = '002722'
+i'm importing 002722
+work_one end
+---index is  002723
+work_one begin 002723
+delete from tbl_30min where stock_id = '002723'
+i'm importing 002723
+work_one end
+---index is  002724
+work_one begin 002724
+delete from tbl_30min where stock_id = '002724'
+i'm importing 002724
+work_one end
+---index is  002725
+work_one begin 002725
+delete from tbl_30min where stock_id = '002725'
+i'm importing 002725
+work_one end
+---index is  002726
+work_one begin 002726
+delete from tbl_30min where stock_id = '002726'
+i'm importing 002726
+work_one end
+---index is  002727
+work_one begin 002727
+delete from tbl_30min where stock_id = '002727'
+i'm importing 002727
+work_one end
+---index is  002728
+work_one begin 002728
+delete from tbl_30min where stock_id = '002728'
+i'm importing 002728
+work_one end
+---index is  002729
+work_one begin 002729
+delete from tbl_30min where stock_id = '002729'
+i'm importing 002729
+work_one end
+---index is  002730
+work_one begin 002730
+delete from tbl_30min where stock_id = '002730'
+i'm importing 002730
+work_one end
+---index is  002731
+work_one begin 002731
+delete from tbl_30min where stock_id = '002731'
+i'm importing 002731
+work_one end
+---index is  002732
+work_one begin 002732
+delete from tbl_30min where stock_id = '002732'
+i'm importing 002732
+work_one end
+---index is  002733
+work_one begin 002733
+delete from tbl_30min where stock_id = '002733'
+i'm importing 002733
+work_one end
+---index is  002734
+work_one begin 002734
+delete from tbl_30min where stock_id = '002734'
+i'm importing 002734
+work_one end
+---index is  002735
+work_one begin 002735
+delete from tbl_30min where stock_id = '002735'
+i'm importing 002735
+work_one end
+---index is  002736
+work_one begin 002736
+delete from tbl_30min where stock_id = '002736'
+i'm importing 002736
+work_one end
+---index is  002737
+work_one begin 002737
+delete from tbl_30min where stock_id = '002737'
+i'm importing 002737
+work_one end
+---index is  002738
+work_one begin 002738
+delete from tbl_30min where stock_id = '002738'
+i'm importing 002738
+work_one end
+---index is  002739
+work_one begin 002739
+delete from tbl_30min where stock_id = '002739'
+i'm importing 002739
+work_one end
+---index is  002740
+work_one begin 002740
+delete from tbl_30min where stock_id = '002740'
+i'm importing 002740
+work_one end
+---index is  002741
+work_one begin 002741
+delete from tbl_30min where stock_id = '002741'
+i'm importing 002741
+work_one end
+---index is  002742
+work_one begin 002742
+delete from tbl_30min where stock_id = '002742'
+i'm importing 002742
+work_one end
+---index is  002743
+work_one begin 002743
+delete from tbl_30min where stock_id = '002743'
+i'm importing 002743
+work_one end
+---index is  002745
+work_one begin 002745
+delete from tbl_30min where stock_id = '002745'
+i'm importing 002745
+work_one end
+---index is  002746
+work_one begin 002746
+delete from tbl_30min where stock_id = '002746'
+i'm importing 002746
+work_one end
+---index is  002747
+work_one begin 002747
+delete from tbl_30min where stock_id = '002747'
+i'm importing 002747
+work_one end
+---index is  002748
+work_one begin 002748
+delete from tbl_30min where stock_id = '002748'
+i'm importing 002748
+work_one end
+---index is  002749
+work_one begin 002749
+delete from tbl_30min where stock_id = '002749'
+i'm importing 002749
+work_one end
+---index is  002750
+work_one begin 002750
+delete from tbl_30min where stock_id = '002750'
+i'm importing 002750
+work_one end
+---index is  002751
+work_one begin 002751
+delete from tbl_30min where stock_id = '002751'
+i'm importing 002751
+work_one end
+---index is  002752
+work_one begin 002752
+delete from tbl_30min where stock_id = '002752'
+i'm importing 002752
+work_one end
+---index is  002753
+work_one begin 002753
+delete from tbl_30min where stock_id = '002753'
+i'm importing 002753
+work_one end
+---index is  002755
+work_one begin 002755
+delete from tbl_30min where stock_id = '002755'
+i'm importing 002755
+work_one end
+---index is  002756
+work_one begin 002756
+delete from tbl_30min where stock_id = '002756'
+i'm importing 002756
+work_one end
+---index is  002757
+work_one begin 002757
+delete from tbl_30min where stock_id = '002757'
+i'm importing 002757
+work_one end
+---index is  002758
+work_one begin 002758
+delete from tbl_30min where stock_id = '002758'
+i'm importing 002758
+work_one end
+---index is  002759
+work_one begin 002759
+delete from tbl_30min where stock_id = '002759'
+i'm importing 002759
+work_one end
+---index is  002760
+work_one begin 002760
+delete from tbl_30min where stock_id = '002760'
+i'm importing 002760
+work_one end
+---index is  002761
+work_one begin 002761
+delete from tbl_30min where stock_id = '002761'
+i'm importing 002761
+work_one end
+---index is  002762
+work_one begin 002762
+delete from tbl_30min where stock_id = '002762'
+i'm importing 002762
+work_one end
+---index is  002763
+work_one begin 002763
+delete from tbl_30min where stock_id = '002763'
+i'm importing 002763
+work_one end
+---index is  002765
+work_one begin 002765
+delete from tbl_30min where stock_id = '002765'
+i'm importing 002765
+work_one end
+---index is  002766
+work_one begin 002766
+delete from tbl_30min where stock_id = '002766'
+i'm importing 002766
+work_one end
+---index is  002767
+work_one begin 002767
+delete from tbl_30min where stock_id = '002767'
+i'm importing 002767
+work_one end
+---index is  002768
+work_one begin 002768
+delete from tbl_30min where stock_id = '002768'
+i'm importing 002768
+work_one end
+---index is  002769
+work_one begin 002769
+delete from tbl_30min where stock_id = '002769'
+i'm importing 002769
+work_one end
+---index is  002770
+work_one begin 002770
+delete from tbl_30min where stock_id = '002770'
+i'm importing 002770
+work_one end
+---index is  002771
+work_one begin 002771
+delete from tbl_30min where stock_id = '002771'
+i'm importing 002771
+work_one end
+---index is  002772
+work_one begin 002772
+delete from tbl_30min where stock_id = '002772'
+i'm importing 002772
+work_one end
+---index is  002773
+work_one begin 002773
+delete from tbl_30min where stock_id = '002773'
+i'm importing 002773
+work_one end
+---index is  002775
+work_one begin 002775
+delete from tbl_30min where stock_id = '002775'
+i'm importing 002775
+work_one end
+---index is  002776
+work_one begin 002776
+delete from tbl_30min where stock_id = '002776'
+i'm importing 002776
+work_one end
+---index is  002777
+work_one begin 002777
+delete from tbl_30min where stock_id = '002777'
+i'm importing 002777
+work_one end
+---index is  002778
+work_one begin 002778
+delete from tbl_30min where stock_id = '002778'
+i'm importing 002778
+work_one end
+---index is  002779
+work_one begin 002779
+delete from tbl_30min where stock_id = '002779'
+i'm importing 002779
+work_one end
+---index is  002780
+work_one begin 002780
+delete from tbl_30min where stock_id = '002780'
+i'm importing 002780
+work_one end
+---index is  002781
+work_one begin 002781
+delete from tbl_30min where stock_id = '002781'
+i'm importing 002781
+work_one end
+---index is  002782
+work_one begin 002782
+delete from tbl_30min where stock_id = '002782'
+i'm importing 002782
+work_one end
+---index is  002783
+work_one begin 002783
+delete from tbl_30min where stock_id = '002783'
+i'm importing 002783
+work_one end
+---index is  002785
+work_one begin 002785
+delete from tbl_30min where stock_id = '002785'
+i'm importing 002785
+work_one end
+---index is  002786
+work_one begin 002786
+delete from tbl_30min where stock_id = '002786'
+i'm importing 002786
+work_one end
+---index is  002787
+work_one begin 002787
+delete from tbl_30min where stock_id = '002787'
+i'm importing 002787
+work_one end
+---index is  002788
+work_one begin 002788
+delete from tbl_30min where stock_id = '002788'
+i'm importing 002788
+work_one end
+---index is  002789
+work_one begin 002789
+delete from tbl_30min where stock_id = '002789'
+i'm importing 002789
+work_one end
+---index is  002790
+work_one begin 002790
+delete from tbl_30min where stock_id = '002790'
+i'm importing 002790
+work_one end
+---index is  002791
+work_one begin 002791
+delete from tbl_30min where stock_id = '002791'
+i'm importing 002791
+work_one end
+---index is  002792
+work_one begin 002792
+delete from tbl_30min where stock_id = '002792'
+i'm importing 002792
+work_one end
+---index is  002793
+work_one begin 002793
+delete from tbl_30min where stock_id = '002793'
+i'm importing 002793
+work_one end
+---index is  002795
+work_one begin 002795
+delete from tbl_30min where stock_id = '002795'
+i'm importing 002795
+work_one end
+---index is  002796
+work_one begin 002796
+delete from tbl_30min where stock_id = '002796'
+i'm importing 002796
+work_one end
+---index is  002797
+work_one begin 002797
+delete from tbl_30min where stock_id = '002797'
+i'm importing 002797
+work_one end
+---index is  002798
+work_one begin 002798
+delete from tbl_30min where stock_id = '002798'
+i'm importing 002798
+work_one end
+---index is  002799
+work_one begin 002799
+delete from tbl_30min where stock_id = '002799'
+i'm importing 002799
+work_one end
+---index is  002800
+work_one begin 002800
+delete from tbl_30min where stock_id = '002800'
+i'm importing 002800
+work_one end
+---index is  002801
+work_one begin 002801
+delete from tbl_30min where stock_id = '002801'
+i'm importing 002801
+work_one end
+---index is  002802
+work_one begin 002802
+delete from tbl_30min where stock_id = '002802'
+i'm importing 002802
+work_one end
+---index is  002803
+work_one begin 002803
+delete from tbl_30min where stock_id = '002803'
+i'm importing 002803
+Traceback (most recent call last):
+  File "f.py", line 318, in <module>
+    main()
+  File "f.py", line 313, in main
+    work_on(stocks)
+  File "f.py", line 302, in work_on
+    work_one(row_index, db)
+  File "f.py", line 289, in work_one
+    df_to_db(_stock_id, df, _db)
+  File "f.py", line 70, in df_to_db
+    for row_index, row in _df.iterrows():
+AttributeError: 'NoneType' object has no attribute 'iterrows'
