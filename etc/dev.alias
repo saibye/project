@@ -8,7 +8,7 @@ alias cdl='cd ${HOME}/project/log'
 
 alias cdsb='cd ${HOME}/project/sbin'
 
-alias gitp='git push origin master' # dawangfei/wangfei123
+alias gitp='git push origin master'
 
 alias cdsql='cd ${HOME}/project/sql'
 
