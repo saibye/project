@@ -31,6 +31,7 @@ create table tbl_30min
    ema12                float,
    diff                 float,
    dea                  float,
+   macd                 float,
    inst_date            date not null,
    inst_time            time not null,
    rsv1                 float,
@@ -38,4 +39,7 @@ create table tbl_30min
    rsv3                 float,
    primary key (pub_date, pub_time, stock_id, stock_loc)
 );
+
+-- ALTER TABLE tbl_30min ADD macd float;
+
 
