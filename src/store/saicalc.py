@@ -4,6 +4,8 @@
 import pandas as pd
 import numpy as np
 
+from sailog  import *
+
 
 def sma(_df, _n):
     m = _df['close'].head(_n).mean()

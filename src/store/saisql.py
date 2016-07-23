@@ -5,7 +5,9 @@ import tushare as ts
 import time
 import pandas as pd
 import numpy as np
+
 from saiutil import *
+from sailog  import *
 
 def row_to_sql(_stock_id, _row_index, _row, _dt, _tm):
     date1, time1 = _row_index.split()

@@ -4,6 +4,7 @@
 import pandas as pd
 import tushare as ts
 
+from sailog  import *
 
 v = "a"
 

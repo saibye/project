@@ -3,6 +3,8 @@
 
 import MySQLdb
 
+from sailog  import *
+
 # 打开数据库连接
 db = MySQLdb.connect("182.92.239.6", "tudev", "wangfei", "tu" )
 

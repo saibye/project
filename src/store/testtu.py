@@ -6,6 +6,7 @@ from sqlalchemy import create_engine
 
 import tushare as ts
 
+from sailog  import *
 
 print 'begin'
 

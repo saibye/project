@@ -13,6 +13,7 @@ from saiutil import *
 from saidb   import *
 from saisql  import *
 from saicalc import *
+from sailog  import *
 
 #######################################################################
 

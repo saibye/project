@@ -39,6 +39,6 @@ data
 *.tags
 makeit.err
 *makeit.err*
-.pyc
-.log
-.out
+*.pyc
+*.log
+*.out
