@@ -8,7 +8,7 @@ import tushare as ts
 
 print 'begin'
 
-engine = create_engine('mysql://tudev:wangfei@182.92.239.6/tu?charset=utf8')
+engine = create_engine('mysql://tudev:wangfei@127.0.0.1/tu?charset=utf8')
 
 print 'db connected!'
 

@@ -38,6 +38,21 @@ values ('%s', '%s', '%s', '%s',  \
     return sql
 
 
+def sql_to_db_nolog(_sql, _db):
+    cursor = _db.cursor()
+
+    rv = 0
+
+    try:
+        cursor.execute(_sql)
+        _db.commit()
+    except Exception, e:
+        _db.rollback()
+        rv = -1
+
+    return rv
+
+
 def sql_to_db(_sql, _db):
 
     # 使用cursor()方法获取操作游标 
@@ -52,35 +67,34 @@ def sql_to_db(_sql, _db):
         _db.commit()
     except Exception, e:
         # 发生错误时回滚
-        print "execute sql failed: %s" % _sql
-        print "error: sql failure for: ", e
+        log_error("error: sql failed for: %s", e)
+        log_error("error: [%s]", _sql)
         _db.rollback()
         rv = -1
+
     return rv
 
 
 def df_to_db(_stock_id, _df, _db):
-    print "i'm importing %s" % _stock_id
+    log_debug("i'm importing %s", _stock_id)
 
     dt = get_today()
     tm = get_time()
 
     for row_index, row in _df.iterrows():
-        #print "-----------index is ",  row_index
         date2, time2 = row_index.split()
-        #print ("date: %s, time: %s" % (date2, time2))
-        #print "close is ", row.loc['close'], ", ma5 is ", row.loc['ma5'], ", change: ", row['p_change']
+        #log_debug("date: %s, time: %s", date2, time2)
+        #log_deubg("close is %s ", row.loc['close'])
         sql = row_to_sql(_stock_id, row_index, row, dt, tm)
-        #print sql
         sql_to_db(sql, _db)
 
     return
 
 
 def clear_stock_from_db(_stock_id, _db):
-    sql = "delete from tbl_30min where stock_id = '%s'" % _stock_id
-    print sql
-    sql_to_db(sql, _db)
+    #sql = "delete from tbl_30min where stock_id = '%s'" % _stock_id
+    #sql_to_db(sql, _db)
+    return
 
 
 def get_stock_list_df_tu():

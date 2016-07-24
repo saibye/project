@@ -55,6 +55,30 @@ def datetime():
     '''
     return strftime("%Y-%m-%d %H:%M:%S",localtime())
 
+
+def check_time_to_run(_time_map):
+
+    to_run = 0
+
+    for item in sorted(_time_map.keys()):
+        already_processed = _time_map[item]
+
+        if already_processed:
+            #log_debug("[%s] already done, next", item)
+            continue
+
+        curr = get_time()
+        #log_debug("curr time: %s", curr)
+
+        # reach the time
+        if curr >= item:
+            _time_map[item] = 1
+            to_run = 1
+            log_info("nice: trigger: %s > %s", curr, item)
+
+    return to_run
+
+
 if __name__=="__main__":
     print today()  
     print datetime()
