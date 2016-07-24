@@ -39,10 +39,21 @@ df = ts.get_today_all()
 print df.head(5)
 """
 
+"""
 df = ts.get_realtime_quotes(['600848','000980','000981'])
 print df.head()
+"""
+
+stock_id   = '002709'
+start_date = '2016-07-20'
+end_date   = '2016-07-21'
+minute     = '30'
+
+sailog_set("tu.log")
+
+df = ts.get_hist_data(stock_id, start=start_date, end=end_date, ktype=minute)
+print df
+
 
 print 'bye'
-
-
 # testtu.py

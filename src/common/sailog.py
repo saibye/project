@@ -63,6 +63,7 @@ def sailog_set(_log_name):
     log_warn    = logger.warn
     log_error   = logger.error
     log_critical= logger.critical
+    log_info("\n/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/")
 
     return 
 

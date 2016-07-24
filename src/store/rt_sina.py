@@ -14,51 +14,6 @@ from sailog  import *
 #######################################################################
 
 
-def sina_row_to_sql(_stock_id, _row_index, _row, _dt, _tm):
-    date1, time1 = _row_index.split()
-
-    sql = "insert into tbl_30min \
-(pub_date, pub_time, stock_id, stock_loc, \
-open_price, high_price, close_price, low_price, \
-price_change, change_rate, deal_total_count, \
-ma5, ma10, ma20, \
-vma5, vma10, vma20, \
-turnover, \
-inst_date, inst_time) \
-values ('%s', '%s', '%s', '%s',  \
-'%.02f', '%.2f', '%.2f', \
-'%.2f', '%.2f', '%.2f', \
-'%.2f', '%.2f', '%.2f', \
-'%.2f', \
-'%.2f', '%.2f', '%.2f', '%.2f', \
-'%s', '%s')" % \
-    (date1, time1, _stock_id, 'cn', 
-     _row.loc['open'], _row.loc['high'], _row.loc['close'], _row.loc['low'],
-     _row.loc['price_change'], _row.loc['p_change'], _row.loc['volume'],
-     _row.loc['ma5'], _row.loc['ma10'], _row.loc['ma20'],
-     _row.loc['v_ma5'], _row.loc['v_ma10'], _row.loc['v_ma20'],
-     _row.loc['turnover'],
-     _dt, _tm)
-
-    return sql
-
-def sina_df_to_db(_stock_id, _df, _db):
-    print "i'm importing %s" % _stock_id
-
-    dt = get_today()
-    tm = get_time()
-
-    for row_index, row in _df.iterrows():
-        #print "-----------index is ",  row_index
-        date2, time2 = row_index.split()
-        #print ("date: %s, time: %s" % (date2, time2))
-        #print "close is ", row.loc['close'], ", ma5 is ", row.loc['ma5'], ", change: ", row['p_change']
-        sql = sina_row_to_sql(_stock_id, row_index, row, dt, tm)
-        #print sql
-        sql_to_db(sql, _db)
-
-    return
-
 def work_one_more(_stock_list, _db):
     log_info("work_one_more begin: \n%s", _stock_list)
 
@@ -74,10 +29,8 @@ def work_one_more(_stock_list, _db):
 
     log_debug("df: \n%s", df)
 
-    # DO NOT clear previous data
-
-    # import dataframe to db
-    #sina_df_to_db(_stock_list, df, _db)
+    # TODO anaylize realtime data
+    #analyze_sina_df(df, _db)
 
     log_info("work_one_more end")
 
@@ -119,7 +72,7 @@ def work():
 #######################################################################
 
 def main():
-    sailog_set("realtime.log")
+    sailog_set("rt_sina.log")
 
     log_info("let's begin here!")
 
