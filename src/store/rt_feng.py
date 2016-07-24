@@ -80,6 +80,7 @@ def rt_save(_stocks, _db):
 """
 
 def rt_timer(_stocks, _db):
+    end_time = '16:00:00'
     time_map = {'10:05:00':0, '10:35:00':0,
         '11:05:00':0, '11:35:00':0,
         '13:35:00':0, '14:05:00':0,
@@ -115,6 +116,11 @@ def rt_timer(_stocks, _db):
             if counter == 30:
                 log_debug(">>>>>sorry, no need to run")
                 counter = 0
+
+        curr = get_time()
+        if curr >= end_time:
+            log_info("'%s' means end today", curr)
+            break
 
         time.sleep(20)
 

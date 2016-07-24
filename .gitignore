@@ -42,3 +42,4 @@ makeit.err
 *.pyc
 *.log
 *.out
+*.err
