@@ -51,9 +51,19 @@ minute     = '30'
 
 sailog_set("tu.log")
 
+"""
 df = ts.get_hist_data(stock_id, start=start_date, end=end_date, ktype=minute)
-print df
+log_debug(df)
+"""
 
 
-print 'bye'
-# testtu.py
+#df = ts.get_today_ticks('000002')
+
+#df = ts.get_today_ticks('300135') # good
+#log_debug("\n%s", df[df.volume > 5000]) 
+
+df = ts.get_today_ticks('000839')
+log_debug("\n%s", df[df.volume > 1000])
+
+
+# end

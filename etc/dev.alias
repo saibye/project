@@ -16,5 +16,6 @@ alias mktag='cd ${HOME}/project && ctags -f .tags -R * && cd - >/dev/null'
 
 alias cdss='cd ${HOME}/project/src/store'
 alias cdsc='cd ${HOME}/project/src/common'
+alias cdst='cd ${HOME}/project/src/test'
 
 # dev.alias
