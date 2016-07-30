@@ -16,7 +16,7 @@ sai_dft_fmt = "%(asctime)s - %(filename)s:%(lineno)s - %(message)s"
 sai_dft_tm  = "%Y-%m-%d %H:%M:%S"
 sai_dft_path= os.environ['LOG'] + '/'
 
-rh=logging.handlers.TimedRotatingFileHandler(sai_dft_path+sai_dft_log, 'D')
+rh=logging.handlers.TimedRotatingFileHandler(sai_dft_path+sai_dft_log, 'H')
 
 #fm=logging.Formatter("%(asctime)s  %(levelname)s - %(message)s", "%Y-%m-%d %H:%M:%S")
 fm=logging.Formatter(sai_dft_fmt, sai_dft_tm)

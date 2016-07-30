@@ -15,6 +15,15 @@ from saisql  import *
 from saicalc import *
 from sailog  import *
 
+
+
+"""
+应用场景:
+一天结束，把新采集的数据计算，
+得到diff, dea, macd，
+并更新到数据库
+"""
+
 #######################################################################
 
 
@@ -71,31 +80,36 @@ def update_one(_stock_id, _db):
 
     df = get_df_from_db(_stock_id, _db)
 
+    df = df.sort_index(ascending=True)
+
     if df is None:
-        print "stock %s no data, exit" % _stock_id
+        log_error("stock %s no data, exit", _stock_id)
         return
 
     #df = df.set_index(['pub_date', 'pub_time', 'stock_id', 'stock_loc'])
 
     # sma30
-    se = calc_sma(df, 30)
+    se = calc_sma(df['close_price'], 30)
     df['ma30'] = se;
 
     # sma60
-    se = calc_sma(df, 60)
+    se = calc_sma(df['close_price'], 60)
     df['ma60'] = se;
 
     # macd: ema(12), ema(26), diff, dea(9), macd
-    sd, sm, sn = calc_diff(df, 12, 26)
+    sd, sm, sn = calc_diff(df['close_price'], 12, 26)
     df['ema12'] = sm;
     df['ema26'] = sn;
     df['diff']  = sd;
 
-    sd, sa = calc_macd(df, 9)
+    sd, sa = calc_macd(df['diff'], 9)
     df['dea']  = sd;
     df['macd'] = sa;
 
-    update_df_to_db(df, _db)
+    # comment just for test 2016/7/30
+    update_df_to_db(df, _db)  # good
+
+    #log_debug("hi\n%s", df.loc[:, ['pub_date', 'pub_time', 'close_price', 'macd', 'diff', 'dea']])
 
     return
 
@@ -104,7 +118,7 @@ def update_ma(_stocks, _db):
     rownum = 0
     for row_index, row in _stocks.iterrows():
         rownum = rownum + 1
-        print "---index is ",  row_index
+        log_debug("---stock is %s",  row_index)
         stock_id = row_index
         update_one(stock_id, _db)
 
@@ -125,16 +139,16 @@ def work():
 #######################################################################
 
 def main():
-    print "let's begin here!"
+    sailog_set("updatema.log")
+    log_debug("let's begin here!")
 
-     #work()
+    work()
 
-    print "main ends, bye!"
+    log_debug("main ends, bye!")
     return
 
 main()
 exit()
-print "can't arrive here"
 
 #######################################################################
 
