@@ -103,6 +103,8 @@ def get_stock_list_df_tu():
 
 
 def get_stock_list_df_db(_db):
+    sql = "select distinct stock_id from tbl_30min where stock_id='000007'"
+    sql = "select distinct stock_id from tbl_30min order by 1 limit 200"
     sql = "select distinct stock_id from tbl_30min order by 1"
 
     df = pd.read_sql_query(sql, _db);
