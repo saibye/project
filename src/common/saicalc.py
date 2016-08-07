@@ -17,31 +17,54 @@ def ema_factor(_n):
 def calc_sma(_sc, _n):
     #log_debug("sma(%d) is ...", _n)
 
+    """
     # create result set
     se = pd.Series(0.0, _sc.index)
+    """
+
+    l1 = [] # result list
+    l2 = [] # n container
+    l2_len = 0   # size of l2
+    l2_fst = 0.0 # first element
 
     rownum = 0
     total  = 0.0
     for s_index, s_val in _sc.iteritems():
         rownum = rownum + 1
         total  = total + s_val
-        if rownum < _n:
+
+        # keep container updated and just N size
+        l2.append(s_val)
+        if l2_len == _n :
+            l2_fst = l2.pop(0)
+        else :
+            l2_len = l2_len + 1
+
+        if rownum < _n :
+            l1.append(0.0)
             #log_debug("%04d less than %d", rownum, _n)
             continue
 
-        if rownum == _n:
-            se[s_index] = total / _n
+        elif rownum == _n :
+            l1.append(total/_n)
+            # se[s_index] = total / _n
             # log_debug("%04d: sma is %.2f", rownum, se[s_index])
             continue
 
-        # old version: cost much time
-        #se[s_index] = _sc.head(rownum).tail(_n).mean()
+        else :
+            # old version: cost much time
+            #se[s_index] = _sc.head(rownum).tail(_n).mean()
 
-        # rownum > _n
-        # pop the first one
-        total = total - _sc[rownum - _n-1]
-        se[s_index] = total / _n
-        # log_debug("%04d: sma is %.2f", rownum, se[s_index])
+            # rownum > _n
+            # pop the first one
+            total = total -  l2_fst #_sc[rownum - _n-1]
+            # se[s_index] = total / _n
+            l1.append(total/_n)
+            # log_debug("%04d: sma is %.2f", rownum, se[s_index])
+            # log_debug("%04d: sma is %.2f", rownum, l1[-1])
+
+    # create result set from list. 2016/8/3
+    se = pd.Series(l1, _sc.index)
 
     return se
 
@@ -292,6 +315,91 @@ def calc_sma2(_sc, _sm, _sn, _m, _n):
         rownum = rownum + 1
 
     return
+
+
+#  2016/8/6 list mode: calculate EMA*2, DIFF, DEA and MACD 
+# input: (m, n, k) => (12, 26, 9)
+#   the input Series must be sorted
+def calc_macd_list(_close, _ema_m, _ema_n, _m, _n, _k):
+    pd.options.mode.chained_assignment = None
+    # log_debug("calc macd(%d, %d, %d)", _m, _n, _k)
+
+    # get ema_factor
+    fac1 = ema_factor(_m)
+    fac2 = ema_factor(_n)
+    fac3 = ema_factor(_k)
+
+    # assign init value
+    ep1 = _close.head(_m).mean()
+    ep2 = _close.head(_n).mean()
+    ep3 = -1.0
+
+    e1  = -1.0
+    e2  = -1.0
+    e3  = -1.0
+
+    ema_m = list(_ema_m)
+    ema_n = list(_ema_n)
+
+    diff = []
+    dea  = []
+    macd = []
+
+    idx      = 0
+    di_count = 0
+    di_sum   = 0.0
+    for s_index, s_val in _close.iteritems():
+        # ema(12)
+        if ema_m[idx] > 0 :
+            ep1 = ema_m[idx]
+        else :
+            e1  = (s_val - ep1) * fac1 + ep1
+            ep1 = e1
+            ema_m[idx] = e1
+
+
+        # ema(26)
+        if ema_n[idx] > 0 :
+            ep2 = ema_n[idx]
+        else :
+            e2  = (s_val - ep2) * fac2 + ep2
+            ep2 = e2
+            ema_n[idx] = e2
+
+        # diff = ema(12) - ema(26)
+        if e1 > 0 and e2 > 0 :
+            di = e1 - e2
+            di_count = di_count + 1
+            di_sum  += di
+        else :
+            di = 0.0
+        diff.append(di)
+        # log_debug("%04d: e1: %.2f, e2: %.2f, diff: %.2f", idx, e1, e2, di)
+
+        # dea(k), macd
+        if di_count <  _k :
+            e3 = 0.0
+            d2 = 0.0
+        elif di_count == _k :
+            ep3 = di_sum / _k
+            e3 = 0.0
+            d2 = 0.0
+        else :
+            e3  = (di - ep3) * fac3 + ep3
+            ep3 = e3;
+            d2  = (di - e3) * 2
+        dea.append(e3)
+        macd.append(d2)
+        # log_debug("%04d: macd: %.3f, di: %.3f, dea: %.3f", idx, d2, di, e3)
+
+        idx = idx + 1
+
+    return pd.Series(ema_m, _close.index), \
+        pd.Series(ema_n, _close.index), \
+        pd.Series(diff,  _close.index), \
+        pd.Series(dea,   _close.index), \
+        pd.Series(macd,  _close.index)
+
 
 if __name__ == "__main__":
     sailog_set("saicalc.log")

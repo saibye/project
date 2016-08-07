@@ -133,6 +133,7 @@ def choose_calc_one(_stock_id):
     log_debug("ma30/60 costs %d", get_micro_second() - begin)
 
     begin = get_micro_second()
+    """
     # macd: ema(12), ema(26), diff, dea(9), macd
     sd, sm, sn = calc_diff(sc, 12, 26)
     df['ema12'] = sm;
@@ -140,8 +141,6 @@ def choose_calc_one(_stock_id):
     df['diff']  = sd;
     log_debug("clac_diff costs %d", get_micro_second() - begin)
 
-    """
-    """
     # calc_diff_dynamic(df['close_price'], df['ema12'], df['ema26'], df['diff'], 12, 26)
     # calc_diff_dynamic(sc, s_ema12, s_ema26, s_diff, 12, 26)
 
@@ -150,13 +149,24 @@ def choose_calc_one(_stock_id):
     sd, sa = calc_macd(sd, 9)
     df['dea']   = sd;
     df['macd']  = sa;
+    """
 
     """
     # this is slower... 2016/7/31
     calc_macd_dynamic(df['close_price'], df['ema12'], df['ema26'], df['diff'], df['dea'], df['macd'], 12, 26, 9)
     """
 
-    log_debug("clac_macd_dynamic costs %d", get_micro_second() - begin)
+    """
+    #  list version
+    sm, sn, di, dea, macd = calc_macd_list(df['close_price'], df['ema12'], df['ema26'], 12, 26, 9)
+    df['ema12'] = sm;
+    df['ema26'] = sn;
+    df['diff']  = di;
+    df['dea']   = dea;
+    df['macd']  = macd;
+    """
+
+    log_debug("clac_macd_list costs %d", get_micro_second() - begin)
 
     return
 
@@ -236,11 +246,13 @@ def choose_loop(_stocks, _db):
         choose_calc_one(stock_id)
         log_debug("clac_one costs %d", get_micro_second() - begin)
 
+        """
         # check rule
         begin = get_micro_second()
         choose_rule_one(stock_id)
         log_debug("rule_one costs %d", get_micro_second() - begin)
         # break
+        """
 
     return
 
@@ -278,12 +290,12 @@ def main():
     log_debug("work costs %d", diff)
 
     log_debug("++++++++++++++++++++++++++++++++++++++++++++++++++++++")
-    """
     for item in sorted(g_map.keys()):
         log_debug("key: %s", item)
         df = g_map[item]
-        log_debug("df2: \n%s", df.loc[:, ['close_price', 'macd', 'diff', 'dea', 'ma60']])
+        log_debug("df2: \n%s", df.loc[:, ['close_price', 'macd', 'diff', 'dea', 'ma30']])
         break
+    """
     """
 
     print "main ends, bye!"

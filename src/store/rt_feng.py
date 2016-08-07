@@ -51,7 +51,7 @@ def rt_feng_one(_stock_id, _db):
         log_error("warn: stock %s is empty, next", _stock_id)
         return -2
 
-    log_debug("df: \n%s", df)
+    #log_debug("df: \n%s", df)
 
     begin = get_micro_second()
 

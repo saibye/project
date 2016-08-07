@@ -13,6 +13,7 @@ import calendar
 from sailog  import *
 
 
+
 def get_today():
     dt = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()) 
     dt = time.strftime("%Y-%m-%d", time.localtime()) 
