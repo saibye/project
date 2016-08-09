@@ -10,9 +10,11 @@ from saidb   import *
 from saisql  import *
 from saicalc import *
 from sailog  import *
+from saimail import *
 
 #######################################################################
 
+g_good_list = []
 
 """
 buy策略：
@@ -20,6 +22,7 @@ buy策略：
 2. vol >= 3000,  连续5笔买
 """
 def rt_dadan_check_df(_df, _db, _vol_base, _count_base):
+    global g_good_list
     good = 0
 
     buy  = "买盘"
@@ -28,6 +31,8 @@ def rt_dadan_check_df(_df, _db, _vol_base, _count_base):
     con1 = 0
 
     # log_debug("\n%s", _df)
+    subject = ""
+    body    = ""
 
     for row_index, row in _df.iterrows():
         stock_id  = row['code']
@@ -48,21 +53,28 @@ def rt_dadan_check_df(_df, _db, _vol_base, _count_base):
             if con1 >= _count_base:
                 log_info("nice: buy [%s]: at [%s, %.2f] %dth", stock_id, tm, price, con1)
                 good = 1
+                # subject = u"dadan1: %s"  % stock_id
+                body   += u"dadan: %s, %s: price: %.2f,  vol: %d, times: %d\n" % (stock_id, tm, price, volume, con1)
+
+    if len(body) > 0 :
+        # saimail(subject, body)
+        log_info("body : \n%s", body)
+        g_good_list.append(body)
 
     return good
 
 
 def rt_dadan_one(_stock_id, _db):
-    log_info("rt_dadan_one begin")
+    # log_info("rt_dadan_one begin")
 
     # today data
     base_vol = 500
     base_vol = 10000
     base_vol = 3000
     base_vol = 1000
-    dd_date  = get_date_by(0)
     dd_date  = get_date_by(-2)
-    log_debug("stock: %s, %s, %s", _stock_id, dd_date, base_vol)
+    dd_date  = get_date_by(0)
+    # log_debug("stock: %s, %s, %s", _stock_id, dd_date, base_vol)
 
     # begin = get_micro_second()
 
@@ -71,11 +83,11 @@ def rt_dadan_one(_stock_id, _db):
     # log_info("get_sina_dd costs %d us", get_micro_second() - begin)
 
     if df is None :
-        log_error("warn: stock %s is None, next", _stock_id)
+        # log_error("warn: stock %s is None, next", _stock_id)
         return -1
 
     if df.empty:
-        log_error("warn: stock %s is empty, next", _stock_id)
+        # log_error("warn: stock %s is empty, next", _stock_id)
         return -2
 
     df = df.sort_index(ascending=False)
@@ -87,13 +99,15 @@ def rt_dadan_one(_stock_id, _db):
     # check df
     vol = 10000
     cnt = 3
+    vol = 5000
+    cnt = 6
     vol = 3000
     cnt = 8
     rt_dadan_check_df(df, _db, vol, cnt)
 
-    log_info("rt_dadan_check_df costs %d us", get_micro_second() - begin)
+    # log_info("rt_dadan_check_df costs %d us", get_micro_second() - begin)
 
-    log_info("rt_dadan_one end")
+    # log_info("rt_dadan_one end")
 
     return 
 
@@ -126,10 +140,12 @@ def rt_dadan(_stocks, _db):
 """
 
 def rt_timer(_stocks, _db):
+    global g_good_list
     end_time = '16:00:00'
 
     counter  = 0
     while 1:
+        g_good_list = []
         counter = counter + 1
 
         log_info(">>>>>let's run here")
@@ -140,18 +156,26 @@ def rt_timer(_stocks, _db):
         rt_dadan(_stocks, _db)
 
         diff = get_micro_second() - begin;
-        log_info("rt_dadan costs %d us", diff)
+        # log_info("rt_dadan costs %d us", diff)
 
+        if len(g_good_list) > 0 :
+            log_info("let's mail")
+            subject = "dadan1"
+            for item in g_good_list :
+                body   +=  item
+            saimail(subject, body)
 
+        """
         # delete me
         break
+        """
 
         curr = get_time()
         if curr >= end_time:
             log_info("'%s' means end today", curr)
             break
 
-        time.sleep(60)
+        time.sleep(300)
 
     return
 
@@ -177,6 +201,8 @@ def main():
     sailog_set("rt_dadan.log")
 
     log_info("let's begin here!")
+
+    saimail_init()
 
     work()
 

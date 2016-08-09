@@ -29,6 +29,7 @@ def saimail(_subject, _body):
 
     from_addr   = "18600129523@163.com"
     to_addr     = "673888528@qq.com"
+    to_addr     = "18600129523@163.com"
     smtp_server = "smtp.163.com"
 
     msg = MIMEText(_body, 'plain', 'utf-8')
