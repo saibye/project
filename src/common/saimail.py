@@ -13,6 +13,7 @@ g_mail_pass = ""
 
 def saimail_init():
     global g_mail_pass
+    # g_mail_pass = raw_input('Password: ')
     g_mail_pass = raw_input('Password: ')
     return
 

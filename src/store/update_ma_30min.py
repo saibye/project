@@ -33,6 +33,13 @@ from sailog  import *
 3. save data to table
 """
 
+def get_df_from_db(_stock_id, _db):
+    sql = "select * from tbl_30min t where stock_id='%s' order by pub_date, pub_time limit 1000" % _stock_id
+
+    df = pd.read_sql_query(sql, _db);
+
+    return df
+
 def get_update_sql_row(_row):
     pub_date  = _row['pub_date']
     pub_time  = _row['pub_time']
@@ -68,70 +75,52 @@ def update_df_to_db(_df, _db):
 
 
 
-def get_df_from_table(_stock_id, _table, _db):
-    sql = "select * from %s where stock_id='%s' order by pub_date, pub_time limit 300" % (_table, _stock_id)
 
-    df = pd.read_sql_query(sql, _db);
+def update_one(_stock_id, _db):
 
-    return df
+    df = get_df_from_db(_stock_id, _db)
 
-
-def update_one(_stock_id, _table, _db):
-
-    df = get_df_from_table(_stock_id, _table, _db)
+    df = df.sort_index(ascending=True)
 
     if df is None:
         log_error("stock %s no data, exit", _stock_id)
         return
 
-    df = df.sort_index(ascending=True)
-
-    sc = df['close_price']
-
-    # sma5
-    se = calc_sma(sc, 5)
-    df['ma5'] = se;
-
-    # sma10
-    se = calc_sma(sc, 10)
-    df['ma10'] = se;
-
-    # sma20
-    se = calc_sma(sc, 20)
-    df['ma20'] = se;
+    #df = df.set_index(['pub_date', 'pub_time', 'stock_id', 'stock_loc'])
 
     # sma30
-    se = calc_sma(sc, 30)
+    se = calc_sma(df['close_price'], 30)
     df['ma30'] = se;
 
     # sma60
-    se = calc_sma(sc, 60)
+    se = calc_sma(df['close_price'], 60)
     df['ma60'] = se;
 
     # macd: ema(12), ema(26), diff, dea(9), macd
-    sm, sn, sd, se, sa = calc_macd_list0(sc, 12, 26, 9)
+    sd, sm, sn = calc_diff(df['close_price'], 12, 26)
     df['ema12'] = sm;
     df['ema26'] = sn;
     df['diff']  = sd;
-    df['dea']   = se;
-    df['macd']  = sa;
 
-    """
+    sd, sa = calc_macd(df['diff'], 9)
+    df['dea']  = sd;
+    df['macd'] = sa;
+
+    # comment just for test 2016/7/30
     update_df_to_db(df, _db)  # good
-    """
 
     #log_debug("hi\n%s", df.loc[:, ['pub_date', 'pub_time', 'close_price', 'macd', 'diff', 'dea']])
 
     return
 
-def update_ma(_stocks, _table, _db):
+def update_ma_30min(_stocks, _db):
 
+    rownum = 0
     for row_index, row in _stocks.iterrows():
+        rownum = rownum + 1
+        log_debug("---stock is %s",  row_index)
         stock_id = row_index
-        stock_id = "000002"
-        log_debug("---stock is %s",  stock_id)
-        update_one(stock_id, _table, _db)
-        break
+        update_one(stock_id, _db)
 
     return
 
@@ -139,35 +128,23 @@ def update_ma(_stocks, _table, _db):
 def work():
     db = db_init()
 
-    # TODO: get table name from ARGV
-    table = "tbl_day"
+    #  compute and update
+    stocks = get_stock_list_df_db(db)
 
-    #  get stock list
-    stocks = get_stock_list_table(table, db)
-    if stocks is None:
-        log_error("list is none")
-        return -1
-
-    update_ma(stocks, table, db)
+    update_ma_30min(stocks, db)
 
     db_end(db)
 
-    return 0
-
-def init():
-    sailog_set("updatema.log")
 
 #######################################################################
 
 def main():
-    init()
-
+    sailog_set("updatema.log")
     log_debug("let's begin here!")
 
     work()
 
     log_debug("main ends, bye!")
-
     return
 
 main()
@@ -175,4 +152,4 @@ exit()
 
 #######################################################################
 
-# update_ma.py
+# update_ma_30min.py

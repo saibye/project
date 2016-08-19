@@ -148,7 +148,7 @@ def work():
 #######################################################################
 
 def main():
-    sailog_set("rt_feng.log")
+    sailog_set("rt_feng30.log")
 
     log_info("let's begin here!")
 
@@ -164,4 +164,4 @@ print "can't arrive here"
 #######################################################################
 
 
-# rt_feng.py
+# rt_feng30.py

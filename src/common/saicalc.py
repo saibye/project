@@ -22,8 +22,8 @@ def calc_sma(_sc, _n):
     se = pd.Series(0.0, _sc.index)
     """
 
-    l1 = [] # result list
-    l2 = [] # n container
+    l1 = []      # result list
+    l2 = []      # n container
     l2_len = 0   # size of l2
     l2_fst = 0.0 # first element
 
@@ -400,6 +400,161 @@ def calc_macd_list(_close, _ema_m, _ema_n, _m, _n, _k):
         pd.Series(dea,   _close.index), \
         pd.Series(macd,  _close.index)
 
+
+
+#  2016/8/16
+# calculate ema12, ema26, diff
+# input: close price
+#        _m < _n
+#   the input Series must be sorted
+# return  ema(_m), ema(_n), diff
+def calc_diff_list0(_sc, _m, _n):
+    # log_debug("diff = ema%d - ema%d...", _m, _n)
+
+    # assert m < n
+    if _m >= _n:
+        log_error("error: invalid usage: %d >= %d", _m, _n)
+        return -1
+
+    ema_m = []
+    ema_n = []
+    diffl = []
+
+    # get ema_factor
+    fac1 = ema_factor(_m)
+    fac2 = ema_factor(_n)
+    # log_debug("ema_factor is %.3f, %.3f", fac1, fac2)
+
+    # init value
+    ep1  = _sc.head(_m).mean()
+    ep2  = _sc.head(_n).mean()
+
+    ep1 = 0
+    ep2 = 0
+    rownum = 0
+
+    for s_index, s_val in _sc.iteritems():
+        rownum = rownum + 1
+        if rownum < _n:
+            #log_debug("%04d less than %d", rownum, _n)
+            ema_m.append(0.0)
+            ema_n.append(0.0)
+            diffl.append(0.0)
+            continue
+        elif rownum == _n:
+            ep1  = _sc.head(_n).tail(_m).mean()
+            ep2  = _sc.head(_n).mean()
+            ema_m.append(ep1)
+            ema_n.append(ep2)
+            diffl.append(ep1-ep2)
+            #log_debug("%04d: initial value is %.2f, %.2f", rownum, ep1, ep2)
+            continue;
+        elif rownum > _n:
+            e1 = (s_val - ep1) * fac1 + ep1
+            e2 = (s_val - ep2) * fac2 + ep2
+            ep1 = e1
+            ep2 = e2
+            ema_m.append(e1)
+            ema_n.append(e2)
+            diffl.append(e1-e2)
+            #log_debug("%04d: %s: e1: %.2f, e2: %.2f, diff: %.2f", rownum, s_index, e1, e2, diff)
+
+    # create result set
+    return pd.Series(ema_m, _close.index), \
+        pd.Series(ema_n, _close.index), \
+        pd.Series(diffl,  _close.index)
+
+
+
+#  2016/8/6 list mode: calculate EMA*2, DIFF, DEA and MACD 
+# input: (m, n, k) => (12, 26, 9)
+#   the input Series must be sorted
+def calc_macd_list0(_close, _m, _n, _k):
+    pd.options.mode.chained_assignment = None
+    # log_debug("calc macd(%d, %d, %d)", _m, _n, _k)
+
+    # get ema_factor
+    fac1 = ema_factor(_m)
+    fac2 = ema_factor(_n)
+    fac3 = ema_factor(_k)
+
+    # assign init value
+    ep1 = _close.head(_m).mean()
+    ep2 = _close.head(_n).mean()
+    ep3 = -1.0
+
+    e1  = -1.0
+    e2  = -1.0
+    e3  = -1.0
+
+    ema_m = []
+    ema_n = []
+    diff  = []
+    dea   = []
+    macd  = []
+
+    idx      = 0
+    di_count = 0
+    di_sum   = 0.0
+    for s_index, s_val in _close.iteritems():
+        idx = idx + 1
+
+        # ema(12)
+        if idx < _m:
+            ema_m.append(0.0)
+        elif idx == _m:
+            ep1  = _close.head(_m).mean()
+            ema_m.append(ep1)
+        else:
+            e1  = (s_val - ep1) * fac1 + ep1
+            ep1 = e1
+            ema_m.append(e1)
+
+
+        # ema(26)
+        if idx < _n:
+            ema_n.append(0.0)
+        elif idx == _n:
+            ep2  = _close.head(_n).mean()
+            ema_n.append(ep2)
+        else:
+            e2  = (s_val - ep2) * fac2 + ep2
+            ep2 = e2
+            ema_n.append(e2)
+
+
+        # diff = ema(12) - ema(26)
+        if e1 > 0 and e2 > 0 :
+            di = e1 - e2
+            di_count = di_count + 1
+            di_sum  += di
+        else :
+            di = 0.0
+        diff.append(di)
+        # log_debug("%04d: e1: %.2f, e2: %.2f, diff: %.2f", idx, e1, e2, di)
+
+        # dea(k), macd
+        if di_count <  _k :
+            e3 = 0.0
+            d2 = 0.0
+        elif di_count == _k :
+            ep3 = di_sum / _k
+            e3  = ep3
+            d2  = 0.0
+        else :
+            e3  = (di - ep3) * fac3 + ep3
+            ep3 = e3;
+            d2  = (di - e3) * 2
+        dea.append(e3)
+        macd.append(d2)
+        log_debug("%04d: macd: %.3f, di: %.3f, dea: %.3f", idx, d2, di, e3)
+
+
+    return pd.Series(ema_m, _close.index), \
+        pd.Series(ema_n, _close.index), \
+        pd.Series(diff,  _close.index), \
+        pd.Series(dea,   _close.index), \
+        pd.Series(macd,  _close.index)
 
 if __name__ == "__main__":
     sailog_set("saicalc.log")

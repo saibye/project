@@ -14,8 +14,8 @@ export LANG=zh_CN.utf8
 
 
 today=$(date +%Y%m%d)
-log=${LOG}/feng_${today}.log
-err=${LOG}/feng_${today}.err
+log=${LOG}/feng30_${today}.log
+err=${LOG}/feng30_${today}.err
 
 
 exec 3>${log}
@@ -26,11 +26,11 @@ exec 2>&4
 
 cd ${PHOME}/src/store
 
-nohup python rt_feng.py &
+nohup python rt_feng30.py &
 
 exec 3>&-
 exec 4>&-
 
-echo "shell: run rt_feng.py succeeds."
+echo "shell: run rt_feng30.py succeeds."
 
-#autofeng
+#autofeng30

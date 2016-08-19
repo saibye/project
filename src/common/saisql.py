@@ -103,14 +103,28 @@ def get_stock_list_df_tu():
 
 
 def get_stock_list_df_db(_db):
-    sql = "select distinct stock_id from tbl_30min order by 1"
     sql = "select distinct stock_id from tbl_30min order by 1 limit 200"
     sql = "select distinct stock_id from tbl_30min order by 1 limit 10"
     sql = "select distinct stock_id from tbl_30min where stock_id='000007'"
     sql = "select distinct stock_id from tbl_30min where stock_id='600016'"
+    sql = "select distinct stock_id from tbl_30min order by 1"
 
     df = pd.read_sql_query(sql, _db);
 
     return df.set_index('stock_id')
+
+
+"""
+2016/8/16
+"""
+def get_stock_list_table(_table, _db):
+    sql = "select distinct stock_id from %s order by 1" % _table
+
+    df = pd.read_sql_query(sql, _db);
+    if df is None:
+        return None
+    else :
+        return df.set_index('stock_id')
+
 
 # saisql.py
