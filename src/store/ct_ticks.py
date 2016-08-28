@@ -19,20 +19,7 @@ buy策略：
 """
 #######################################################################
 
-g_good_list    = []
-g_good_list2   = []
-g_good_list3   = []
-
 g_has_noticed  = {}
-g_has_noticed2 = {}
-g_has_noticed3 = {}
-
-g_has_noticed_rank = {}
-
-
-g_stock_date  = ""
-g_check_count = 0  # 检查是否全天无数据
-
 
 
 def ct_ticks_analyze(_stock_id, _trade_date, _db):
@@ -59,7 +46,7 @@ def ct_ticks_analyze(_stock_id, _trade_date, _db):
         return -2, None
 
     if len(df) <= 5:
-        log_error("warn: stock %s is empty: %d, next", _stock_id, len(df))
+        # log_error("warn: stock %s is empty: %d, next", _stock_id, len(df))
         return -3, None
 
     """
@@ -81,7 +68,7 @@ def ct_ticks_analyze(_stock_id, _trade_date, _db):
         log_error("warn: stock %s is too cheap, next", _stock_id)
         return -4, None
 
-    if close_price <= open_price:
+    if close_price <= open_price*1.01:
         kk = 9
     else:
         kk = 0
@@ -109,24 +96,25 @@ def ct_ticks_analyze(_stock_id, _trade_date, _db):
 
         diff = buy - sell
         diff2 = diff * factor
-        content += "base(%d):\tbuy: %d, sell: %d, rate: %.2f, net: %d, %.0f\n" % (base, buy, sell, rate, diff, diff2)
+        content += "%04d B: %.2f, S: %.2f, N: %.2f, %.2f\n" % \
+                    (base, buy/10000.00, sell/10000.00, diff/10000.00, diff2/10000.00)
 
         # TODO: with price and total-flow 2016/8/26
 
         diff = diff2
         if diff >= 500000:
             counter50 += 1
-        elif diff >= 400000:
+        if diff >= 400000:
             counter40 += 1
-        elif diff >= 300000:
+        if diff >= 300000:
             counter30 += 1
-        elif diff >= 200000:
+        if diff >= 200000:
             counter20 += 1
-        elif diff >= 100000:
+        if diff >= 100000:
             counter10 += 1
-        elif diff >= 30000:
+        if diff >= 30000:
             counter5 += 1
-        elif diff < 0:
+        if diff < 0:
             counter_bad += 1
 
     if counter50 >= 6:
@@ -154,9 +142,8 @@ def ct_ticks_analyze(_stock_id, _trade_date, _db):
 
 def ct_ticks(_stocks, _trade_date, _db):
     global g_has_noticed
-    global g_has_noticed2
-    global g_has_noticed3
 
+    body = ""
     for row_index, row in _stocks.iterrows():
         """
         name     = row['name']
@@ -182,45 +169,53 @@ def ct_ticks(_stocks, _trade_date, _db):
         """
 
         rank, content = ct_ticks_analyze(stock_id, _trade_date, _db)
-        if rank >= 300:
-            log_info("nice1: %s, rank: %d\n%s", stock_id, rank, content)
-            # TODO send mail
-        elif rank >= 100:
-            log_info("nice2: %s, rank: %d\n%s", stock_id, rank, content)
-            # TODO send mail
-        elif rank >= 50:
-            log_info("nice3: %s, rank: %d\n%s", stock_id, rank, content)
-            # TODO send mail
+        if rank >= 500 or (rank >= 109 and rank % 100 == 9):
+            # very good
+            subject1 = "###吸筹 %s, %s" % (stock_id, _trade_date)
+            if g_has_noticed.has_key(stock_id):
+                pass
+            else:
+                g_has_noticed[stock_id] = 1
+                saimail(subject1, content)
+                log_info("%s\n%s", subject1, content)
         else:
-            log_debug("rank: %s, %d", stock_id, rank)
+            if rank >= 50:
+                log_info("nice: %s, rank: %d\n%s", stock_id, rank, content)
+                body += content + "\n"
+            else:
+                log_debug("%s, %d", stock_id, rank)
 
         """
         break
         """
+
+
+    # 一次性mail:  TODO
+    if len(body) > 0:
+        log_info("mail out: %s", body)
 
     return
 
 
 def ct_ticks_range(_stock_id, _date_list, _db):
 
+    body = ""
     for item in _date_list:
         trade_date = str(item).split()[0]
         # log_debug("trade_date: %s", trade_date)
         # TODO: check is weekend
         rank, content = ct_ticks_analyze(_stock_id, trade_date, _db)
-        log_debug("%s, rate: %.2f\n%s", _stock_id, rank, content)
+        if content is not None:
+            body += "%d, %s\n" % (rank, content)
+            log_debug("%s, rank: %.2f\n%s", _stock_id, rank, content)
 
-
-    return
+    return body
 
 """
 从9点半开始
 """
 
 def rt_timer(_stocks, _trade_date, _db):
-    global g_good_list
-    global g_good_list2
-    global g_good_list3
 
     end_time  = '15:30:00'
     lun_time1 = '11:35:00'
@@ -231,9 +226,6 @@ def rt_timer(_stocks, _trade_date, _db):
 
     counter  = 0
     while 1:
-        g_good_list  = []
-        g_good_list2 = []
-        g_good_list3 = []
         counter = counter + 1
 
         curr = get_time()
@@ -291,12 +283,17 @@ def work_one_day(_trade_date, _db):
 
 def work_one_stock(_stock_id, _start_date, _days, _db):
 
+    body = ""
+
     date_list  = pd.date_range(_start_date, periods=int(_days))
 
     log_debug("trade day: %s", date_list)
-    ct_ticks_range(_stock_id, date_list, _db)
+    body = ct_ticks_range(_stock_id, date_list, _db)
 
-    # TODO: mail
+    # mail
+    if len(body) > 0:
+        subject = "stock: %s, start: %s, days: %d" % (_stock_id, _start_date, _days)
+        saimail(subject, body)
 
     return
 
@@ -352,7 +349,7 @@ def work(_args):
 
         stock_id   = "002417"
         start_date = "2016-08-01"
-        days       = 24
+        days       = 26
 
         stock_id   = "300331"
         stock_id   = "002036"
@@ -366,6 +363,7 @@ def work(_args):
         stock_id   = "300020"
         stock_id   = "000687"
         stock_id   = "002329"
+        stock_id   = "000402"
         log_debug("default::: %s, %s, %s", start_date, days, stock_id)
         work_one_stock(stock_id, start_date, days, db)
     elif argc == 1:

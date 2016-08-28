@@ -181,19 +181,6 @@ def rt_dadan_one(_stock_id, _dd_date, _db):
     df = df.sort_index(ascending=False)
 
 
-    """
-    # TODO: 2016/8/22
-    # sell
-    # check df
-    vol_base = 1000
-    df_sell = df[df.volume >= vol_base]
-    vol = 1000
-    cnt = 6
-    pri = 10.00
-    rt_dadan_check_sell(_stock_id, df, _db, vol, cnt, pri)
-    """
-
-
     # buy
     vol_base = 3000
     df_buy = df[df.volume >= vol_base]
@@ -223,23 +210,64 @@ def rt_dadan_one(_stock_id, _dd_date, _db):
     else:
         rt_dadan_check_buy(_stock_id, df_buy, _db, vol, cnt, g_has_noticed3, g_good_list3, pri)
 
-    """
-    # rank 2016/8/19
-    rank, rs, ns, mess= check_df_rates(df)
-    if rank >= -1000:
-        if g_has_noticed_rank.has_key(_stock_id):
-            pass
-        else:
-            subject = "#rank1-buy"
-            body    = "%s, rank: %d\n" % (_stock_id, rank)
-            for item in mess:
-                body += "%s\n" % item
-            log_info("%s", body)
-            # saimail(subject, body)
-    """
+
+    return 
+
+
+def rt_dadan_rank_one(_stock_id, _dd_date, _db):
+
+    # 100手起
+    base_vol = 100
+
+    df = None
+
+    try:
+        df = ts.get_sina_dd(_stock_id, date=_dd_date, vol=base_vol)
+    except Exception:
+        log_error("warn: %s get_sina_dd exception!", _stock_id)
+        time.sleep(5)
+        return -4
+
+    if df is None :
+        # log_error("warn: stock %s is None, next", _stock_id)
+        return -1
+
+    if df.empty:
+        # log_error("warn: stock %s is empty, next", _stock_id)
+        return -2
+
+    if len(df) <= 5:
+        # log_error("warn: stock %s is short, next", _stock_id)
+        return -3
+
+    # convert to 手
+    df['volume'] = df['volume'] / 100
+
+    log_debug("ranking: %s, size: %d", _stock_id, len(df))
+
+    # 保持 升序
+    df = df.sort_index(ascending=False)
+
+    # rank 2016/8/28
+    rank, content = get_df_rank(df)
+    if rank >= 300 or (rank >= 209 and rank % 100 == 9):
+        subject = "###%s %d 净流入" % (_stock_id, rank)
+        log_info("nice: %s, %s", subject, content)
+        saimail(subject, content)
 
 
     return 
+
+
+# 收盘前检查一次
+def rt_dadan_rank(_stocks, _trade_date, _db):
+
+    for row_index, row in _stocks.iterrows():
+        stock_id = row_index
+
+        rt_dadan_rank_one(stock_id, _trade_date, _db)
+
+
 
 
 def rt_dadan(_stocks, _trade_date, _db):
@@ -277,9 +305,13 @@ def rt_timer(_stocks, _db):
     global g_good_list2
     global g_good_list3
 
-    end_time  = '15:30:00'
+    day_rank_checked = 0
+
+    end_time  = '15:05:00'
     lun_time1 = '11:35:00'
     lun_time2 = '13:00:00'
+
+    pre_end_time  = '14:30:00'
 
 
     global g_stock_date
@@ -338,6 +370,11 @@ def rt_timer(_stocks, _db):
         break
         """
 
+        # 收盘前分析资金流向 2016/8/28
+        if curr >= pre_end_time and day_rank_checked == 0:
+            day_rank_checked = 1
+            rt_dadan_rank(_stocks, g_stock_date, _db)
+
         # 当日结束
         curr = get_time()
         if curr >= end_time:
@@ -345,7 +382,7 @@ def rt_timer(_stocks, _db):
             break
 
         # 降低频率
-        time.sleep(300)
+        time.sleep(600)
 
     return
 
@@ -378,6 +415,7 @@ def main():
     else:
         log_info("today is workday, come on")
         work()
+
 
     log_info("main ends, bye!")
     return

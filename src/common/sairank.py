@@ -106,6 +106,104 @@ def check_df_rates(_df):
 
     return rank, rs, ns, ms
 
+
+def get_df_rank(_sina_df):
+
+    if _sina_df is None :
+        # log_error("warn: df is None, next")
+        return -1, "" 
+
+    if _sina_df.empty:
+        # log_error("warn: df is empty, next")
+        return -2, ""
+
+    if len(_sina_df) <= 5:
+        # log_error("warn: df is short: %d, next", len(_sina_df))
+        return -3, ""
+
+
+    length = len(_sina_df)
+    open_price  = _sina_df['price'][0]
+    close_price = _sina_df['price'][length-1]
+    # log_debug("open: %s, close: %s", open_price, close_price)
+
+    if close_price <= 8.0:
+        # log_error("warn: price is too cheap, next")
+        return -4, ""
+
+    if close_price <= open_price*1.01:
+        kk = 9
+    else:
+        kk = 0
+
+    factor = close_price / 10.0
+
+    base_list = [200, 400, 800, 1000, 2000, 3000]
+
+    rank = 0.0
+
+    counter5 = 0
+    counter10 = 0
+    counter20 = 0
+    counter30 = 0
+    counter40 = 0
+    counter50 = 0
+    counter_bad = 0
+    content = "price: [%s, %s]\n" % (open_price, close_price)
+    for base in base_list :
+        rank = 0
+        net  = 0.0
+        buy, sell = get_buy_sell_sum(_sina_df, base)
+
+        diff = buy - sell
+        diff2 = diff * factor
+        content += "%04d B: %.2f, S: %.2f, N: %.2f, %.2f\n" % \
+                    (base, buy/10000.00, sell/10000.00, diff/10000.00, diff2/10000.00)
+
+        diff = diff2
+        if diff >= 500000:
+            counter50 += 1
+
+        if diff >= 400000:
+            counter40 += 1
+
+        if diff >= 300000:
+            counter30 += 1
+
+        if diff >= 200000:
+            counter20 += 1
+
+        if diff >= 100000:
+            counter10 += 1
+
+        if diff >= 30000:
+            counter5 += 1
+
+        if diff < 0:
+            counter_bad += 1
+
+    if counter50 >= 5:
+        rank = 500
+    elif counter40 >= 5:
+        rank = 400
+    elif counter30 >= 5:
+        rank = 300
+    elif counter20 >= 5:
+        rank = 200
+    elif counter10 >= 5:
+        rank = 100
+    elif counter5 >= 5:
+        rank = 50
+
+    if counter_bad > 0:
+        rank -= 10
+
+    if rank > 0:
+        rank += kk
+
+    return  rank, content
+
+
 if __name__=="__main__":
     sailog_set("sairank.log")
     base_vol = 100
