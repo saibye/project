@@ -152,7 +152,12 @@ def main():
 
     log_info("let's begin here!")
 
-    work()
+    # check holiday
+    if today_is_weekend():
+        log_info("today is weekend, exit")
+    else:
+        log_info("today is workday, come on")
+        work()
 
     log_info("main ends, bye!")
     return
