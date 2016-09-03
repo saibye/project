@@ -31,22 +31,22 @@ def ct_ticks_analyze(_stock_id, _trade_date, _db):
 
     try:
         # df = ts.get_sina_dd(_stock_id, date=_trade_date, vol=base_vol)
-        df = ts.get_tick_data(_stock_id, date = _trade_date)
+        df = ts.get_tick_data(_stock_id, date = _trade_date, retry_count=5, pause=1)
     except Exception:
         log_error("warn: %s get ticks exception!", _stock_id)
         time.sleep(5)
         return -4, None
 
     if df is None :
-        # log_error("warn: stock %s is None, next", _stock_id)
+        log_error("warn: stock %s, %s is None, next", _stock_id, _trade_date)
         return -1, None
 
     if df.empty:
-        log_error("warn: stock %s is empty, next", _stock_id)
+        log_error("warn: stock %s, %s is empty, next", _stock_id, _trade_date)
         return -2, None
 
     if len(df) <= 5:
-        # log_error("warn: stock %s is empty: %d, next", _stock_id, len(df))
+        log_error("warn: stock %s, %s is short %d, next", _stock_id, _trade_date, len(df))
         return -3, None
 
     """
@@ -64,7 +64,7 @@ def ct_ticks_analyze(_stock_id, _trade_date, _db):
     open_price  = df['price'][0]
     close_price = df['price'][-1]
 
-    if close_price <= 6.0:
+    if close_price <= 2.0:
         log_error("warn: stock %s is too cheap, next", _stock_id)
         return -4, None
 
@@ -73,6 +73,8 @@ def ct_ticks_analyze(_stock_id, _trade_date, _db):
     else:
         kk = 0
 
+
+    # with price
     factor = close_price / 10.0
 
     counter5 = 0
@@ -81,6 +83,10 @@ def ct_ticks_analyze(_stock_id, _trade_date, _db):
     counter30 = 0
     counter40 = 0
     counter50 = 0
+    # 60,70,80不考虑加权 2016/9/2
+    counter60 = 0
+    counter70 = 0
+    counter80 = 0
     counter_bad = 0
     content = "%s: %s: [%s, %s]\n" % (_stock_id, _trade_date, open_price, close_price)
     for base in base_list :
@@ -94,30 +100,42 @@ def ct_ticks_analyze(_stock_id, _trade_date, _db):
             rate = 1.0 * buy / sell
 
 
-        diff = buy - sell
+        diff  = buy - sell
         diff2 = diff * factor
         content += "%04d B: %.2f, S: %.2f, N: %.2f, %.2f\n" % \
                     (base, buy/10000.00, sell/10000.00, diff/10000.00, diff2/10000.00)
 
-        # TODO: with price and total-flow 2016/8/26
+        # 原始净值 2016/9/2
+        if diff >= 1200000:
+            counter80 += 1
+        if diff >= 1000000:
+            counter70 += 1
+        if diff >= 600000:
+            counter60 += 1
 
-        diff = diff2
-        if diff >= 500000:
+        # 加权净值2016/9/2
+        if diff2 >= 500000 or diff >= 500000:
             counter50 += 1
-        if diff >= 400000:
+        if diff2 >= 400000:
             counter40 += 1
-        if diff >= 300000:
+        if diff2 >= 300000:
             counter30 += 1
-        if diff >= 200000:
+        if diff2 >= 200000:
             counter20 += 1
-        if diff >= 100000:
+        if diff2 >= 100000:
             counter10 += 1
-        if diff >= 30000:
+        if diff2 >= 30000:
             counter5 += 1
-        if diff < 0:
+        if diff2 < 0:
             counter_bad += 1
 
-    if counter50 >= 6:
+    if counter80 >= 6:
+        rank = 800
+    elif counter70 >= 6:
+        rank = 700
+    elif counter60 >= 6:
+        rank = 600
+    elif counter50 >= 6:
         rank = 500
     elif counter40 >= 6:
         rank = 400
@@ -171,7 +189,7 @@ def ct_ticks(_stocks, _trade_date, _db):
         rank, content = ct_ticks_analyze(stock_id, _trade_date, _db)
         if rank >= 500 or (rank >= 109 and rank % 100 == 9):
             # very good
-            subject1 = "###吸筹 %s, %s" % (stock_id, _trade_date)
+            subject1 = "###rank: %d | %s 吸筹 %s" % (rank, stock_id, _trade_date)
             if g_has_noticed.has_key(stock_id):
                 pass
             else:
@@ -292,7 +310,7 @@ def work_one_stock(_stock_id, _start_date, _days, _db):
 
     # mail
     if len(body) > 0:
-        subject = "stock: %s, start: %s, days: %d" % (_stock_id, _start_date, _days)
+        subject = "%s, start: %s, days: %s" % (_stock_id, _start_date, _days)
         saimail(subject, body)
 
     return
