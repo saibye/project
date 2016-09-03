@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- encoding: utf8 -*-
 
+import sys
 import tushare as ts
 import time
 import pandas as pd
@@ -8,6 +9,7 @@ import numpy as np
 
 from time import strftime, localtime
 from datetime import timedelta, date
+import datetime
 import calendar
 
 from sailog  import *
@@ -50,12 +52,23 @@ def today():
     return date.today()
 
 
-def datetime():
+def dai_datetime():
     '''''
     get datetime,format="YYYY-MM-DD HH:MM:SS"
     '''
     return strftime("%Y-%m-%d %H:%M:%S",localtime())
 
+# 2016/8/21
+def today_weekday():
+    d = datetime.datetime.now()
+    return  d.isoweekday()
+
+def today_is_weekend():
+    n = today_weekday()
+    if n == 6 or n == 7:
+        return 1
+    else:
+        return 0
 
 def check_time_to_run(_time_map):
 
@@ -79,12 +92,21 @@ def check_time_to_run(_time_map):
 
     return to_run
 
+# 此函数只能调用一次 
+def get_args():
+    sys.argv.pop(0)
+    args = sys.argv
+    return args
+
 
 if __name__=="__main__":
     print today()  
-    print datetime()
     print get_date_by(20)
     print get_date_by(-3)
+    if today_is_weekend():
+        print "is weekend"
+    else:
+        print "not"
 
 
 

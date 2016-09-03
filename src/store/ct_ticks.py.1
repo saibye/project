@@ -1,0 +1,314 @@
+#!/usr/bin/env python
+# -*- encoding: utf8 -*-
+
+import tushare as ts
+import pandas as pd
+import numpy as np
+
+from saiutil import *
+from saidb   import *
+from saisql  import *
+from saicalc import *
+from sailog  import *
+from saimail import *
+from sairank import *
+
+
+"""
+buy策略：
+1. vol >= 100000, 连续1笔买
+2. vol >= 10000,  连续3笔买
+3. vol >= 3000,   连续8笔买
+"""
+#######################################################################
+
+g_good_list    = []
+g_good_list2   = []
+g_good_list3   = []
+
+g_has_noticed  = {}
+g_has_noticed2 = {}
+g_has_noticed3 = {}
+
+g_has_noticed_rank = {}
+
+
+
+def ct_ticks_check_buy(_stock_id, _df, _db, _vol_base, _count_base, _noticed, _list, _price):
+
+    good = 0
+
+    buy  = "买盘"
+    sell = "卖盘"
+
+    con1 = 0
+
+    subject = ""
+    body    = ""
+
+    stock_id  = _stock_id
+
+    for row_index, row in _df.iterrows():
+        # stock_id  = row['code']
+        direction = row['type']
+        volume    = row['volume']
+        tm        = row['time']
+        price     = row['price']
+
+
+        if volume >= _vol_base:
+            if direction == buy:
+                con1 = con1 + 1
+                # log_info("连续买: [%d, %s, %d, %s]", con1, tm, volume, direction)
+            else :
+                con1 = 0
+                # log_info("有卖盘: 重置 [%d, %s, %d, %s]", con1, tm, volume, direction)
+
+            if con1 >= _count_base and price >= _price :
+                log_info("nice: buy [%s]: at [%s, %.2f] %dth", stock_id, tm, price, con1)
+                good = 1
+                # subject = u"dadan1: %s"  % stock_id
+                body   += u"%s, %s: price: %.2f,  vol: %d, times: %d\n" % (stock_id, tm, price, volume, con1)
+
+    if len(body) > 0 :
+        if _noticed.has_key(stock_id) :
+            pass
+        else :
+            _noticed[stock_id] = body
+            _list.append(body)
+
+            #  超大单实时通知 2016/8/17
+            if _vol_base >= 100000:
+                log_info("let's mail3 immediately")
+                subject = "#dadan3-buy"
+                body    = ""
+                for item in g_good_list3 :
+                    body   +=  item
+                saimail(subject, body)
+
+    return good
+
+
+def ct_ticks_one(_stock_id, _db):
+    # log_info("ct_ticks_one begin")
+    global g_has_noticed
+    global g_has_noticed2
+    global g_has_noticed3
+    global g_good_list
+    global g_good_list2
+    global g_good_list3
+
+    # today data
+    base_vol = 100
+    dd_date  = get_date_by(0)
+    dd_date  = get_date_by(-2)
+    dd_date  = "2016-07-12"
+    dd_date  = "2016-07-29"
+    dd_date  = "2016-08-02"
+    # log_debug("stock: %s, %s, %s", _stock_id, dd_date, base_vol)
+
+    # begin = get_micro_second()
+
+    df = None
+
+    try:
+        df = ts.get_sina_dd(_stock_id, date=dd_date, vol=base_vol)
+        df = ts.get_tick_data(_stock_id, date=dd_date)
+    except Exception:
+        log_error("warn: %s get_sina_dd exception!", _stock_id)
+        time.sleep(5)
+        return -4
+
+    # log_info("get_sina_dd costs %d us", get_micro_second() - begin)
+
+    if df is None :
+        log_error("warn: stock %s is None, next", _stock_id)
+        return -1
+
+    if df.empty:
+        log_error("warn: stock %s is empty, next", _stock_id)
+        return -2
+
+    # convert to 手
+    #df['volume'] = df['volume'] / 100
+
+    df = df.sort_index(ascending=False)
+
+    begin = get_micro_second()
+
+    """
+    """
+    # check df
+    vol = 3000
+    cnt = 12
+    pri = 10.00
+    ct_ticks_check_buy(_stock_id, df, _db, vol, cnt, g_has_noticed,  g_good_list, pri)
+
+    vol = 10000
+    cnt = 3
+    pri = 9.00
+    ct_ticks_check_buy(_stock_id, df, _db, vol, cnt, g_has_noticed2, g_good_list2, pri)
+
+    vol = 100000
+    cnt = 1
+    pri = 8.00
+    ct_ticks_check_buy(_stock_id, df, _db, vol, cnt, g_has_noticed3, g_good_list3, pri)
+
+    # rank 2016/8/19
+    rank, mess= check_df_rates(df)
+    if rank >= -1000:
+        if g_has_noticed_rank.has_key(_stock_id):
+            pass
+        else:
+            subject = "#rank1-buy"
+            body    = "%s, rank: %d\n" % (_stock_id, rank)
+            for item in mess:
+                body += "%s\n" % item
+            log_info("%s", body)
+            # saimail(subject, body)
+
+    # log_info("ct_ticks_one end")
+
+    return 
+
+
+def ct_ticks(_stocks, _db):
+
+    for row_index, row in _stocks.iterrows():
+        """
+        row_index = '600696'
+        row_index = '600739'
+        row_index = '002805'
+
+        row_index = '600358'
+
+        row_index = '000002'
+        """
+        row_index = '300506'
+
+        ct_ticks_one(row_index, _db)
+
+        # delete me 2016/8/7
+        """
+        """
+        break
+
+    return
+
+
+"""
+从9点半开始
+"""
+
+def rt_timer(_stocks, _db):
+    global g_good_list
+    global g_good_list2
+    global g_good_list3
+    end_time = '16:00:00'
+    lun_time1 = '11:35:00'
+    lun_time2 = '13:00:00'
+
+    counter  = 0
+    while 1:
+        g_good_list  = []
+        g_good_list2 = []
+        g_good_list3 = []
+        counter = counter + 1
+
+        curr = get_time()
+        if curr >= lun_time1 and curr <= lun_time2:
+            log_info("'%s' means noon time", curr)
+            time.sleep(300)
+            continue
+
+        log_info(">>>>>let's run here")
+
+        begin = get_micro_second()
+
+        # step2: iterate the list
+        ct_ticks(_stocks, _db)
+
+        diff = get_micro_second() - begin;
+        # log_info("ct_ticks costs %d us", diff)
+
+        """
+        if len(g_good_list) > 0 :
+            log_info("let's mail")
+            subject = "dadan1-buy"
+            body    = ""
+            for item in g_good_list :
+                body   +=  item
+            saimail(subject, body)
+
+        if len(g_good_list2) > 0 :
+            log_info("let's mail2")
+            subject = "dadan2-buy"
+            body    = ""
+            for item in g_good_list2 :
+                body   +=  item
+            saimail(subject, body)
+        """
+
+
+        """
+        if len(g_good_list3) > 0 :
+            log_info("let's mail3")
+            subject = "#dadan3-buy"
+            body    = ""
+            for item in g_good_list3 :
+                body   +=  item
+            saimail(subject, body)
+        """
+
+        """
+        # delete me
+        break
+        """
+
+        curr = get_time()
+        if curr >= end_time:
+            log_info("'%s' means end today", curr)
+            break
+
+        time.sleep(180)
+
+    return
+
+
+
+
+def work():
+    db = db_init()
+
+    # step1: get from web
+    stocks = get_stock_list_df_tu()
+
+    # step2: record to db at some time
+    rt_timer(stocks, db)
+
+
+    db_end(db)
+
+
+#######################################################################
+
+def main():
+    sailog_set("ct_ticks.log")
+
+    log_info("let's begin here!")
+
+    saimail_init()
+
+    work()
+
+    log_info("main ends, bye!")
+    return
+
+main()
+exit()
+print "can't arrive here"
+
+#######################################################################
+
+
+# ct_ticks.py

@@ -8,6 +8,7 @@ import tushare as ts
 
 from sailog  import *
 
+import matplotlib.pyplot as plt
 
 def dump_gp(_g):
     for i, j in _g:
@@ -233,19 +234,49 @@ stock   = '600084'
 stock   = '002694'
 stock   = '000736'
 
-day     = '2016-08-19'
+day     = '2016-08-17'
 stock   = '600187'
 
 #base = 10000
 #df = ts.get_sina_dd(stock, date=day, vol=base)
-df = ts.get_tick_data(stock, date=day)
-df = df.sort_values(by='time')
+#df = ts.get_tick_data(stock, date=day)
+#df = df.sort_values(by='time')
 
 #df = df.head(1400)
-df = ts.get_sina_dd(stock, date=day)
-log_debug("head:\n%s", df)
+
 """
+day     = '2016-08-17'
+stock   = '000839'
+base    = 10000
+day     = '2016-08-16'
+stock   = '002142'
+stock   = '300015'
+stock   = '000002'
+stock   = '000885'
+day     = '2016-08-10'
+day     = '2016-08-03'
+base    = 100
+df = ts.get_sina_dd(stock, date=day, vol=base)
+log_debug("head.1:\n%s", df)
 """
+
+"""
+
+#df[df.type == '买盘']['volume'] = 0
+#df.loc[df.type=='买盘', 'volume'] = 0
+df['buy']  = df['volume']
+df['sell'] = df['volume']
+df.loc[df.type=='卖盘', 'buy']  = 0
+df.loc[df.type=='买盘', 'sell'] = 0
+log_debug("head.2:\n%s", df)
+df = df.set_index('time').sort_index()
+kk = df.loc[:, ['buy', 'sell']].cumsum()
+#kk.plot()
+kk.buy.plot(color='r')
+kk.sell.plot(color='g')
+log_debug("kk.2:\n%s", kk)
+plt.show()
+
 
 exit()
 
@@ -281,5 +312,63 @@ log_debug("%d:\n%s", base, df[df.volume > base].groupby('type')['volume'].sum())
 
 rank = check_df_rates(df)
 log_debug("rank: %d", rank)
+"""
+
+def rt_dadan_check_sell(_stock_id, _df, _vol_base, _count_base, _price):
+
+    good = 0
+
+    buy  = "买盘"
+    sell = "卖盘"
+
+    con1 = 0
+
+    subject = ""
+    body    = ""
+
+    stock_id  = _stock_id
+
+    for row_index, row in _df.iterrows():
+        direction = row['type']
+        volume    = row['volume']
+        tm        = row['time']
+        price     = row['price']
+
+
+        if volume >= _vol_base:
+            if direction == sell:
+                con1 = con1 + 1
+                log_info("连续sell: [%d, %s, %d, %s]", con1, tm, volume, direction)
+            else :
+                con1 = 0
+                log_info("有buy盘: 重置 [%d, %s, %d, %s]", con1, tm, volume, direction)
+
+            if con1 >= _count_base and price >= _price :
+                log_info("warn: sell [%s]: at [%s, %.2f, %d] %dth", stock_id, tm, price, volume, con1)
+                good = 1
+                body   += u"%s, %s: price: %.2f,  vol: %d, times: %d\n" % (stock_id, tm, price, volume, con1)
+
+    if len(body) > 0 :
+        body += "++++++++++++++++++++++++++++++++\n"
+        log_info("nice:\n%s", body)
+
+    return good
+
+day     = '2016-08-22'
+base    = 100
+stock   = '600838'
+stock   = '000002'
+df = ts.get_sina_dd(stock, date=day, vol=base)
+
+# convert to 手
+df['volume'] = df['volume'] / 100
+
+df = df.sort_index(ascending=False)
+
+log_debug("head.1:\n%s", df)
+
+#rt_dadan_check_sell(stock, df, 1000, 6, 10.0)
+#rt_dadan_check_sell(stock, df, 2500, 4, 10.0)
+rt_dadan_check_sell(stock, df, 3300, 3, 10.0)
 
 # end
