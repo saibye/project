@@ -354,6 +354,7 @@ def rt_dadan_check_sell(_stock_id, _df, _vol_base, _count_base, _price):
 
     return good
 
+"""
 day     = '2016-08-22'
 base    = 100
 stock   = '600838'
@@ -370,5 +371,25 @@ log_debug("head.1:\n%s", df)
 #rt_dadan_check_sell(stock, df, 1000, 6, 10.0)
 #rt_dadan_check_sell(stock, df, 2500, 4, 10.0)
 rt_dadan_check_sell(stock, df, 3300, 3, 10.0)
+
+"""
+
+"""
+df = ts.get_tick_data('600868',date='2015-08-06')
+log_debug("\n%s", df)
+"""
+
+"""
+df = ts.get_report_data(2016, 2)
+log_debug("get_report_data\n%s", df)
+"""
+
+"""
+df = ts.get_growth_data(2016, 2)
+log_debug("get_growth_data\n%s", df)
+"""
+
+df = ts.get_stock_basics()
+log_debug("get_stock_basics\n%s", df)
 
 # end

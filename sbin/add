@@ -1,0 +1,19 @@
+# add
+
+if [[ $# -eq 1 ]]; then
+    stock_id=$1
+else
+    echo "usage: $0 stock_id"
+    exit 1
+fi
+
+if [[ ${#stock_id} != 6 ]]; then
+    echo "length of stock ${stock_id} is not valid"
+    exit 2
+fi
+
+cd ${PHOME}/src/store
+
+python add_bought.py $stock_id
+
+# add

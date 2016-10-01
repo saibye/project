@@ -14,8 +14,8 @@ export LANG=zh_CN.utf8
 
 
 today=$(date +%Y%m%d)
-log=${LOG}/stra1_${today}.log
-err=${LOG}/stra1_${today}.err
+log=${LOG}/care_${today}.log
+err=${LOG}/care_${today}.err
 
 
 exec 3>${log}
@@ -26,11 +26,12 @@ exec 2>&4
 
 cd ${PHOME}/src/store
 
-nohup python strategy1.py &
+#today=$(date +%Y-%m-%d)
+nohup python care_bought.py &
 
 exec 3>&-
 exec 4>&-
 
-echo "shell: run strategy1.py succeeds."
+echo "shell: run care_bought.py succeeds."
 
-#autostra1
+#autocare

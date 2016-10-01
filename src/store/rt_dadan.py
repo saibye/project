@@ -187,7 +187,7 @@ def rt_dadan_one(_stock_id, _dd_date, _db):
 
     # check df
     vol = 3000
-    cnt = 10
+    cnt = 12
     pri = 10.00
     if g_has_noticed.has_key(_stock_id):
         pass
@@ -250,8 +250,9 @@ def rt_dadan_rank_one(_stock_id, _dd_date, _db):
 
     # rank 2016/8/28
     rank, content = get_df_rank(df)
-    if rank >= 300 or (rank >= 209 and rank % 100 == 9):
-        subject = "###%s %d 净流入" % (_stock_id, rank)
+    # if rank >= 300 or (rank >= 209 and rank % 100 == 9):
+    if rank >= 100 or (rank >= 209 and rank % 100 == 9):
+        subject = "###rank: %d 净流入 %s" % (rank, _stock_id)
         log_info("nice: %s, %s", subject, content)
         saimail(subject, content)
 
@@ -339,11 +340,13 @@ def rt_timer(_stocks, _db):
         # 遍历股票列表
         rt_dadan(_stocks, g_stock_date, _db)
 
+        """
         global g_check_count
         if g_check_count == 0:
             log_info("all stock no data, exit")
             saimail("dadan: no data at all", "take a rest2")
             break
+        """
 
         # 策略1: mail
         if len(g_good_list) > 0 :

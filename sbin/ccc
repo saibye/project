@@ -1,0 +1,7 @@
+# ccc
+
+cd ${PHOME}/src/store
+
+python clear_bought.py
+
+# ccc

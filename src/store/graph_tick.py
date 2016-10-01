@@ -4,6 +4,7 @@
 import tushare as ts
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
 
 from saiutil import *
 from saidb   import *
@@ -21,8 +22,10 @@ buy策略：
 
 g_has_noticed  = {}
 
+g_idx = [1, 200, 400, 800, 1000, 2000, 3000]
+g_graph_df = pd.DataFrame(index=g_idx)
 
-def ct_ticks_analyze(_stock_id, _trade_date, _db):
+def graph_tick_analyze(_stock_id, _trade_date, _db):
 
     # sina base
     base_vol = 200
@@ -80,6 +83,7 @@ def ct_ticks_analyze(_stock_id, _trade_date, _db):
     buy_list  = []
     sell_list = []
     net_list  = []
+
 
     counter5 = 0
     counter10 = 0
@@ -190,10 +194,15 @@ values ('%s', '%s', '%s', '%s',  \
      dt, tm)
     # log_info("%s", sql)
 
+    global g_idx
+    global g_graph_df
+    se = pd.Series(net_list, g_idx)
+    g_graph_df[_trade_date] = se
+
     return  rank, content, sql
 
 
-def ct_ticks(_stocks, _trade_date, _db):
+def graph_tick(_stocks, _trade_date, _db):
     global g_has_noticed
 
     body = ""
@@ -218,12 +227,11 @@ def ct_ticks(_stocks, _trade_date, _db):
         elif op == high and high == low :
             log_debug("%s: one one one, ignore too", stock_id)
         else:
-            ct_ticks_analyze(stock_id, _trade_date, _db)
+            graph_tick_analyze(stock_id, _trade_date, _db)
         """
 
-        rank, content, sql = ct_ticks_analyze(stock_id, _trade_date, _db)
-        # if rank >= 500 or (rank >= 109 and rank % 100 == 9):
-        if rank >= 100 or (rank >= 109 and rank % 100 == 9):
+        rank, content, sql = graph_tick_analyze(stock_id, _trade_date, _db)
+        if rank >= 500 or (rank >= 109 and rank % 100 == 9):
             # very good
             subject1 = "###rank: %d | %s 吸筹 %s" % (rank, stock_id, _trade_date)
             if g_has_noticed.has_key(stock_id):
@@ -251,17 +259,25 @@ def ct_ticks(_stocks, _trade_date, _db):
     return
 
 
-def ct_ticks_range(_stock_id, _date_list, _db):
+def graph_tick_range(_stock_id, _date_list, _db):
 
     body = ""
     for item in _date_list:
         trade_date = str(item).split()[0]
         # log_debug("trade_date: %s", trade_date)
         # TODO: check is weekend
-        rank, content, sql = ct_ticks_analyze(_stock_id, trade_date, _db)
+        rank, content, sql = graph_tick_analyze(_stock_id, trade_date, _db)
         if content is not None:
             body += "%d, %s\n" % (rank, content)
             log_debug("%s, rank: %.2f\n%s", _stock_id, rank, content)
+
+    global g_graph_df
+    log_debug("1:\n%s", g_graph_df)
+    kk = g_graph_df.T
+    log_debug("2:\n%s", kk)
+    # kk = g_graph_df.cumsum()
+    kk.plot.bar()
+    plt.show()
 
     return body
 
@@ -285,7 +301,7 @@ def work_one_day(_trade_date, _db):
 
 
     # step2: loop the list
-    ct_ticks(stocks, _trade_date, _db)
+    graph_tick(stocks, _trade_date, _db)
 
     return
 
@@ -297,7 +313,7 @@ def work_one_stock(_stock_id, _start_date, _days, _db):
     date_list  = pd.date_range(_start_date, periods=int(_days))
 
     log_debug("trade day: %s", date_list)
-    body = ct_ticks_range(_stock_id, date_list, _db)
+    body = graph_tick_range(_stock_id, date_list, _db)
 
     # mail
     if len(body) > 0:
@@ -308,9 +324,9 @@ def work_one_stock(_stock_id, _start_date, _days, _db):
 
 """
 usage: 
-python ct_ticks.py 
-python ct_ticks.py some-day
-python ct_ticks.py some-day days stockid
+python graph_tick.py 
+python graph_tick.py some-day
+python graph_tick.py some-day days stockid
 """
 def work(_args):
     db = db_init()
@@ -373,6 +389,9 @@ def work(_args):
         stock_id   = "000687"
         stock_id   = "002329"
         stock_id   = "000402"
+        stock_id   = "000413"
+        start_date = "2016-09-01"
+        days       = 10
         log_debug("default::: %s, %s, %s", start_date, days, stock_id)
         work_one_stock(stock_id, start_date, days, db)
     elif argc == 1:
@@ -417,7 +436,7 @@ def work(_args):
 #######################################################################
 
 def main():
-    sailog_set("ct_ticks.log")
+    sailog_set("graph_tick.log")
 
     log_info("main begins")
 
@@ -436,4 +455,4 @@ if __name__ == "__main__":
 
 #######################################################################
 
-# ct_ticks.py
+# graph_tick.py

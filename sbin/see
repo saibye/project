@@ -1,0 +1,5 @@
+# see
+
+ps -ef |grep sai |grep -v grep
+
+# see

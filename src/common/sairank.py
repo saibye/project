@@ -133,8 +133,10 @@ def get_df_rank(_sina_df):
 
     if close_price <= open_price*1.01:
         kk = 9
+        content = "price: [%s, %s]-\n" % (open_price, close_price)
     else:
         kk = 0
+        content = "price: [%s, %s]\n" % (open_price, close_price)
 
     factor = close_price / 10.0
 
@@ -149,7 +151,6 @@ def get_df_rank(_sina_df):
     counter40 = 0
     counter50 = 0
     counter_bad = 0
-    content = "price: [%s, %s]\n" % (open_price, close_price)
     for base in base_list :
         rank = 0
         net  = 0.0
