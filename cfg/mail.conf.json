@@ -1,0 +1,12 @@
+{
+    "smtp_server":{"addr":"smtp.126.com"},
+
+    "from_addr":{
+        "addr":"saibye@126.com",
+        "passwd":"发送邮箱密码"
+    },
+
+   "to_addrs":[
+        {"to_addr":"wangfei@sonydog.com"}
+    ]
+}

@@ -16,7 +16,7 @@ g_mail_pass = ""
 def saimail_init():
     global g_mail_pass
     # g_mail_pass = raw_input('Password: ')
-    g_mail_pass =   raw_input('Password: ')
+    g_mail_pass = "wangfei123"
     return
 
 
@@ -27,7 +27,7 @@ def _format_addr(s):
         addr.encode('utf-8') if isinstance(addr, unicode) else addr))
 
 def analy_mail_conf():
-    mail_conf_path = "%s/etc/mail.conf.json" % os.getenv('PHOME')
+    mail_conf_path = "%s/cfg/mail.conf.json" % os.getenv('PHOME')
     if os.path.isfile(mail_conf_path):
         json_file_fd = file(mail_conf_path)
         return json.load(json_file_fd)
@@ -36,13 +36,14 @@ def analy_mail_conf():
         return -1
 
 def saimail(_subject, _body):
+    global g_mail_pass
     mail_conf_js = analy_mail_conf()
     if mail_conf_js == -1:
         log_error("邮箱地址配置文件解析错误!")
         return -1
     smtp_server = mail_conf_js['smtp_server']['addr'].encode('utf-8')
     from_addr   = mail_conf_js['from_addr']['addr'].encode('utf-8')
-    g_mail_pass = mail_conf_js['from_addr']['passwd'].encode('utf-8')
+    # g_mail_pass = mail_conf_js['from_addr']['passwd'].encode('utf-8')
     to_addr = ''
     for item in mail_conf_js['to_addrs']:
         to_addr += item['to_addr'].encode('utf-8') + ';'
