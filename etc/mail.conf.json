@@ -1,0 +1,12 @@
+{
+    "smtp_server":{"addr":"发送邮箱服务器地址"},
+    "from_addr":{
+        "addr":"发送邮箱地址",
+        "passwd":"发送邮箱密码"
+    },
+   "to_addrs":[
+        {"to_addr":"接收地址1"},
+        {"to_addr":"接收地址2"},
+        {"to_addr":"接收地址N"}
+    ]
+}

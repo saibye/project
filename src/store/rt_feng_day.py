@@ -250,6 +250,7 @@ def work():
 
     # step3:
     # 复权数据 rehabilitation
+    #test commit
     fuquan(stocks, db)
 
     db_end(db)
