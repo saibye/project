@@ -1,0 +1,30 @@
+# add
+
+if [[ $# -eq 1 ]]; then
+    stock_id=$1
+    days=30
+elif [[ $# -eq 2 ]]; then
+    stock_id=$1
+    days=$2
+else
+    echo "usage: $0 stock_id"
+    exit 1
+fi
+
+if [[ ${#stock_id} != 6 ]]; then
+    echo "length of stock ${stock_id} is not valid"
+    exit 2
+fi
+
+start_date=$(date -d "-${days} day"  "+%Y-%m-%d")
+
+((days += 1))
+
+#echo "stock: $stock_id, days: $days, start: $start_date"
+
+cd ${PHOME}/src/store
+
+#nohup time python ct_ticks.py 2015-11-16 30 000002 &
+nohup time python ct_ticks.py ${start_date} ${days} ${stock_id} > ${LOG}/get.log 2>&1 &
+
+# get
