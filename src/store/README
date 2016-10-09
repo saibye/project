@@ -20,8 +20,4 @@
 3）80000手，连续1笔买入
 
 
-3. strategy1.py
-ma5 = ma10 = ma20  && close >= open
-
-
 # README

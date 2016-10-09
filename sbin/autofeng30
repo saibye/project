@@ -24,7 +24,7 @@ exec 1>&3
 exec 2>&4
 
 
-cd ${PHOME}/src/store
+cd ${PHOME}/src/realtime
 
 nohup python rt_feng30.py &
 

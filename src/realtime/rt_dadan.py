@@ -283,7 +283,6 @@ def rt_dadan(_stocks, _trade_date, _db):
         """
         stock_id = '000002'
         """
-
         if g_bad_stocks.has_key(stock_id):
             log_debug("warn: %s is bad for:\n%s", stock_id, g_bad_stocks[stock_id])
             continue
@@ -412,12 +411,16 @@ def main():
     saimail_init()
 
     # check holiday
+    """
     if today_is_weekend():
         log_info("today is weekend, exit")
         saimail("dadan: weekend", "take a rest1")
     else:
         log_info("today is workday, come on")
         work()
+    """
+    log_info("today is workday, come on")
+    work()
 
 
     log_info("main ends, bye!")
