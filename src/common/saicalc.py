@@ -547,7 +547,7 @@ def calc_macd_list0(_close, _m, _n, _k):
             d2  = (di - e3) * 2
         dea.append(e3)
         macd.append(d2)
-        log_debug("%04d: macd: %.3f, di: %.3f, dea: %.3f", idx, d2, di, e3)
+        # log_debug("%04d: macd: %.3f, di: %.3f, dea: %.3f", idx, d2, di, e3)
 
 
     return pd.Series(ema_m, _close.index), \

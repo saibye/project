@@ -6,29 +6,36 @@ import tushare as ts
 
 from sailog  import *
 
-v = "a"
 
-print v
-
-def fun(_v):
-    v  = 'b'
-    _v = 'c'
-
-fun(v)
-print v
-
-s1 = pd.Series(0, index=range(10))
-
-s1[0] = 'x'
-print s1
-
+"""
 print ts.xsg_data()
+"""
 
-#df = ts.profit_data(top=60)
-#print df.sort('shares',ascending=False)
 
+"""
 df = ts.get_stock_basics()
 print df
+"""
+
+"""
+df = ts.profit_data(year='2016', top=90)
+df = df.sort_values(by='report_date',ascending=False)
+print df
+"""
+
+"""
+df = ts.get_hist_data('000420')
+print df
+"""
+
+
+df = ts.get_h_data('000002', autype='qfq', start='2015-01-01', end='2016-10-30')
+for row_index, row in df.iterrows():
+    print row
+
+#print df
+
+
 
 
 # test1.py

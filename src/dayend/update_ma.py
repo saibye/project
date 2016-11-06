@@ -69,7 +69,7 @@ def update_df_to_db(_df, _db):
 
 
 def get_df_from_table(_stock_id, _table, _db):
-    sql = "select * from %s where stock_id='%s' order by pub_date, pub_time limit 300" % (_table, _stock_id)
+    sql = "select * from %s where stock_id='%s' order by pub_date limit 300" % (_table, _stock_id)
 
     df = pd.read_sql_query(sql, _db);
 

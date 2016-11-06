@@ -114,6 +114,7 @@ def get_stock_list_df_db(_db):
     return df.set_index('stock_id')
 
 
+
 """
 2016/8/16
 """
@@ -125,6 +126,40 @@ def get_stock_list_table(_table, _db):
         return None
     else :
         return df.set_index('stock_id')
+
+"""
+2016/10/16
+"""
+def get_xsg_df(_stock_id, _db):
+    sql = "select free_date, free_count, ratio from tbl_xsg where stock_id = '%s' order by free_date" % _stock_id
+    df = pd.read_sql_query(sql, _db);
+    if df is None:
+        log_info("'%s' not found in xsg", _stock_id)
+        return None
+    else:
+        log_debug("df: \n%s", df)
+        return df
+
+"""
+2016/10/30
+"""
+def get_max_pub_date_kday(_stock_id, _db):
+    sql = "select max(pub_date) pub_date from tbl_day where stock_id='%s'" % _stock_id
+
+    df = pd.read_sql_query(sql, _db);
+
+    return df
+
+
+def get_one_kday(_stock_id, _pub_date, _db):
+    sql = "select * from tbl_day where stock_id='%s' and pub_date='%s'" % (_stock_id, _pub_date)
+
+    df = pd.read_sql_query(sql, _db);
+
+    return df
+
+
+
 
 
 # saisql.py

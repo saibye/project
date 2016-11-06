@@ -1,6 +1,6 @@
 # ccc
 
-cd ${PHOME}/src/store
+cd ${PHOME}/src/tool
 
 python clear_bought.py
 

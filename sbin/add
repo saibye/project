@@ -12,7 +12,7 @@ if [[ ${#stock_id} != 6 ]]; then
     exit 2
 fi
 
-cd ${PHOME}/src/store
+cd ${PHOME}/src/tool
 
 python add_bought.py $stock_id
 

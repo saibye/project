@@ -20,7 +20,7 @@ buy策略：
 #######################################################################
 
 g_has_noticed  = {}
-
+g_basic_info   = None
 
 def ct_ticks_analyze(_stock_id, _trade_date, _db):
 
@@ -192,6 +192,43 @@ values ('%s', '%s', '%s', '%s',  \
 
     return  rank, content, sql
 
+def get_basic_info(_stock_id, _db):
+    global g_basic_info
+    # TODO: check whether df contains this stock
+    row = g_basic_info.loc[_stock_id, :]
+
+    # 名称, 行业, 地区
+    # 市盈率, 流通股本, 总股本, 上市日期
+    info  = "%s-%s-%s\n" % (row['name'], row['industry'], row['area'])
+    info += "市盈率 : %s\n" % row['pe']
+    v1 = float(row['outstanding']) / 10000.00
+    info += "流通股 : %.2f亿股\n" % v1
+    v2 = float(row['totals']) / 10000.00
+    info += "总股本 : %.2f亿股\n" % v2
+    info += "上市   : %s\n" % row['timeToMarket']
+
+    log_debug("info:\n%s", info)
+
+    return info
+
+
+def get_xsg_info(_stock_id, _db):
+    info = ""
+
+    xsg = get_xsg_df(_stock_id, _db)
+
+    if xsg is None:
+        return info
+
+    if len(xsg) > 0:
+        info = "解禁   :\n"
+
+    for row_index, row in xsg.iterrows():
+        info += "%s - %5s%% - %s 万\n" % (row['free_date'], row['ratio'], row['free_count'])
+
+    log_debug("info:\n%s", info)
+    return info
+
 
 def ct_ticks(_stocks, _trade_date, _db):
     global g_has_noticed
@@ -223,13 +260,23 @@ def ct_ticks(_stocks, _trade_date, _db):
 
         rank, content, sql = ct_ticks_analyze(stock_id, _trade_date, _db)
         # if rank >= 500 or (rank >= 109 and rank % 100 == 9):
-        if rank >= 100 or (rank >= 109 and rank % 100 == 9):
+        # if rank >= 100 or (rank >= 109 and rank % 100 == 9):
+        if rank >= 59:
             # very good
             subject1 = "###rank: %d | %s 吸筹 %s" % (rank, stock_id, _trade_date)
             if g_has_noticed.has_key(stock_id):
                 pass
             else:
                 g_has_noticed[stock_id] = 1
+
+                # 2016/10/16
+                basic_info = get_basic_info(stock_id, _db)
+                content = content + basic_info
+
+                # 2016/10/16
+                xsg_info = get_xsg_info(stock_id, _db)
+                content = content + xsg_info
+
                 saimail(subject1, content)
                 log_info("%s\n%s", subject1, content)
         else:
@@ -289,6 +336,25 @@ def work_one_day(_trade_date, _db):
 
     return
 
+def get_basic_info(_stock_id, _db):
+    global g_basic_info
+    # TODO: check whether df contains this stock
+    row = g_basic_info.loc[_stock_id, :]
+
+    # 名称, 行业, 地区
+    # 市盈率, 流通股本, 总股本, 上市日期
+    info  = "%s-%s-%s\n" % (row['name'], row['industry'], row['area'])
+    info += "市盈率 : %s\n" % row['pe']
+    v1 = float(row['outstanding']) / 10000.00
+    info += "流通股 : %.2f亿股\n" % v1
+    v2 = float(row['totals']) / 10000.00
+    info += "总股本 : %.2f亿股\n" % v2
+    info += "上市   : %s\n" % row['timeToMarket']
+
+    log_debug("info:\n%s", info)
+
+    return info
+
 
 def work_one_stock(_stock_id, _start_date, _days, _db):
 
@@ -301,6 +367,14 @@ def work_one_stock(_stock_id, _start_date, _days, _db):
 
     # mail
     if len(body) > 0:
+        # 2016/10/16
+        basic_info = get_basic_info(_stock_id, _db)
+        body = body + basic_info
+
+        # 2016/10/16
+        xsg_info = get_xsg_info(_stock_id, _db)
+        body = body + xsg_info
+
         subject = "%s, start: %s, days: %s" % (_stock_id, _start_date, _days)
         saimail(subject, body)
 
@@ -313,6 +387,14 @@ python ct_ticks.py some-day
 python ct_ticks.py some-day days stockid
 """
 def work(_args):
+
+    # get all stocks info
+    global g_basic_info
+    g_basic_info = ts.get_stock_basics()
+    if g_basic_info is None:
+        log_error("error: ts.get_stock_basics")
+        return 
+
     db = db_init()
 
     argc = len(_args)
@@ -360,6 +442,13 @@ def work(_args):
         start_date = "2016-08-01"
         days       = 26
 
+        stock_id   = "000002"
+        start_date = "2016-08-01"
+        days       = 1
+
+        start_date = "2016-10-14"
+        days       = 1
+
         stock_id   = "300331"
         stock_id   = "002036"
         stock_id   = "000620"
@@ -373,6 +462,7 @@ def work(_args):
         stock_id   = "000687"
         stock_id   = "002329"
         stock_id   = "000402"
+        stock_id   = "000961"
         log_debug("default::: %s, %s, %s", start_date, days, stock_id)
         work_one_stock(stock_id, start_date, days, db)
     elif argc == 1:

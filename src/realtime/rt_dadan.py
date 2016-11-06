@@ -411,16 +411,17 @@ def main():
     saimail_init()
 
     # check holiday
-    """
     if today_is_weekend():
         log_info("today is weekend, exit")
-        saimail("dadan: weekend", "take a rest1")
+        # saimail("dadan: weekend", "take a rest1")
     else:
         log_info("today is workday, come on")
         work()
+
     """
     log_info("today is workday, come on")
     work()
+    """
 
 
     log_info("main ends, bye!")

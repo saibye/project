@@ -389,7 +389,20 @@ df = ts.get_growth_data(2016, 2)
 log_debug("get_growth_data\n%s", df)
 """
 
+"""
 df = ts.get_stock_basics()
 log_debug("get_stock_basics\n%s", df)
+"""
+
+"""
+df = ts.xsg_data()
+log_debug("xsg_data:1\n%s", df)
+
+df = ts.xsg_data("2016", "11")
+log_debug("xsg_data:2\n%s", df)
+"""
+
+df = ts.xsg_data("2017", "11")
+log_debug("xsg_data:3\n%s", df)
 
 # end
