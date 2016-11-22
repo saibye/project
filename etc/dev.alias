@@ -7,6 +7,7 @@ alias cds='cd ${HOME}/project/src'
 alias cdl='cd ${HOME}/project/log'
 
 alias cdsb='cd ${HOME}/project/sbin'
+alias cdat='cd ${HOME}/project/auto'
 
 alias gitp='git push origin master'
 

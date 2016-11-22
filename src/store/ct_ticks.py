@@ -35,19 +35,19 @@ def ct_ticks_analyze(_stock_id, _trade_date, _db):
     except Exception:
         log_error("warn: %s get ticks exception!", _stock_id)
         time.sleep(5)
-        return -4, None, None
+        return -4, None, None, None
 
     if df is None :
         log_error("warn: stock %s, %s is None, next", _stock_id, _trade_date)
-        return -1, None, None
+        return -1, None, None, None
 
     if df.empty:
         log_error("warn: stock %s, %s is empty, next", _stock_id, _trade_date)
-        return -2, None, None
+        return -2, None, None, None
 
     if len(df) <= 5:
         log_error("warn: stock %s, %s is short %d, next", _stock_id, _trade_date, len(df))
-        return -3, None, None
+        return -3, None, None, None
 
     """
     #  sina data: convert to 手
@@ -66,7 +66,7 @@ def ct_ticks_analyze(_stock_id, _trade_date, _db):
 
     if close_price <= 2.0:
         log_error("warn: stock %s is too cheap, next", _stock_id)
-        return -4, None, None
+        return -4, None, None, None
 
     if close_price <= open_price*1.01:
         kk = 9
@@ -93,6 +93,7 @@ def ct_ticks_analyze(_stock_id, _trade_date, _db):
     counter80 = 0
     counter_bad = 0
     content = "%s: %s: [%s, %s]\n" % (_stock_id, _trade_date, open_price, close_price)
+    min_rate = 10
     for base in base_list :
         rank = 0
         rate = 0.0
@@ -100,8 +101,21 @@ def ct_ticks_analyze(_stock_id, _trade_date, _db):
         buy, sell = get_buy_sell_sum(df, base)
 
         # rate
-        if buy > 0 and sell > 0:
+        if base < 200:
+            rate = 2.0
+        elif   buy > 0  and sell == 0:
+            rate = 3.0
+        elif buy == 0 and sell == 0:
+            rate = 1.0
+        elif buy == 0 and sell > 0:
+            rate = -1.0
+        elif buy > 0  and sell > 0:
             rate = 1.0 * buy / sell
+        else:
+            rate = 0.0
+
+        if rate < min_rate:
+            min_rate = rate
 
 
         diff  = buy - sell
@@ -190,7 +204,9 @@ values ('%s', '%s', '%s', '%s',  \
      dt, tm)
     # log_info("%s", sql)
 
-    return  rank, content, sql
+    return  rank, content, sql, min_rate
+
+
 
 def get_basic_info(_stock_id, _db):
     global g_basic_info
@@ -233,6 +249,11 @@ def get_xsg_info(_stock_id, _db):
 def ct_ticks(_stocks, _trade_date, _db):
     global g_has_noticed
 
+    #  today all 
+    tdall = ts.get_today_all()
+    tdall.set_index('code', inplace=True)
+    chged = tdall['changepercent']
+
     body = ""
     for row_index, row in _stocks.iterrows():
         """
@@ -249,19 +270,16 @@ def ct_ticks(_stocks, _trade_date, _db):
         stock_id = '000002'
         """
 
-        """
-        if chg > 12:
-            log_debug("%s: new stock, ingore it", stock_id)
-        elif op == high and high == low :
-            log_debug("%s: one one one, ignore too", stock_id)
-        else:
-            ct_ticks_analyze(stock_id, _trade_date, _db)
-        """
+        tdchg = chged.get(stock_id)
+        if tdchg is None:
+           tdchg = 0.0
+        log_debug("stock %s today changed: %.2f%%", stock_id, tdchg)
 
-        rank, content, sql = ct_ticks_analyze(stock_id, _trade_date, _db)
+        rank, content, sql, rate = ct_ticks_analyze(stock_id, _trade_date, _db)
         # if rank >= 500 or (rank >= 109 and rank % 100 == 9):
         # if rank >= 100 or (rank >= 109 and rank % 100 == 9):
-        if rank >= 59:
+        # if rank >= 109 or (rank >= 100 and tdchg > 9.5) or (rank >= 59 and rate >= 2.0):
+        if rank >= 100 or (rank >= 50 and tdchg > 9.5) or (rank >= 59 and rate >= 2.0):
             # very good
             subject1 = "###rank: %d | %s 吸筹 %s" % (rank, stock_id, _trade_date)
             if g_has_noticed.has_key(stock_id):
@@ -284,7 +302,7 @@ def ct_ticks(_stocks, _trade_date, _db):
                 log_info("nice: %s, rank: %d\n%s", stock_id, rank, content)
                 body += content + "\n"
             else:
-                log_debug("%s, %d", stock_id, rank)
+                log_debug("%s, %d, %.2f", stock_id, rank, rate)
 
         # to db 2016/9/11
         if rank >= 50:
@@ -305,9 +323,9 @@ def ct_ticks_range(_stock_id, _date_list, _db):
         trade_date = str(item).split()[0]
         # log_debug("trade_date: %s", trade_date)
         # TODO: check is weekend
-        rank, content, sql = ct_ticks_analyze(_stock_id, trade_date, _db)
+        rank, content, sql, rate = ct_ticks_analyze(_stock_id, trade_date, _db)
         if content is not None:
-            body += "%d, %s\n" % (rank, content)
+            body += "%d, %.2f, %s\n" % (rank, rate, content)
             log_debug("%s, rank: %.2f\n%s", _stock_id, rank, content)
 
     return body
@@ -390,10 +408,22 @@ def work(_args):
 
     # get all stocks info
     global g_basic_info
-    g_basic_info = ts.get_stock_basics()
-    if g_basic_info is None:
-        log_error("error: ts.get_stock_basics")
-        return 
+
+    count = 0
+    while count < 5:
+        count = count + 1
+        try:
+            g_basic_info = ts.get_stock_basics()
+            if g_basic_info is None:
+                log_error("error: ts.get_stock_basics")
+                return 
+            else:
+                log_info("nice, got stock basics")
+                break
+        except Exception:
+            log_error("warn: get_stock_basics exception!")
+            time.sleep(5)
+
 
     db = db_init()
 

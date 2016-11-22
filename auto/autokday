@@ -29,9 +29,13 @@ cd ${PHOME}/src/dayend
 #nohup python k_day.py &
 # 1. get  k-day data
 time python k_day.py
-# 2. calc k-day tech: TODO
+
+# 2. calc k-day tech
 time python k_day_tech.py
-# 3. apply the rules: TODO
+
+# 3. apply the rules: 1) cross ma*6
+#cd ${PHOME}/src/decision && time python ma_cross6.py
+
 
 exec 3>&-
 exec 4>&-

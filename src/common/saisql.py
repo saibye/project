@@ -98,7 +98,17 @@ def clear_stock_from_db(_stock_id, _db):
 
 
 def get_stock_list_df_tu():
-    df = ts.get_stock_basics()
+
+    count = 0
+    while count < 20:
+        count = count + 1
+        try:
+            df = ts.get_stock_basics()
+            break
+        except Exception:
+            log_error("warn: get_stock_basics exception: %d!", count)
+            time.sleep(5)
+
     return df.sort_index()
 
 
@@ -159,6 +169,12 @@ def get_one_kday(_stock_id, _pub_date, _db):
     return df
 
 
+def get_recent_pub_date(_pub_date, _N, _db):
+    sql = "select distinct pub_date from tbl_day_tech x where pub_date <='%s' order by pub_date desc limit %d" % (_pub_date, _N)
+
+    df = pd.read_sql_query(sql, _db);
+
+    return df
 
 
 

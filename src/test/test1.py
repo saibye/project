@@ -28,12 +28,19 @@ df = ts.get_hist_data('000420')
 print df
 """
 
-
+"""
 df = ts.get_h_data('000002', autype='qfq', start='2015-01-01', end='2016-10-30')
 for row_index, row in df.iterrows():
     print row
+"""
 
-#print df
+
+df = ts.get_today_all()
+df.set_index('code', inplace=True)
+chg = df.loc['603667', ['changepercent']]
+chg = df.loc['603667']['changepercent']
+print df
+print chg
 
 
 

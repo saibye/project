@@ -25,10 +25,10 @@ def k_day_one_to_db(_stock_id, _df, _start_date, _db):
     # [1:100] to db
 
     if _start_date is not None:
-        # TODO check date is the same day
 
         # 1. compare
-        new_close_price = _df['close'][0]
+        # new_close_price = _df['close'][0]
+        new_close_price = _df.iloc[0,2]
 
         # the close price of max-pub-date
         tbl_df = get_one_kday(_stock_id, _start_date, _db)
@@ -58,30 +58,30 @@ and pub_date = '%s'" % \
 
 
     # init last close price
-    last_close_price = _df['close'][0]
+    # last_close_price = _df['close'][0]
+    last_close_price = _df.iloc[0,2]
 
     # import dataframe to db
     counter = 0
     for row_index, row in _df.iterrows():
         counter = counter + 1
-        pub_date = row_index
 
         # 前复权
         sql = "insert into tbl_day \
 (pub_date, stock_id, stock_loc, \
 open_price, high_price, close_price, low_price, \
 last_close_price, \
-deal_total_count, deal_total_amount, \
+deal_total_count, \
 inst_date, inst_time) \
 values ('%s', '%s', '%s',  \
 '%.2f', '%.2f', '%.2f', '%.2f', \
 '%.2f', \
-'%.3f', '%.3f', \
+'%.3f', \
 '%s', '%s')" % \
-       (pub_date, _stock_id, 'cn', 
+       (row.loc['date'], _stock_id, 'cn', 
         row.loc['open'], row.loc['high'], row.loc['close'], row.loc['low'],
         last_close_price,
-        row.loc['volume'] / 1000000.00, row.loc['amount'] / 10000.00,
+        row.loc['volume'] / 1000000.00, 
         dt, tm)
 
         last_close_price = row.loc['close']
@@ -121,7 +121,7 @@ def k_day_one_stock(_stock_id, _db):
 
     # get max-date from table, as start date
     max_date = k_day_get_max_date(_stock_id, _db)
-    end_date = get_today()
+    end_date = get_date_by(0)
 
     log_debug("[%s, %s]", max_date, end_date)
 
@@ -138,11 +138,17 @@ def k_day_one_stock(_stock_id, _db):
     # get from web(by tushare)
     begin = get_micro_second()
 
-    df = ts.get_h_data(_stock_id, autype='qfq', start=start_date, end=end_date)
-    # df = ts.get_h_data(_stock_id, start='2016-08-20', end='2016-10-30')
-    # df = ts.get_h_data(_stock_id, autype='qfq')
+    try:
+        df = ts.get_k_data(_stock_id, autype='qfq', start=start_date, end=end_date)
+        # df = ts.get_h_data(_stock_id, autype='qfq', start=start_date, end=end_date, retry_count=5, pause=6)
+        # df = ts.get_h_data(_stock_id, start='2016-08-20', end='2016-10-30')
+        # df = ts.get_h_data(_stock_id, autype='qfq')
+    except Exception:
+        log_error("warn:error: %s get_k_data exception!", _stock_id)
+        return -4
+
     # calc cost time
-    log_info("get_h_data [%s] costs %d us", _stock_id, get_micro_second()-begin)
+    log_info("get_k_data [%s] costs %d us", _stock_id, get_micro_second()-begin)
 
     if df is None :
         log_error("warn: stock %s is None, next", _stock_id)
@@ -153,6 +159,8 @@ def k_day_one_stock(_stock_id, _db):
         return -2
 
     df.sort_index(ascending=True, inplace=True)
+    # df = df.sort_index(ascending=True)
+    # df = df.reindex(index=range(0, len(df)))
     # log_debug("df: \n%s", df)
 
     begin = get_micro_second()
@@ -170,13 +178,7 @@ def k_day_one_stock(_stock_id, _db):
 def work():
     db = db_init()
 
-    """
-    stock_id = "700002"
-    start = k_day_get_max_date(stock_id, db);
-    log_debug("start: [%s]", start);
-    """
 
-    """
     # step1: get from web
     stocks = get_stock_list_df_tu()
 
@@ -191,9 +193,7 @@ def work():
         k_day_one_stock(stock_id, db)
 
     log_info("save-all costs %d us", get_micro_second()-begin)
-    """
 
-    """
     """
     stock_id = "000002"
     stock_id = "000420"
@@ -201,6 +201,13 @@ def work():
     log_debug("stock: %s", stock_id)
 
     k_day_one_stock(stock_id, db)
+    """
+
+    """
+    stock_id = "700002"
+    start = k_day_get_max_date(stock_id, db);
+    log_debug("start: [%s]", start);
+    """
 
     db_end(db)
 

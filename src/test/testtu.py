@@ -7,6 +7,7 @@ from sqlalchemy import create_engine
 import tushare as ts
 
 from sailog  import *
+from saiutil import *
 
 import matplotlib.pyplot as plt
 
@@ -402,7 +403,27 @@ df = ts.xsg_data("2016", "11")
 log_debug("xsg_data:2\n%s", df)
 """
 
+"""
 df = ts.xsg_data("2017", "11")
 log_debug("xsg_data:3\n%s", df)
+"""
+
+"""
+print ts.get_hist_data('600848',start='2015-01-05',end='2015-01-09')
+"""
+
+"""
+print ts.get_stock_basics()
+"""
+
+print ts.__version__
+#df = ts.get_k_data('600868')
+_stock_id='000001'
+start_date='2016-11-18'
+end_date='2016-11-22'
+begin = get_micro_second()
+df = ts.get_k_data(_stock_id, autype='qfq', start=start_date, end=end_date)
+print get_micro_second() - begin
+print df.head()
 
 # end

@@ -210,6 +210,9 @@ def main():
     else:
         log_info("today is workday, come on")
         work()
+    """
+    work()
+    """
 
     log_debug("main ends, bye!")
 
