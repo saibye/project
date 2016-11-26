@@ -12,6 +12,7 @@ from saisql  import *
 from saicalc import *
 from sailog  import *
 from saimail import *
+from saitu   import *
 
 #######################################################################
 

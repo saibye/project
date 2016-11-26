@@ -7,6 +7,9 @@ order by 1
 
 --
 
+select * from tbl_day_
+
+
 desc tbl_day
 
 -- 
@@ -25,7 +28,7 @@ from tbl_day a, tbl_day_tech b
 where a.pub_date in (select * from (select distinct pub_date from tbl_day_tech x order by pub_date desc limit 10) y)
 and a.stock_id=b.stock_id
 and a.pub_date=b.pub_date
-and a.stock_id='000002'
+and a.stock_id='300103'
 order by 2 desc,1
 
 

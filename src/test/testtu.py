@@ -413,9 +413,14 @@ print ts.get_hist_data('600848',start='2015-01-05',end='2015-01-09')
 """
 
 """
+print ts.get_today_all()
+"""
+
+"""
 print ts.get_stock_basics()
 """
 
+"""
 print ts.__version__
 #df = ts.get_k_data('600868')
 _stock_id='000001'
@@ -424,6 +429,10 @@ end_date='2016-11-22'
 begin = get_micro_second()
 df = ts.get_k_data(_stock_id, autype='qfq', start=start_date, end=end_date)
 print get_micro_second() - begin
+print df.head()
+"""
+
+df = ts.get_today_all()
 print df.head()
 
 # end

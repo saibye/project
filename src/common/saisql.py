@@ -91,27 +91,6 @@ def df_to_db(_stock_id, _df, _db):
     return
 
 
-def clear_stock_from_db(_stock_id, _db):
-    #sql = "delete from tbl_30min where stock_id = '%s'" % _stock_id
-    #sql_to_db(sql, _db)
-    return
-
-
-def get_stock_list_df_tu():
-
-    count = 0
-    while count < 20:
-        count = count + 1
-        try:
-            df = ts.get_stock_basics()
-            break
-        except Exception:
-            log_error("warn: get_stock_basics exception: %d!", count)
-            time.sleep(5)
-
-    return df.sort_index()
-
-
 def get_stock_list_df_db(_db):
     sql = "select distinct stock_id from tbl_30min order by 1 limit 200"
     sql = "select distinct stock_id from tbl_30min order by 1 limit 10"
@@ -147,7 +126,7 @@ def get_xsg_df(_stock_id, _db):
         log_info("'%s' not found in xsg", _stock_id)
         return None
     else:
-        log_debug("df: \n%s", df)
+        # log_debug("df: \n%s", df)
         return df
 
 """
@@ -176,6 +155,24 @@ def get_recent_pub_date(_pub_date, _N, _db):
 
     return df
 
+
+def get_xsg_info(_stock_id, _db):
+    info = ""
+
+    xsg = get_xsg_df(_stock_id, _db)
+
+    if xsg is None:
+        return info
+
+    if len(xsg) > 0:
+        info = "解禁   :\n"
+
+    for row_index, row in xsg.iterrows():
+        info += "%s - %5s%% - %s 万\n" % (row['free_date'], row['ratio'], row['free_count'])
+
+    log_debug("info:\n%s", info)
+
+    return info
 
 
 # saisql.py

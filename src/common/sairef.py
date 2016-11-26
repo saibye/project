@@ -70,6 +70,8 @@ def ref_set(_stock_id):
     g_ref_this_open = g_ref_this['open_price']
     g_ref_this_high = g_ref_this['high_price']
     g_ref_this_low  = g_ref_this['low_price']
+
+    """
     g_ref_this_ma5  = g_ref_this['ma5']
     g_ref_this_ma10 = g_ref_this['ma10']
     g_ref_this_ma20 = g_ref_this['ma20']
@@ -79,6 +81,7 @@ def ref_set(_stock_id):
     g_ref_this_macd = g_ref_this['macd']
     g_ref_this_diff = g_ref_this['diff']
     g_ref_this_dea  = g_ref_this['dea']
+    """
 
     return len(g_ref_this)
 
@@ -139,7 +142,7 @@ def ref_dea(_offset):
 """
 -- 2016/11/20
 """
-def get_recent_detail_all(_db):
+def get_recent_detail_all_1(_db):
     global g_trade_date
     sql = "select a.stock_id stock_id, a.pub_date pub_date, \
 a.open_price open_price, a.close_price close_price,  \
@@ -147,7 +150,7 @@ a.high_price high_price, a.low_price   low_price,  \
 b.ma5 ma5, b.ma10 ma10, b.ma20 ma20, b.ma30 ma30, \
 b.ma60 ma60, b.ma150 ma150, macd, diff, dea \
 from tbl_day a, tbl_day_tech b \
-where a.pub_date in (select * from (select distinct pub_date from tbl_day_tech x where pub_date <='%s' order by pub_date desc limit 5) y) \
+where a.pub_date in (select * from (select distinct pub_date from tbl_day_tech x where pub_date <='%s' order by pub_date desc limit 10) y) \
 and a.stock_id=b.stock_id \
 and a.pub_date=b.pub_date \
 order by 1, 2 desc" % (g_trade_date)
@@ -162,36 +165,61 @@ order by 1, 2 desc" % (g_trade_date)
         return df
 
 
-def get_recent_detail_one(_stock_id, _db):
+
+def get_recent_list_1(_db):
     global g_trade_date
-    sql = "select a.stock_id stock_id, a.pub_date pub_date, a.open_price open_price, a.close_price close_price,  \
-b.ma5 ma5, b.ma10 ma10, b.ma20 ma20, b.ma30 ma30, b.ma60 ma60, b.ma150 ma150, macd, diff, dea \
+    sql = "select distinct a.stock_id stock_id \
 from tbl_day a, tbl_day_tech b \
-where a.pub_date in (select * from (select distinct pub_date from tbl_day_tech x where pub_date <='%s' order by pub_date desc limit 5) y) \
+where a.pub_date in (select * from (select distinct pub_date from tbl_day_tech x where pub_date <='%s' order by pub_date desc limit 10) y) \
 and a.stock_id=b.stock_id \
 and a.pub_date=b.pub_date \
-and a.stock_id='%s' \
-order by 2 desc,1" % (g_trade_date, stock_id)
+order by 1" % (g_trade_date)
+
+    # log_debug("%s", sql)
 
     df = pd.read_sql_query(sql, _db);
     if df is None:
-        log_info("'%s' not found in db", _stock_id)
+        log_info("no data in db: %s", sql)
+        return None
+    else:
+        df.set_index("stock_id", inplace=True)
+        df["1"] = "1"
+        return df
+
+
+"""
+-- 2016/11/26
+-- 无技术指标，如macd等
+"""
+def get_recent_detail_all(_db):
+    global g_trade_date
+    sql = "select a.stock_id stock_id, a.pub_date pub_date, \
+a.open_price open_price, a.close_price close_price,  \
+a.high_price high_price, a.low_price   low_price \
+from tbl_day a \
+where a.pub_date in (select * from (select distinct pub_date from tbl_day x where pub_date <='%s' order by pub_date desc limit 10) y) \
+order by 1, 2 desc" % (g_trade_date)
+
+    log_debug("sql: \n%s", sql)
+
+    df = pd.read_sql_query(sql, _db);
+    if df is None:
+        log_info("no data in db")
         return None
     else:
         log_debug("df: \n%s", df)
         return df
 
 
+
 def get_recent_list(_db):
     global g_trade_date
     sql = "select distinct a.stock_id stock_id \
-from tbl_day a, tbl_day_tech b \
-where a.pub_date in (select * from (select distinct pub_date from tbl_day_tech x where pub_date <='%s' order by pub_date desc limit 5) y) \
-and a.stock_id=b.stock_id \
-and a.pub_date=b.pub_date \
+from tbl_day a \
+where a.pub_date in (select * from (select distinct pub_date from tbl_day x where pub_date <='%s' order by pub_date desc limit 10) y) \
 order by 1" % (g_trade_date)
 
-    # log_debug("%s", sql)
+    log_debug("sql: \n%s", sql)
 
     df = pd.read_sql_query(sql, _db);
     if df is None:
@@ -220,9 +248,8 @@ def ref_init(_db):
     log_info("date: %s", g_trade_date)
 
     df = get_recent_list(_db)
-
     if df is None:
-        log_info("not found")
+        log_error("error: get_recent_list not found")
         return -1
     else:
         g_ref_list = df['1']
@@ -230,7 +257,7 @@ def ref_init(_db):
 
     g_ref_detail = get_recent_detail_all(_db)
     if g_ref_detail is None:
-        log_info("get_recent_detail_all: not found")
+        log_error("get_recent_detail_all: not found")
         return -1
     else:
         log_debug("detail:\n%d", len(g_ref_detail))

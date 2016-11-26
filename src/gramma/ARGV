@@ -1,0 +1,18 @@
+
+
+    args = get_args()
+
+    work(args)
+
+    argc = len(_args)
+
+    if argc == 0:
+        # default mode
+        start_date = "2016-08-01"
+    elif argc == 3:
+        # mode2: check one stock during several days
+        start_date = _args[0]
+        days       = _args[1]
+        stock_id   = _args[2]
+
+

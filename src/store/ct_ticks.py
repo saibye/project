@@ -12,6 +12,8 @@ from saicalc import *
 from sailog  import *
 from saimail import *
 from sairank import *
+from saitick import *
+from saitu   import *
 
 
 """
@@ -22,47 +24,16 @@ buy策略：
 g_has_noticed  = {}
 g_basic_info   = None
 
-def ct_ticks_analyze(_stock_id, _trade_date, _db):
+def ct_ticks_analyze(_stock_id, _trade_date, _df, _db):
 
-    # sina base
-    base_vol = 200
-
-    df = None
-
-    try:
-        # df = ts.get_sina_dd(_stock_id, date=_trade_date, vol=base_vol)
-        df = ts.get_tick_data(_stock_id, date = _trade_date, retry_count=5, pause=1)
-    except Exception:
-        log_error("warn: %s get ticks exception!", _stock_id)
-        time.sleep(5)
-        return -4, None, None, None
-
-    if df is None :
-        log_error("warn: stock %s, %s is None, next", _stock_id, _trade_date)
-        return -1, None, None, None
-
-    if df.empty:
-        log_error("warn: stock %s, %s is empty, next", _stock_id, _trade_date)
-        return -2, None, None, None
-
-    if len(df) <= 5:
-        log_error("warn: stock %s, %s is short %d, next", _stock_id, _trade_date, len(df))
-        return -3, None, None, None
-
-    """
-    #  sina data: convert to 手
-    df['volume'] = df['volume'] / 100
-    """
-
-    df = df.set_index('time').sort_index()
-    # log_debug("\n%s", df)
+    # log_debug("\n%s", _df)
 
     base_list = [1, 200, 400, 800, 1000, 2000, 3000]
 
     rank = 0.0
 
-    open_price  = df['price'][0]
-    close_price = df['price'][-1]
+    open_price  = _df['price'][0]
+    close_price = _df['price'][-1]
 
     if close_price <= 2.0:
         log_error("warn: stock %s is too cheap, next", _stock_id)
@@ -98,7 +69,7 @@ def ct_ticks_analyze(_stock_id, _trade_date, _db):
         rank = 0
         rate = 0.0
         net  = 0.0
-        buy, sell = get_buy_sell_sum(df, base)
+        buy, sell = get_buy_sell_sum(_df, base)
 
         # rate
         if base < 200:
@@ -207,79 +178,37 @@ values ('%s', '%s', '%s', '%s',  \
     return  rank, content, sql, min_rate
 
 
-
-def get_basic_info(_stock_id, _db):
-    global g_basic_info
-    # TODO: check whether df contains this stock
-    row = g_basic_info.loc[_stock_id, :]
-
-    # 名称, 行业, 地区
-    # 市盈率, 流通股本, 总股本, 上市日期
-    info  = "%s-%s-%s\n" % (row['name'], row['industry'], row['area'])
-    info += "市盈率 : %s\n" % row['pe']
-    v1 = float(row['outstanding']) / 10000.00
-    info += "流通股 : %.2f亿股\n" % v1
-    v2 = float(row['totals']) / 10000.00
-    info += "总股本 : %.2f亿股\n" % v2
-    info += "上市   : %s\n" % row['timeToMarket']
-
-    log_debug("info:\n%s", info)
-
-    return info
-
-
-def get_xsg_info(_stock_id, _db):
-    info = ""
-
-    xsg = get_xsg_df(_stock_id, _db)
-
-    if xsg is None:
-        return info
-
-    if len(xsg) > 0:
-        info = "解禁   :\n"
-
-    for row_index, row in xsg.iterrows():
-        info += "%s - %5s%% - %s 万\n" % (row['free_date'], row['ratio'], row['free_count'])
-
-    log_debug("info:\n%s", info)
-    return info
-
-
 def ct_ticks(_stocks, _trade_date, _db):
     global g_has_noticed
 
-    #  today all 
-    tdall = ts.get_today_all()
-    tdall.set_index('code', inplace=True)
+    tick_set_sina_mode()
+
+    tdall = get_stock_quotation()
+    if tdall is None:
+        log_error("error: get_stock_quotation")
+        return -1
+
     chged = tdall['changepercent']
 
     body = ""
     for row_index, row in _stocks.iterrows():
-        """
-        name     = row['name']
-        stock_id = row['code']
-        chg      = row['changepercent']
-        op       = row['open']
-        high     = row['high']
-        low      = row['low']
-        """
         stock_id = row_index
-
-        """
-        stock_id = '000002'
-        """
 
         tdchg = chged.get(stock_id)
         if tdchg is None:
            tdchg = 0.0
         log_debug("stock %s today changed: %.2f%%", stock_id, tdchg)
 
-        rank, content, sql, rate = ct_ticks_analyze(stock_id, _trade_date, _db)
+        df = get_tick(stock_id, _trade_date)
+        if df is None :
+            log_error("warn: stock %s, %s is None, next", stock_id, _trade_date)
+            continue
+
+        rank, content, sql, rate = ct_ticks_analyze(stock_id, _trade_date, df, _db)
         # if rank >= 500 or (rank >= 109 and rank % 100 == 9):
         # if rank >= 100 or (rank >= 109 and rank % 100 == 9):
         # if rank >= 109 or (rank >= 100 and tdchg > 9.5) or (rank >= 59 and rate >= 2.0):
-        if rank >= 100 or (rank >= 50 and tdchg > 9.5) or (rank >= 59 and rate >= 2.0):
+        if rank >= 100 or (rank >= 50 and tdchg > 9.5) or (rank >= 50 and rate >= 2.0):
             # very good
             subject1 = "###rank: %d | %s 吸筹 %s" % (rank, stock_id, _trade_date)
             if g_has_noticed.has_key(stock_id):
@@ -288,7 +217,7 @@ def ct_ticks(_stocks, _trade_date, _db):
                 g_has_noticed[stock_id] = 1
 
                 # 2016/10/16
-                basic_info = get_basic_info(stock_id, _db)
+                basic_info = get_basic_info(stock_id)
                 content = content + basic_info
 
                 # 2016/10/16
@@ -302,7 +231,10 @@ def ct_ticks(_stocks, _trade_date, _db):
                 log_info("nice: %s, rank: %d\n%s", stock_id, rank, content)
                 body += content + "\n"
             else:
-                log_debug("%s, %d, %.2f", stock_id, rank, rate)
+                if rate is None:
+                    log_debug("None");
+                else:
+                    log_debug("%s, %d, %.2f", stock_id, rank, rate)
 
         # to db 2016/9/11
         if rank >= 50:
@@ -318,12 +250,19 @@ def ct_ticks(_stocks, _trade_date, _db):
 
 def ct_ticks_range(_stock_id, _date_list, _db):
 
+    tick_set_feng_mode()
+
     body = ""
     for item in _date_list:
         trade_date = str(item).split()[0]
         # log_debug("trade_date: %s", trade_date)
-        # TODO: check is weekend
-        rank, content, sql, rate = ct_ticks_analyze(_stock_id, trade_date, _db)
+
+        df = get_tick(_stock_id, trade_date)
+        if df is None :
+            log_error("warn: stock %s, %s is None, next", _stock_id, trade_date)
+            continue
+
+        rank, content, sql, rate = ct_ticks_analyze(_stock_id, trade_date, df, _db)
         if content is not None:
             body += "%d, %.2f, %s\n" % (rank, rate, content)
             log_debug("%s, rank: %.2f\n%s", _stock_id, rank, content)
@@ -338,7 +277,6 @@ def work_one_day(_trade_date, _db):
     begin = get_micro_second()
 
     stocks = get_stock_list_df_tu()
-    # stocks = ts.get_today_all()
 
     log_debug("get_today_all costs: %d", get_micro_second()-begin)
 
@@ -354,25 +292,6 @@ def work_one_day(_trade_date, _db):
 
     return
 
-def get_basic_info(_stock_id, _db):
-    global g_basic_info
-    # TODO: check whether df contains this stock
-    row = g_basic_info.loc[_stock_id, :]
-
-    # 名称, 行业, 地区
-    # 市盈率, 流通股本, 总股本, 上市日期
-    info  = "%s-%s-%s\n" % (row['name'], row['industry'], row['area'])
-    info += "市盈率 : %s\n" % row['pe']
-    v1 = float(row['outstanding']) / 10000.00
-    info += "流通股 : %.2f亿股\n" % v1
-    v2 = float(row['totals']) / 10000.00
-    info += "总股本 : %.2f亿股\n" % v2
-    info += "上市   : %s\n" % row['timeToMarket']
-
-    log_debug("info:\n%s", info)
-
-    return info
-
 
 def work_one_stock(_stock_id, _start_date, _days, _db):
 
@@ -386,7 +305,7 @@ def work_one_stock(_stock_id, _start_date, _days, _db):
     # mail
     if len(body) > 0:
         # 2016/10/16
-        basic_info = get_basic_info(_stock_id, _db)
+        basic_info = get_basic_info(_stock_id)
         body = body + basic_info
 
         # 2016/10/16
@@ -408,22 +327,12 @@ def work(_args):
 
     # get all stocks info
     global g_basic_info
-
-    count = 0
-    while count < 5:
-        count = count + 1
-        try:
-            g_basic_info = ts.get_stock_basics()
-            if g_basic_info is None:
-                log_error("error: ts.get_stock_basics")
-                return 
-            else:
-                log_info("nice, got stock basics")
-                break
-        except Exception:
-            log_error("warn: get_stock_basics exception!")
-            time.sleep(5)
-
+    g_basic_info = get_stock_list_df_tu()
+    if g_basic_info is None:
+        log_error("error: get_stock_list_df_tu")
+        return 
+    else:
+        log_info("nice, got stock basics")
 
     db = db_init()
 
@@ -433,65 +342,15 @@ def work(_args):
         # default mode
         start_date = "2016-08-01"
 
-        stock_id   = "000885"
-        stock_id   = "000002"
-
-        stock_id   = "600838"
-        start_date = "2016-08-01"
-        days       = 22
-
-        stock_id   = "002208"
-        start_date = "2016-03-01"
-        days       = 30
-        start_date = "2016-08-01"
-        days       = 22
-
-        stock_id   = "000981"
-        start_date = "2016-08-15"
-        days       = 10
-
-        stock_id   = "600766"
-        start_date = "2016-08-01"
-        days       = 22
-
         # 2016/8/23 good case: 廊坊发展
         stock_id   = "600149"
         start_date = "2016-07-20"
         days       = 35
 
-        # 2016/8/23
-        stock_id   = "000002"
-        start_date = "2016-07-06"
-        days       = 40
-
-        stock_id   = "002695"
-        start_date = "2016-08-01"
-        days       = 40
-
-        stock_id   = "002417"
-        start_date = "2016-08-01"
-        days       = 26
-
-        stock_id   = "000002"
-        start_date = "2016-08-01"
-        days       = 1
-
         start_date = "2016-10-14"
         days       = 1
 
         stock_id   = "300331"
-        stock_id   = "002036"
-        stock_id   = "000620"
-        stock_id   = "300470"
-        stock_id   = "603778"
-        stock_id   = "300088"
-        stock_id   = "000811"
-        stock_id   = "600178"
-        stock_id   = "600738"
-        stock_id   = "300020"
-        stock_id   = "000687"
-        stock_id   = "002329"
-        stock_id   = "000402"
         stock_id   = "000961"
         log_debug("default::: %s, %s, %s", start_date, days, stock_id)
         work_one_stock(stock_id, start_date, days, db)
@@ -499,8 +358,6 @@ def work(_args):
 
         # mode1: check all stocks
         trade_date = "2016-08-10"
-        trade_date = "2016-08-17"
-        trade_date = "2016-08-22"
         trade_date = "2016-08-09"
 
         trade_date = _args[0]
