@@ -6,6 +6,10 @@ import logging
 import logging.handlers
 import os
 
+import sys
+
+reload(sys)
+sys.setdefaultencoding('utf8')
 
 logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)

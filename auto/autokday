@@ -38,9 +38,10 @@ cd ${PHOME}/src/decision && time python k1.py
 # 3. calc k-day tech
 time python k_day_tech.py
 
+# 4. apply the rules: need MACD: cross ma*5
+cd ${PHOME}/src/decision && time python ma_cross5.py
 
-# 4. apply the rules: need MACD
-#   1) cross ma*6
+# 5. apply the rules: need MACD: cross ma*6
 # cd ${PHOME}/src/decision && time python ma_cross6.py
 
 

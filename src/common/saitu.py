@@ -184,6 +184,7 @@ def get_basic_info(_stock_id):
 
     log_debug("info:\n%s", info)
 
+    # return info
     return info
 
 

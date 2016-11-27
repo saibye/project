@@ -16,6 +16,8 @@ from saimail import *
 
 g_trade_date    = None
 
+g_ref_tech      = 0    # default without MA, MACD
+
 g_ref_list      = None # series
 g_ref_detail    = None # dataframe
 
@@ -25,6 +27,9 @@ g_ref_this_close= None # close price series
 g_ref_this_open = None #
 g_ref_this_high = None #
 g_ref_this_low  = None #
+
+g_ref_this_last = None # 
+g_ref_this_total= None #
 
 g_ref_this_ma5  = None #
 g_ref_this_ma10 = None #
@@ -42,6 +47,7 @@ def ref_set(_stock_id):
     global g_ref_list
     global g_ref_detail
     global g_ref_this
+    global g_ref_tech
 
     e = g_ref_list.get(_stock_id)
     if e is None:
@@ -56,6 +62,8 @@ def ref_set(_stock_id):
     global g_ref_this_open
     global g_ref_this_high
     global g_ref_this_low
+    global g_ref_this_last
+    global g_ref_this_total
     global g_ref_this_ma5
     global g_ref_this_ma10
     global g_ref_this_ma20
@@ -70,18 +78,20 @@ def ref_set(_stock_id):
     g_ref_this_open = g_ref_this['open_price']
     g_ref_this_high = g_ref_this['high_price']
     g_ref_this_low  = g_ref_this['low_price']
+    g_ref_this_last = g_ref_this['last']
+    g_ref_this_total= g_ref_this['total']
 
-    """
-    g_ref_this_ma5  = g_ref_this['ma5']
-    g_ref_this_ma10 = g_ref_this['ma10']
-    g_ref_this_ma20 = g_ref_this['ma20']
-    g_ref_this_ma30 = g_ref_this['ma30']
-    g_ref_this_ma60 = g_ref_this['ma60']
-    g_ref_this_ma150= g_ref_this['ma150']
-    g_ref_this_macd = g_ref_this['macd']
-    g_ref_this_diff = g_ref_this['diff']
-    g_ref_this_dea  = g_ref_this['dea']
-    """
+    if g_ref_tech == 1:
+        log_debug("nice: with MA && MACD")
+        g_ref_this_ma5  = g_ref_this['ma5']
+        g_ref_this_ma10 = g_ref_this['ma10']
+        g_ref_this_ma20 = g_ref_this['ma20']
+        g_ref_this_ma30 = g_ref_this['ma30']
+        g_ref_this_ma60 = g_ref_this['ma60']
+        g_ref_this_ma150= g_ref_this['ma150']
+        g_ref_this_macd = g_ref_this['macd']
+        g_ref_this_diff = g_ref_this['diff']
+        g_ref_this_dea  = g_ref_this['dea']
 
     return len(g_ref_this)
 
@@ -101,6 +111,14 @@ def ref_high(_offset):
 def ref_low(_offset):
     global g_ref_this_low
     return float(g_ref_this_low[_offset])
+
+def ref_pre_close(_offset):
+    global g_ref_this_last
+    return float(g_ref_this_last[_offset])
+
+def ref_amount(_offset):
+    global g_ref_this_total
+    return float(g_ref_this_total[_offset])
 
 def ref_ma5(_offset):
     global g_ref_this_ma5
@@ -147,6 +165,7 @@ def get_recent_detail_all_1(_db):
     sql = "select a.stock_id stock_id, a.pub_date pub_date, \
 a.open_price open_price, a.close_price close_price,  \
 a.high_price high_price, a.low_price   low_price,  \
+a.last_close_price last, a.deal_total_count total, \
 b.ma5 ma5, b.ma10 ma10, b.ma20 ma20, b.ma30 ma30, \
 b.ma60 ma60, b.ma150 ma150, macd, diff, dea \
 from tbl_day a, tbl_day_tech b \
@@ -195,7 +214,8 @@ def get_recent_detail_all(_db):
     global g_trade_date
     sql = "select a.stock_id stock_id, a.pub_date pub_date, \
 a.open_price open_price, a.close_price close_price,  \
-a.high_price high_price, a.low_price   low_price \
+a.high_price high_price, a.low_price   low_price, \
+a.last_close_price last, a.deal_total_count total \
 from tbl_day a \
 where a.pub_date in (select * from (select distinct pub_date from tbl_day x where pub_date <='%s' order by pub_date desc limit 10) y) \
 order by 1, 2 desc" % (g_trade_date)
@@ -238,6 +258,7 @@ def ref_get_list():
     global g_ref_list
     return g_ref_list
 
+
 def ref_init(_db):
     global g_ref_list
     global g_ref_detail
@@ -261,6 +282,29 @@ def ref_init(_db):
         return -1
     else:
         log_debug("detail:\n%d", len(g_ref_detail))
+
+    return 0
+
+
+# configurable. 2016-11-27
+def ref_init2(_list_df, _detail_df):
+    global g_ref_list
+    global g_ref_detail
+
+    df = _list_df
+    if df is None:
+        log_error("error:list_df not found")
+        return -1
+    else:
+        g_ref_list = df['1']
+        # log_debug("list:\n%s", g_ref_list)
+
+    g_ref_detail = _detail_df
+    if g_ref_detail is None:
+        log_error("error: _detail_df not found")
+        return -1
+    else:
+        log_debug("detail: %d", len(g_ref_detail))
 
     return 0
 

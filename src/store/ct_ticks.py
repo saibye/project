@@ -364,15 +364,13 @@ def work(_args):
 
         log_debug("trade_date2: %s", trade_date)
 
-        # check holiday 2016/9/3
-        """
+        # check holiday 2016/9/3 && 2016/11/27
         if today_is_weekend():
             log_info("today is weekend, exit")
         else:
             log_info("today is workday, come on")
             work_one_day(trade_date, db)
-        """
-        work_one_day(trade_date, db)
+        # work_one_day(trade_date, db)
     elif argc == 3:
         # mode2: check one stock during several days
         start_date = _args[0]
@@ -381,11 +379,7 @@ def work(_args):
 
         log_debug("input3: %s, %s, %s", start_date, days, stock_id)
 
-
         work_one_stock(stock_id, start_date, days, db)
-
-    """
-    """
 
 
     db_end(db)

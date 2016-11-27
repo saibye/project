@@ -28,11 +28,15 @@ cd ${PHOME}/src/decision
 
 #nohup python k_day.py &
 # 1. cross 6 ma
-time nohup python ma_cross6.py &
+time python ma_cross6.py
+
+# 2. cross 5 ma -- 2016-11-27
+time python ma_cross5.py
+
 
 exec 3>&-
 exec 4>&-
 
-echo "shell: run ma_cross6.py succeeds."
+echo "shell: run ma_cross.py succeeds."
 
 #autocross
