@@ -188,24 +188,24 @@ def rt_dadan_one(_stock_id, _dd_date, _db):
 
     # check df
     vol = 3000
-    cnt = 12
-    pri = 10.00
+    cnt = 20
+    pri = 7.00
     if g_has_noticed.has_key(_stock_id):
         pass
     else:
         rt_dadan_check_buy(_stock_id, df_buy, _db, vol, cnt, g_has_noticed,  g_good_list, pri)
 
     vol = 10000
-    cnt = 4
-    pri = 9.00
+    cnt = 10
+    pri = 6.00
     if g_has_noticed2.has_key(_stock_id):
         pass
     else: 
         rt_dadan_check_buy(_stock_id, df_buy, _db, vol, cnt, g_has_noticed2, g_good_list2, pri)
 
-    vol = 100000
+    vol = 120000
     cnt = 1
-    pri = 8.00
+    pri = 6.00
     if g_has_noticed3.has_key(_stock_id):
         pass
     else:

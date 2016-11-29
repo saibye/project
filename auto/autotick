@@ -26,8 +26,8 @@ exec 2>&4
 
 cd ${PHOME}/src/store
 
-today=$(date +%Y-%m-%d)
 today="2016-11-25"
+today=$(date +%Y-%m-%d)
 nohup python ct_ticks.py ${today} &
 
 exec 3>&-

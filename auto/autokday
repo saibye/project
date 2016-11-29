@@ -24,11 +24,10 @@ exec 1>&3
 exec 2>&4
 
 
-cd ${PHOME}/src/dayend
 
 #nohup python k_day.py &
 # 1. get  k-day data
-time python k_day.py
+cd ${PHOME}/src/dayend && time python k_day.py
 
 
 # 2. apply the rules: K only, not depend on MACD
@@ -36,10 +35,12 @@ cd ${PHOME}/src/decision && time python k1.py
 
 
 # 3. calc k-day tech
-time python k_day_tech.py
+cd ${PHOME}/src/dayend && time python k_day_tech.py
+
 
 # 4. apply the rules: need MACD: cross ma*5
 cd ${PHOME}/src/decision && time python ma_cross5.py
+
 
 # 5. apply the rules: need MACD: cross ma*6
 # cd ${PHOME}/src/decision && time python ma_cross6.py
