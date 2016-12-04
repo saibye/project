@@ -80,6 +80,49 @@ def qiming():
     return rv
 
 
+# 要求len >= 6
+def up_sanfa():
+    if ref_len() < 6:
+        log_info("data not enough: 6")
+        return -1
+    rate1 = (ref_close(4) - ref_close(5)) / ref_close(5) * 100  # day1 涨幅
+    zt1   = (ref_close(4) - ref_open(4))  / ref_close(5) * 100  # day1 柱体
+
+    rate2 = (ref_close(3) - ref_close(4)) / ref_close(4) * 100  # day2
+    md2   = (ref_close(3) + ref_open(3))/ 2
+    rate3 = (ref_close(2) - ref_close(3)) / ref_close(3) * 100  # day3
+    md3   = (ref_close(2) + ref_open(2))/ 2
+    rate4 = (ref_close(1) - ref_close(2)) / ref_close(2) * 100  # day4
+    md4   = (ref_close(1) + ref_open(1))/ 2
+
+    rate5 = (ref_close(0) - ref_close(1)) / ref_close(1) * 100  # day5 涨幅
+    zt5   = (ref_close(0) - ref_open(0))  / ref_close(1) * 100  # day5 柱体
+
+
+    # 1. day1 大涨
+    # 2. day2,3,4 连跌3天
+    # 3. day5 大涨
+    if rate1 >=2 and zt1 >= 3 \
+                and md2 <= ref_high(4)  and abs(rate2) <= 0.8 \
+                and md3 <= md2          and abs(rate3) <= 0.8 and ref_close(2) < ref_close(3) \
+                and md4 <= md3          and abs(rate4) <= 0.8 and ref_close(1) < ref_close(2) \
+                and ref_open(0)  >= ref_open(4) \
+                and ref_close(0) >= ref_close(4) \
+                and ref_open(0)  <= ref_close(1) \
+                and rate5 >= 2 and zt5 >= 3:
+        rv = 1
+        log_debug("nice: sanfa")
+
+        log_debug("rate1: %.2f pk %.2f => %.2f", ref_close(4), ref_close(5), rate1)
+        log_debug("rate5: %.2f pk %.2f => %.2f", ref_close(0), ref_close(1), rate5)
+        log_debug("%.2f , %.2f , %.2f", md2, md3, md4)
+    else:
+        rv = 0
+        # log_debug("not match")
+
+    return rv
+
+
 def work_one(_trade_date, _db):
     global g_product_mode
 
@@ -97,16 +140,17 @@ def work_one(_trade_date, _db):
     rownum = 0
     content1 = "" # citou
     content2 = "" # qiming
+    content3 = "" # sanfa 2016-12-3
     for s_index, s_val in stocks.iteritems():
         rownum = rownum + 1
         stock_id = s_index
-        log_debug("%s-%s", stock_id, _trade_date)
+        # log_debug("%s-%s", stock_id, _trade_date)
         rv = ref_set(stock_id)
         if rv < 0:
             log_error("error: ref_set: %s", stock_id)
             return rv
         elif rv < 5:
-            log_error("warn: small %d", rv)
+            log_error("warn: %s small %d", stock_id, rv)
             continue
 
         rv = citou()
@@ -123,6 +167,15 @@ def work_one(_trade_date, _db):
             two = "%s -- %s\n" % (_trade_date, stock_id)
             log_info("nice2: %s", two)
             content2 += two
+        else:
+            # log_debug("wait...")
+            pass
+
+        rv = up_sanfa()
+        if rv == 1:
+            three = "%s -- %s\n" % (_trade_date, stock_id)
+            log_info("nice3: %s", three)
+            content3 += three
         else:
             # log_debug("wait...")
             pass
@@ -151,6 +204,18 @@ def work_one(_trade_date, _db):
     else:
         log_info("sorry2: %s", _trade_date)
 
+    if len(content3) > 0:
+        subject = "sanfa: %s" % (_trade_date)
+        warning = "需要均线发散!!!\n"
+        content3 = warning + content3
+        log_info(subject)
+        log_info("\n%s", content3)
+        if g_product_mode == 1:
+            mailed = 1
+            saimail(subject,  content3)
+    else:
+        log_info("sorry3: %s", _trade_date)
+
 
     if g_product_mode == 1:
         if mailed == 0:
@@ -166,8 +231,10 @@ def regression(_db):
     max_date = get_date_by(0)
     max_date = "2016-11-04"
     days = 10
-    max_date = "2016-11-18"
+    max_date = "2016-11-25"
     days = 1
+    max_date = "2016-12-03"
+    days = 30
 
     date_df = get_recent_pub_date(max_date, days, _db)
     if date_df is None:

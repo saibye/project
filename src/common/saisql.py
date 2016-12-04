@@ -8,6 +8,8 @@ import numpy as np
 
 from saiutil import *
 from sailog  import *
+from saitu   import *
+
 
 def row_to_sql(_stock_id, _row_index, _row, _dt, _tm):
     date1, time1 = _row_index.split()
@@ -173,6 +175,31 @@ def get_xsg_info(_stock_id, _db):
     log_debug("info:\n%s", info)
 
     return info
+
+
+
+def sai_save_good(_stock_id, _pub_date, _good_type, _key1, _key2, _key3, _key4, _db):
+    inst_date = get_today()
+    inst_time = get_time()
+
+    sql = "insert into tbl_good \
+(pub_date, stock_id, stock_loc, \
+holder, good_type, good_reason, \
+v1, v2, v3, v4, \
+is_valid, inst_date, inst_time) \
+values ('%s', '%s', '%s', \
+'%s', '%s', '%s', \
+'%s', '%s', '%s', '%s', \
+'%s', '%s', '%s')" % \
+    (_pub_date, _stock_id, 'cn', 
+     'sai', _good_type, 'sweet',
+     _key1, _key2, _key3, _key4,
+     '1', inst_date, inst_time)
+
+    log_debug("sql: [%s]", sql)
+    rv = sql_to_db(sql, _db)
+
+    return rv
 
 
 # saisql.py

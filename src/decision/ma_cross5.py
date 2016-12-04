@@ -15,6 +15,7 @@ from sairef  import *
 from saitu   import *
 
 #######################################################################
+# 1: 生产模式；0: 测试模式
 g_product_mode = 0
 g_product_mode = 1
 
@@ -57,10 +58,9 @@ and b.ma10  <= a.close_price \
 and b.ma20  <= a.close_price \
 and b.ma30  <= a.close_price \
 and b.ma60  <= a.close_price \
-and b.ma150 <= a.close_price \
 and b.macd >= -0.01 \
-and b.diff >= -0.02 \
-and b.dea  >= -0.03 order by 1" % (_trade_date)
+and b.diff >= -0.04 \
+and b.dea  >= -0.04 order by 1" % (_trade_date)
 
     # log_debug("sql: \n%s", sql)
 
@@ -101,10 +101,9 @@ and b.ma10  <= a.close_price \
 and b.ma20  <= a.close_price \
 and b.ma30  <= a.close_price \
 and b.ma60  <= a.close_price \
-and b.ma150 <= a.close_price \
 and b.macd >= -0.01 \
-and b.diff >= -0.02 \
-and b.dea  >= -0.03) c) \
+and b.diff >= -0.04 \
+and b.dea  >= -0.04) c) \
 order by 1, 2 desc" % (_trade_date, _trade_date)
 
     # log_debug("sql: \n%s", sql)
@@ -153,11 +152,18 @@ def work_one(_trade_date, _db):
 
         log_debug("------------%s-------------", stock_id)
         amount_rate = ref_amount(1) / ref_amount(2)
+        ##### 2016-11
         # 1. 穿越当日，成交量翻倍
         # 2. 次日，成交量增加
         # 3. 次日，高开
         # 4. 次日，收阳线
-        if amount_rate>=2 and ref_amount(0)>ref_amount(1) and ref_open(0)>=ref_close(1) and ref_close(0)>=ref_open(0):
+        ##### 2016-12-3 减弱条件
+        # 1. 穿越当日，成交量翻倍
+        # 2. 次日，比前天成交量增加
+        # 3. 次日，高开 -0.01
+        # 4. 次日，收阳线
+        # if amount_rate>=2 and ref_amount(0)>ref_amount(1) and ref_open(0)>=ref_close(1) and ref_close(0)>=ref_open(0):
+        if amount_rate>=2 and ref_amount(0)>ref_amount(2) and ref_open(0)>=ref_close(1)*0.99 and ref_close(0)>=ref_open(0):
             log_debug("rate: %.2f", amount_rate)
             log_debug("amount1  < amout2    -- %.2f <  %.2f", ref_amount(2), ref_amount(1))
             log_debug("amount2  < amout3    -- %.2f <  %.2f", ref_amount(1), ref_amount(0))
@@ -193,12 +199,14 @@ def work():
         log_debug("error: get_stock_list_df_tu failure")
         return -1
 
-    # 获得前一个交易日期
-    max_date = "2016-11-01"
-    days     = 30
-    max_date = get_date_by(0)
-    days     = 2
+    if g_product_mode == 1:
+        max_date = get_date_by(0)
+        days     = 2
+    else:
+        max_date = "2016-12-03"
+        days     = 3
 
+    # 获得前一个交易日期
     date_df = get_cross5_date(max_date, days, db)
     if date_df is None:
         log_error("erorr: get_cross5_date")
@@ -227,7 +235,6 @@ def main():
         # check holiday
         if today_is_weekend():
             log_info("today is weekend, exit")
-            work()
         else:
             log_info("today is workday, come on")
             work()

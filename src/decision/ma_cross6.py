@@ -47,8 +47,8 @@ def check_ma10_by_tu(_stock_id, _date, _db):
     ma10        = head['ma10'][0]
     ma5         = head['ma5'][0]
 
-    # if ma10 >= low_price and ma10 <= high_price:
-    if close_price <= ma10 or close_price <= ma10:
+    # if close_price <= ma10 or close_price <= ma10:
+    if ma10 >= low_price and ma10 <= high_price:
         # good position
         rv = 2
         log_debug("nice: back ma10")
@@ -71,7 +71,7 @@ def check_chance(_stocks, _db):
         log_error("error: ts.get_stock_basics")
         return 
 
-    # today 30min data
+    #
     trade_date = get_date_by(0)
     log_debug("trade_date: %s", trade_date)
 
@@ -166,15 +166,15 @@ def main():
     log_info("let's begin here!")
 
     # check holiday
-    if today_is_weekend():
-        log_info("today is weekend, exit")
+    if sai_is_product_mode():
+        if today_is_weekend():
+            log_info("today is weekend, exit")
+        else:
+            log_info("today is workday, come on")
+            work()
     else:
-        log_info("today is workday, come on")
+        log_info("test mode, come on")
         work()
-
-    """
-    work()
-    """
 
     log_info("main ends, bye!")
     return

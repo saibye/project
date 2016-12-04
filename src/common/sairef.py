@@ -95,6 +95,9 @@ def ref_set(_stock_id):
 
     return len(g_ref_this)
 
+def ref_len():
+    global g_ref_list
+    return len(g_ref_this)
 
 def ref_close(_offset):
     global g_ref_this_close

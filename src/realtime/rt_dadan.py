@@ -38,6 +38,33 @@ g_bad_stocks = {}
 g_stock_date  = ""
 g_check_count = 0  # 检查是否全天无数据
 
+
+def rt_dadan_save(_stock_id, _good_type, _key1, _key2, _key3, _key4, _db):
+    global g_stock_date
+
+    inst_date = get_today()
+    inst_time = get_time()
+
+    sql = "insert into tbl_good \
+(pub_date, stock_id, stock_loc, \
+holder, good_type, good_reason, \
+v1, v2, v3, v4, \
+is_valid, inst_date, inst_time) \
+values ('%s', '%s', '%s', \
+'%s', '%s', '%s', \
+'%d', '%.2f', '%d', '%s', \
+'%s', '%s', '%s')" % \
+    (g_stock_date, _stock_id, 'cn', 
+     'sai', _good_type, 'sweet',
+     _key1, _key2, _key3, _key4,
+     '1', inst_date, inst_time)
+
+    log_debug("sql: [%s]", sql)
+    rv = sql_to_db(sql, _db)
+
+    return rv
+
+
 def rt_dadan_check_buy(_stock_id, _df, _db, _vol_base, _count_base, _noticed, _list, _price):
 
     good = 0
@@ -53,6 +80,11 @@ def rt_dadan_check_buy(_stock_id, _df, _db, _vol_base, _count_base, _noticed, _l
     stock_id  = _stock_id
 
     global g_stock_date
+
+    good_volume = 0
+    good_tm     = ""
+    good_price  = 0.0
+    good_con    = 1
 
     for row_index, row in _df.iterrows():
         direction = row['type']
@@ -73,6 +105,10 @@ def rt_dadan_check_buy(_stock_id, _df, _db, _vol_base, _count_base, _noticed, _l
                 # log_info("nice: buy [%s]: at [%s, %.2f, %d] %dth", stock_id, tm, price, volume, con1)
                 good = 1
                 body   += u"%s, %s: price: %.2f,  vol: %d, times: %d\n" % (stock_id, tm, price, volume, con1)
+                good_volume = volume
+                good_tm     = tm
+                good_price  = price
+                good_con    = con1
 
     if len(body) > 0 :
         if _noticed.has_key(stock_id) :
@@ -84,7 +120,7 @@ def rt_dadan_check_buy(_stock_id, _df, _db, _vol_base, _count_base, _noticed, _l
             log_info("nice:\n%s", body)
 
             #  超大单实时通知 2016/8/17
-            if _vol_base >= 100000:
+            if _vol_base >= 120000:
                 log_info("let's mail3 immediately")
                 subject = "#dadan3-buy %s" % g_stock_date
                 body    = ""
@@ -92,6 +128,21 @@ def rt_dadan_check_buy(_stock_id, _df, _db, _vol_base, _count_base, _noticed, _l
                     body   +=  item
                 log_info("mail3 %s", body)
                 saimail(subject, body)
+
+
+    if good == 1:
+        # 1. get good-type
+        if _vol_base == 3000:
+            good_type = "dadan1"
+        elif _vol_base == 10000:
+            good_type = "dadan2"
+        elif _vol_base > 100000:
+            good_type = "dadan3"
+        else:
+            good_type = "unknown %d" % _vol_base
+
+        # 2. insert
+        rt_dadan_save(_stock_id, good_type, good_volume, good_price, good_con, good_tm, _db)
 
     return good
 
@@ -193,15 +244,15 @@ def rt_dadan_one(_stock_id, _dd_date, _db):
     if g_has_noticed.has_key(_stock_id):
         pass
     else:
-        rt_dadan_check_buy(_stock_id, df_buy, _db, vol, cnt, g_has_noticed,  g_good_list, pri)
+        good = rt_dadan_check_buy(_stock_id, df_buy, _db, vol, cnt, g_has_noticed,  g_good_list, pri)
 
     vol = 10000
-    cnt = 10
+    cnt = 12
     pri = 6.00
     if g_has_noticed2.has_key(_stock_id):
         pass
     else: 
-        rt_dadan_check_buy(_stock_id, df_buy, _db, vol, cnt, g_has_noticed2, g_good_list2, pri)
+        good = rt_dadan_check_buy(_stock_id, df_buy, _db, vol, cnt, g_has_noticed2, g_good_list2, pri)
 
     vol = 120000
     cnt = 1
@@ -209,7 +260,7 @@ def rt_dadan_one(_stock_id, _dd_date, _db):
     if g_has_noticed3.has_key(_stock_id):
         pass
     else:
-        rt_dadan_check_buy(_stock_id, df_buy, _db, vol, cnt, g_has_noticed3, g_good_list3, pri)
+        good = rt_dadan_check_buy(_stock_id, df_buy, _db, vol, cnt, g_has_noticed3, g_good_list3, pri)
 
 
     return 
@@ -252,7 +303,8 @@ def rt_dadan_rank_one(_stock_id, _dd_date, _db):
     # rank 2016/8/28
     rank, content = get_df_rank(df)
     # if rank >= 300 or (rank >= 209 and rank % 100 == 9):
-    if rank >= 100 or (rank >= 209 and rank % 100 == 9):
+    # if rank >= 100 or (rank >= 209 and rank % 100 == 9):
+    if rank >= 209:
         subject = "###rank: %d 净流入 %s" % (rank, _stock_id)
         log_info("nice: %s, %s", subject, content)
         saimail(subject, content)
@@ -314,9 +366,13 @@ def rt_timer(_stocks, _db):
 
     pre_end_time  = '14:30:00'
 
-
     global g_stock_date
-    g_stock_date = get_date_by(0)
+
+
+    if sai_is_product_mode():
+        g_stock_date = get_date_by(0)
+    else:
+        g_stock_date = "2016-12-01"
     log_debug("trade day: %s", g_stock_date)
 
 
@@ -373,10 +429,11 @@ def rt_timer(_stocks, _db):
         break
         """
 
-        # 收盘前分析资金流向 2016/8/28
-        if curr >= pre_end_time and day_rank_checked == 0:
-            day_rank_checked = 1
-            rt_dadan_rank(_stocks, g_stock_date, _db)
+        if sai_is_product_mode():
+            # 收盘前分析资金流向 2016/8/28
+            if curr >= pre_end_time and day_rank_checked == 0:
+                day_rank_checked = 1
+                rt_dadan_rank(_stocks, g_stock_date, _db)
 
         # 当日结束
         curr = get_time()
@@ -411,18 +468,17 @@ def main():
 
     saimail_init()
 
-    # check holiday
-    if today_is_weekend():
-        log_info("today is weekend, exit")
-        # saimail("dadan: weekend", "take a rest1")
+    if sai_is_product_mode():
+        # check holiday
+        if today_is_weekend():
+            log_info("today is weekend, exit")
+            # saimail("dadan: weekend", "take a rest1")
+        else:
+            log_info("today is workday, come on")
+            work()
     else:
-        log_info("today is workday, come on")
+        log_info("test mode, come on")
         work()
-
-    """
-    log_info("today is workday, come on")
-    work()
-    """
 
 
     log_info("main ends, bye!")

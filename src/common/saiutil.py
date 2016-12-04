@@ -13,7 +13,7 @@ import datetime
 import calendar
 
 from sailog  import *
-
+import json
 
 
 def get_today():
@@ -99,15 +99,43 @@ def get_args():
     return args
 
 
+def sai_analyze_system_config():
+    system_config = "%s/sai.conf" % os.getenv('HOME')
+    if os.path.isfile(system_config):
+        json_file_fd = file(system_config)
+        return json.load(json_file_fd)
+    else :
+        log_error("system_config[%s] 错误!", system_config)
+        return -1
+
+
+def sai_is_product_mode():
+    product_mode = 1
+    system_json = sai_analyze_system_config()
+    if system_json == -1:
+        log_error("error: no config, default production mode")
+        return True
+
+    product_mode =  system_json['instance']['product_mode']
+    log_debug("product_mode: [%s]", product_mode)
+    return (product_mode == "1")
+
+
 if __name__=="__main__":
+    sailog_set("saiutil.log")
     print today()  
     print get_date_by(20)
     print get_date_by(-3)
+
     if today_is_weekend():
         print "is weekend"
     else:
         print "not"
 
+    if sai_is_product_mode():
+        log_debug("is  product mode")
+    else:
+        log_debug("NOT product mode")
 
 
 # saiutil.py
