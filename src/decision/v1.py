@@ -63,7 +63,7 @@ order by pub_date desc limit 1" % (_stock_id, _stock_id, _n1, \
     _stock_id, _stock_id, _n1, \
     _stock_id, _stock_id, _n2)
 
-    log_debug("sql: \n%s", sql)
+    # log_debug("sql: \n%s", sql)
 
     df = pd.read_sql_query(sql, _db);
     if df is None:
@@ -76,11 +76,11 @@ order by pub_date desc limit 1" % (_stock_id, _stock_id, _n1, \
 
 
 def get_v1_detail(_stock_id, _pub_date, _n1, _db):
-    sql = "select pub_date, open_price, close_price, deal_total_count \
+    sql = "select pub_date, open_price, close_price, deal_total_count, last_close_price \
 from tbl_day a where a.stock_id  = '%s' and   a.pub_date >= '%s' \
 order by pub_date limit %d" % (_stock_id, _pub_date, _n1)
 
-    log_debug("sql: \n%s", sql)
+    # log_debug("sql: \n%s", sql)
 
     df = pd.read_sql_query(sql, _db);
     if df is None:
@@ -106,7 +106,7 @@ def work_one(_stock_id, _db):
 
     begin = get_micro_second()
 
-    n1 = 10
+    n1 = 3
     n2 = 30
     n3 = 3
 
@@ -119,11 +119,15 @@ def work_one(_stock_id, _db):
         log_debug("date_df is empty: [%d]", len(date_df))
         return 1
     else:
-        log_debug("min: len[%d]\n%s", len(date_df), date_df)
+        # log_debug("min: len[%d]\n%s", len(date_df), date_df)
         min_date = date_df.iloc[0, 0]
         min_vol  = date_df.iloc[0, 1]
         log_debug("min_date: [%s]", min_date)
         log_debug("min_vol:  [%s]", min_vol)
+
+    if min_vol < 0.0001:
+        log_info("volume too small: [%.4f]", min_vol)
+        return 1
 
     # 之后n天的交易数据
     detail_df = get_v1_detail(_stock_id, min_date, n3, _db);
@@ -142,7 +146,13 @@ def work_one(_stock_id, _db):
     date0  = detail_df['pub_date'][0]
     open0  = detail_df['open_price'][0]
     close0 = detail_df['close_price'][0]
+    last0  = detail_df['last_close_price'][0]
     log_debug("volume0: [%.3f]", vol0)
+
+    rate0  = (close0 - last0) / last0 * 100
+    if rate0 > 9.9:
+        log_info("xxoo 无量涨停")
+        return 1
 
     if length >= 2:
         vol1   = detail_df['deal_total_count'][1]
@@ -174,18 +184,13 @@ def work_one(_stock_id, _db):
         # content += item
         log_info("subject: \n%s", subject)
         log_info("content: \n%s", item)
-        saimail(subject, item)
+        if sai_is_product_mode():
+            saimail(subject, item)
         sai_save_good(_stock_id, date0, "diliang", min_vol, vr1, vr2, min_date, _db)
     else :
         log_info("sorry... [%s]", _stock_id)
 
     log_info("it costs %d us", get_micro_second() - begin)
-
-    """
-    for row_index, row in detail_df.iterrows():
-        pub_date = row_index
-        log_debug("%s: [%s]", pub_date, row)
-    """
 
     return 0
 
@@ -201,10 +206,8 @@ def xxx(_db):
 
     for row_index, row in list_df.iterrows():
         stock_id = row_index
-        stock_id = "600608"
         log_debug("[%s]------------------", stock_id)
-        work_one(stock_id, _db)
-        break
+        rv = work_one(stock_id, _db)
 
     return 0
 
@@ -214,13 +217,7 @@ def xxx(_db):
 def work():
     db = db_init()
 
-    if sai_is_product_mode():
-        # trade_date = "2016-08-02"
-        trade_date = get_date_by(0)
-        xxx(db)
-    else:
-        # regression(db)
-        xxx(db)
+    xxx(db)
 
     db_end(db)
 

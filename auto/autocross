@@ -31,7 +31,7 @@ cd ${PHOME}/src/decision
 time python ma_cross6.py
 
 # 2. cross 5 ma -- 2016-11-27
-time python ma_cross5.py
+#time python ma_cross5.py
 
 
 exec 3>&-

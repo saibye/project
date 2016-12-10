@@ -158,12 +158,12 @@ def work_one(_trade_date, _db):
         # 3. 次日，高开
         # 4. 次日，收阳线
         ##### 2016-12-3 减弱条件
-        # 1. 穿越当日，成交量翻倍
+        # 1. 穿越当日，成交量放大
         # 2. 次日，比前天成交量增加
         # 3. 次日，高开 -0.01
         # 4. 次日，收阳线
         # if amount_rate>=2 and ref_amount(0)>ref_amount(1) and ref_open(0)>=ref_close(1) and ref_close(0)>=ref_open(0):
-        if amount_rate>=2 and ref_amount(0)>ref_amount(2) and ref_open(0)>=ref_close(1)*0.99 and ref_close(0)>=ref_open(0):
+        if amount_rate>=1.1 and ref_amount(0)>ref_amount(2) and ref_open(0)>=ref_close(1)*0.99 and ref_close(0)>=ref_open(0):
             log_debug("rate: %.2f", amount_rate)
             log_debug("amount1  < amout2    -- %.2f <  %.2f", ref_amount(2), ref_amount(1))
             log_debug("amount2  < amout3    -- %.2f <  %.2f", ref_amount(1), ref_amount(0))

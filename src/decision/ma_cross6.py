@@ -15,6 +15,8 @@ from saimail import *
 #######################################################################
 
 
+
+
 def check_ma10_by_tu(_stock_id, _date, _db):
     rv   = 0
 

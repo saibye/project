@@ -196,7 +196,7 @@ values ('%s', '%s', '%s', \
      _key1, _key2, _key3, _key4,
      '1', inst_date, inst_time)
 
-    log_debug("sql: [%s]", sql)
+    # log_debug("sql: [%s]", sql)
     rv = sql_to_db(sql, _db)
 
     return rv

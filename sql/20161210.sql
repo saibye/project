@@ -1,6 +1,72 @@
 
 --
 
+select pub_date, close_price, open_price, low_price, high_price, last_close_price, deal_total_count
+from tbl_day
+where stock_id='600466'
+and pub_date <= '2016-10-28'
+order by pub_date desc
+limit 2;
+
+
+
+
+select a.close_price, a.open_price, a.low_price, a.high_price, a.last_close_price, b.ma5, b.ma10
+from tbl_day a, tbl_day_tech b
+where a.stock_id='600466'
+and a.pub_date  = '2016-10-28'
+and a.stock_id  = b.stock_id
+and a.pub_date  = b.pub_date;
+
+
+
+
+--
+select count(1) from tbl_day 
+where stock_id = '600857'
+and pub_date > '2016-09-29'
+and close_price > 14.57
+order by pub_date 
+limit 10;
+
+
+
+select * from tbl_day 
+where stock_id = '600857'
+and pub_date > '2016-09-29'
+order by pub_date 
+limit 10;
+
+
+select count(1) from 
+(select * from tbl_day 
+where stock_id = '600857'
+and pub_date > '2016-09-29'
+order by pub_date 
+limit 10) t1
+where close_price > 14.57
+
+
+select count(1) from 
+(select * from tbl_day 
+where stock_id = '600868'
+and pub_date > '2016-09-28'
+order by pub_date 
+limit 10) t1
+where close_price > 5.31
+
+
+
+select count(1) from 
+(select * from tbl_day 
+where stock_id = '600868'
+and pub_date > '2016-09-28'
+order by pub_date 
+limit 10) t1
+where low_price > 5.10
+
+
+
 --a.stock_id  = '603066'
 --and   a.pub_date >= '2016-06-01'
 

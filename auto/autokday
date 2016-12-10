@@ -30,9 +30,11 @@ exec 2>&4
 cd ${PHOME}/src/dayend && time python k_day.py
 
 
-# 2. apply the rules: K only, not depend on MACD
+# 2.1 apply the rules: K only, not depend on MACD
 cd ${PHOME}/src/decision && time python k1.py
 
+# 2.2 apply the rules: volume only, not depend on MACD 2016/12/4
+cd ${PHOME}/src/decision && time python v1.py
 
 # 3. calc k-day tech
 cd ${PHOME}/src/dayend && time python k_day_tech.py
@@ -41,8 +43,10 @@ cd ${PHOME}/src/dayend && time python k_day_tech.py
 # 4. apply the rules: need MACD: cross ma*5
 cd ${PHOME}/src/decision && time python ma_cross5.py
 
+# 5. apply the rules: dadan3 back ma5 or cross ma10
+cd ${PHOME}/src/decision && time python good.py 
 
-# 5. apply the rules: need MACD: cross ma*6
+# 9. apply the rules: need MACD: cross ma*6
 # cd ${PHOME}/src/decision && time python ma_cross6.py
 
 
