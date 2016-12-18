@@ -7,7 +7,8 @@ from sailog  import *
 
 def db_init():
     # 打开数据库连接
-    db = MySQLdb.connect("127.0.0.1", "tudev", "wangfei", "tu" )
+    # db = MySQLdb.connect("127.0.0.1", "tudev", "wangfei", "tu" )
+    db = MySQLdb.connect(host="127.0.0.1", user="tudev", passwd="wangfei", db="tu", charset="utf8") 
     if db is None:
         log_error("error: db_init failure")
 

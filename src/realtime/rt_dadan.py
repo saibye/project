@@ -99,21 +99,29 @@ def rt_dadan_check_buy(_stock_id, _df, _db, _vol_base, _count_base, _noticed, _l
                 # log_info("连续买: [%d, %s, %d, %s]", con1, tm, volume, direction)
             else :
                 con1 = 0
+
+                if good == 1:
+                    break
+                else:
+                    body = ""
                 # log_info("有卖盘: 重置 [%d, %s, %d, %s]", con1, tm, volume, direction)
+
+            if direction == buy and price >= _price:
+                body   += u"%s, %s: p: %.2f,  v: %d, t: %d\n" % (stock_id, tm, price, volume, con1)
 
             if con1 >= _count_base and price >= _price :
                 # log_info("nice: buy [%s]: at [%s, %.2f, %d] %dth", stock_id, tm, price, volume, con1)
                 good = 1
-                body   += u"%s, %s: price: %.2f,  vol: %d, times: %d\n" % (stock_id, tm, price, volume, con1)
                 good_volume = volume
                 good_tm     = tm
                 good_price  = price
                 good_con    = con1
 
-    if len(body) > 0 :
+    if good == 1:
         if _noticed.has_key(stock_id) :
             pass
         else :
+            body += get_basic_info_all(stock_id, _db)
             body += "++++++++++++++++++++++++++++++++\n"
             _noticed[stock_id] = body
             _list.append(body)
@@ -372,7 +380,7 @@ def rt_timer(_stocks, _db):
     if sai_is_product_mode():
         g_stock_date = get_date_by(0)
     else:
-        g_stock_date = "2016-12-01"
+        g_stock_date = "2016-12-09"
     log_debug("trade day: %s", g_stock_date)
 
 

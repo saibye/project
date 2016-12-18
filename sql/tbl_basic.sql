@@ -5,10 +5,8 @@ drop table if exists tbl_basic;
 /*==============================================================*/
 create table tbl_basic
 (
-   pub_date             date not null,
    stock_id             char(8) not null,
    stock_name           varchar(20),
-   stock_loc            char(2) not null,
    industry             varchar(20),
    area                 varchar(20),
    pe                   float,
@@ -22,9 +20,9 @@ create table tbl_basic
    eps                  float,
    bvps                 float,
    pb                   float,
-   time_to_market       date,
+   time_to_market       varchar(10),
    inst_date            date not null,
    inst_time            time not null,
-   primary key (pub_date, stock_id, stock_loc)
+   primary key (stock_id)
 );
 

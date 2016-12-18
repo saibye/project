@@ -163,7 +163,7 @@ def work_one(_trade_date, _db):
         # 3. 次日，高开 -0.01
         # 4. 次日，收阳线
         # if amount_rate>=2 and ref_amount(0)>ref_amount(1) and ref_open(0)>=ref_close(1) and ref_close(0)>=ref_open(0):
-        if amount_rate>=1.1 and ref_amount(0)>ref_amount(2) and ref_open(0)>=ref_close(1)*0.99 and ref_close(0)>=ref_open(0):
+        if amount_rate>=2 and ref_amount(0)>ref_amount(2) and ref_open(0)>=ref_close(1)*0.99 and ref_close(0)>=ref_open(0):
             log_debug("rate: %.2f", amount_rate)
             log_debug("amount1  < amout2    -- %.2f <  %.2f", ref_amount(2), ref_amount(1))
             log_debug("amount2  < amout3    -- %.2f <  %.2f", ref_amount(1), ref_amount(0))
@@ -202,6 +202,7 @@ def work():
     if g_product_mode == 1:
         max_date = get_date_by(0)
         days     = 2
+        days     = 1
     else:
         max_date = "2016-12-03"
         days     = 3

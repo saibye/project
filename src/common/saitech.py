@@ -20,12 +20,13 @@ from saidb   import *
 与昨日量比
 """
 def tech_get_vol_rate(_stock_id, _trade_date, _db):
+    trade_date = str(_trade_date)
     sql = "select pub_date, close_price, open_price, low_price, high_price, last_close_price, deal_total_count \
 from tbl_day \
 where stock_id='%s' \
 and pub_date <= '%s' \
 order by pub_date desc \
-limit 2" % (_stock_id, _trade_date)
+limit 2" % (_stock_id, trade_date)
 
     # log_debug("sql: [%s]", sql)
 
@@ -50,8 +51,8 @@ limit 2" % (_stock_id, _trade_date)
     date_this = str(df['pub_date'][0])
     date_last = str(df['pub_date'][1])
 
-    if date_this != _trade_date:
-        log_error("'%s' has no date at '%s'", _stock_id, _trade_date)
+    if date_this != trade_date:
+        log_error("'%s' has no data at '%s'", _stock_id, trade_date)
         log_error("df: \n%s", df)
         return -1
 
@@ -149,7 +150,7 @@ and a.pub_date  = b.pub_date" % (_stock_id, _trade_date)
 
 
 """
-功能：之后_m天的{收盘}价，有x天高于指定值(_price)
+功能：_trade_date之后_m天的{收盘}价，有x天高于指定值(_price)
 场景：一阳N线后，持续x天在高于{收盘}价的地方徘徊
 """
 def tech_get_exist_days(_stock_id, _trade_date, _price, _m, _db):
@@ -180,7 +181,7 @@ where close_price > %.2f" % (_stock_id, _trade_date, _m, _price)
 
 
 """
-功能：之后_m天的{最低}价，有x天高于指定值(_price)
+功能：_trade_date之后_m天的{最低}价，有x天高于指定值(_price)
 场景：一阳N线后，持续x天在高于{中线}价的地方徘徊
 """
 def tech_get_exist_n2(_stock_id, _trade_date, _price, _m, _db):

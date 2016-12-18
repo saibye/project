@@ -14,6 +14,7 @@ from saimail import *
 from sairef  import *
 
 #######################################################################
+# 策略：地量后，放量10倍
 # 不需要macd等,  所以只使用tbl_day表 2016/11/26
 #######################################################################
 
@@ -32,6 +33,9 @@ def get_v1_list(_db):
         return df
 
 
+"""
+最近n2天的最小vol，是最近n1天的最小vol
+"""
 def get_v1_min(_stock_id, _n1, _n2, _db):
     sql = "select pub_date, deal_total_count \
 from tbl_day a where a.stock_id = '%s'\
@@ -75,6 +79,9 @@ order by pub_date desc limit 1" % (_stock_id, _stock_id, _n1, \
         return df
 
 
+"""
+最小vol后的成交日数据
+"""
 def get_v1_detail(_stock_id, _pub_date, _n1, _db):
     sql = "select pub_date, open_price, close_price, deal_total_count, last_close_price \
 from tbl_day a where a.stock_id  = '%s' and   a.pub_date >= '%s' \
@@ -97,18 +104,27 @@ def work_one(_stock_id, _db):
     log_info("work_one begin")
 
     good = 0
+    zt1   = 0.0
     vr1   = 0.0
     rate1 = 0.0
+    zt2   = 0.0
     vr2   = 0.0
     rate2 = 0.0
     one   = ""
     two   = ""
+    warn  = ""
 
     begin = get_micro_second()
 
-    n1 = 3
-    n2 = 30
-    n3 = 3
+    # 最近n1天的min，是最近n2天的min！
+    if sai_is_product_mode():
+        n1 = 3
+        n2 = 30
+        n3 = 3
+    else:
+        n1 = 60
+        n2 = 90
+        n3 = 3
 
     # min(volume), pub_date
     date_df = get_v1_min(_stock_id, n1, n2, _db)
@@ -151,8 +167,13 @@ def work_one(_stock_id, _db):
 
     rate0  = (close0 - last0) / last0 * 100
     if rate0 > 9.9:
-        log_info("xxoo 无量涨停")
+        log_info("xxoo[%s] 无量涨停", _stock_id)
         return 1
+
+    # 无量跌停，添加提示信息
+    if rate0 < -9.8:
+        warn = "WARN: 无量跌停，谨慎！"
+        log_info("%s", warn)
 
     if length >= 2:
         vol1   = detail_df['deal_total_count'][1]
@@ -160,6 +181,7 @@ def work_one(_stock_id, _db):
         open1  = detail_df['open_price'][1]
         close1 = detail_df['close_price'][1]
         rate1  = (close1 - close0) / close0 * 100
+        zt1    = (close1 - open1)  / close0 * 100
         vr1    = vol1 / vol0
         one    = "[%s]涨幅1: [%.2f], 量比1: [%.2f]" % (date1, rate1, vr1)
         log_debug("one: %s", one)
@@ -170,22 +192,48 @@ def work_one(_stock_id, _db):
         open2  = detail_df['open_price'][2]
         close2 = detail_df['close_price'][2]
         rate2  = (close2 - close1) / close1 * 100
+        zt2    = (close2 - open2)  / close1 * 100
         vr2    = vol2 / vol0
         two    = "[%s]涨幅2: [%.2f], 量比2: [%.2f]" % (date2, rate2, vr2)
         log_debug("two: %s", two)
 
+    # 次日跌停不考虑 2016/12/11 for 300353
+    if rate1 < -9.8 or rate2 < -9.8:
+        log_info("xxoo 地量后，有跌停")
+        return 1
+
+
     # 检查量比
-    if (rate1 > 0 and vr1 >= 10) or (rate2 > 0 and vr2 >= 10):
+    if ((rate1 > 0 or zt1 > 0) and vr1 >= 10) or ((rate2 > 0 or zt2 > 0) and vr2 >= 10):
         log_info("nice, a chance: [%s], since: [%s]", _stock_id, min_date)
+
+        if zt1 < 0:
+            warn += "\nWARN: 次日阴柱%.2f，谨慎！" % (zt1)
+            log_info("%s", warn)
+
         item  = "%s 地量: [%.3f]@[%s]" % (_stock_id, vol0, min_date)
-        xsg   = get_xsg_info(_stock_id, _db)
-        item += "\n%s\n%s\n%s" % (one, two, xsg)
-        subject  = "diliang: %s" % (min_date)
+
+        info  = get_basic_info_all(_stock_id, _db)
+        item += "\n%s\n%s\n%s\n%s" % (warn, one, two, info)
+
+        if vr1 >= 50 or vr2 >= 50:
+            subject  = "###diliang: %s" % (min_date)
+        elif vr1 >= 30 or vr2 >= 30:
+            subject  = "##diliang: %s" % (min_date)
+        elif vr1 >= 20 or vr2 >= 20:
+            subject  = "#diliang: %s" % (min_date)
+        else:
+            subject  = "diliang: %s" % (min_date)
+
         # content += item
         log_info("subject: \n%s", subject)
         log_info("content: \n%s", item)
         if sai_is_product_mode():
             saimail(subject, item)
+        else:
+            pass
+            if vr1 >= 30 or vr2 >= 30:
+                saimail(subject, item)
         sai_save_good(_stock_id, date0, "diliang", min_vol, vr1, vr2, min_date, _db)
     else :
         log_info("sorry... [%s]", _stock_id)

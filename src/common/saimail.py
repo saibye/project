@@ -63,6 +63,7 @@ if __name__=="__main__":
     sailog_set("saimail.log")
     subject   = u"goodbye subject"
     body      = u"hello, world, buy buy buy"
+    log_info("send: [%s, %s]", subject, body)
     saimail(subject, body)
 
 # saimail.py

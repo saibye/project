@@ -36,6 +36,9 @@ cd ${PHOME}/src/decision && time python k1.py
 # 2.2 apply the rules: volume only, not depend on MACD 2016/12/4
 cd ${PHOME}/src/decision && time python v1.py
 
+# 2.3 apply the rules: fupai
+cd ${PHOME}/src/decision && time python d1.py
+
 # 3. calc k-day tech
 cd ${PHOME}/src/dayend && time python k_day_tech.py
 

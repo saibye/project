@@ -208,9 +208,18 @@ def ct_ticks(_stocks, _trade_date, _db):
         # if rank >= 500 or (rank >= 109 and rank % 100 == 9):
         # if rank >= 100 or (rank >= 109 and rank % 100 == 9):
         # if rank >= 109 or (rank >= 100 and tdchg > 9.5) or (rank >= 59 and rate >= 2.0):
-        if rank >= 100 or (rank >= 50 and tdchg > 9.5) or (rank >= 50 and rate >= 2.0):
+        if rank >= 100 or (rank >= 50 and tdchg > 9.8) or (rank >= 50 and rate >= 2.0):
             # very good
-            subject1 = "###rank: %d | %s 吸筹 %s" % (rank, stock_id, _trade_date)
+
+            if tdchg > 9.8 and rate >= 2.0:
+                subject1 = "rank: %d | %s 涨停+高比 %s" % (rank, stock_id, _trade_date)
+            elif tdchg > 9.8:
+                subject1 = "rank: %d | %s 涨停 %s" % (rank, stock_id, _trade_date)
+            elif rate >= 2.0:
+                subject1 = "rank: %d | %s 高比 %s" % (rank, stock_id, _trade_date)
+            else:
+                subject1 = "rank: %d | %s 吸筹 %s" % (rank, stock_id, _trade_date)
+
             if g_has_noticed.has_key(stock_id):
                 pass
             else:

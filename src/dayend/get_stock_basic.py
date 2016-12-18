@@ -12,9 +12,13 @@ from saisql  import *
 from saicalc import *
 from sailog  import *
 from saimail import *
+from saitu   import *
 
 #######################################################################
 
+def get_delete_basic_sql(_stock_id):
+    sql = "delete from tbl_basic where stock_id='%s'" % (_stock_id)
+    return sql
 
 def get_insert_basic_sql(_stock_id, _row):
     stock_id        = _stock_id
@@ -45,7 +49,7 @@ values ( '%s', '%s', '%s', '%s', \
 '%s', '%s', '%s', '%s', '%s', \
 '%s', '%s', '%s', \
 '%s', '%s', '%s', '%s', '%s', '%s');" %\
-       (stock_id, 'name', 'industry', 'area',
+       (stock_id, name, industry, area,
         pe, outstanding, totals, totalAssets, liquidAssets, 
         fixedAssets, reserved, reservedPerShare, 
         eps, bvps, pb, timeToMarket, dt, tm)
@@ -56,20 +60,18 @@ values ( '%s', '%s', '%s', '%s', \
 def work(_args):
     db = db_init()
 
-    dt = get_today()
-    tm = get_time()
-
-    df = ts.get_stock_basics()
-
-    # se = pd.Series(dt, df.index)
+    df = get_stock_list_df_tu()
+    log_debug("\n%s", df)
 
     rownum = 0
     for row_index, row in df.iterrows():
         rownum = rownum + 1
-        code= row_index
-        sql = get_insert_basic_sql(code, row)
-        # log_debug("sql: %s", sql)
+        stock_id = row_index
+        sql = get_delete_basic_sql(stock_id)
         sql_to_db(sql, db)
+        sql = get_insert_basic_sql(stock_id, row)
+        rv = sql_to_db(sql, db)
+        log_info("%s done: %d", stock_id, rv)
 
     db_end(db)
 
@@ -80,8 +82,6 @@ def main():
     sailog_set("get_stock_basic.log")
 
     log_info("main begins")
-
-    saimail_init()
 
     args = get_args()
 
