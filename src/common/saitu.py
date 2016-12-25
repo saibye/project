@@ -70,6 +70,23 @@ def get_curr_price(_stock_id):
 
     return c
 
+# 开盘价
+# 只能是最新一个交易日
+def get_open_price(_stock_id):
+    df = None
+    try :
+        df = ts.get_realtime_quotes(_stock_id)
+    except Exception:
+        log_error("error: get_realtime_quotes")
+        return None
+
+    if df is not None:
+        o = float(df['open'][0])
+    else:
+        o = None
+
+    return o
+
 
 # 涨幅
 # 只能是最新一个交易日

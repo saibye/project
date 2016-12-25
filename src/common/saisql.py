@@ -134,6 +134,23 @@ def get_one_kday(_stock_id, _pub_date, _db):
 
     return df
 
+"""
+2016/12/25
+"""
+def get_max_pub_date_kunit(_stock_id, _table, _db):
+    sql = "select max(pub_date) pub_date from %s where stock_id='%s'" % (_table, _stock_id)
+
+    df = pd.read_sql_query(sql, _db);
+
+    return df
+
+def get_one_kunit(_stock_id, _pub_date, _table, _db):
+    sql = "select * from %s where stock_id='%s' and pub_date='%s'" % (_table, _stock_id, _pub_date)
+
+    df = pd.read_sql_query(sql, _db);
+
+    return df
+
 
 def get_recent_pub_date(_pub_date, _N, _db):
     sql = "select distinct pub_date from tbl_day_tech x where pub_date <='%s' order by pub_date desc limit %d" % (_pub_date, _N)
@@ -265,12 +282,41 @@ def get_basic_info2(_stock_id, _db):
 
 
 """
+最新的复牌
+"""
+def get_fupai_info(_stock_id, _db):
+    info = ""
+
+    sql = "select * from tbl_fupai \
+where stock_id = '%s' \
+order by fupai_date desc limit 1" % (_stock_id)
+
+    df = pd.read_sql_query(sql, _db);
+    if df is None:
+        log_info("'%s' not found in fupai", _stock_id)
+        return info
+    else:
+        # log_debug("df: \n%s", df)
+        pass
+
+    if len(df) > 0:
+        #  停牌日期, 复牌日期, 天数
+        info  = "复牌   :\n"
+        info += "%s - %s - %s天\n" % (df['tingpai_date'][0], df['fupai_date'][0], df['days'][0])
+
+    return info
+
+
+"""
 返回基础信息、限售股信息
+返回复牌信息 2016-12-25
 """
 def get_basic_info_all(_stock_id, _db):
     info = ""
 
     info += get_basic_info2(_stock_id, _db)
+
+    info += get_fupai_info(_stock_id, _db)
 
     info += get_xsg_info(_stock_id, _db)
 
@@ -298,6 +344,14 @@ if __name__=="__main__":
     stock_id  = "601901"
     info = get_basic_info_all(stock_id, db)
     log_debug("all:\n%s", info)
+
+    stock_id  = "000757"
+    info = get_fupai_info(stock_id, db)
+    log_debug("fupai:\n%s", info)
+
+    stock_id  = "000757"
+    info = get_basic_info_all(stock_id, db)
+    log_debug("all2:\n%s", info)
 
     db_end(db)
     log_info("main ends  bye!")

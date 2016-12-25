@@ -432,7 +432,15 @@ print get_micro_second() - begin
 print df.head()
 """
 
+"""
 df = ts.get_today_all()
 print df.head()
+"""
+
+df = ts.get_k_data('600000', ktype='W')
+print df.head(10)
+
+df = ts.get_k_data('600000', ktype='30')
+print df.head(20)
 
 # end

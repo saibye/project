@@ -14,8 +14,7 @@ from saimail import *
 from sairef  import *
 
 #######################################################################
-# 策略：地量后，放量10倍
-# 不需要macd等,  所以只使用tbl_day表 2016/11/26
+# 策略：复牌，跌停
 #######################################################################
 
 
@@ -88,6 +87,30 @@ and \
         return 1
 
 
+"""
+2016-12-25
+insert into tbl_fupai ( 
+stock_id, stock_loc, fupai_date, tingpai_date, days, 
+inst_date, inst_time) 
+values ('000757', 'cn', '2016-09-27', '2016-03-27', 180, '2016-12-25', '09:41:00'); 
+"""
+def record_to_db(_stock_id, _fupai_date, _tingpai_date, _days, _db):
+    dt = get_today()
+    tm = get_time()
+    sql = "insert into tbl_fupai (  \
+stock_id, stock_loc, fupai_date, tingpai_date, days,  \
+inst_date, inst_time)  \
+values ('%s', 'cn', '%s', '%s', %d, '%s', '%s')" % (_stock_id, _fupai_date, _tingpai_date, _days, dt, tm)
+
+    log_debug("sql: \n%s", sql)
+
+    rv = sql_to_db_nolog(sql, _db)
+    if rv != 0:
+        log_error("error: record fupai: %s", sql)
+
+    return rv
+
+
 def work_one(_stock_id, _max_date, _db):
 
     log_info("work_one [%s, %s] begin", _stock_id, _max_date)
@@ -144,6 +167,10 @@ def work_one(_stock_id, _max_date, _db):
             item += "\n%s" % (get_basic_info_all(_stock_id, _db))
             item += "---------------------------------------------------------------\n"
             log_debug("\n%s", item)
+
+        # 2016-12-25
+        if diff > 30:
+            record_to_db(_stock_id, last_one, this_one, diff, _db)
 
         last_one = this_one
         last_rate= rate

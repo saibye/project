@@ -27,9 +27,11 @@ and   b.stock_id = c.stock_id \
 and   b.pub_date = c.pub_date \
 and   (b.close_price <= c.ma5  or (c.ma10<= b.high_price and c.ma10 >= b.low_price)) \
 and   a.good_type = '%s' \
-and   b.pub_date  = '%s'" % (_good_type, _trade_date)
+and   b.pub_date  = '%s' \
+and   a.pub_date in \
+(select * from (select distinct pub_date from tbl_good order by pub_date desc limit 10) x)" % (_good_type, _trade_date)
 
-    # log_debug("sql: \n%s", sql)
+    log_debug("sql: \n%s", sql)
 
     df = pd.read_sql_query(sql, _db);
     if df is None:
@@ -62,6 +64,8 @@ def xxx(_db):
     else:
         last_date = "2016-11-29"
         good_type = "dadan2"
+        last_date = "2016-12-22"
+        good_type = "dadan3"
 
     list_df = get_good_list(last_date, good_type, _db)
     if list_df is None:
@@ -83,7 +87,7 @@ def xxx(_db):
         event_date = row['event_date']
         back_date  = row['back_date']
         one = "[%s] [%.2f]万手 [%.2f]元 [%s %s], match[%s]" % (stock_id, volume/10000.00, price, event_date, event_time, back_date)
-        content += "%s\n" % (one)
+        content += "%s\n\n" % (one)
 
     subject = "back1: %s" % (last_date)
     log_info("subject: \n%s", subject)

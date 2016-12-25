@@ -21,10 +21,10 @@ def get_tick(_stock_id, _trade_date):
     global g_sina_mode
 
     if g_sina_mode == 1:
-        # log_debug("sina")
+        log_debug("sina")
         return get_tick_sina(_stock_id, _trade_date)
     else:
-        # log_debug("feng")
+        log_debug("feng")
         return get_tick_feng(_stock_id, _trade_date)
 
 def tick_set_sina_mode():

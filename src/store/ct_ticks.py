@@ -24,6 +24,8 @@ buy策略：
 g_has_noticed  = {}
 g_basic_info   = None
 
+
+
 def ct_ticks_analyze(_stock_id, _trade_date, _df, _db):
 
     # log_debug("\n%s", _df)
@@ -31,13 +33,14 @@ def ct_ticks_analyze(_stock_id, _trade_date, _df, _db):
     base_list = [1, 200, 400, 800, 1000, 2000, 3000]
 
     rank = 0.0
+    chance3000 = 0
 
     open_price  = _df['price'][0]
     close_price = _df['price'][-1]
 
     if close_price <= 2.0:
         log_error("warn: stock %s is too cheap, next", _stock_id)
-        return -4, None, None, None
+        return -4, None, None, None, None, None, None
 
     if close_price <= open_price*1.01:
         kk = 9
@@ -88,15 +91,35 @@ def ct_ticks_analyze(_stock_id, _trade_date, _df, _db):
         if rate < min_rate:
             min_rate = rate
 
-
         diff  = buy - sell
         diff2 = diff * factor
         content += "%04d B: %.2f, S: %.2f, N: %.2f, %.2f\n" % \
                     (base, buy/10000.00, sell/10000.00, diff/10000.00, diff2/10000.00)
 
-        buy_list.append(buy/1000.00)
-        sell_list.append(sell/1000.00)
-        net_list.append(diff/1000.00)
+        # 3000 special -- 2016-12-25
+        if base == 3000:
+            buy3  = buy  / 10000.00
+            sell3 = sell / 10000.00
+            diff3 = diff / 10000.00
+            if rate >= 20 and diff3 >= 20:
+                log_info("无脑入20: [%.2f][%.2f]", rate, diff3)
+                chance3000 = 3
+                content += "3000 -- 无脑入20\n"
+            elif rate >= 10 and diff3 >= 10:
+                log_info("很强烈10: [%.2f][%.2f]", rate, diff3)
+                chance3000 = 2
+                content += "3000 -- 很强烈10\n"
+            elif buy3 >= 3 and sell3 <= 0.0:
+                log_info("无卖盘03: [%.2f][%.2f]", buy3, sell3)
+                chance3000 = 1
+                content += "3000 -- 无卖盘03\n"
+            else:
+                log_debug("3000: [%.2f][%.2f][%.2f]", buy3, sell3, rate)
+                chance3000 = 0
+
+        buy_list.append(buy/10000.00)
+        sell_list.append(sell/10000.00)
+        net_list.append(diff/10000.00)
 
         # 原始净值 2016/9/2
         if diff >= 1200000:
@@ -148,40 +171,49 @@ def ct_ticks_analyze(_stock_id, _trade_date, _df, _db):
     if rank > 0:
         rank += kk
 
-    # save to db
-    dt = get_today()
-    tm = get_time()
-    sql = "insert into tbl_net_rank \
-(pub_date, stock_id, stock_loc,  watcher, \
-open_price, close_price, \
-net1, net200, net400, net800, net1000, net2000, net3000, \
-rank, \
-buy1, buy200, buy400, buy800, buy1000, buy2000, buy3000, \
-sell1, sell200, sell400, sell800, sell1000, sell2000, sell3000, \
-inst_date, inst_time) \
-values ('%s', '%s', '%s', '%s',  \
-'%.2f', '%.2f', \
-'%.2f', '%.2f', '%.2f', '%.2f', '%.2f', '%.2f', '%.2f', \
-'%d', \
-'%.2f', '%.2f', '%.2f', '%.2f', '%.2f', '%.2f', '%.2f', \
-'%.2f', '%.2f', '%.2f', '%.2f', '%.2f', '%.2f', '%.2f', \
-'%s', '%s')" % \
-    (_trade_date, _stock_id, 'cn', 'sai',
-     open_price, close_price,
-     net_list[0], net_list[1], net_list[2], net_list[3], net_list[4], net_list[5], net_list[6],
-     rank, 
-     buy_list[0], buy_list[1], buy_list[2], buy_list[3], buy_list[4], buy_list[5], buy_list[6],
-     sell_list[0], sell_list[1], sell_list[2], sell_list[3], sell_list[4], sell_list[5], sell_list[6],
-     dt, tm)
-    # log_info("%s", sql)
+    return  rank, content, min_rate, buy_list, sell_list, net_list, chance3000
 
-    return  rank, content, sql, min_rate
+
+def get_history_rank(_stock_id, _trade_date, _db):
+    sql = "select * from tbl_net_rank where stock_id='%s' \
+and pub_date < '%s' order by pub_date desc limit 3" % (_stock_id, _trade_date)
+    # log_debug("%s", sql)
+
+    df = pd.read_sql_query(sql, _db);
+    if df is None:
+        log_info("rank no history1", _stock_id)
+        return ""
+    elif df.empty:
+        log_debug("df is empty: [%d]", len(df))
+        return ""
+    else:
+        pass
+        log_debug("nice: tick history [%d]", len(df))
+
+    content = ""
+    for row_index, row in df.iterrows():
+        factor = row['close_price'] / 10.0
+        item = "\nrank: %.0f, %s, %s, %.2f元\n" % (row['rank'], row['subject'], row['pub_date'], row['close_price'])
+        item  += "0001 B: %.2f, S: %.2f, N: %.2f, %.2f\n" % (row['buy1'], row['sell1'], row['net1'], row['net1']*factor)
+        item  += "0200 B: %.2f, S: %.2f, N: %.2f, %.2f\n" % (row['buy200'], row['sell200'], row['net200'], row['net200']*factor)
+        item  += "0400 B: %.2f, S: %.2f, N: %.2f, %.2f\n" % (row['buy400'], row['sell400'], row['net400'], row['net400']*factor)
+        item  += "0800 B: %.2f, S: %.2f, N: %.2f, %.2f\n" % (row['buy800'], row['sell800'], row['net800'], row['net800']*factor)
+        item  += "1000 B: %.2f, S: %.2f, N: %.2f, %.2f\n" % (row['buy1000'], row['sell1000'], row['net1000'], row['net1000']*factor)
+        item  += "2000 B: %.2f, S: %.2f, N: %.2f, %.2f\n" % (row['buy2000'], row['sell2000'], row['net2000'], row['net2000']*factor)
+        item  += "3000 B: %.2f, S: %.2f, N: %.2f, %.2f\n" % (row['buy3000'], row['sell3000'], row['net3000'], row['net3000']*factor)
+        content = content + item
+
+    # log_info("history: \n%s", content)
+    return content
 
 
 def ct_ticks(_stocks, _trade_date, _db):
     global g_has_noticed
 
-    tick_set_sina_mode()
+    if sai_is_product_mode():
+        tick_set_sina_mode()
+    else:
+        tick_set_feng_mode()
 
     tdall = get_stock_quotation()
     if tdall is None:
@@ -189,6 +221,8 @@ def ct_ticks(_stocks, _trade_date, _db):
         return -1
 
     chged = tdall['changepercent']
+    open_se = tdall['open']
+    close_se= tdall['trade']
 
     body = ""
     for row_index, row in _stocks.iterrows():
@@ -196,15 +230,32 @@ def ct_ticks(_stocks, _trade_date, _db):
 
         tdchg = chged.get(stock_id)
         if tdchg is None:
-           tdchg = 0.0
+            tdchg = 0.0
         log_debug("stock %s today changed: %.2f%%", stock_id, tdchg)
+
+        op = open_se.get(stock_id)
+        if op is None:
+            op = 0.0
+            op = get_open_price(stock_id)
+            if op is None:
+               op = 0
+
+        cp = close_se.get(stock_id)
+        if cp is None:
+            cp = get_curr_price(stock_id)
+            if cp is None:
+               cp = 0
+
+        log_debug("open: %.2f, close: %.2f", op, cp)
 
         df = get_tick(stock_id, _trade_date)
         if df is None :
             log_error("warn: stock %s, %s is None, next", stock_id, _trade_date)
             continue
 
-        rank, content, sql, rate = ct_ticks_analyze(stock_id, _trade_date, df, _db)
+        subject0 = "流入"
+        db_cata  = "0"
+        rank, content, rate, list1, list2, list3, chance = ct_ticks_analyze(stock_id, _trade_date, df, _db)
         # if rank >= 500 or (rank >= 109 and rank % 100 == 9):
         # if rank >= 100 or (rank >= 109 and rank % 100 == 9):
         # if rank >= 109 or (rank >= 100 and tdchg > 9.5) or (rank >= 59 and rate >= 2.0):
@@ -212,19 +263,33 @@ def ct_ticks(_stocks, _trade_date, _db):
             # very good
 
             if tdchg > 9.8 and rate >= 2.0:
-                subject1 = "rank: %d | %s 涨停+高比 %s" % (rank, stock_id, _trade_date)
+                subject0 = "涨停+高比"
+                db_cata  = "4"
             elif tdchg > 9.8:
-                subject1 = "rank: %d | %s 涨停 %s" % (rank, stock_id, _trade_date)
+                subject0 = "涨停"
+                db_cata  = "3"
             elif rate >= 2.0:
-                subject1 = "rank: %d | %s 高比 %s" % (rank, stock_id, _trade_date)
+                subject0 = "高比"
+                db_cata  = "2"
             else:
-                subject1 = "rank: %d | %s 吸筹 %s" % (rank, stock_id, _trade_date)
+                subject0 = "吸筹"
+                db_cata  = "1"
+
+            if chance == 3:
+                subject0 += "+无脑3K20"
+            elif chance == 2:
+                subject0 += "+兴奋3K10"
+            elif chance == 1 and tdchg > -9:
+                subject0 += "+机会3K03"
+
+            subject1 = "rank: %d | %s %s %s" % (rank, stock_id, subject0, _trade_date)
 
             if g_has_noticed.has_key(stock_id):
                 pass
             else:
                 g_has_noticed[stock_id] = 1
 
+                """
                 # 2016/10/16
                 basic_info = get_basic_info(stock_id)
                 content = content + basic_info
@@ -232,9 +297,22 @@ def ct_ticks(_stocks, _trade_date, _db):
                 # 2016/10/16
                 xsg_info = get_xsg_info(stock_id, _db)
                 content = content + xsg_info
+                """
 
-                saimail(subject1, content)
+                # all-info 2016/12/24
+                all_info = get_basic_info_all(stock_id, _db)
+                content = content + all_info
+
+                # his-rank 2016/12/24
+                his_info = get_history_rank(stock_id, _trade_date, _db)
+                content = content + his_info
+
                 log_info("%s\n%s", subject1, content)
+                if sai_is_product_mode():
+                    saimail(subject1, content)
+                else:
+                    log_info("simulate: mail")
+                    # saimail(subject1, content)
         else:
             if rank >= 50:
                 log_info("nice: %s, rank: %d\n%s", stock_id, rank, content)
@@ -247,12 +325,27 @@ def ct_ticks(_stocks, _trade_date, _db):
 
         # to db 2016/9/11
         if rank >= 50:
-           sql_to_db_nolog(sql, _db)
-
-
-    # 一次性mail:  TODO
-    if len(body) > 0:
-        log_info("mail out: %s", body)
+            dt = get_today()
+            tm = get_time()
+            sql = "insert into tbl_net_rank \
+(pub_date, stock_id, stock_loc,  watcher, \
+open_price, close_price, \
+net1, net200, net400, net800, net1000, net2000, net3000, \
+subject, cata, rate, \
+rank, \
+buy1, buy200, buy400, buy800, buy1000, buy2000, buy3000, \
+sell1, sell200, sell400, sell800, sell1000, sell2000, sell3000, \
+inst_date, inst_time) \
+values ('%s', '%s', '%s', '%s',  \
+'%.2f', '%.2f', \
+'%.2f', '%.2f', '%.2f', '%.2f', '%.2f', '%.2f', '%.2f', \
+'%s', '%s', '%.2f', \
+'%d', \
+'%.2f', '%.2f', '%.2f', '%.2f', '%.2f', '%.2f', '%.2f', \
+'%.2f', '%.2f', '%.2f', '%.2f', '%.2f', '%.2f', '%.2f', \
+'%s', '%s')" %  (_trade_date, stock_id, 'cn', 'sai', op, cp, list3[0], list3[1], list3[2], list3[3], list3[4], list3[5], list3[6], subject0, db_cata, tdchg, rank, list1[0], list1[1], list1[2], list1[3], list1[4], list1[5], list1[6], list2[0], list2[1], list2[2], list2[3], list2[4], list2[5], list2[6], dt, tm)
+            log_debug("%s", sql)
+            sql_to_db_nolog(sql, _db)
 
     return
 
@@ -271,7 +364,7 @@ def ct_ticks_range(_stock_id, _date_list, _db):
             log_error("warn: stock %s, %s is None, next", _stock_id, trade_date)
             continue
 
-        rank, content, sql, rate = ct_ticks_analyze(_stock_id, trade_date, df, _db)
+        rank, content, rate, l1, l2, l3, ch = ct_ticks_analyze(_stock_id, trade_date, df, _db)
         if content is not None:
             body += "%d, %.2f, %s\n" % (rank, rate, content)
             log_debug("%s, rank: %.2f\n%s", _stock_id, rank, content)
@@ -361,8 +454,12 @@ def work(_args):
 
         stock_id   = "300331"
         stock_id   = "000961"
+
+        stock_id   = "000672"
+        trade_date = "2016-12-23"
         log_debug("default::: %s, %s, %s", start_date, days, stock_id)
-        work_one_stock(stock_id, start_date, days, db)
+        # work_one_stock(stock_id, start_date, days, db)
+        get_history_rank(stock_id, trade_date, db)
     elif argc == 1:
 
         # mode1: check all stocks
@@ -374,12 +471,14 @@ def work(_args):
         log_debug("trade_date2: %s", trade_date)
 
         # check holiday 2016/9/3 && 2016/11/27
-        if today_is_weekend():
-            log_info("today is weekend, exit")
+        if sai_is_product_mode():
+            if today_is_weekend():
+                log_info("today is weekend, exit")
+            else:
+                log_info("today is workday, come on")
+                work_one_day(trade_date, db)
         else:
-            log_info("today is workday, come on")
             work_one_day(trade_date, db)
-        # work_one_day(trade_date, db)
     elif argc == 3:
         # mode2: check one stock during several days
         start_date = _args[0]
@@ -400,8 +499,6 @@ def main():
     sailog_set("ct_ticks.log")
 
     log_info("main begins")
-
-    saimail_init()
 
     args = get_args()
 
