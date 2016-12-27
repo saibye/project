@@ -103,12 +103,16 @@ def ct_ticks_analyze(_stock_id, _trade_date, _df, _db):
             diff3 = diff / 10000.00
             if rate >= 20 and diff3 >= 20:
                 log_info("无脑入20: [%.2f][%.2f]", rate, diff3)
-                chance3000 = 3
+                chance3000 = 7
                 content += "3000 -- 无脑入20\n"
             elif rate >= 10 and diff3 >= 10:
                 log_info("很强烈10: [%.2f][%.2f]", rate, diff3)
-                chance3000 = 2
+                chance3000 = 5
                 content += "3000 -- 很强烈10\n"
+            elif rate >= 10 and diff3 >= 5:
+                log_info("较强烈05: [%.2f][%.2f]", rate, diff3)
+                chance3000 = 3
+                content += "3000 -- 较强烈05\n"
             elif buy3 >= 3 and sell3 <= 0.0:
                 log_info("无卖盘03: [%.2f][%.2f]", buy3, sell3)
                 chance3000 = 1
@@ -275,10 +279,12 @@ def ct_ticks(_stocks, _trade_date, _db):
                 subject0 = "吸筹"
                 db_cata  = "1"
 
-            if chance == 3:
+            if chance == 7:
                 subject0 += "+无脑3K20"
-            elif chance == 2:
+            elif chance == 5:
                 subject0 += "+兴奋3K10"
+            elif chance == 3:
+                subject0 += "+兴奋3K05"
             elif chance == 1 and tdchg > -9:
                 subject0 += "+机会3K03"
 
