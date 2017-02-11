@@ -26,7 +26,7 @@ def work(_args):
 
 
     # delete first
-    sql = "delete from tbl_real_trade where buy_date='%s' and stock_id='%s'" % (dt, stock_id)
+    sql = "delete from tbl_real_trade where stock_id='%s'" % (stock_id)
     sql_to_db_nolog(sql, db)
 
     # insert then

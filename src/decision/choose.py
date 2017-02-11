@@ -300,8 +300,6 @@ def main():
 
     print "main ends, bye!"
 
-    #raw_input()
-
     return
 
 main()

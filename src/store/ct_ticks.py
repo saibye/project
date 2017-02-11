@@ -418,6 +418,7 @@ def work_one_stock(_stock_id, _start_date, _days, _db):
 
     # mail
     if len(body) > 0:
+        """
         # 2016/10/16
         basic_info = get_basic_info(_stock_id)
         body = body + basic_info
@@ -425,6 +426,10 @@ def work_one_stock(_stock_id, _start_date, _days, _db):
         # 2016/10/16
         xsg_info = get_xsg_info(_stock_id, _db)
         body = body + xsg_info
+        """
+
+        all_info = get_basic_info_all(_stock_id, _db)
+        body = body + all_info
 
         subject = "%s, start: %s, days: %s" % (_stock_id, _start_date, _days)
         saimail(subject, body)

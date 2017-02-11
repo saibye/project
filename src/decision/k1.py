@@ -17,10 +17,6 @@ from sairef  import *
 # 不需要macd等,  所以只使用tbl_day表 2016/11/26
 #######################################################################
 
-# 1. 生产模式； 0.测试模式
-g_product_mode = 0
-g_product_mode = 1
-
 
 def citou():
     rate1 = (ref_close(1) - ref_close(2)) / ref_close(2) * 100
@@ -34,6 +30,28 @@ def citou():
         log_debug("rate1: %.2f", rate1)
         log_debug("rate2: %.2f", rate2)
         log_debug("mid:   %.2f", mid)
+        log_debug("low:   %.2f", ref_low(1))
+        log_debug("close: %.2f", ref_close(0))
+        log_debug("open:  %.2f", ref_open(0))
+    else:
+        rv = 0
+        # log_debug("not match")
+
+    return rv
+
+# 超级模式  2017-2-11
+# 002346 -- 2016-12-26
+# 300311 -- 2017-1-17
+# 600698 -- 2017-1-17
+def citou2():
+    rate1 = (ref_close(1) - ref_close(2)) / ref_close(2) * 100
+    rate2 = (ref_close(0) - ref_close(1)) / ref_close(1) * 100
+
+    if rate1 <= -8 and rate2 >= 8 and ref_open(0) < ref_low(1) and ref_close(0) > ref_high(1):
+        rv = 1
+        # log_debug("nice: citou2")
+        log_debug("rate1: %.2f", rate1)
+        log_debug("rate2: %.2f", rate2)
         log_debug("low:   %.2f", ref_low(1))
         log_debug("close: %.2f", ref_close(0))
         log_debug("open:  %.2f", ref_open(0))
@@ -124,7 +142,6 @@ def up_sanfa():
 
 
 def work_one(_trade_date, _db):
-    global g_product_mode
 
     log_info("date: %s", _trade_date)
     ref_set_date(_trade_date)
@@ -153,9 +170,11 @@ def work_one(_trade_date, _db):
             log_error("warn: %s small %d", stock_id, rv)
             continue
 
-        rv = citou()
+        # rv = citou()  # citou  
+        rv = citou2()
         if rv == 1:
-            one = "%s -- %s\n" % (_trade_date, stock_id)
+            one  = "%s -- %s\n" % (_trade_date, stock_id)
+            one += get_basic_info_all(stock_id, _db)
             log_info("nice1: %s", one)
             content1 += one
         else:
@@ -165,6 +184,7 @@ def work_one(_trade_date, _db):
         rv = qiming()
         if rv == 1:
             two = "%s -- %s\n" % (_trade_date, stock_id)
+            two += get_basic_info_all(stock_id, _db)
             log_info("nice2: %s", two)
             content2 += two
         else:
@@ -174,6 +194,7 @@ def work_one(_trade_date, _db):
         rv = up_sanfa()
         if rv == 1:
             three = "%s -- %s\n" % (_trade_date, stock_id)
+            three += get_basic_info_all(stock_id, _db)
             log_info("nice3: %s", three)
             content3 += three
         else:
@@ -184,10 +205,10 @@ def work_one(_trade_date, _db):
 
     mailed = 0
     if len(content1) > 0:
-        subject = "citou: %s" % (_trade_date)
+        subject = "##citou: %s" % (_trade_date)
         log_info(subject)
         log_info("\n%s", content1)
-        if g_product_mode == 1:
+        if sai_is_product_mode():
             mailed = 1
             saimail(subject,  content1)
 
@@ -198,7 +219,7 @@ def work_one(_trade_date, _db):
         subject = "qiming: %s" % (_trade_date)
         log_info(subject)
         log_info("\n%s", content2)
-        if g_product_mode == 1:
+        if sai_is_product_mode():
             mailed = 1
             saimail(subject,  content2)
     else:
@@ -210,14 +231,14 @@ def work_one(_trade_date, _db):
         content3 = warning + content3
         log_info(subject)
         log_info("\n%s", content3)
-        if g_product_mode == 1:
+        if sai_is_product_mode():
             mailed = 1
             saimail(subject,  content3)
     else:
         log_info("sorry3: %s", _trade_date)
 
 
-    if g_product_mode == 1:
+    if sai_is_product_mode():
         if mailed == 0:
             subject = "No Good K: %s" % (_trade_date)
             saimail(subject, "the last chance in your life?")
@@ -233,8 +254,10 @@ def regression(_db):
     days = 10
     max_date = "2016-11-25"
     days = 1
-    max_date = "2016-12-03"
-    days = 30
+    max_date = "2017-02-11"
+    days = 60
+    max_date = "2016-12-31"
+    days = 10
 
     date_df = get_recent_pub_date(max_date, days, _db)
     if date_df is None:
@@ -252,11 +275,10 @@ def regression(_db):
 
 
 def work():
-    global g_product_mode
     db = db_init()
 
-    if g_product_mode == 1:
-        # trade_date = "2016-08-02"
+    if sai_is_product_mode():
+        trade_date = "2016-12-26"   # 002346
         trade_date = get_date_by(0)
         work_one(trade_date, db)
     else:
@@ -268,15 +290,15 @@ def work():
 #######################################################################
 
 def main():
-    global g_product_mode
     sailog_set("k1.log")
 
     log_info("let's begin here!")
 
-    if g_product_mode == 1:
+    if sai_is_product_mode():
         # check holiday
         if today_is_weekend():
             log_info("today is weekend, exit")
+            # work() # XXX
         else:
             log_info("today is workday, come on")
             work()

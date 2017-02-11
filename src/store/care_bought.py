@@ -52,7 +52,16 @@ def main():
 
     args = get_args()
 
-    work(args)
+    if sai_is_product_mode():
+        # check holiday
+        if today_is_weekend():
+            log_info("today is weekend, exit")
+        else:
+            log_info("today is workday, come on")
+            work(args)
+    else:
+        log_info("test mode, let's go")
+        work(args)
 
     log_info("main ends, bye!")
     return

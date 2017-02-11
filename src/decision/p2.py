@@ -21,23 +21,24 @@ from sairef  import *
 
 """
 1. 超长振幅: _max_amp
-2. 开盘跌停
-3. 最近N天
+2. 收盘涨停
+3. 前一天跌停，缩量
+4. 最近N天
 """
-def get_p1_list(_date, _max_amp, _db):
+def get_p2_list(_date, _max_amp, _db):
     recent = 30 # test
     recent = 3
     sql = "select stock_id, pub_date, \
 round((close_price-open_price)/last_close_price*100,2) rate, \
 round((high_price - low_price)/last_close_price*100,2) amp, \
 round((open_price - low_price)/last_close_price*100,2) dis, \
-round((close_price-last_close_price)/last_close_price*100,2) rate2, \
 open_price open, close_price close, low_price low, high_price high, \
 last_close_price last \
 from tbl_day \
 where pub_date in (select * from (select distinct pub_date from tbl_day where pub_date <= '%s' order by pub_date desc limit %d) x) \
-and (high_price - low_price) / last_close_price * 100 >= %d \
-and (open_price - low_price) / last_close_price * 100 < 0.5 \
+and (high_price - low_price) / last_close_price * 100 >= %d
+and (high_price - close_price) / last_close_price * 100 < 0.1
+and (open_price - low_price) / last_close_price * 100 < 3.5
 order by pub_date"  % (_date, recent, _max_amp)
 
     log_debug("sql: \n%s", sql)
@@ -59,20 +60,21 @@ def xxx(_db):
     else:
         trade_date = "2016-12-13"
 
-    list_df = get_p1_list(trade_date, max_amp, _db)
+    list_df = get_p2_list(trade_date, max_amp, _db)
     if list_df is None:
-        log_error("error: get_p1_list failure")
+        log_error("error: get_p2_list failure")
         return -1
     else:
         log_debug("list df: \n%s", list_df)
 
-    content  = "跌停开盘，但分时线上，不一定（甚至最好不）在跌停盘停留\n"
-    content += "注意：\n1、小心复牌补跌\n2、新股破板不考虑\n"
-    content += "优先：\n1、不在跌停板停留\n2、下降趋势\n3、前一日跌停，缩量\n"
+    content  = "\n"
     content += "\n"
 
     for row_index, row in list_df.iterrows():
         stock_id = row_index
+        # 今日量比 >= 4
+        # 昨日量比 <= 0.2
+        # 昨日跌停 
         log_debug("[%s]------------------", stock_id)
         one = "%s, %s, 振幅:%s, 升幅:%s, 涨幅:%s\n" % (stock_id, row['pub_date'], row['amp'], row['rate'], row['rate2'])
         all_info = get_basic_info_all(stock_id, _db)
@@ -81,7 +83,7 @@ def xxx(_db):
         content = content + one
         log_debug("%s", one)
 
-    subject = "###超级振幅: %s" % (trade_date)
+    subject = "###超级振幅2: %s" % (trade_date)
     if len(list_df) > 0:
         log_debug("mail: %s", subject)
         log_debug("\n%s", content)
@@ -107,7 +109,7 @@ def work():
 #######################################################################
 
 def main():
-    sailog_set("p1.log")
+    sailog_set("p2.log")
 
     log_info("let's begin here!")
 
@@ -131,4 +133,4 @@ exit()
 #######################################################################
 
 
-# p1.py
+# p2.py

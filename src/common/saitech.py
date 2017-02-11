@@ -259,6 +259,25 @@ if __name__=="__main__":
     n = tech_get_exist_n2(stock_id, trade_date, price, m, db)
     log_info("exist2 has: %d day", n)
 
+    #------------------------------------------------------------------
+    stock_id   = "002346"
+    trade_date = "2016-12-23"
+    rate = tech_get_vol_rate(stock_id, trade_date, db)
+    log_debug("rate: [%s][%s] is [%.2f]", stock_id, trade_date, rate)
+
+    #------------------------------------------------------------------
+    stock_id   = "002346"
+    trade_date = "2016-12-26"
+    rate = tech_get_vol_rate(stock_id, trade_date, db)
+    log_debug("rate: [%s][%s] is [%.2f]", stock_id, trade_date, rate)
+
+    #------------------------------------------------------------------
+    stock_id   = "601003"
+    trade_date = "2016-11-21"
+    rate = tech_get_vol_rate(stock_id, trade_date, db)
+    log_debug("rate: [%s][%s] is [%.2f]", stock_id, trade_date, rate)
+
+    #------------------------------------------------------------------
     db_end(db)
     log_info("main ends  bye!")
 

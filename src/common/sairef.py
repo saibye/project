@@ -230,7 +230,7 @@ order by 1, 2 desc" % (g_trade_date)
         log_info("no data in db")
         return None
     else:
-        log_debug("df: \n%s", df)
+        # log_debug("df: \n%s", df)
         return df
 
 
