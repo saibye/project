@@ -7,7 +7,7 @@ from sailog  import *
 
 # 打开数据库连接
 #db = MySQLdb.connect("127.0.0.1", "tudev", "wangfei", "tu" )
-#db = MySQLdb.connect(host="182.92.239.6", user="tudev", passwd="wangfei", db="tu", charset="utf8")  # good
+#db = MySQLdb.connect(host="000000000000", user="tudev", passwd="wangfei", db="tu", charset="utf8")  # good
 db = MySQLdb.connect(host="127.0.0.1", user="tudev", passwd="wangfei", db="tu", charset="utf8")  # 000
 
 # 使用cursor()方法获取操作游标 
