@@ -121,7 +121,7 @@ def rt_dadan_check_buy(_stock_id, _df, _db, _vol_base, _count_base, _noticed, _l
         if _noticed.has_key(stock_id) :
             pass
         else :
-            body += get_basic_info_all(stock_id, _db)
+            body += get_basic_info_all(stock_id, _db)  # 2017-2-24 find (2006, 'MySQL server has gone away')
             body += "++++++++++++++++++++++++++++++++\n"
             _noticed[stock_id] = body
             _list.append(body)
@@ -130,8 +130,8 @@ def rt_dadan_check_buy(_stock_id, _df, _db, _vol_base, _count_base, _noticed, _l
             #  超大单实时通知 2016/8/17
             if _vol_base >= 120000:
                 log_info("let's mail3 immediately")
-                subject = "#dadan3-buy %s" % g_stock_date
-                body    = ""
+                subject = "#dadan3 [%s] %s" % (_stock_id, g_stock_date)
+                body    = "%s" % (g_stock_date)
                 for item in _list:
                     body   +=  item
                 log_info("mail3 %s", body)

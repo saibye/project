@@ -86,10 +86,12 @@ def xxx(_db):
         event_time = row['time']
         event_date = row['event_date']
         back_date  = row['back_date']
-        one = "[%s] [%.2f]万手 [%.2f]元 [%s %s], match[%s]" % (stock_id, volume/10000.00, price, event_date, event_time, back_date)
-        content += "%s\n\n" % (one)
+        one = "[%s] [%.2f]万手 [%.2f]元\n发生时间[%s %s]\n回归时间[%s]\n" % (stock_id, volume/10000.00, price, event_date, event_time, back_date)
+        one+= get_basic_info_all(stock_id, _db)
+        one+= "++++++++++++++++++++++++++++++++++++++\n"
+        content += "%s\n" % (one)
 
-    subject = "back1: %s" % (last_date)
+    subject = "dd3-back: %s" % (last_date)
     log_info("subject: \n%s", subject)
     log_info("content: \n%s", content)
     saimail(subject, content)

@@ -241,7 +241,7 @@ def work_one(_trade_date, _db):
     if sai_is_product_mode():
         if mailed == 0:
             subject = "No Good K: %s" % (_trade_date)
-            saimail(subject, "the last chance in your life?")
+            # saimail(subject, "the last chance in your life?")
 
     return
 

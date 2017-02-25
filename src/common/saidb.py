@@ -4,11 +4,19 @@
 import MySQLdb
 
 from sailog  import *
+from saiconf import *
 
 def db_init():
     # 打开数据库连接
     # db = MySQLdb.connect("127.0.0.1", "tudev", "wangfei", "tu" )
-    db = MySQLdb.connect(host="127.0.0.1", user="tudev", passwd="wangfei", db="tu", charset="utf8") 
+    # db = MySQLdb.connect(host="127.0.0.1", user="tudev", passwd="wangfei", db="tu", charset="utf8")  # 000
+    # db = MySQLdb.connect(host="000000000000", user="tudev", passwd="wangfei", db="tu", charset="utf8")  # 111
+    host    = sai_conf_get_mysql_host()
+    dbname  = sai_conf_get_mysql_database()
+    user    = sai_conf_get_mysql_user()
+    passwd  = sai_conf_get_mysql_passwd()
+    encode  = sai_conf_get_mysql_encode()
+    db = MySQLdb.connect(host=host, user=user, passwd=passwd, db=dbname, charset=encode)  # 111
     if db is None:
         log_error("error: db_init failure")
 

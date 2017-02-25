@@ -271,10 +271,10 @@ def ct_ticks(_stocks, _trade_date, _db):
             # very good
 
             if tdchg > 9.8 and rate >= 2.0:
-                subject0 = "涨停+高比"
+                subject0 = "#涨停+高比"
                 db_cata  = "4"
             elif tdchg > 9.8:
-                subject0 = "涨停"
+                subject0 = "#涨停"
                 db_cata  = "3"
             elif rate >= 2.0:
                 subject0 = "高比"
