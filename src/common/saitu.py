@@ -204,6 +204,22 @@ def get_basic_info(_stock_id):
     # return info
     return info
 
+# 2017-2-25 龙虎榜
+def get_top_list_tu(_trade_date):
+    stock_list = None
+
+    count = 0
+    while count < 2:
+        count = count + 1
+        try:
+            stock_list = ts.top_list(_trade_date)
+            break
+        except Exception:
+            log_error("warn: ts.top_list exception: %d!", count)
+            time.sleep(5)
+
+    return stock_list
+
 
 if __name__=="__main__":
     sailog_set("saitu.log")

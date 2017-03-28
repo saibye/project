@@ -1,4 +1,11 @@
 
+
+
+select pub_date, count(1) from tbl_top_list
+group by pub_date
+order by 1;
+
+
 --
 
 

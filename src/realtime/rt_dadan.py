@@ -131,7 +131,7 @@ def rt_dadan_check_buy(_stock_id, _df, _db, _vol_base, _count_base, _noticed, _l
             if _vol_base >= 120000:
                 log_info("let's mail3 immediately")
                 subject = "#dadan3 [%s] %s" % (_stock_id, g_stock_date)
-                body    = "%s" % (g_stock_date)
+                body    = "%s -- %.2f%% -- p%.2f\n" % (g_stock_date, get_chg_rate(_stock_id), get_curr_price(_stock_id))
                 for item in _list:
                     body   +=  item
                 log_info("mail3 %s", body)
@@ -314,6 +314,7 @@ def rt_dadan_rank_one(_stock_id, _dd_date, _db):
     # if rank >= 100 or (rank >= 209 and rank % 100 == 9):
     if rank >= 209:
         subject = "###rank: %d 净流入 %s" % (rank, _stock_id)
+        content += get_basic_info_all(_stock_id, _db)
         log_info("nice: %s, %s", subject, content)
         saimail(subject, content)
 
@@ -381,6 +382,7 @@ def rt_timer(_stocks, _db):
         g_stock_date = get_date_by(0)
     else:
         g_stock_date = "2016-12-09"
+        g_stock_date = "2017-03-24"
     log_debug("trade day: %s", g_stock_date)
 
 
@@ -420,6 +422,7 @@ def rt_timer(_stocks, _db):
             for item in g_good_list :
                 body   +=  item
             saimail(subject, body)
+            saimail2(subject, body)
 
         # 策略2: mail
         if len(g_good_list2) > 0 :
@@ -429,6 +432,7 @@ def rt_timer(_stocks, _db):
             for item in g_good_list2 :
                 body   +=  item
             saimail(subject, body)
+            saimail2(subject, body)
 
         # 策略3: mailed at realtime
 

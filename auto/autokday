@@ -45,6 +45,12 @@ cd ${PHOME}/src/decision && time python d1.py
 # 2.4 apply the rules: zhenfu
 cd ${PHOME}/src/decision && time python p1.py
 
+# 2.5 apply the rules: zhenfu
+cd ${PHOME}/src/decision && time python p2.py
+
+# 2.6 apply the rules: zhenfu 2017-3-10
+cd ${PHOME}/src/decision && time python p3.py
+
 # 3. calc k-day tech
 cd ${PHOME}/src/dayend && time python k_day_tech.py
 

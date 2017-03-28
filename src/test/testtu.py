@@ -450,9 +450,32 @@ df = ts.cap_tops()
 print df
 """
 
-df = ts.top_list('2016-12-30')
+# 每日龙虎榜列表
+#df = ts.top_list('2016-12-30')
+df = ts.top_list('2017-02-24')
 print df
+
+#ts.top_list('2016-06-12')
+
+# 个股上榜统计
+df = ts.cap_tops(days=30)
+print df
+log_info("个股上榜统计\n%s", df)
+
+# 营业部上榜统计
+df = ts.broker_tops(days=60)
+print df
+log_info("营业部上榜统计\n%s", df)
+
+# 机构席位追踪
+df = ts.inst_tops(days=10)
+print df
+log_info("机构席位追踪\n%s", df)
+
+# 机构成交明细
+#df = ts.inst_detail()
+#print df
+
 
 
 # end
-

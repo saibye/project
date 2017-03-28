@@ -319,6 +319,10 @@ def ct_ticks(_stocks, _trade_date, _db):
                 his_info = get_history_rank(stock_id, _trade_date, _db)
                 content = content + his_info
 
+                # today change 2017-2-25
+                head = "涨幅: %.2f\n" % tdchg
+                content = head + content
+
                 log_info("%s\n%s", subject1, content)
                 if sai_is_product_mode():
                     saimail(subject1, content)

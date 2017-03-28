@@ -9,6 +9,7 @@ import smtplib
 import json
 
 from sailog  import *
+from saiconf import *
 
 
 
@@ -59,11 +60,36 @@ def saimail(_subject, _body):
     server.sendmail(from_addr, to_list, msg.as_string())
     server.quit()
 
+
+def saimail2(_subject, _body):
+
+    smtp_server = sai_conf_get("smtp_server", "host").encode('utf-8')
+    from_addr   = sai_conf_get("from_addr",   "mail").encode('utf-8')
+    mail_pass   = sai_conf_get("from_addr",   "passwd").encode('utf-8')
+
+    to_addr = ''
+    to_addr = sai_conf_get("to_addr2",  "mail")
+    to_list = []
+    to_list.append(to_addr)
+
+    msg = MIMEText(_body, 'plain', 'utf-8')
+    msg['From']     = from_addr
+    msg['Bcc']      = to_addr
+    msg['Subject']  = Header(_subject, 'utf-8').encode()
+
+    server = smtplib.SMTP(smtp_server, 25)
+    ##server.set_debuglevel(1)
+    server.login(from_addr, mail_pass)
+    server.sendmail(from_addr, to_list, msg.as_string())
+    server.quit()
+
+
 if __name__=="__main__":
     sailog_set("saimail.log")
-    subject   = u"goodbye subject"
+    subject   = u"xxx subject"
     body      = u"hello, world, buy buy buy"
     log_info("send: [%s, %s]", subject, body)
     saimail(subject, body)
+    saimail2(subject, body)
 
 # saimail.py

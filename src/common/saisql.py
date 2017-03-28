@@ -306,6 +306,36 @@ order by fupai_date desc limit 1" % (_stock_id)
 
     return info
 
+"""
+2017-3-26
+"""
+def get_dadan_df(_stock_id, _db):
+    sql = "select * from tbl_good where stock_id = '%s' and good_type like 'dadan%%' order by pub_date desc limit 5" % _stock_id
+    df = pd.read_sql_query(sql, _db);
+    if df is None:
+        log_info("'%s' not found in good", _stock_id)
+        return None
+    else:
+        # log_debug("df: \n%s", df)
+        return df
+
+def get_dadan_info(_stock_id, _db):
+    info = ""
+
+    dd = get_dadan_df(_stock_id, _db)
+
+    if dd is None:
+        return info
+
+    if len(dd) > 0:
+        info = "大单   :\n"
+
+    for row_index, row in dd.iterrows():
+        info += "%s,%s - %s, %.0f手(%.0f), p%s\n" % (row['pub_date'], row['v4'], row['good_type'], row['v1'], row['v3'], row['v2'])
+
+    log_debug("info:\n%s", info)
+
+    return info
 
 """
 返回基础信息、限售股信息
@@ -319,6 +349,8 @@ def get_basic_info_all(_stock_id, _db):
     info += get_fupai_info(_stock_id, _db)
 
     info += get_xsg_info(_stock_id, _db)
+
+    info += get_dadan_info(_stock_id, _db)
 
     return info
 
@@ -352,6 +384,10 @@ if __name__=="__main__":
     stock_id  = "000757"
     info = get_basic_info_all(stock_id, db)
     log_debug("all2:\n%s", info)
+
+    stock_id  = "601668"
+    info = get_dadan_info(stock_id, db);
+    log_debug("dd: \n%s", info)
 
     db_end(db)
     log_info("main ends  bye!")
