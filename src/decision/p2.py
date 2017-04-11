@@ -36,9 +36,9 @@ open_price open, close_price close, low_price low, high_price high, \
 last_close_price last \
 from tbl_day \
 where pub_date in (select * from (select distinct pub_date from tbl_day where pub_date <= '%s' order by pub_date desc limit %d) x) \
-and (high_price - low_price) / last_close_price * 100 >= %d
-and (high_price - close_price) / last_close_price * 100 < 0.1
-and (open_price - low_price) / last_close_price * 100 < 3.5
+and (high_price - low_price) / last_close_price * 100 >= %d \
+and (high_price - close_price) / last_close_price * 100 < 0.1 \
+and (open_price - low_price) / last_close_price * 100 < 3.5 \
 order by pub_date"  % (_date, recent, _max_amp)
 
     log_debug("sql: \n%s", sql)

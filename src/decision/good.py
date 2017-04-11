@@ -17,7 +17,8 @@ from sairef  import *
 # 不需要macd等,  所以只使用tbl_day表 2016/11/26
 #######################################################################
 
-
+"""
+# deleted at 2017-3-30
 def get_good_list(_trade_date, _good_type, _db):
     sql = "select a.pub_date event_date, a.stock_id, b.pub_date back_date, \
 a.v1 volume, a.v2 price, a.v4 time \
@@ -40,7 +41,33 @@ and   a.pub_date in \
     else:
         # df.set_index("stock_id", inplace=True)
         return df
+"""
 
+# 2017-3-30 ma20 only
+def get_good_list(_trade_date, _good_type, _db):
+    sql = "select a.pub_date event_date, a.stock_id, b.pub_date back_date, \
+a.v1 volume, a.v2 price, a.v4 time \
+from tbl_good a, tbl_day b, tbl_day_tech c \
+where a.stock_id = b.stock_id \
+and   b.stock_id = c.stock_id \
+and   b.pub_date = c.pub_date \
+and   b.pub_date>= a.pub_date \
+and   (c.ma20<= b.high_price and c.ma20 >= b.low_price) \
+and   b.close_price >= b.open_price \
+and   a.good_type = '%s' \
+and   b.pub_date  = '%s' \
+and   a.pub_date in \
+(select * from (select distinct pub_date from tbl_good order by pub_date desc limit 20) x)" % (_good_type, _trade_date)
+
+    log_debug("sql: \n%s", sql)
+
+    df = pd.read_sql_query(sql, _db);
+    if df is None:
+        log_info("'%s' not found in db", _stock_id)
+        return None
+    else:
+        # df.set_index("stock_id", inplace=True)
+        return df
 
 def work_one(_stock_id, _row, _db):
 
@@ -77,7 +104,10 @@ def xxx(_db):
     else:
         log_debug("list df: \n%s", list_df)
 
-    content = ""
+    content = "需要:\n"
+    content+= "1. 均线向上发散: MA20\n"
+    content+= "2. MA5, 10, 20相近\n"
+    content+= "3. 新股更佳\n\n"
     for row_index, row in list_df.iterrows():
         stock_id   = row['stock_id']
         log_debug("[%s]------------------", stock_id)
@@ -86,12 +116,14 @@ def xxx(_db):
         event_time = row['time']
         event_date = row['event_date']
         back_date  = row['back_date']
-        one = "[%s] [%.2f]万手 [%.2f]元\n发生时间[%s %s]\n回归时间[%s]\n" % (stock_id, volume/10000.00, price, event_date, event_time, back_date)
+        one = "%s\n" % (event_date)
+        one+= "[%s] 最新[%.2f]元 涨幅[%.2f%%]\n" % (stock_id, get_curr_price(stock_id), get_chg_rate(stock_id))
+        one+= "[%s] 当时[%.2f]元 成交[%.2f]万手\n发生时间[%s %s]\n回归时间[%s]\n\n" % (stock_id, price, volume/10000.00, event_date, event_time, back_date)
         one+= get_basic_info_all(stock_id, _db)
         one+= "++++++++++++++++++++++++++++++++++++++\n"
         content += "%s\n" % (one)
 
-    subject = "dd3-back: %s" % (last_date)
+    subject = "dd3-back20: %s" % (last_date)
     log_info("subject: \n%s", subject)
     log_info("content: \n%s", content)
     saimail(subject, content)

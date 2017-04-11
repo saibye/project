@@ -18,18 +18,22 @@ from sairef  import *
 #######################################################################
 
 
+###
+# 刺透 2017-4-5
+# 需要均线发散
+# 600242, 2017-03-14: -6.7%; 2017-03-15: 10%, 阳柱包括阴柱
+# 600165, 2017-03-27, -6.6%; 2017-03-28: 8.08%
+# bad -- 002634
 def citou():
-    rate1 = (ref_close(1) - ref_close(2)) / ref_close(2) * 100
-    rate2 = (ref_close(0) - ref_close(1)) / ref_close(1) * 100
-    mid   = (ref_open(1)  + ref_close(1)) / 2
+    rate1 = (ref_close(1) - ref_close(2)) / ref_close(2) * 100 # 昨日涨幅
+    rate2 = (ref_close(0) - ref_close(1)) / ref_close(1) * 100 # 今日涨幅
 
     # if rate1 <= -5 and rate2 >= 5 and ref_open(0) < ref_low(1) and ref_close(0) > mid: # 2016-11-20
-    if rate1 <= -5 and rate2 >= 4 and ref_open(0) <= ref_close(1) and ref_close(0) >= mid:
+    if rate1 <= -6.5 and rate2 >= 8.0 and ref_open(0) <= ref_close(1) and ref_close(0) > ref_high(1):
         rv = 1
-        # log_debug("nice: citou")
+        log_debug("nice: citou")
         log_debug("rate1: %.2f", rate1)
         log_debug("rate2: %.2f", rate2)
-        log_debug("mid:   %.2f", mid)
         log_debug("low:   %.2f", ref_low(1))
         log_debug("close: %.2f", ref_close(0))
         log_debug("open:  %.2f", ref_open(0))
@@ -39,17 +43,24 @@ def citou():
 
     return rv
 
+
 # 超级模式  2017-2-11
 # 002346 -- 2016-12-26
 # 300311 -- 2017-1-17
 # 600698 -- 2017-1-17
-def citou2():
+#######################
+# 第一天跌停：大跌 -8%
+# 第二天涨停：大涨 +8%
+# 今日开盘 < 昨日最低
+# 今日收盘 > 昨日最高
+#######################
+def fanbao():
     rate1 = (ref_close(1) - ref_close(2)) / ref_close(2) * 100
     rate2 = (ref_close(0) - ref_close(1)) / ref_close(1) * 100
 
     if rate1 <= -8 and rate2 >= 8 and ref_open(0) < ref_low(1) and ref_close(0) > ref_high(1):
         rv = 1
-        # log_debug("nice: citou2")
+        log_debug("nice: fanbao")
         log_debug("rate1: %.2f", rate1)
         log_debug("rate2: %.2f", rate2)
         log_debug("low:   %.2f", ref_low(1))
@@ -155,9 +166,10 @@ def work_one(_trade_date, _db):
 
     stocks = ref_get_list()
     rownum = 0
-    content1 = "" # citou
+    content1 = "" # fanbao
     content2 = "" # qiming
     content3 = "" # sanfa 2016-12-3
+    content4 = "" # citou 2017-4-5
     for s_index, s_val in stocks.iteritems():
         rownum = rownum + 1
         stock_id = s_index
@@ -170,12 +182,11 @@ def work_one(_trade_date, _db):
             log_error("warn: %s small %d", stock_id, rv)
             continue
 
-        # rv = citou()  # citou  
-        rv = citou2()
+        rv = fanbao()
         if rv == 1:
             one  = "%s -- %s\n" % (_trade_date, stock_id)
             one += get_basic_info_all(stock_id, _db)
-            log_info("nice1: %s", one)
+            log_info("nice1-fanbao: %s", one)
             content1 += one
         else:
             # log_debug("wait...")
@@ -185,7 +196,8 @@ def work_one(_trade_date, _db):
         if rv == 1:
             two = "%s -- %s\n" % (_trade_date, stock_id)
             two += get_basic_info_all(stock_id, _db)
-            log_info("nice2: %s", two)
+            two += "--------------------------------\n"
+            log_info("nice2-qiming: %s", two)
             content2 += two
         else:
             # log_debug("wait...")
@@ -195,8 +207,18 @@ def work_one(_trade_date, _db):
         if rv == 1:
             three = "%s -- %s\n" % (_trade_date, stock_id)
             three += get_basic_info_all(stock_id, _db)
-            log_info("nice3: %s", three)
+            log_info("nice3-sanfa: %s", three)
             content3 += three
+        else:
+            # log_debug("wait...")
+            pass
+
+        rv = citou()
+        if rv == 1:
+            four = "%s -- %s\n" % (_trade_date, stock_id)
+            four+= get_basic_info_all(stock_id, _db)
+            log_info("nice4-citou: %s", four)
+            content4 += four
         else:
             # log_debug("wait...")
             pass
@@ -205,13 +227,14 @@ def work_one(_trade_date, _db):
 
     mailed = 0
     if len(content1) > 0:
-        subject = "##citou: %s" % (_trade_date)
+        subject = "##fanbao: %s" % (_trade_date)
+        warning = "需要阴柱很长\n"
+        content1 = warning + content1
         log_info(subject)
         log_info("\n%s", content1)
         if sai_is_product_mode():
             mailed = 1
             saimail(subject,  content1)
-
     else:
         log_info("sorry1: %s", _trade_date)
 
@@ -237,6 +260,17 @@ def work_one(_trade_date, _db):
     else:
         log_info("sorry3: %s", _trade_date)
 
+    if len(content4) > 0:
+        subject = "citou: %s" % (_trade_date)
+        warning = "需要均线发散!!!\n"
+        content4 = warning + content4
+        log_info(subject)
+        log_info("\n%s", content4)
+        if sai_is_product_mode():
+            mailed = 1
+            saimail(subject,  content4)
+    else:
+        log_info("sorry1: %s", _trade_date)
 
     if sai_is_product_mode():
         if mailed == 0:
@@ -258,6 +292,8 @@ def regression(_db):
     days = 60
     max_date = "2016-12-31"
     days = 10
+    max_date = "2017-03-31"
+    days = 20
 
     date_df = get_recent_pub_date(max_date, days, _db)
     if date_df is None:
@@ -279,6 +315,7 @@ def work():
 
     if sai_is_product_mode():
         trade_date = "2016-12-26"   # 002346
+        trade_date = "2017-04-04"
         trade_date = get_date_by(0)
         work_one(trade_date, db)
     else:

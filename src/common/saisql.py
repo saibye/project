@@ -10,6 +10,7 @@ from saiutil import *
 from sailog  import *
 from saitu   import *
 from saidb   import *
+from saimail import *
 
 
 
@@ -338,6 +339,39 @@ def get_dadan_info(_stock_id, _db):
     return info
 
 """
+2017-4-6
+龙湖榜
+"""
+def get_longhu_df(_stock_id, _db):
+    sql = "select * from tbl_top_list where stock_id = '%s' order by pub_date desc limit 5" % _stock_id
+    df = pd.read_sql_query(sql, _db);
+    if df is None:
+        log_info("'%s' not found in tbl_top_list", _stock_id)
+        return None
+    else:
+        # log_debug("df: \n%s", df)
+        return df
+
+def get_longhu_info(_stock_id, _db):
+    info = ""
+
+    lh = get_longhu_df(_stock_id, _db)
+
+    if lh is None:
+        return info
+
+    if len(lh) > 0:
+        info = "龙虎榜 (千万元) :\n"
+
+    for row_index, row in lh.iterrows():
+        info += "%s ……%s\n 买:%.2f, 卖:%.2f, 净:%.2f\n" % (row['pub_date'], row['reason'][-17:], \
+                row['buy']/1000, row['sell']/1000, (row['buy']-row['sell'])/1000)
+
+    log_debug("info:\n%s", info)
+
+    return info
+
+"""
 返回基础信息、限售股信息
 返回复牌信息 2016-12-25
 """
@@ -352,8 +386,22 @@ def get_basic_info_all(_stock_id, _db):
 
     info += get_dadan_info(_stock_id, _db)
 
+    info += get_longhu_info(_stock_id, _db)
+
     return info
 
+"""
+获取指定日期股票列表 2017-4-9
+"""
+def get_stock_list_by_date(_date, _db):
+    sql = "select distinct stock_id from tbl_day where pub_date='%s' order by 1" % (_date)
+
+    df = pd.read_sql_query(sql, _db);
+
+    if df is None:
+        return None
+
+    return df.set_index('stock_id')
 
 #######################################################################
 if __name__=="__main__":
@@ -388,6 +436,18 @@ if __name__=="__main__":
     stock_id  = "601668"
     info = get_dadan_info(stock_id, db);
     log_debug("dd: \n%s", info)
+
+    stock_id  = "603768"
+    info = get_longhu_info(stock_id, db);
+    log_debug("lh: \n%s", info)
+
+    stock_id  = "603768"
+    info = get_basic_info_all(stock_id, db);
+    log_debug("all: \n%s", info)
+
+    subject = "all-info %s" % (stock_id)
+    content = info
+    saimail(subject, content)
 
     db_end(db)
     log_info("main ends  bye!")
