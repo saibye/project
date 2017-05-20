@@ -51,6 +51,11 @@ cd ${PHOME}/src/decision && time python p2.py
 # 2.6 apply the rules: zhenfu 2017-3-10
 cd ${PHOME}/src/decision && time python p3.py
 
+
+# 2.7 apply the rules: hengpan 2017-4-16
+cd ${PHOME}/src/decision && time python break.py
+
+
 # 3. calc k-day tech
 cd ${PHOME}/src/dayend && time python k_day_tech.py
 

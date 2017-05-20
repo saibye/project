@@ -51,6 +51,46 @@ def get_buy_sell_sum(_df, _base):
     return buy, sell
 
 
+# volume 单位是手
+# 2017-4-23
+def get_buy_sell_sum2(_df):
+    buy  = 0
+    sell = 0
+    mid  = 0
+
+    gp = _df.groupby('type')['volume'].sum()
+
+    for s_idx, s_val in gp.iteritems():
+        if s_idx == "买盘":
+            buy = s_val
+        elif s_idx == "卖盘":
+            sell = s_val
+        else :
+            mid  = s_val
+
+    return buy, sell, mid
+
+
+# 2017-5-6
+# volume 单位是手
+def get_buy_sell_sum3(_df, _base):
+    buy  = 0
+    sell = 0
+    mid  = 0
+
+    gp = _df[_df.volume >= _base].groupby('type')['volume'].sum()
+
+    for s_idx, s_val in gp.iteritems():
+        if s_idx == "买盘":
+            buy = s_val
+        elif s_idx == "卖盘":
+            sell = s_val
+        else :
+            mid  = s_val
+
+    return buy, sell, mid
+
+
 def get_rate_list(_df, _list):
     rs = []
     ns = []

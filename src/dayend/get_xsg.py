@@ -53,9 +53,10 @@ def one_year(_year, _db):
 def work(_args):
     db = db_init()
 
-    one_year("2016", db)
+    # one_year("2016", db)
     one_year("2017", db)
     one_year("2018", db)
+    one_year("2019", db)
 
     # get_xsg_info("000413", db)
 

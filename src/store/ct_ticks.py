@@ -297,6 +297,12 @@ def ct_ticks(_stocks, _trade_date, _db):
 
             subject1 = "rank: %d | %s %s %s" % (rank, stock_id, subject0, _trade_date)
 
+            # 2017-4-23
+            on_days = 0
+            on_days = get_day_to_market(stock_id, _trade_date, _db)
+            if on_days <= 60:
+                subject1 += "(NEW%d)" % on_days
+
             if g_has_noticed.has_key(stock_id):
                 pass
             else:

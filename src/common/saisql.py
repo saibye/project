@@ -311,7 +311,7 @@ order by fupai_date desc limit 1" % (_stock_id)
 2017-3-26
 """
 def get_dadan_df(_stock_id, _db):
-    sql = "select * from tbl_good where stock_id = '%s' and good_type like 'dadan%%' order by pub_date desc limit 5" % _stock_id
+    sql = "select * from tbl_good where stock_id = '%s' and good_type like 'dadan%%' order by pub_date desc limit 7" % _stock_id
     df = pd.read_sql_query(sql, _db);
     if df is None:
         log_info("'%s' not found in good", _stock_id)
@@ -367,7 +367,7 @@ def get_longhu_info(_stock_id, _db):
         info += "%s ……%s\n 买:%.2f, 卖:%.2f, 净:%.2f\n" % (row['pub_date'], row['reason'][-17:], \
                 row['buy']/1000, row['sell']/1000, (row['buy']-row['sell'])/1000)
 
-    log_debug("info:\n%s", info)
+    # log_debug("info:\n%s", info)
 
     return info
 
@@ -382,26 +382,86 @@ def get_basic_info_all(_stock_id, _db):
 
     info += get_fupai_info(_stock_id, _db)
 
-    info += get_xsg_info(_stock_id, _db)
-
     info += get_dadan_info(_stock_id, _db)
+
+    info += get_xsg_info(_stock_id, _db)
 
     info += get_longhu_info(_stock_id, _db)
 
     return info
 
+
 """
-获取指定日期股票列表 2017-4-9
+2017/4/16
+最后一个交易日期
 """
-def get_stock_list_by_date(_date, _db):
-    sql = "select distinct stock_id from tbl_day where pub_date='%s' order by 1" % (_date)
+def get_newest_trade_date(_db):
+    sql = "select max(pub_date) pub_date from tbl_day"
 
     df = pd.read_sql_query(sql, _db);
-
-    if df is None:
+    if df is None :
+        log_error("warn: stock %s last-trade-date is None, next", _stock_id)
         return None
 
-    return df.set_index('stock_id')
+    if df.empty:
+        log_error("warn: stock %s last-trade-date is empty, next", _stock_id)
+        return None
+
+    newest_date = df.iloc[0, 0]
+
+    if newest_date is not None:
+        newest_date = str(newest_date)
+        log_info("newest trade date is %s", newest_date)
+
+    return newest_date
+
+
+"""
+指定日期涨幅
+"""
+def get_day_rate(_stock_id, _pub_date, _db):
+    sql = "select round((close_price/last_close_price - 1)*100, 2) rate \
+from tbl_day \
+where stock_id='%s' and pub_date='%s' \
+and last_close_price > 0" % (_stock_id, _pub_date)
+
+    df = pd.read_sql_query(sql, _db);
+    if df is None :
+        log_error("warn: stock %s,%s is None", _stock_id, _pub_date)
+        return -100
+
+    if df.empty:
+        log_error("warn: stock %s,%s is empty", _stock_id, _pub_date)
+        return -100 
+
+    rate = df.iloc[0, 0]
+    return rate
+
+
+"""
+上市天数
+"""
+def get_day_to_market(_stock_id, _pub_date, _db):
+    sql = "select datediff('%s', str_to_date(time_to_market, '%%Y%%m%%d')) days \
+from tbl_basic \
+where stock_id = '%s'" % (_pub_date, _stock_id)
+
+    df = pd.read_sql_query(sql, _db);
+    if df is None :
+        log_error("warn: stock %s,%s is None", _stock_id, _pub_date)
+        return 10001
+
+    if df.empty:
+        log_error("warn: stock %s,%s is empty", _stock_id, _pub_date)
+        return 10002 
+
+    days = df.iloc[0, 0]
+
+    if days is None:
+        log_error("days is None: %s, %s", _stock_id, _pub_date)
+        return 10003 
+
+    return days
 
 #######################################################################
 if __name__=="__main__":
@@ -411,6 +471,7 @@ if __name__=="__main__":
     db = db_init()
 
     #------------------------------------------------------------------
+    """
     stock_id  = "601886"
     stock_id  = "901886"
     last_date = get_last_trade_date(stock_id, db)
@@ -448,6 +509,17 @@ if __name__=="__main__":
     subject = "all-info %s" % (stock_id)
     content = info
     saimail(subject, content)
+    """
+
+    stock_id  = "601375"
+    pub_date  = "2017-04-23"
+    rt = get_day_rate(stock_id, pub_date, db)
+    log_info("rate is [%.2f%%]", rt)
+
+    stock_id  = "601375"
+    pub_date  = "2017-04-23"
+    days = get_day_to_market(stock_id, pub_date, db)
+    log_info("days is [%d]", days)
 
     db_end(db)
     log_info("main ends  bye!")

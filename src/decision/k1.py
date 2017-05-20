@@ -86,13 +86,13 @@ def qiming():
     # 2. 昨天低开
     # 3. 今天高开
     # 4. 今天收盘超过前天2/3
-    if rate1 <= -4 and rate3 >= 4\
+    if rate1 <= -8 and rate3 >= 7\
                 and ref_open(1) < ref_close(2) \
-                and ref_open(0)*1.01 > ref_close(1) \
+                and ref_open(0)*1.01 >= ref_close(1) \
                 and ref_close(0) >= md1 \
                 and zt1 <= -4 \
-                and zt3 >=  3 \
-                and abs(zt2) <= 5:
+                and zt3 >=  6 \
+                and abs(zt2) <= 4:
         rv = 1
         log_debug("nice: qiming")
 
@@ -186,6 +186,7 @@ def work_one(_trade_date, _db):
         if rv == 1:
             one  = "%s -- %s\n" % (_trade_date, stock_id)
             one += get_basic_info_all(stock_id, _db)
+            one += "--------------------------------\n"
             log_info("nice1-fanbao: %s", one)
             content1 += one
         else:
@@ -207,6 +208,7 @@ def work_one(_trade_date, _db):
         if rv == 1:
             three = "%s -- %s\n" % (_trade_date, stock_id)
             three += get_basic_info_all(stock_id, _db)
+            three += "--------------------------------\n"
             log_info("nice3-sanfa: %s", three)
             content3 += three
         else:
@@ -217,6 +219,7 @@ def work_one(_trade_date, _db):
         if rv == 1:
             four = "%s -- %s\n" % (_trade_date, stock_id)
             four+= get_basic_info_all(stock_id, _db)
+            four+= "--------------------------------\n"
             log_info("nice4-citou: %s", four)
             content4 += four
         else:
@@ -240,6 +243,8 @@ def work_one(_trade_date, _db):
 
     if len(content2) > 0:
         subject = "qiming: %s" % (_trade_date)
+        good = "###一阳5线更加\n"
+        content2 = good + content2
         log_info(subject)
         log_info("\n%s", content2)
         if sai_is_product_mode():
@@ -294,6 +299,8 @@ def regression(_db):
     days = 10
     max_date = "2017-03-31"
     days = 20
+    max_date = "2017-05-19"
+    days = 10
 
     date_df = get_recent_pub_date(max_date, days, _db)
     if date_df is None:

@@ -26,7 +26,7 @@ from sairef  import *
 """
 def get_p1_list(_date, _max_amp, _db):
     recent = 30 # test
-    recent = 3
+    recent = 1
     sql = "select stock_id, pub_date, \
 round((close_price-open_price)/last_close_price*100,2) rate, \
 round((high_price - low_price)/last_close_price*100,2) amp, \

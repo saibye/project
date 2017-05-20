@@ -14,34 +14,9 @@ from saimail import *
 from sairef  import *
 
 #######################################################################
-# 不需要macd等,  所以只使用tbl_day表 2016/11/26
+# dadan3 back ma20
 #######################################################################
 
-"""
-# deleted at 2017-3-30
-def get_good_list(_trade_date, _good_type, _db):
-    sql = "select a.pub_date event_date, a.stock_id, b.pub_date back_date, \
-a.v1 volume, a.v2 price, a.v4 time \
-from tbl_good a, tbl_day b, tbl_day_tech c \
-where a.stock_id = b.stock_id \
-and   b.stock_id = c.stock_id \
-and   b.pub_date = c.pub_date \
-and   (b.close_price <= c.ma5  or (c.ma10<= b.high_price and c.ma10 >= b.low_price)) \
-and   a.good_type = '%s' \
-and   b.pub_date  = '%s' \
-and   a.pub_date in \
-(select * from (select distinct pub_date from tbl_good order by pub_date desc limit 10) x)" % (_good_type, _trade_date)
-
-    log_debug("sql: \n%s", sql)
-
-    df = pd.read_sql_query(sql, _db);
-    if df is None:
-        log_info("'%s' not found in db", _stock_id)
-        return None
-    else:
-        # df.set_index("stock_id", inplace=True)
-        return df
-"""
 
 # 2017-3-30 ma20 only
 def get_good_list(_trade_date, _good_type, _db):
@@ -84,6 +59,7 @@ def work_one(_stock_id, _row, _db):
 
 
 def xxx(_db):
+    has_noticed = {}
 
     if sai_is_product_mode():
         last_date = get_date_by(-1)
@@ -93,6 +69,7 @@ def xxx(_db):
         good_type = "dadan2"
         last_date = "2016-12-22"
         good_type = "dadan3"
+        last_date = "2017-05-17"
 
     list_df = get_good_list(last_date, good_type, _db)
     if list_df is None:
@@ -111,6 +88,12 @@ def xxx(_db):
     for row_index, row in list_df.iterrows():
         stock_id   = row['stock_id']
         log_debug("[%s]------------------", stock_id)
+        if has_noticed.has_key(stock_id):
+            log_debug("%s already done", stock_id)
+            continue
+        else:
+            has_noticed[stock_id] = "1"
+
         volume     = row['volume']
         price      = row['price']
         event_time = row['time']

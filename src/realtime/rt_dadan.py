@@ -131,11 +131,13 @@ def rt_dadan_check_buy(_stock_id, _df, _db, _vol_base, _count_base, _noticed, _l
             if _vol_base >= 120000:
                 log_info("let's mail3 immediately")
                 subject = "#dadan3 [%s] %s" % (_stock_id, g_stock_date)
-                body    = "%s -- %.2f%% -- p%.2f\n" % (g_stock_date, get_chg_rate(_stock_id), get_curr_price(_stock_id))
+                body    = "%s -- (%.2f%%) -- p%.2f\n" % (g_stock_date, get_chg_rate(_stock_id), get_curr_price(_stock_id))
                 for item in _list:
                     body   +=  item
                 log_info("mail3 %s", body)
                 saimail(subject, body)
+                if volume >= 300000:
+                    saimail2(subject, body)
 
 
     if good == 1:
@@ -265,6 +267,7 @@ def rt_dadan_one(_stock_id, _dd_date, _db):
     vol = 120000
     cnt = 1
     pri = 6.00
+    g_good_list3 = []    # 2017-4-3
     if g_has_noticed3.has_key(_stock_id):
         pass
     else:
@@ -276,6 +279,10 @@ def rt_dadan_one(_stock_id, _dd_date, _db):
 
 def rt_dadan_rank_one(_stock_id, _dd_date, _db):
 
+    buy  = 0
+    sell = 0
+    mid  = 0
+
     # 100手起
     base_vol = 100
 
@@ -286,19 +293,19 @@ def rt_dadan_rank_one(_stock_id, _dd_date, _db):
     except Exception:
         log_error("warn: %s get_sina_dd exception!", _stock_id)
         time.sleep(5)
-        return -4
+        return -4,-4,-4
 
     if df is None :
         # log_error("warn: stock %s is None, next", _stock_id)
-        return -1
+        return -1,-1,-1
 
     if df.empty:
         # log_error("warn: stock %s is empty, next", _stock_id)
-        return -2
+        return -2,-2,-2
 
     if len(df) <= 5:
         # log_error("warn: stock %s is short, next", _stock_id)
-        return -3
+        return -3,-3,-3
 
     # convert to 手
     df['volume'] = df['volume'] / 100
@@ -312,25 +319,46 @@ def rt_dadan_rank_one(_stock_id, _dd_date, _db):
     rank, content = get_df_rank(df)
     # if rank >= 300 or (rank >= 209 and rank % 100 == 9):
     # if rank >= 100 or (rank >= 209 and rank % 100 == 9):
-    if rank >= 209:
-        subject = "###rank: %d 净流入 %s" % (rank, _stock_id)
+    if rank >= 309:
+        subject = "rank: %d 净流入 %s (%.2f%%)" % (rank, _stock_id, get_chg_rate(_stock_id))
         content += get_basic_info_all(_stock_id, _db)
         log_info("nice: %s, %s", subject, content)
         saimail(subject, content)
 
+    buy, sell, mid = get_buy_sell_sum2(df)
 
-    return 
+    return buy, sell, mid
 
 
 # 收盘前检查一次
 def rt_dadan_rank(_stocks, _trade_date, _db):
 
+    buy0  = 0
+    sell0 = 0
+    mid0  = 0
+
+    buy  = 0
+    sell = 0
+    mid  = 0
+
     for row_index, row in _stocks.iterrows():
         stock_id = row_index
 
-        rt_dadan_rank_one(stock_id, _trade_date, _db)
+        buy0, sell0, mid0 = rt_dadan_rank_one(stock_id, _trade_date, _db)
+        if buy0 > 0:
+            buy  = buy + buy0
+            sell = sell + sell0
+            mid  = mid + mid0
+            # log_debug("adding: buy[%d], sell[%d], mid[%d]", buy, sell, mid)
 
-
+    diff = buy - sell
+    if buy > 0 and sell > 0:
+        subject = "盘末统计 %s" % (_trade_date)
+        content = "净: %.2f (unit)\n" % ((buy-sell) / 10000)
+        content+= "买: %.2f (unit)\n" % (buy / 10000)
+        content+= "卖: %.2f (unit)\n" % (sell / 10000)
+        content+= "中: %.2f (unit)\n" % (mid / 10000)
+        saimail(subject, content)
 
 
 def rt_dadan(_stocks, _trade_date, _db):
@@ -467,6 +495,10 @@ def work():
 
     # step2: loop the list
     rt_timer(stocks, db)
+
+    """
+    rt_dadan_rank(stocks, "2017-04-21", db)
+    """
 
     db_end(db)
 
