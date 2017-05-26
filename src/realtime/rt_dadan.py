@@ -353,7 +353,7 @@ def rt_dadan_rank(_stocks, _trade_date, _db):
 
     diff = buy - sell
     if buy > 0 and sell > 0:
-        subject = "盘末统计 %s" % (_trade_date)
+        subject = "尾盘统计 %s" % (_trade_date)
         content = "净: %.2f (unit)\n" % ((buy-sell) / 10000)
         content+= "买: %.2f (unit)\n" % (buy / 10000)
         content+= "卖: %.2f (unit)\n" % (sell / 10000)

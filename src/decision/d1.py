@@ -118,7 +118,7 @@ def work_one(_stock_id, _max_date, _db):
     begin = get_micro_second()
 
     # 最近n天的数据
-    n1 = 3
+    n1 = 1
 
     # 停牌天数
     n2 = 120

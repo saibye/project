@@ -301,6 +301,8 @@ def regression(_db):
     days = 20
     max_date = "2017-05-19"
     days = 10
+    max_date = "2017-05-03"
+    days = 3
 
     date_df = get_recent_pub_date(max_date, days, _db)
     if date_df is None:

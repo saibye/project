@@ -33,7 +33,7 @@ from saitech import *
 """
 def get_p3_list(_date, _db):
     recent = 10 # test
-    recent = 2
+    recent = 1
     sql = "select stock_id, pub_date, \
 round((close_price-last_close_price)/last_close_price*100,2) rate, \
 round((high_price - low_price)/last_close_price*100,2) amp, \
@@ -64,6 +64,7 @@ def xxx(_db):
         trade_date = get_today()
     else:
         trade_date = "2016-12-13"
+        trade_date = "2017-05-19"
 
     list_df = get_p3_list(trade_date, _db)
     if list_df is None:

@@ -52,7 +52,7 @@ def sum_report_first(_recent_date, _db):
 from tbl_tick_sum \
 where pub_date <='%s' \
 group by pub_date \
-order by 1 desc limit 7" % (_recent_date)
+order by 1 desc limit 10" % (_recent_date)
 
     log_debug("sql: %s", sql)
 
