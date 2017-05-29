@@ -122,7 +122,7 @@ def work_one(_stock_id, _db):
         n2 = 30
         n3 = 3
     else:
-        n1 = 60
+        n1 = 30
         n2 = 90
         n3 = 3
 
@@ -174,6 +174,7 @@ def work_one(_stock_id, _db):
     if rate0 < -9.8:
         warn = "WARN: 无量跌停，谨慎！"
         log_info("%s", warn)
+        return 1
 
     if length >= 2:
         vol1   = detail_df['deal_total_count'][1]
@@ -202,6 +203,16 @@ def work_one(_stock_id, _db):
         log_info("xxoo 地量后，有跌停")
         return 1
 
+    # 要求连续上涨 2017/5/29
+    if rate1 < 0 or rate2 < 0:
+        log_info("xxoo %.2f, %.2f", rate1, rate2)
+        return 1
+
+    # 要求连续阳柱 2017/5/29
+    if zt1 < 0 or zt2 < 0:
+        log_info("xxoo %.2f, %.2f", zt1, zt2)
+        return 1
+
 
     # 检查量比
     if ((rate1 > 0 or zt1 > 0) and vr1 >= 10) or ((rate2 > 0 or zt2 > 0) and vr2 >= 10):
@@ -209,6 +220,21 @@ def work_one(_stock_id, _db):
 
         if zt1 < 0:
             warn += "\nWARN: 次日阴柱%.2f，谨慎！" % (zt1)
+            log_info("%s", warn)
+
+        warn += "+++最好：地量横盘2-3天\n"
+        warn += "+++加分：穿越3线，收复MA20\n"
+        warn += "+++加分：双底+多个锤子线+多个上影线\n"
+        log_info("%s", warn)
+
+        if rate2 > rate1:
+            warn += "++增量涨幅\n"
+            log_info("%.2f > %.2f", rate2, rate1)
+            log_info("%s", warn)
+
+        if vr2 > vr1:
+            warn += "++增量放量\n"
+            log_info("%.2f > %.2f", vr2, vr1)
             log_info("%s", warn)
 
         item  = "%s 地量: [%.3f]@[%s]" % (_stock_id, vol0, min_date)
@@ -255,7 +281,11 @@ def xxx(_db):
     for row_index, row in list_df.iterrows():
         stock_id = row_index
         log_debug("[%s]------------------", stock_id)
-        rv = work_one(stock_id, _db)
+        if is_ST(stock_id):
+            log_debug("ST <%s> ignore", stock_id)
+            continue
+        else:
+            rv = work_one(stock_id, _db)
 
     return 0
 

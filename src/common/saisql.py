@@ -194,6 +194,37 @@ def get_xsg_info(_stock_id, _db):
     return info
 
 
+"""
+2017/5/29
+"""
+def get_rename_df(_stock_id, _db):
+    sql = "select inst_date, stock_old_name, stock_new_name \
+from tbl_name where stock_id = '%s' order by inst_date" % _stock_id
+    df = pd.read_sql_query(sql, _db);
+    if df is None:
+        log_info("'%s' not found in xsg", _stock_id)
+        return None
+    else:
+        return df
+
+
+def get_rename_info(_stock_id, _db):
+    info = ""
+
+    xsg = get_rename_df(_stock_id, _db)
+
+    if xsg is None:
+        return info
+
+    if len(xsg) > 0:
+        info = "摘帽   :\n"
+
+    for row_index, row in xsg.iterrows():
+        info += "%s - %s => %s\n" % (row['inst_date'], row['stock_old_name'], row['stock_new_name'])
+
+    # log_debug("info:\n%s", info)
+
+    return info
 
 def sai_save_good(_stock_id, _pub_date, _good_type, _key1, _key2, _key3, _key4, _db):
     inst_date = get_today()
@@ -384,6 +415,8 @@ def get_basic_info_all(_stock_id, _db):
 
     info += get_dadan_info(_stock_id, _db)
 
+    info += get_rename_info(_stock_id, _db)
+
     info += get_xsg_info(_stock_id, _db)
 
     info += get_longhu_info(_stock_id, _db)
@@ -463,6 +496,23 @@ where stock_id = '%s'" % (_pub_date, _stock_id)
 
     return days
 
+
+"""
+是ST
+"""
+def is_ST(_stock_id):
+    name = get_name(_stock_id)
+    if name is None:
+        log_info("not found, consider not ST")
+    else:
+        if name.find("ST") != -1:
+            log_info("[%s -> %s] is ST", _stock_id, name)
+            return 1
+        else:
+            log_info("[%s -> %s] not ST", _stock_id, name)
+
+    return 0
+
 #######################################################################
 if __name__=="__main__":
     sailog_set("saisql.log")
@@ -520,6 +570,17 @@ if __name__=="__main__":
     pub_date  = "2017-04-23"
     days = get_day_to_market(stock_id, pub_date, db)
     log_info("days is [%d]", days)
+
+    stock_id  = "000504"
+    info = get_basic_info_all(stock_id, db);
+    log_debug("all: \n%s", info)
+
+    stock_id  = "000504"
+    stock_id  = "600149"
+    if is_ST(stock_id):
+        log_debug("%s YES", stock_id)
+    else:
+        log_debug("%s NO", stock_id)
 
     db_end(db)
     log_info("main ends  bye!")

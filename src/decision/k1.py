@@ -28,15 +28,52 @@ def citou():
     rate1 = (ref_close(1) - ref_close(2)) / ref_close(2) * 100 # 昨日涨幅
     rate2 = (ref_close(0) - ref_close(1)) / ref_close(1) * 100 # 今日涨幅
 
+    log_debug("rate1: %.2f", rate1)
+    log_debug("rate2: %.2f", rate2)
+
     # if rate1 <= -5 and rate2 >= 5 and ref_open(0) < ref_low(1) and ref_close(0) > mid: # 2016-11-20
-    if rate1 <= -6.5 and rate2 >= 8.0 and ref_open(0) <= ref_close(1) and ref_close(0) > ref_high(1):
+    if rate1 <= -6.5 and rate2 >= 8.0 \
+                and ref_open(0) <= ref_close(1)*1.01 \
+                and ref_close(0) > ref_high(1):
         rv = 1
         log_debug("nice: citou")
+        log_debug("rate1: %.2f", rate1)
+        log_debug("rate2: %.2f", rate2)
+        log_debug("open0: %.2f", ref_open(0))
+        log_debug("close0:%.2f", ref_close(0))
+        log_debug("close1:%.2f", ref_close(1)*1.01)
+        log_debug("high1: %.2f", ref_high(1))
+    else:
+        rv = 0
+        # log_debug("not match")
+
+    return rv
+
+
+###
+# 刺透 2017-5-29
+# 需要穿越4线+均线发散
+# 603098
+# 002158
+def citou2():
+    rate1 = (ref_close(1) - ref_close(2)) / ref_close(2) * 100 # 昨日涨幅
+    rate2 = (ref_close(0) - ref_close(1)) / ref_close(1) * 100 # 今日涨幅
+    zt1   = (ref_close(1) - ref_open(1)) / ref_close(2) * 100 # 第一天
+    zt2   = (ref_close(0) - ref_open(0)) / ref_close(1) * 100 # 第二天
+
+    if rate1 <= -9.8 and rate2 >= 9.8 \
+                and ref_close(0) >= ref_high(1) \
+                and ref_low(0) <= ref_close(1) \
+                and zt1 < -5 \
+                and zt2 > 8:
+        rv = 1
+        log_debug("nice: citou2")
         log_debug("rate1: %.2f", rate1)
         log_debug("rate2: %.2f", rate2)
         log_debug("low:   %.2f", ref_low(1))
         log_debug("close: %.2f", ref_close(0))
         log_debug("open:  %.2f", ref_open(0))
+        log_debug("%.2f, %.2f",  zt1, zt2)
     else:
         rv = 0
         # log_debug("not match")
@@ -109,6 +146,44 @@ def qiming():
     return rv
 
 
+"""
+002011 - 2017-5-24
+"""
+def qiming2():
+    rate1 = (ref_close(2) - ref_close(3)) / ref_close(3) * 100  # 第一天 前天
+    rate3 = (ref_close(0) - ref_close(1)) / ref_close(1) * 100  # 第三天 today
+    md1   = (ref_open(2)*2 + ref_close(2))/ 3
+    zt1   = (ref_close(2) - ref_open(2)) / ref_close(3) * 100 # 第一天
+    zt2   = (ref_close(1) - ref_open(1)) / ref_close(2) * 100 # 第二天
+    zt3   = (ref_close(0) - ref_open(0)) / ref_close(1) * 100 # 第三天 today
+
+    # 1. 前天大幅下跌
+    # 2. 昨天低开
+    # 3. 今天高开
+    # 4. 今天收盘超过前天2/3
+    if rate1 <= -6 and rate3 >= 9.8 \
+                and ref_open(1) <= ref_close(2) \
+                and ref_open(0)*1.01 >= ref_close(1) \
+                and ref_close(0) >= ref_high(2) \
+                and zt1 <= -5 \
+                and zt3 >=  9 \
+                and abs(zt2) <= 2:
+        rv = 1
+        log_debug("nice: qiming2")
+
+        log_debug("rate1: %.2f pk %.2f => %.2f", ref_close(2), ref_close(3), rate1)
+        log_debug("rate3: %.2f pk %.2f => %.2f", ref_close(0), ref_close(1), rate3)
+        log_debug("%.2f <= %.2f", ref_open(1), ref_close(2))
+        log_debug("%.2f >= %.2f", ref_open(0)*1.01, ref_close(1))
+        log_debug("%.2f >= %.2f", ref_close(0), ref_high(2))
+        log_debug("%.2f , %.2f , %.2f", zt1, zt2, zt3)
+    else:
+        rv = 0
+        # log_debug("not match")
+
+    return rv
+
+
 # 要求len >= 6
 def up_sanfa():
     if ref_len() < 6:
@@ -170,6 +245,8 @@ def work_one(_trade_date, _db):
     content2 = "" # qiming
     content3 = "" # sanfa 2016-12-3
     content4 = "" # citou 2017-4-5
+    content5 = "" # qiming2 2017-5-29
+    content6 = "" # citou2  2017-5-29
     for s_index, s_val in stocks.iteritems():
         rownum = rownum + 1
         stock_id = s_index
@@ -204,6 +281,7 @@ def work_one(_trade_date, _db):
             # log_debug("wait...")
             pass
 
+
         rv = up_sanfa()
         if rv == 1:
             three = "%s -- %s\n" % (_trade_date, stock_id)
@@ -215,6 +293,7 @@ def work_one(_trade_date, _db):
             # log_debug("wait...")
             pass
 
+        log_info("%s -- %s", _trade_date, stock_id)
         rv = citou()
         if rv == 1:
             four = "%s -- %s\n" % (_trade_date, stock_id)
@@ -225,6 +304,29 @@ def work_one(_trade_date, _db):
         else:
             # log_debug("wait...")
             pass
+
+        rv = qiming2()
+        if rv == 1:
+            five = "%s -- %s\n" % (_trade_date, stock_id)
+            five += get_basic_info_all(stock_id, _db)
+            five += "--------------------------------\n"
+            log_info("nice5-qiming2: %s", five)
+            content5 += five
+        else:
+            # log_debug("wait...")
+            pass
+
+        rv = citou2()
+        if rv == 1:
+            six = "%s -- %s\n" % (_trade_date, stock_id)
+            six+= get_basic_info_all(stock_id, _db)
+            six+= "--------------------------------\n"
+            log_info("nice6-citou2: %s", six)
+            content6 += six
+        else:
+            # log_debug("wait...")
+            pass
+
 
     log_info("%d costs %d us", rownum, get_micro_second() - begin)
 
@@ -243,7 +345,7 @@ def work_one(_trade_date, _db):
 
     if len(content2) > 0:
         subject = "qiming: %s" % (_trade_date)
-        good = "###一阳5线更加\n"
+        good = "###一阳5线更佳\n"
         content2 = good + content2
         log_info(subject)
         log_info("\n%s", content2)
@@ -277,6 +379,30 @@ def work_one(_trade_date, _db):
     else:
         log_info("sorry1: %s", _trade_date)
 
+    if len(content5) > 0:
+        subject = "qiming2: %s" % (_trade_date)
+        good = "###一阳5线更佳\n"
+        content5 = good + content5
+        log_info(subject)
+        log_info("\n%s", content5)
+        if sai_is_product_mode():
+            mailed = 1
+            saimail(subject,  content5)
+    else:
+        log_info("sorry1: %s", _trade_date)
+
+    if len(content6) > 0:
+        subject = "citou2: %s" % (_trade_date)
+        good    = "穿越4线更佳\n"
+        content6 = good + content6
+        log_info(subject)
+        log_info("\n%s", content6)
+        if sai_is_product_mode():
+            mailed = 1
+            saimail(subject,  content6)
+    else:
+        log_info("sorry1: %s", _trade_date)
+
     if sai_is_product_mode():
         if mailed == 0:
             subject = "No Good K: %s" % (_trade_date)
@@ -303,6 +429,17 @@ def regression(_db):
     days = 10
     max_date = "2017-05-03"
     days = 3
+
+    max_date = "2017-05-24"
+    days = 3
+
+    max_date = "2017-05-09"
+    days = 3
+
+    max_date = "2017-04-21"
+    days = 2
+
+    log_info("regress")
 
     date_df = get_recent_pub_date(max_date, days, _db)
     if date_df is None:

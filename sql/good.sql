@@ -124,6 +124,9 @@ and c.pub_date='2017-05-05'
 and t2.liq <= 100
 
 
+select * from tbl_name where inst_date='2017-05-29'
+
+
 
 
 
