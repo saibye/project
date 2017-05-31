@@ -128,7 +128,7 @@ def k_day_one_stock(_stock_id, _db):
 
     # qfq
     if max_date is None:
-        start_date = '2015-01-01'
+        start_date = '2017-01-01'
         log_debug("it's first time: [%s]", _stock_id)
     else:
         start_date = str(max_date)
@@ -181,7 +181,8 @@ def work():
 
 
     # step1: get from web
-    stocks = get_stock_list_df_tu()
+    # stocks = get_stock_list_df_tu() # not real time 2017-5-31
+    stocks = get_stock_quotation()
 
     # step2: to db
     begin = get_micro_second()

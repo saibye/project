@@ -93,9 +93,11 @@ def saimail_html(_subject, _body):
     smtp_server = mail_conf_js['smtp_server']['host'].encode('utf-8')
     from_addr   = mail_conf_js['from_addr']['mail'].encode('utf-8')
     mail_pass   = mail_conf_js['from_addr']['passwd'].encode('utf-8')
+
     to_list = []
     for item in mail_conf_js['to_addrs']:
         to_list.append(item['mail'])
+        break
 
     to_addr = ''
     to_addr = ",".join(to_list)
@@ -116,8 +118,13 @@ if __name__=="__main__":
     sailog_set("saimail.log")
     subject   = u"xxx subject"
     body      = u"hello, world, buy buy buy"
+    subject   = u"subject"
+    body      = u"<html>xxello, world, buy buy buy</html>"
     log_info("send: [%s, %s]", subject, body)
+    """
     saimail(subject, body)
     saimail2(subject, body)
+    """
+    saimail_html(subject, body)
 
 # saimail.py

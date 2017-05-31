@@ -222,19 +222,19 @@ def work_one(_stock_id, _db):
             warn += "\nWARN: 次日阴柱%.2f，谨慎！" % (zt1)
             log_info("%s", warn)
 
+        warn += "+++务必：穿越3线，收复MA20,60\n"
         warn += "+++最好：地量横盘2-3天\n"
-        warn += "+++加分：穿越3线，收复MA20\n"
         warn += "+++加分：双底+多个锤子线+多个上影线\n"
         log_info("%s", warn)
 
-        if rate2 > rate1:
-            warn += "++增量涨幅\n"
-            log_info("%.2f > %.2f", rate2, rate1)
+        if vr2 > vr1:
+            warn += "++++增量放量\n"
+            log_info("%.2f > %.2f", vr2, vr1)
             log_info("%s", warn)
 
-        if vr2 > vr1:
-            warn += "++增量放量\n"
-            log_info("%.2f > %.2f", vr2, vr1)
+        if rate2 > rate1:
+            warn += "+++++增量涨幅\n"
+            log_info("%.2f > %.2f", rate2, rate1)
             log_info("%s", warn)
 
         item  = "%s 地量: [%.3f]@[%s]" % (_stock_id, vol0, min_date)

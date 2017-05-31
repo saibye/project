@@ -55,17 +55,32 @@ def citou():
 # 需要穿越4线+均线发散
 # 603098
 # 002158
+# ################
+# 603896
+# 000856
+# ################
 def citou2():
     rate1 = (ref_close(1) - ref_close(2)) / ref_close(2) * 100 # 昨日涨幅
     rate2 = (ref_close(0) - ref_close(1)) / ref_close(1) * 100 # 今日涨幅
     zt1   = (ref_close(1) - ref_open(1)) / ref_close(2) * 100 # 第一天
     zt2   = (ref_close(0) - ref_open(0)) / ref_close(1) * 100 # 第二天
 
-    if rate1 <= -9.8 and rate2 >= 9.8 \
+    # 603098
+    # 002158
+    rule1 = rate1 <= -9.8 and rate2 >= 9.8 \
                 and ref_close(0) >= ref_high(1) \
                 and ref_low(0) <= ref_close(1) \
                 and zt1 < -5 \
-                and zt2 > 8:
+                and zt2 > 8
+
+    # 603896, zt14, 15
+    # 000856, zt5,  10
+    rule2 = rate1 <= -9.8 and rate2 >= 9.8 \
+                and ref_close(0)*1.05 >= ref_high(1) \
+                and ref_open(0) <= ref_close(1) \
+                and zt1 < -5 \
+                and zt2 >= 10
+    if rule1 or rule2:
         rv = 1
         log_debug("nice: citou2")
         log_debug("rate1: %.2f", rate1)
@@ -436,7 +451,10 @@ def regression(_db):
     max_date = "2017-05-09"
     days = 3
 
-    max_date = "2017-04-21"
+    max_date = "2017-04-25"
+    days = 2
+
+    max_date = "2017-05-23"
     days = 2
 
     log_info("regress")
