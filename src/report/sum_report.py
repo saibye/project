@@ -171,7 +171,7 @@ def sum_report_all(_date, _db):
     content += table
     content += "<p></p>"
 
-    # 2. 最近5日
+    # 2. 最近n日
     table = sum_report_first(_date, _db)
     if len(table) <= 0:
         log_error("error: sum_report_first")

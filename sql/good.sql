@@ -126,7 +126,29 @@ and t2.liq <= 100
 
 select * from tbl_name where inst_date='2017-05-29'
 
+select open_price, close_price from tbl_day
+where stock_id='000852' and pub_date='2017-05-15'
 
+select close_price, ma5, ma10, ma20, ma30, ma60 from tbl_day_tech b
+where stock_id='000852' and pub_date='2017-05-15'
+
+
+-- cross5
+select a.stock_id  from 
+tbl_day a, tbl_day_tech b
+where a.stock_id = b.stock_id
+and a.pub_date = b.pub_date
+and a.close_price >= b.ma5
+and a.close_price >= b.ma10
+and a.close_price >= b.ma20
+and a.close_price >= b.ma30
+and a.close_price >= b.ma60
+and a.open_price  <= b.ma5
+and a.open_price  <= b.ma10
+and a.open_price  <= b.ma20
+and a.open_price  <= b.ma30
+and a.open_price  <= b.ma60
+and a.pub_date ='2017-05-15'
 
 
 

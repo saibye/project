@@ -83,7 +83,7 @@ def saimail2(_subject, _body):
     server.sendmail(from_addr, to_list, msg.as_string())
     server.quit()
 
-def saimail_html(_subject, _body):
+def saimail_html_old(_subject, _body):
 
     mail_conf_js = analy_mail_conf()
     if mail_conf_js == -1:
@@ -112,6 +112,45 @@ def saimail_html(_subject, _body):
     server.login(from_addr, mail_pass)
     server.sendmail(from_addr, to_list, msg.as_string())
     server.quit()
+
+
+def saimail_inner(_subject, _body, _to_addr, _mail_type):
+    encoding = 'utf-8'
+
+    smtp_server = sai_conf_get("smtp_server", "host").encode(encoding)
+    from_addr   = sai_conf_get("from_addr",   "mail").encode(encoding)
+    mail_pass   = sai_conf_get("from_addr",   "passwd").encode(encoding)
+
+    to_addr = _to_addr
+    to_list = []
+    to_list.append(to_addr)
+
+    msg = MIMEText(_body, _mail_type, encoding)
+    msg['From']     = from_addr
+    msg['Bcc']      = to_addr
+    msg['Subject']  = Header(_subject, encoding).encode()
+
+    server = smtplib.SMTP(smtp_server, 25)
+    server.login(from_addr, mail_pass)
+    server.sendmail(from_addr, to_list, msg.as_string())
+    server.quit()
+
+
+def saimail_html(_subject, _body):
+
+    mail_conf_js = analy_mail_conf()
+    if mail_conf_js == -1:
+        log_error("邮箱地址配置文件解析错误!")
+        return -1
+
+    mail_type = 'html'
+
+    to_addr = ""
+    for item in mail_conf_js['to_addrs']:
+        to_addr = item['mail']
+        log_info("send to mailbox: %s", to_addr)
+        saimail_inner(_subject, _body, to_addr, mail_type)
+
 
 
 if __name__=="__main__":
