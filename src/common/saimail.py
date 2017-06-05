@@ -32,7 +32,7 @@ def analy_mail_conf():
         log_error("mail_conf_path[%s] 错误!", mail_conf_path)
         return -1
 
-def saimail(_subject, _body):
+def saimail_old(_subject, _body):
 
     mail_conf_js = analy_mail_conf()
     if mail_conf_js == -1:
@@ -130,10 +130,15 @@ def saimail_inner(_subject, _body, _to_addr, _mail_type):
     msg['Bcc']      = to_addr
     msg['Subject']  = Header(_subject, encoding).encode()
 
-    server = smtplib.SMTP(smtp_server, 25)
-    server.login(from_addr, mail_pass)
-    server.sendmail(from_addr, to_list, msg.as_string())
-    server.quit()
+    try :
+        server = smtplib.SMTP(smtp_server, 25)
+        server.login(from_addr, mail_pass)
+        server.sendmail(from_addr, to_list, msg.as_string())
+        server.quit()
+        return 0
+    except Exception, e:
+        log_error("error: send mail failure: %s", e)
+        return -1
 
 
 def saimail_html(_subject, _body):
@@ -151,19 +156,39 @@ def saimail_html(_subject, _body):
         log_info("send to mailbox: %s", to_addr)
         saimail_inner(_subject, _body, to_addr, mail_type)
 
+def saimail(_subject, _body):
+
+    mail_conf_js = analy_mail_conf()
+    if mail_conf_js == -1:
+        log_error("邮箱地址配置文件解析错误!")
+        return -1
+
+    mail_type = 'plain'
+
+    to_addr = ""
+    for item in mail_conf_js['to_addrs']:
+        to_addr = item['mail']
+        log_info("send %s to mailbox: %s", mail_type, to_addr)
+        saimail_inner(_subject, _body, to_addr, mail_type)
 
 
 if __name__=="__main__":
     sailog_set("saimail.log")
     subject   = u"xxx subject"
     body      = u"hello, world, buy buy buy"
-    subject   = u"subject"
-    body      = u"<html>xxello, world, buy buy buy</html>"
     log_info("send: [%s, %s]", subject, body)
     """
-    saimail(subject, body)
     saimail2(subject, body)
     """
+
+    """
+    subject   = u"subject"
+    body      = u"<html>xxello, world, buy buy buy</html>"
     saimail_html(subject, body)
+    """
+
+    subject   = u"xxx subject"
+    body      = u"hello, world, buy buy buy"
+    saimail(subject, body)
 
 # saimail.py

@@ -212,6 +212,74 @@ where low_price > %.2f" % (_stock_id, _trade_date, _m, _price)
     return cnt
 
 
+"""
+功能：检查满足穿越5线
+ma5, 10, 20, 30, 60
+"""
+def tech_is_cross5(_stock_id, _trade_date, _db):
+    sql = "select a.stock_id  from  \
+tbl_day a, tbl_day_tech b \
+where a.stock_id = b.stock_id \
+and a.pub_date = b.pub_date \
+and a.close_price >= b.ma5 \
+and a.close_price >= b.ma10 \
+and a.close_price >= b.ma20 \
+and a.close_price >= b.ma30 \
+and a.close_price >= b.ma60 \
+and a.open_price  <= b.ma5 \
+and a.open_price  <= b.ma10 \
+and a.open_price  <= b.ma20 \
+and a.open_price  <= b.ma30 \
+and a.open_price  <= b.ma60 \
+and a.pub_date = '%s' \
+and a.stock_id = '%s'" % (_trade_date, _stock_id)
+
+    df = pd.read_sql_query(sql, _db);
+    if df is None:
+        log_error("'%s' not found1", _stock_id)
+        return False
+    elif df.empty:
+        log_error("'%s' not found2", _stock_id)
+        return False
+    else:
+        pass
+
+    return True
+
+
+"""
+功能：检查满足穿越4线
+ma5, 10, 20, 30
+"""
+def tech_is_cross4(_stock_id, _trade_date, _db):
+    sql = "select a.stock_id  from  \
+tbl_day a, tbl_day_tech b \
+where a.stock_id = b.stock_id \
+and a.pub_date = b.pub_date \
+and a.close_price >= b.ma5 \
+and a.close_price >= b.ma10 \
+and a.close_price >= b.ma20 \
+and a.close_price >= b.ma30 \
+and a.open_price  <= b.ma5 \
+and a.open_price  <= b.ma10 \
+and a.open_price  <= b.ma20 \
+and a.open_price  <= b.ma30 \
+and a.pub_date = '%s' \
+and a.stock_id = '%s'" % (_trade_date, _stock_id)
+
+    df = pd.read_sql_query(sql, _db);
+    if df is None:
+        log_error("'%s' not found1", _stock_id)
+        return False
+    elif df.empty:
+        log_error("'%s' not found2", _stock_id)
+        return False
+    else:
+        pass
+
+    return True
+
+
 #######################################################################
 if __name__=="__main__":
     sailog_set("saitech.log")
@@ -278,6 +346,31 @@ if __name__=="__main__":
     log_debug("rate: [%s][%s] is [%.2f]", stock_id, trade_date, rate)
 
     #------------------------------------------------------------------
+
+    stock_id   = "000852"
+    trade_date = "2017-05-15"
+    rv = tech_is_cross5(stock_id, trade_date, db)
+    if rv:
+        log_info("%s, %s is cross", stock_id, trade_date)
+    else:
+        log_info("%s, %s NOT cross", stock_id, trade_date)
+
+    stock_id   = "000852"
+    trade_date = "2017-05-16"
+    rv = tech_is_cross5(stock_id, trade_date, db)
+    if rv:
+        log_info("%s, %s is cross", stock_id, trade_date)
+    else:
+        log_info("%s, %s NOT cross", stock_id, trade_date)
+
+    stock_id   = "000852"
+    trade_date = "2017-05-15"
+    rv = tech_is_cross4(stock_id, trade_date, db)
+    if rv:
+        log_info("%s, %s is cross4", stock_id, trade_date)
+    else:
+        log_info("%s, %s NOT cross4", stock_id, trade_date)
+
     db_end(db)
     log_info("main ends  bye!")
 
