@@ -236,7 +236,8 @@ def ct_ticks(_stocks, _trade_date, _db):
     for row_index, row in _stocks.iterrows():
         stock_id = row_index
 
-        tdchg = chged.get(stock_id)
+        # tdchg = chged.get(stock_id) # buy 100 rows at 2017-6-7
+        tdchg = get_chg_rate(stock_id)
         if tdchg is None:
             tdchg = 0.0
         log_debug("stock %s today changed: %.2f%%", stock_id, tdchg)

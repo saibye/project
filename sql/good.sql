@@ -151,5 +151,13 @@ and a.open_price  <= b.ma60
 and a.pub_date ='2017-05-15'
 
 
+select * from tbl_day where pub_date='2017-06-01' 
+and (low_price - last_close_price) / last_close_price * 100 < -9.9
+
+select * from tbl_day where pub_date like '2017-06-0%%' 
+and (low_price - last_close_price) / last_close_price * 100 < -9.9
+
+
+
 
 # good.sql

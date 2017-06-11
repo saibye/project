@@ -12,10 +12,49 @@ from saicalc import *
 from sailog  import *
 from saimail import *
 from sairef  import *
+from saitech import *
 
 #######################################################################
 # 不需要macd等,  所以只使用tbl_day表 2016/11/26
 #######################################################################
+
+
+###
+# 锤子 2017-6-10
+# 需要连续两个阳柱
+# 300526
+# ################
+# ################
+def hammer():
+    rate1 = (ref_close(1) - ref_close(2)) / ref_close(2) * 100 # 昨日涨幅
+    rate2 = (ref_close(0) - ref_close(1)) / ref_close(1) * 100 # 今日涨幅
+    zt1   = (ref_close(1) - ref_open(1)) / ref_close(2) * 100 # 第一天
+    zt2   = (ref_close(0) - ref_open(0)) / ref_close(1) * 100 # 第二天
+    hp2   = (ref_high(0)  - ref_close(1)) / ref_close(1) * 100 # 今日 最高点
+    amp2  = (ref_high(0)  - ref_low(0)) / ref_close(1) * 100 # 今日振幅
+
+    # 300526
+    rule1 = zt2 > 1 and hp2 > 9.8 \
+                and amp2 > 14 \
+                and rate1 < -9.8 \
+                and ref_close(0) > ref_high(1) \
+                and ref_open(0) <= ref_close(1)
+
+    rule2 = False
+
+    if rule1 or rule2:
+        rv = 1
+        log_debug("nice: hammer")
+        log_debug("rate1: %.2f", rate1)
+        log_debug("rate2: %.2f", rate2)
+        log_debug("hp2:   %.2f", hp2)
+        log_debug("amp2:  %.2f", amp2)
+        log_debug("%.2f, %.2f",  zt1, zt2)
+    else:
+        rv = 0
+        # log_debug("not match")
+
+    return rv
 
 
 ###
@@ -199,6 +238,47 @@ def qiming2():
     return rv
 
 
+"""
+002837 - 2017-6-5
+"""
+def qiming3():
+    rate1 = (ref_close(2) - ref_close(3)) / ref_close(3) * 100  # 第一天 前天
+    rate3 = (ref_close(0) - ref_close(1)) / ref_close(1) * 100  # 第三天 today
+    zt1   = (ref_close(2) - ref_open(2)) / ref_close(3) * 100 # 第一天
+    zt2   = (ref_close(1) - ref_open(1)) / ref_close(2) * 100 # 第二天
+    zt3   = (ref_close(0) - ref_open(0)) / ref_close(1) * 100 # 第三天 today
+
+    # 1. 前天-10
+    # 2. 昨天低开+
+    # 3. 今天+10
+
+    # 002837
+    rule1 =  rate1 <= -9.8 and rate3 >= 9.8 \
+                and zt2 > 0 \
+                and ref_open(1) <= ref_close(2) \
+                and zt1 < -7 \
+                and zt3 > 7 
+
+    # XXX
+    rule2 = False
+
+    if rule1 or rule2:
+        rv = 1
+        log_debug("nice: qiming3")
+
+        log_debug("rate1: %.2f pk %.2f => %.2f", ref_close(2), ref_close(3), rate1)
+        log_debug("rate3: %.2f pk %.2f => %.2f", ref_close(0), ref_close(1), rate3)
+        log_debug("%.2f <= %.2f", ref_open(1), ref_close(2))
+        log_debug("%.2f >= %.2f", ref_open(0)*1.01, ref_close(1))
+        log_debug("%.2f >= %.2f", ref_close(0), ref_high(2))
+        log_debug("%.2f , %.2f , %.2f", zt1, zt2, zt3)
+    else:
+        rv = 0
+        # log_debug("not match")
+
+    return rv
+
+
 # 要求len >= 6
 def up_sanfa():
     if ref_len() < 6:
@@ -262,10 +342,12 @@ def work_one(_trade_date, _db):
     content4 = "" # citou 2017-4-5
     content5 = "" # qiming2 2017-5-29
     content6 = "" # citou2  2017-5-29
+    content7 = "" # qiming3 2017-6-8
+    content8 = "" # hammer  2017-6-10
     for s_index, s_val in stocks.iteritems():
         rownum = rownum + 1
         stock_id = s_index
-        # log_debug("%s-%s", stock_id, _trade_date)
+        log_info("%s -- %s", _trade_date, stock_id)
         rv = ref_set(stock_id)
         if rv < 0:
             log_error("error: ref_set: %s", stock_id)
@@ -308,7 +390,6 @@ def work_one(_trade_date, _db):
             # log_debug("wait...")
             pass
 
-        log_info("%s -- %s", _trade_date, stock_id)
         rv = citou()
         if rv == 1:
             four = "%s -- %s\n" % (_trade_date, stock_id)
@@ -338,6 +419,37 @@ def work_one(_trade_date, _db):
             six+= "--------------------------------\n"
             log_info("nice6-citou2: %s", six)
             content6 += six
+        else:
+            # log_debug("wait...")
+            pass
+
+        rv = qiming3()
+        if rv == 1:
+            seven = "%s -- %s\n" % (_trade_date, stock_id)
+            if tech_is_cross5(stock_id, _trade_date, _db):
+                good = "+++bingo with一阳5线\n"
+            elif tech_is_cross4(stock_id, _trade_date, _db):
+                good = "++good with 一阳4线\n"
+            else:
+                good = "NEED一阳5线\n"
+            seven += good
+            seven += get_basic_info_all(stock_id, _db)
+            seven += "--------------------------------\n"
+            log_info("nice7-qiming3:\n%s", seven)
+            content7 += seven
+        else:
+            # log_debug("wait...")
+            pass
+
+        rv = hammer()
+        if rv == 1:
+            eight = "%s -- %s\n" % (_trade_date, stock_id)
+            good  = ""
+            eight += good
+            eight += get_basic_info_all(stock_id, _db)
+            eight += "--------------------------------\n"
+            log_info("nice8-hammer:\n%s", eight)
+            content8 += eight
         else:
             # log_debug("wait...")
             pass
@@ -396,8 +508,8 @@ def work_one(_trade_date, _db):
 
     if len(content5) > 0:
         subject = "qiming2: %s" % (_trade_date)
-        good = "###一阳5线更佳\n"
-        content5 = good + content5
+        # good = "###一阳5线更佳\n"
+        # content5 = good + content5
         log_info(subject)
         log_info("\n%s", content5)
         if sai_is_product_mode():
@@ -415,6 +527,32 @@ def work_one(_trade_date, _db):
         if sai_is_product_mode():
             mailed = 1
             saimail(subject,  content6)
+    else:
+        log_info("sorry1: %s", _trade_date)
+
+
+    if len(content7) > 0:
+        subject = "qiming3: %s" % (_trade_date)
+        log_info(subject)
+        log_info("\n%s", content7)
+        if sai_is_product_mode():
+            mailed = 1
+            saimail(subject,  content7)
+    else:
+        log_info("sorry1: %s", _trade_date)
+
+    if sai_is_product_mode():
+        if mailed == 0:
+            subject = "No Good K: %s" % (_trade_date)
+            # saimail(subject, "the last chance in your life?")
+
+    if len(content8) > 0:
+        subject = "hammer: %s" % (_trade_date)
+        log_info(subject)
+        log_info("\n%s", content8)
+        if sai_is_product_mode():
+            mailed = 1
+            saimail(subject,  content8)
     else:
         log_info("sorry1: %s", _trade_date)
 
@@ -455,6 +593,9 @@ def regression(_db):
     days = 2
 
     max_date = "2017-05-23"
+    days = 2
+
+    max_date = "2017-06-05"
     days = 2
 
     log_info("regress")

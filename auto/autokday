@@ -29,6 +29,8 @@ exec 2>&4
 # 1. get  k-day data
 cd ${PHOME}/src/dayend && time python k_day.py
 
+# 3. calc k-day tech # back to end 2017-6-11
+cd ${PHOME}/src/dayend && time python k_day_tech.py
 
 # 2.1 apply the rules: K only, not depend on MACD
 cd ${PHOME}/src/decision && time python k1.py
@@ -58,9 +60,9 @@ cd ${PHOME}/src/decision && time python break.py
 # 2.8 apply the rules: rename 2017-5-29
 cd ${PHOME}/src/decision && time python name.py
 
+# 2.9 apply the rules: diliang 2017-6-11
+cd ${PHOME}/src/decision && time python sao.py
 
-# 3. calc k-day tech
-cd ${PHOME}/src/dayend && time python k_day_tech.py
 
 
 # 4. apply the rules: need MACD: cross ma*5

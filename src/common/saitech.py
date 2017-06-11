@@ -239,7 +239,7 @@ and a.stock_id = '%s'" % (_trade_date, _stock_id)
         log_error("'%s' not found1", _stock_id)
         return False
     elif df.empty:
-        log_error("'%s' not found2", _stock_id)
+        log_error("'%s' [%s] not found2", _stock_id, _trade_date)
         return False
     else:
         pass
@@ -351,17 +351,19 @@ if __name__=="__main__":
     trade_date = "2017-05-15"
     rv = tech_is_cross5(stock_id, trade_date, db)
     if rv:
-        log_info("%s, %s is cross", stock_id, trade_date)
+        log_info("%s, %s is cross5", stock_id, trade_date)
     else:
-        log_info("%s, %s NOT cross", stock_id, trade_date)
+        log_info("%s, %s NOT cross5", stock_id, trade_date)
 
     stock_id   = "000852"
     trade_date = "2017-05-16"
+    stock_id   = "002837"
+    trade_date = "2017-06-05"
     rv = tech_is_cross5(stock_id, trade_date, db)
     if rv:
-        log_info("%s, %s is cross", stock_id, trade_date)
+        log_info("%s, %s is cross5", stock_id, trade_date)
     else:
-        log_info("%s, %s NOT cross", stock_id, trade_date)
+        log_info("%s, %s NOT cross5", stock_id, trade_date)
 
     stock_id   = "000852"
     trade_date = "2017-05-15"

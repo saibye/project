@@ -128,7 +128,7 @@ def k_day_one_stock(_stock_id, _db):
 
     # qfq
     if max_date is None:
-        start_date = '2017-01-01'
+        start_date = '2017-01-03'
         log_debug("it's first time: [%s]", _stock_id)
     else:
         start_date = str(max_date)
@@ -176,13 +176,76 @@ def k_day_one_stock(_stock_id, _db):
 
 
 
+def k_day_one_check_bad(_stock_id, _db):
+    is_bad = False
+
+    # log_info("k_day_one_check begin")
+
+    sql = "select pub_date, close_price from tbl_day where stock_id='%s' order by pub_date" % _stock_id
+    # log_debug("%s", sql)
+
+    df = pd.read_sql_query(sql, _db);
+    if df is None :
+        log_error("warn: stock %s is None, next", _stock_id)
+        return False
+
+    if df.empty:
+        log_error("warn: stock %s is empty, next", _stock_id)
+        return False
+
+    if len(df) <= 2:
+        log_error("warn: stock %s is short, next", _stock_id)
+        return False
+
+    counter = 0
+    rate = 0
+    this_close = 0
+    last_close = 0
+    for row_index, row in df.iterrows():
+        this_close = row['close_price']
+        pub_date   = row['pub_date']
+
+        if this_close <= 0:
+            log_error("error: close data %.2f", this_close)
+            is_bad = True
+            break
+
+        if counter > 0 and last_close > 0:
+            rate = abs(this_close - last_close) / last_close * 100
+            if rate > 11:
+                log_error("bad: %s - %s - %.2f", pub_date, _stock_id, rate)
+                log_error("   : %s", sql)
+                is_bad = True
+                break
+
+        counter = counter + 1
+        last_close = this_close
+
+    if is_bad:
+        log_info("delete: %s is bad, let's clear data", _stock_id)
+
+        sql = "delete from tbl_day where stock_id = '%s'" % (_stock_id)
+        log_debug("sql: [%s]", sql)
+
+        rv = sql_to_db(sql, _db)
+
+    return is_bad 
+
+
+
 def work():
     db = db_init()
 
 
     # step1: get from web
     # stocks = get_stock_list_df_tu() # not real time 2017-5-31
-    stocks = get_stock_quotation()
+
+    # stocks = get_stock_quotation() # bug only 100 rows 2017-6-7
+
+    # TODO: TMP 2017-6-7
+    table = "tbl_day"
+    stocks = get_stock_list_table(table, db)
+
 
     # step2: to db
     begin = get_micro_second()
@@ -192,6 +255,12 @@ def work():
         stock_id = row_index
         log_debug("stock: %s", stock_id)
 
+        # check bad data
+        # stock_id = "002837"
+        k_day_one_check_bad(stock_id, db)
+        # break
+
+        # import to DB
         k_day_one_stock(stock_id, db)
 
     log_info("save-all costs %d us", get_micro_second()-begin)
@@ -221,21 +290,20 @@ def main():
 
     log_info("let's begin here!")
 
-    if today_is_weekend():
-        log_info("today is weekend, exit")
+    if sai_is_product_mode():
+        if today_is_weekend():
+            log_info("today is weekend, exit")
+        else:
+            log_info("today is workday, come on")
+            work()
     else:
-        log_info("today is workday, come on")
         work()
-    """
-    work()
-    """
 
     log_info("main ends, bye!")
     return
 
 main()
 exit()
-print "can't arrive here"
 
 #######################################################################
 

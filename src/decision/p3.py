@@ -93,7 +93,7 @@ def xxx(_db):
         content = content + one
         log_debug("%s", one)
 
-    subject = "###超级振幅3: %s" % (trade_date)
+    subject = "超级振幅3: %s" % (trade_date)
     if len(list_df) > 0:
         log_debug("mail: %s", subject)
         log_debug("\n%s", content)

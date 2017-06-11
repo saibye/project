@@ -39,7 +39,7 @@ def tick_set_feng_mode():
 def get_tick_sina(_stock_id, _trade_date):
 
     # sina base
-    base_vol = 400 # should >= 400
+    base_vol = 200 # should >= 400
 
     df = None
 
@@ -97,6 +97,46 @@ def get_tick_feng(_stock_id, _trade_date):
 
     return df
 
+
+def sai_tick_bottom(_stock_id, _trade_date):
+
+    log_info("%s %s @ %s", _stock_id, get_name(_stock_id), _trade_date)
+
+    tick_set_sina_mode()
+
+    df = get_tick(_stock_id, _trade_date)
+    if df is None :
+        log_error("warn: stock %s, %s is None, next", _stock_id, _trade_date)
+        return -1, -1, -1
+
+    # log_debug("\n%s", df)
+
+    bottom = min(df['price'])
+    # log_info("min: %.2f", bottom)
+
+    len1 = len(df)
+    sum1 = df['volume'].sum()
+    vol1 = df['volume'].sum()
+    # log_debug("df1: len1: %d, vol1: %d, sum1: %.2f\n%s", len1, vol1, sum1, df)
+
+    df2  = df[df.price <= bottom]
+
+    len2 = len(df2)
+    sum2 = df2['volume'].sum()
+    vol2 = df2['volume'].sum()
+    # log_debug("df2: len2: %d, vol2: %d, sum2: %.2f\n%s", len2, vol2, sum2, df2)
+
+    time_rate = 1.0 * len2 / len1
+    sum_rate  = 1.0 * sum2 / sum1
+    sao_rate =  1.0 * (sum2 * len1) / (sum1 * len2)
+
+    """
+    log_info("time时间片占比: %.2f / 8", time_rate * 8)
+    log_info("sum 成交额占比: %.2f%%", 100 * sum_rate)
+    log_info("扫货力度:   %.2f", sao_rate)
+    """
+
+    return time_rate, sum_rate, sao_rate
 
 
 #######################################################################

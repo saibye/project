@@ -205,14 +205,14 @@ def main():
 
     log_debug("let's begin here!")
 
-    if today_is_weekend():
-        log_info("today is weekend, exit")
+    if sai_is_product_mode():
+        if today_is_weekend():
+            log_info("today is weekend, exit")
+        else:
+            log_info("today is workday, come on")
+            work()
     else:
-        log_info("today is workday, come on")
         work()
-    """
-    work()
-    """
 
     log_debug("main ends, bye!")
 
