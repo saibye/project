@@ -120,11 +120,22 @@ def sai_tick_bottom(_stock_id, _trade_date):
     # log_debug("df1: len1: %d, vol1: %d, sum1: %.2f\n%s", len1, vol1, sum1, df)
 
     df2  = df[df.price <= bottom]
+    len2 = len(df2) # lay on bottom
+    log_debug("df2-0.1\n%s", df2)
 
-    len2 = len(df2)
+    # 买盘+未引起价格变化
+    df2  = df2[df2.price == df2.preprice]
+    df2  = df2[df2.type  == "买盘"]
+    log_debug("df2-0.2\n%s", df2)
+
+
     sum2 = df2['volume'].sum()
     vol2 = df2['volume'].sum()
     # log_debug("df2: len2: %d, vol2: %d, sum2: %.2f\n%s", len2, vol2, sum2, df2)
+
+    if len2 <= 0:
+        log_error("warn: stock %s, %s is too short, next", _stock_id, _trade_date)
+        return -1, -1, -1
 
     time_rate = 1.0 * len2 / len1
     sum_rate  = 1.0 * sum2 / sum1

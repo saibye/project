@@ -34,26 +34,29 @@ def sao_analyze_one(_stock_id, _trade_date, _db):
         log_error("warn: stock %s, %s is None, next", _stock_id, _trade_date)
         return ""
 
-    log_debug("time时间片占比: %.2f / 8 (%.2f)", time_rate * 8, time_rate)
-    log_debug("sum 成交额占比: %.2f", 100 * sum_rate)
-    log_debug("扫货力度:   %.2f", sao_rate)
+    log_debug("time时间片占比: %.2f / 8 (%.3f)", time_rate * 8, time_rate)
+    log_debug("sum 成交额占比: %.3f", 100 * sum_rate)
+    log_debug("扫货力度:   %.3f", sao_rate)
 
-    # 300155
-    rule1 = time_rate < 0.3 and sum_rate > 0.4 and sao_rate > 1
+    # 300155 @2017-06-01
+    rule1 = time_rate < 0.30 and sum_rate > 0.24 and sao_rate > 0.84
+ 
+    # 300585 @2017-06-12
+    rule2 = False and time_rate < 0.18 and sum_rate > 0.06 and sao_rate > 0.37
 
-    # discard 2017-6-11
-    # 002350
-    rule2 = False and time_rate < 0.13 and sum_rate > 0.18 and sao_rate > 1
-
+    rule_info = ""
     if rule1:
         log_info("nice: rule1: %s @ %s 扫货", _stock_id, _trade_date)
         rv = 1
+        rule_info = "rule1\n"
     elif rule2:
         log_info("nice: rule2: %s @ %s 扫货", _stock_id, _trade_date)
         rv = 1
+        rule_info = "rule2\n"
 
     if rv == 1:
         one = "%s - %s - %s 跌停\n" % (_stock_id, name, _trade_date)
+        one += "%s" % (rule_info)
         one += "-时间片: %.2f / 8 (%.2f)\n" % (time_rate*8, time_rate)
         one += "+成交额: %.2f%%\n" % (100 * sum_rate)
         one += "+力度  : %.2f\n" % sao_rate
@@ -83,8 +86,9 @@ and (low_price - last_close_price) / last_close_price * 100 < -9.9 " % (_date)
 
 def xxx(_db):
 
-    trade_date = "2017-06-01" # 300155
     trade_date = "2017-04-24" # 002307
+    trade_date = "2017-06-01" # 300155
+    trade_date = "2017-06-12" # 300585
     trade_date = "2017-06-01" # 300155
     trade_date = get_today()
     trade_date = get_date_by(-1)
@@ -111,7 +115,8 @@ def xxx(_db):
     if len(content) > 0:
         log_info("mail: \n%s", content)
         subject = "跌停: %s" % (trade_date)
-        saimail(subject, content)
+        if sai_is_product_mode():
+            saimail(subject, content)
 
     return 0
 

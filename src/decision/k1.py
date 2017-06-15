@@ -256,8 +256,7 @@ def qiming3():
     rule1 =  rate1 <= -9.8 and rate3 >= 9.8 \
                 and zt2 > 0 \
                 and ref_open(1) <= ref_close(2) \
-                and zt1 < -7 \
-                and zt3 > 7 
+                and zt3 > 2 
 
     # XXX
     rule2 = False
@@ -541,10 +540,6 @@ def work_one(_trade_date, _db):
     else:
         log_info("sorry1: %s", _trade_date)
 
-    if sai_is_product_mode():
-        if mailed == 0:
-            subject = "No Good K: %s" % (_trade_date)
-            # saimail(subject, "the last chance in your life?")
 
     if len(content8) > 0:
         subject = "hammer: %s" % (_trade_date)
