@@ -138,15 +138,15 @@ def get_one_kday(_stock_id, _pub_date, _db):
 """
 2016/12/25
 """
-def get_max_pub_date_kunit(_stock_id, _table, _db):
-    sql = "select max(pub_date) pub_date from %s where stock_id='%s'" % (_table, _stock_id)
+def get_max_pub_date_time_kunit(_stock_id, _table, _db):
+    sql = "select max(pub_date_time) pub_date_time from %s where stock_id='%s'" % (_table, _stock_id)
 
     df = pd.read_sql_query(sql, _db);
 
     return df
 
 def get_one_kunit(_stock_id, _pub_date, _table, _db):
-    sql = "select * from %s where stock_id='%s' and pub_date='%s'" % (_table, _stock_id, _pub_date)
+    sql = "select * from %s where stock_id='%s' and pub_date_time='%s'" % (_table, _stock_id, _pub_date)
 
     df = pd.read_sql_query(sql, _db);
 

@@ -90,6 +90,7 @@ def xxx(_db):
     trade_date = "2017-06-01" # 300155
     trade_date = "2017-06-12" # 300585
     trade_date = "2017-06-01" # 300155
+    trade_date = "2017-06-13" # 600892
     trade_date = get_today()
     trade_date = get_date_by(-1)
     trade_date = get_newest_trade_date(_db)

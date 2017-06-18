@@ -35,6 +35,9 @@ cd ${PHOME}/src/dayend && time python k_day_tech.py
 # 2.1 apply the rules: K only, not depend on MACD
 cd ${PHOME}/src/decision && time python k1.py
 
+# 2017-6-18
+cd ${PHOME}/src/decision && time python k2.py
+
 # 2.2 apply the rules: volume only, not depend on MACD 2016/12/4
 cd ${PHOME}/src/decision && time python v1.py
 
@@ -73,6 +76,14 @@ cd ${PHOME}/src/decision && time python good.py
 
 # 9. apply the rules: need MACD: cross ma*6
 # cd ${PHOME}/src/decision && time python ma_cross6.py
+
+
+#
+# 21. get  k-30min data @2017-6-18
+cd ${PHOME}/src/dayend && time python k_unit.py
+
+# 23. v3.py @2017-6-18
+cd ${PHOME}/src/decision && time python v3.py
 
 
 exec 3>&-

@@ -16,60 +16,56 @@ from saitu   import *
 
 #######################################################################
 
-def k_unit_one_to_db(_stock_id, _df, _start_date, _table, _db):
+
+def is_open_time(_date_time):
+    dt = str(_date_time)
+    if dt.find("09:30") != -1:
+        return 1
+    return 0
+
+def is_subsequent_open_time(_date_time):
+    dt = str(_date_time)
+    if dt.find("10:00") != -1:
+        return 1
+    return 0
+
+def k_unit_one_to_db(_stock_id, _df, _start_date, _db):
 
     dt = get_today()
     tm = get_time()
 
-    # assume data [1: 100]
-    # 1: compare whether to fuquan
-    # [1:100] to db
-
-    if _start_date is not None:
-
-        # 1. compare
-        # new_close_price = _df['close'][0]
-        new_close_price = _df.iloc[0,2]
-
-        # the close price of max-pub-date
-        tbl_df = get_one_kunit(_stock_id, _start_date, _db)
-        tbl_close_price = tbl_df['close_price'][0]
-
-        log_debug("close: web[%s] : [%s]table", new_close_price, tbl_close_price)
-        # compare, update if not equal
-        rate = new_close_price / tbl_close_price
-        if rate == 1.0:
-            log_debug("[%s, %s] no need to fuquan", new_close_price, tbl_close_price)
-        else:
-            log_debug("warn! fuquan, rate: %.3f", rate)
-            sql = "update %s set open_price = round(open_price * %.3f, 2), \
-close_price = round(close_price * %.3f, 2), \
-low_price   = round(low_price * %.3f,   2), \
-high_price  = round(high_price * %.3f,  2), \
-deal_total_count = round(deal_total_count / %.3f, 0) \
-where stock_id = '%s' \
-and pub_date = '%s'" % \
-                   (_table, rate, rate, rate, rate, rate, \
-                    _stock_id, _start_date)
-            rv = sql_to_db(sql, _db)
-            if rv != 0:
-                log_error("error: sql_to_db %s", sql)
-                return -1
-
-
+    table_name = "tbl_30min"
 
     # init last close price
     # last_close_price = _df['close'][0]
     last_close_price = _df.iloc[0,2]
 
+
+    # XXX: check time is '09:30', 2017-6-18
+
     # import dataframe to db
     counter = 0
+    volume  = 0
+    open_volume = 0
     for row_index, row in _df.iterrows():
         counter = counter + 1
+        trade_date_time = row.loc['date']
+        if is_open_time(trade_date_time):
+            open_volume = row.loc['volume']
+            log_debug("open: %s -- %.2f", trade_date_time, open_volume)
+            continue
+        elif is_subsequent_open_time(trade_date_time):
+            volume = row.loc['volume'] + open_volume
+            open_volume = 0
+            log_debug("open subsequent: %.2f -- %.2f", row.loc['volume'], volume)
+        else:
+            volume = row.loc['volume']
+            open_volume = 0
+            # log_debug("others: %s -- %.2f", trade_date_time, volume)
 
         # 前复权
-        sql = "insert into %s \
-(pub_date, stock_id, stock_loc, \
+        sql = "insert into tbl_30min \
+(pub_date_time, stock_id, stock_loc, \
 open_price, high_price, close_price, low_price, \
 last_close_price, \
 deal_total_count, \
@@ -79,10 +75,10 @@ values ('%s', '%s', '%s',  \
 '%.2f', \
 '%.3f', \
 '%s', '%s')" % \
-       (_table, row.loc['date'], _stock_id, 'cn', 
+       (row.loc['date'], _stock_id, 'cn', 
         row.loc['open'], row.loc['high'], row.loc['close'], row.loc['low'],
         last_close_price,
-        row.loc['volume'] / 1000000.00, 
+        volume / 1000.00, 
         dt, tm)
 
         last_close_price = row.loc['close']
@@ -97,8 +93,9 @@ values ('%s', '%s', '%s',  \
     return 0
 
 
-def k_unit_get_max_date(_stock_id, _table, _db):
-    df = get_max_pub_date_kunit(_stock_id, _table, _db)
+def k_unit_get_max_date(_stock_id, _db):
+    table_name = "tbl_30min"
+    df = get_max_pub_date_time_kunit(_stock_id, table_name, _db)
 
     if df is None :
         log_error("warn: stock %s max-pub-date is None, next", _stock_id)
@@ -109,31 +106,26 @@ def k_unit_get_max_date(_stock_id, _table, _db):
         return None
 
     for row_index, row in df.iterrows():
-        max_date = row['pub_date']
+        max_date = row['pub_date_time']
 
     if max_date is not None:
-        log_info("max pub_date is %s", max_date)
+        log_info("max pub_date_time is %s", max_date)
 
     return max_date
 
 
-def k_unit_one_stock(_stock_id, _table, _db):
+def k_unit_one_stock(_stock_id, _db):
     log_info("k_unit_one_stock begin")
 
     # get max-date from table, as start date
-    max_date = k_unit_get_max_date(_stock_id, _table, _db)
+    max_date = k_unit_get_max_date(_stock_id, _db)
     end_date = get_date_by(0)
 
     log_debug("[%s, %s]", max_date, end_date)
 
     # qfq
     if max_date is None:
-        if _table == "tbl_week":
-            start_date = '2012-01-01'
-        elif _table = "tbl_30min":
-            start_date = '2016-09-01'
-        else:
-            start_date = '2015-01-01'
+        start_date = '2017-03-01'
         log_debug("it's first time: [%s]", _stock_id)
     else:
         start_date = str(max_date)
@@ -144,18 +136,8 @@ def k_unit_one_stock(_stock_id, _table, _db):
     # get from web(by tushare)
     begin = get_micro_second()
 
-    kunit = ""
-
-    if _table == "tbl_week":
-        kunit = "W"
-    elif _table == "tbl_30min":
-        kunit = "30"
-    else:
-        log_error("error: invalid table : [%s]", _table)
-        return -1
-
     try:
-        df = ts.get_k_data(_stock_id, ktype=kunit, autype='qfq', start=start_date, end=end_date)
+        df = ts.get_k_data(_stock_id, ktype='30', autype='qfq', start=start_date, end=end_date)
         # df = ts.get_h_data(_stock_id, autype='qfq', start=start_date, end=end_date, retry_count=5, pause=6)
         # df = ts.get_h_data(_stock_id, start='2016-08-20', end='2016-10-30')
         # df = ts.get_h_data(_stock_id, autype='qfq')
@@ -181,7 +163,7 @@ def k_unit_one_stock(_stock_id, _table, _db):
 
     begin = get_micro_second()
 
-    k_unit_one_to_db(_stock_id, df, max_date, _table, _db)
+    k_unit_one_to_db(_stock_id, df, max_date, _db)
 
     log_info("one_to_db costs %d us", get_micro_second() - begin)
 
@@ -190,15 +172,18 @@ def k_unit_one_stock(_stock_id, _table, _db):
     return 
 
 
-
 def work():
     db = db_init()
 
-
     # step1: get from web
-    stocks = get_stock_list_df_tu()
+    # stocks = get_stock_list_df_tu() # not real time 2017-5-31
 
-    table = "tbl_week"
+    # stocks = get_stock_quotation() # bug only 100 rows 2017-6-7
+
+    # TODO: TMP 2017-6-7
+    table = "tbl_day"
+    stocks = get_stock_list_table(table, db)
+
 
     # step2: to db
     begin = get_micro_second()
@@ -208,24 +193,14 @@ def work():
         stock_id = row_index
         log_debug("stock: %s", stock_id)
 
-        k_unit_one_stock(stock_id, table, db)
+        # stock_id = "002458"
+        # stock_id = "000025"
+
+        # import to DB
+        k_unit_one_stock(stock_id, db)
+        # break
 
     log_info("save-all costs %d us", get_micro_second()-begin)
-
-    """
-    stock_id = "000002"
-    stock_id = "000420"
-    stock_id = "002780"
-    log_debug("stock: %s", stock_id)
-
-    k_unit_one_stock(stock_id, db)
-    """
-
-    """
-    stock_id = "700002"
-    start = k_unit_get_max_date(stock_id, db);
-    log_debug("start: [%s]", start);
-    """
 
     db_end(db)
 
@@ -251,7 +226,6 @@ def main():
 
 main()
 exit()
-print "can't arrive here"
 
 #######################################################################
 

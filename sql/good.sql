@@ -159,5 +159,126 @@ and (low_price - last_close_price) / last_close_price * 100 < -9.9
 
 
 
+select stock_id, pub_date_time, deal_total_count from tbl_30min a \
+where stock_id = '002458' \
+and   pub_date_time <= '2017-06-10' \
+and \
+    (select min(deal_total_count) from tbl_30min b  \
+     where b.stock_id  = a.stock_id \
+     and   b.pub_date_time <= a.pub_date_time \
+     and   b.pub_date_time >=  \
+     (select min(pub_date_time) from (select pub_date_time from tbl_30min d where stock_id = '002458' and pub_date_time <= '%s' order by pub_date_time desc limit %d) t1)) \
+    = \
+    (select min(deal_total_count) from tbl_30min c \
+     where c.stock_id  = a.stock_id \
+     and   c.pub_date_time  = a.pub_date_time"
+
+-- n1
+select pub_date_time, max(deal_total_count) from
+(
+select pub_date_time, deal_total_count from tbl_30min
+where pub_date_time <='2017-06-09 15:00:00'
+and stock_id = '002458'
+order by pub_date_time desc
+limit 8
+) t1
+
+-- n2
+select pub_date_time, max(deal_total_count) from
+(
+select pub_date_time, deal_total_count from tbl_30min
+where pub_date_time <='2017-06-09 15:00:00'
+and stock_id = '002458'
+order by pub_date_time desc
+limit 200
+) t2
+
+select pub_date_time, deal_total_count from tbl_30min
+where stock_id = '002458'
+and deal_total_count >= 0.0199
+
+
+select pub_date_time, deal_total_count from tbl_30min where
+stock_id = '002458'
+and pub_date_time <= '2017-06-09 15:00:00'
+and pub_date_time >=
+(
+select min(pub_date_time) from 
+(
+    select pub_date_time, deal_total_count from tbl_30min
+    where pub_date_time <='2017-06-09 15:00:00'
+    and stock_id = '002458'
+    order by pub_date_time desc
+    limit 8
+ ) t1
+)
+and deal_total_count = 
+(
+select max(deal_total_count) from
+(
+select pub_date_time, deal_total_count from tbl_30min
+where pub_date_time <='2017-06-09 15:00:00'
+and stock_id = '002458'
+order by pub_date_time desc
+limit 8
+) t2
+)
+and 
+(
+select max(deal_total_count) from
+(
+select pub_date_time, deal_total_count from tbl_30min
+where pub_date_time <='2017-06-09 15:00:00'
+and stock_id = '002458'
+order by pub_date_time desc
+limit 8
+) t3
+)
+=
+(
+select max(deal_total_count) from
+(
+select pub_date_time, deal_total_count from tbl_30min
+where pub_date_time <='2017-06-09 15:00:00'
+and stock_id = '002458'
+order by pub_date_time desc
+limit 100
+) t4
+)
+
+
+
+
+select pub_date_time, deal_total_count from tbl_30min where
+stock_id = '002458'
+and pub_date_time = '2017-06-09 14:30:00'
+and close_price=
+(
+select max(close_price) close_price from
+(
+select pub_date_time, close_price from tbl_30min
+where pub_date_time <='2017-06-09 14:30:00'
+and stock_id = '002458'
+order by pub_date_time desc
+limit 100
+) t1
+)
+
+
+select pub_date_time, deal_total_count from tbl_30min where
+stock_id = '000025'
+and pub_date_time = '2017-06-08 10:00:00'
+and close_price=
+(
+select max(close_price) close_price from
+(
+select pub_date_time, close_price from tbl_30min
+where pub_date_time <='2017-06-08 10:00:00'
+and stock_id = '000025'
+order by pub_date_time desc
+limit 75
+) t1
+)
+
 
 # good.sql
