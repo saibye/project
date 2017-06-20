@@ -407,8 +407,7 @@ def work():
 
     if sai_is_product_mode():
         trade_date = get_date_by(0)
-        # work_one(trade_date, db)
-        regression(db)
+        work_one(trade_date, db)
     else:
         regression(db)
 

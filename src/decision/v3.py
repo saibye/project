@@ -38,8 +38,82 @@ where pub_date_time <= '%s')" % (_till)
 
 """
 最近n2天的最大vol，是最近n1天的最大vol
++阳线
 """
 def get_v3_max_vol(_stock_id, _till, _n1, _n2, _db):
+    sql = "select pub_date_time, deal_total_count, stock_id from tbl_30min where \
+stock_id = '%s' \
+and pub_date_time <= '%s' \
+and pub_date_time >= \
+( \
+select min(pub_date_time) from  \
+( \
+    select pub_date_time, deal_total_count from tbl_30min \
+    where pub_date_time <='%s' \
+    and stock_id = '%s' \
+    and close_price > open_price \
+    order by pub_date_time desc \
+    limit %d \
+ ) t1 \
+) \
+and deal_total_count =  \
+( \
+select max(deal_total_count) from \
+( \
+select pub_date_time, deal_total_count from tbl_30min \
+where pub_date_time <='%s' \
+and stock_id = '%s' \
+and close_price > open_price \
+order by pub_date_time desc \
+limit %d \
+) t2 \
+) \
+and  \
+( \
+select max(deal_total_count) from \
+( \
+select pub_date_time, deal_total_count from tbl_30min \
+where pub_date_time <='%s' \
+and stock_id = '%s' \
+and close_price > open_price \
+order by pub_date_time desc \
+limit %d \
+) t3 \
+) \
+= \
+( \
+select max(deal_total_count) from \
+( \
+select pub_date_time, deal_total_count from tbl_30min \
+where pub_date_time <='%s' \
+and stock_id = '%s' \
+and close_price > open_price \
+order by pub_date_time desc \
+limit %d \
+) t4 \
+) \
+order by pub_date_time desc limit 1" % (_stock_id, _till, \
+    _till, _stock_id, _n1, \
+    _till, _stock_id, _n1, \
+    _till, _stock_id, _n1, \
+    _till, _stock_id, _n2)
+
+    # log_debug("sql: \n%s", sql)
+
+    df = pd.read_sql_query(sql, _db);
+    if df is None:
+        log_info("'%s' not found in db", _stock_id)
+        return None
+    else:
+        # df.set_index("pub_date_time", inplace=True)
+        # log_debug("max df: \n%s", df)
+        return df
+
+
+"""
+最近n2天的最大vol，是最近n1天的最大vol
+"""
+def get_v3_max_vol0(_stock_id, _till, _n1, _n2, _db):
     sql = "select pub_date_time, deal_total_count, stock_id from tbl_30min where \
 stock_id = '%s' \
 and pub_date_time <= '%s' \
@@ -272,7 +346,7 @@ def v3_format_ref(_stock_id, _date_df, _detail_df):
 
 
 #########################
-# POST: 算法检查
+# 算法检查
 #########################
 def v3_exec_algo_check(_db):
 
@@ -320,7 +394,32 @@ def v3_exec_algo_check(_db):
     ma20_rate = ref_close(3) / ref_ma20(3) * 100
     ma20_dis = abs(ma20_rate - 100)
 
-    return rate, zt, rate2, vol_rate2, rule1, rule2, ma20_dis
+
+    # 002302
+    # cross 5
+    cross5_sub1 = ref_close(1) > ref_ma5(1) and  ref_close(1) > ref_ma10(1) and ref_close(1) > ref_ma20(1) and ref_close(1) > ref_ma30(1) and ref_close(1) > ref_ma60(1) and \
+                  ref_open(1) < ref_ma5(1) and  ref_open(1) < ref_ma10(1) and ref_open(1) < ref_ma20(1) and ref_open(1) < ref_ma30(1) and ref_open(1) < ref_ma60(1)
+    cross5_sub2 = ref_close(2) > ref_ma5(2) and  ref_close(2) > ref_ma10(2) and ref_close(2) > ref_ma20(2) and ref_close(2) > ref_ma30(2) and ref_close(2) > ref_ma60(2) and \
+                  ref_open(2) < ref_ma5(2) and  ref_open(2) < ref_ma10(2) and ref_open(2) < ref_ma20(2) and ref_open(2) < ref_ma30(2) and ref_open(2) < ref_ma60(2)
+    cross5_sub3 = ref_close(3) > ref_ma5(3) and  ref_close(3) > ref_ma10(3) and ref_close(3) > ref_ma20(3) and ref_close(3) > ref_ma30(3) and ref_close(3) > ref_ma60(3) and \
+                  ref_open(3) < ref_ma5(3) and  ref_open(3) < ref_ma10(3) and ref_open(3) < ref_ma20(3) and ref_open(3) < ref_ma30(3) and ref_open(3) < ref_ma60(3)
+    cross5_sub4 = ref_close(4) > ref_ma5(4) and  ref_close(4) > ref_ma10(4) and ref_close(4) > ref_ma20(4) and ref_close(4) > ref_ma30(4) and ref_close(4) > ref_ma60(4) and \
+                  ref_open(4) < ref_ma5(4) and  ref_open(4) < ref_ma10(4) and ref_open(4) < ref_ma20(4) and ref_open(4) < ref_ma30(4) and ref_open(4) < ref_ma60(4)
+    log_info("[%.3f, %.3f]", ref_open(4), ref_close(4) )
+    log_info("[%.3f, %.3f, %.3f, %.3f, %.3f]", ref_ma5(4), ref_ma10(4), ref_ma20(4), ref_ma30(4), ref_ma60(4))
+    cross5_rule1 = cross5_sub1 or cross5_sub2 or cross5_sub3 or cross5_sub4
+
+    # 002302
+    # cross4
+    cross4_sub1 = ref_close(1) > ref_ma5(1) and  ref_close(1) > ref_ma10(1) and ref_close(1) > ref_ma20(1) and ref_close(1) > ref_ma30(1) and ref_close(1) > ref_ma60(1) and \
+                  ref_open(1) < ref_ma5(1) and  ref_open(1) < ref_ma10(1) and ref_open(1) < ref_ma20(1) and ref_open(1) < ref_ma30(1)
+    cross4_sub2 = ref_close(2) > ref_ma5(2) and  ref_close(2) > ref_ma10(2) and ref_close(2) > ref_ma20(2) and ref_close(2) > ref_ma30(2) and ref_close(2) > ref_ma60(2) and \
+                  ref_open(2) < ref_ma5(2) and  ref_open(2) < ref_ma10(2) and ref_open(2) < ref_ma20(2) and ref_open(2) < ref_ma30(2)
+    cross4_sub3 = ref_close(3) > ref_ma5(3) and  ref_close(3) > ref_ma10(3) and ref_close(3) > ref_ma20(3) and ref_close(3) > ref_ma30(3) and ref_close(3) > ref_ma60(3) and \
+                  ref_open(3) < ref_ma5(3) and  ref_open(3) < ref_ma10(3) and ref_open(3) < ref_ma20(3) and ref_open(3) < ref_ma30(3)
+    cross4_rule1 = cross4_sub1 or cross4_sub2 or cross4_sub3
+
+    return rate, zt, rate2, vol_rate2, rule1, rule2, ma20_dis, cross5_rule1, cross4_rule1
 
 
 
@@ -396,6 +495,10 @@ def work_one(_stock_id, _till,  _db):
     length = len(detail_df)
     log_debug("detail: %d", length)
 
+    if length <= 8:
+        log_info("data-not-enough: %s", _stock_id)
+        return 1
+
     # 阳柱成交量大 sum(red) / sum(green) > 2.5
     sum1, sum2 = sum_v3_detail(detail_df, n5, _db)
     log_info("red-sum: %.3f", sum1)
@@ -405,13 +508,6 @@ def work_one(_stock_id, _till,  _db):
         vol_rate = sum1 / sum2
         log_info("%s: vol-rate: %.3f", _stock_id, vol_rate)
 
-    vol_rate_base = 2.48
-    if vol_rate >= vol_rate_base:
-        log_info("vol-rate match: >= %.2f", vol_rate_base)
-    else:
-        log_info("sorry: vol-rate too small: < %.2f", vol_rate_base)
-        return 1
-
 
     # 格式化数据
     rv = v3_format_ref(_stock_id, date_df, detail_df)
@@ -420,25 +516,55 @@ def work_one(_stock_id, _till,  _db):
         return -1
 
     # 涨幅，柱体，收盘/最高，量比，发散1，发散2，距离ma20
-    rate, zt, rate2, vol_rate2, fasan_rule1, fasan_rule2, ma20_dis = v3_exec_algo_check(_db)
-    log_info("%.3f, %.3f, %.3f, %.3f, %s, %s, %.3f",
-            rate, zt, rate2, vol_rate2, fasan_rule1, fasan_rule2, ma20_dis)
+    rate, zt, rate2, vol_rate2, fasan_rule1, fasan_rule2, ma20_dis, cross5_rule, cross4_rule = v3_exec_algo_check(_db)
+    log_info("%.3f, %.3f, %.3f, %.3f, %s, %s, %.3f, %s, %s",
+            rate, zt, rate2, vol_rate2, fasan_rule1, fasan_rule2, ma20_dis, cross5_rule, cross4_rule)
+
 
     # 002458
     rule1 = rate >= 2.5 and zt >= 2.5 and rate2 >= 98.8 \
                and vol_rate2 >= 6 and fasan_rule1 \
-               and ref_close(0) > ref_ma20(0) and ref_open(3) < ref_ma20(3)
+               and ref_close(0) > ref_ma20(0) and ref_open(3) < ref_ma20(3) \
+               and vol_rate >= 2.48
 
     # 000025, 2017-06-08 10:00:00
     rule2 = rate >= 8.0 and zt >= 8.0 and rate2 >= 98.8 \
                and vol_rate2 >= 15 and fasan_rule2 \
-               and ref_close(0) > ref_ma20(0) and ma20_dis <= 2
+               and ref_close(0) > ref_ma20(0) and ma20_dis <= 2 \
+               and vol_rate >= 2.48
+
+    # 002302, 2017-06-14 11:00:00
+    rule3 = rate >= 4.7 and zt >= 4.7 and rate2 >= 98.0 \
+               and vol_rate2 >= 15  \
+               and ref_close(0) > ref_ma20(0) \
+               and vol_rate >= 1.8 \
+               and cross5_rule
+
+    # 000877, 2017-06-14 11:00:00
+    rule4 = rate >= 4.7 and zt >= 4.7 and rate2 >= 98.0 \
+               and vol_rate2 >= 15  \
+               and ref_close(0) > ref_ma20(0) \
+               and vol_rate >= 1.8 \
+               and cross5_rule
+
+    # 002591, 2017-06-15 13:30:00
+    rule5 = rate >= 7 and zt >= 7 and rate2 >= 98.0 \
+               and vol_rate2 >= 18 \
+               and ref_close(0) > ref_ma20(0) \
+               and vol_rate >= 3 \
+               and cross5_rule
 
     #
     if rule1:
         log_info("rule1: %s", _stock_id)
     elif rule2:
         log_info("rule2: %s", _stock_id)
+    elif rule3:
+        log_info("rule3: %s", _stock_id)
+    elif rule4:
+        log_info("rule4: %s", _stock_id)
+    elif rule5:
+        log_info("rule5: %s", _stock_id)
     else:
         log_info("sorry: not match")
         return 1
@@ -474,6 +600,12 @@ def xxx(_db):
         till = "2017-06-08 15:00:00"
 
         # till = "2017-06-16 15:00:00"
+
+        # 002302
+        till = "2017-06-14 15:00:00"
+
+        # 002591
+        till = "2017-06-15 15:00:00"
 
     log_info("till: %s", till)
 
@@ -520,7 +652,6 @@ def main():
         # check holiday
         if today_is_weekend():
             log_info("today is weekend, exit")
-            work()
         else:
             log_info("today is workday, come on")
             work()

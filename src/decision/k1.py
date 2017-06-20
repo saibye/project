@@ -119,7 +119,10 @@ def citou2():
                 and ref_open(0) <= ref_close(1) \
                 and zt1 < -5 \
                 and zt2 >= 10
-    if rule1 or rule2:
+    # 002761
+    rule3 = rate1 <= -9.9 and rate2 >= 9.9
+
+    if rule1 or rule2 or rule3:
         rv = 1
         log_debug("nice: citou2")
         log_debug("rate1: %.2f", rate1)

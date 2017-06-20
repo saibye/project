@@ -239,7 +239,7 @@ a.open_price open_price, a.close_price close_price,  \
 a.high_price high_price, a.low_price   low_price, \
 a.last_close_price last, a.deal_total_count total \
 from tbl_day a \
-where a.pub_date in (select * from (select distinct pub_date from tbl_day x where pub_date <='%s' order by pub_date desc limit 10) y) \
+where a.pub_date in (select * from (select distinct pub_date from tbl_day x where pub_date <='%s' order by pub_date desc limit 30) y) \
 order by 1, 2 desc" % (g_trade_date)
 
     log_debug("sql: \n%s", sql)
@@ -258,7 +258,7 @@ def get_recent_list(_db):
     global g_trade_date
     sql = "select distinct a.stock_id stock_id \
 from tbl_day a \
-where a.pub_date in (select * from (select distinct pub_date from tbl_day x where pub_date <='%s' order by pub_date desc limit 10) y) \
+where a.pub_date in (select * from (select distinct pub_date from tbl_day x where pub_date <='%s' order by pub_date desc limit 30) y) \
 order by 1" % (g_trade_date)
 
     log_debug("sql: \n%s", sql)

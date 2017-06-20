@@ -47,20 +47,28 @@ def k_unit_one_to_db(_stock_id, _df, _start_date, _db):
     counter = 0
     volume  = 0
     open_volume = 0
+    open_price = -1
     for row_index, row in _df.iterrows():
         counter = counter + 1
         trade_date_time = row.loc['date']
         if is_open_time(trade_date_time):
             open_volume = row.loc['volume']
+            open_price = row.loc['open']
             log_debug("open: %s -- %.2f", trade_date_time, open_volume)
             continue
         elif is_subsequent_open_time(trade_date_time):
             volume = row.loc['volume'] + open_volume
+            if open_volume > 0:
+                # use last open-price
+                pass
+            else:
+                open_price = row.loc['open']
             open_volume = 0
-            log_debug("open subsequent: %.2f -- %.2f", row.loc['volume'], volume)
+            # log_debug("open subsequent: %.2f -- %.2f -- %.3f", row.loc['volume'], volume, open_price)
         else:
             volume = row.loc['volume']
             open_volume = 0
+            open_price = row.loc['open']
             # log_debug("others: %s -- %.2f", trade_date_time, volume)
 
         # 前复权
@@ -76,7 +84,7 @@ values ('%s', '%s', '%s',  \
 '%.3f', \
 '%s', '%s')" % \
        (row.loc['date'], _stock_id, 'cn', 
-        row.loc['open'], row.loc['high'], row.loc['close'], row.loc['low'],
+        open_price, row.loc['high'], row.loc['close'], row.loc['low'],
         last_close_price,
         volume / 1000.00, 
         dt, tm)
@@ -195,6 +203,7 @@ def work():
 
         # stock_id = "002458"
         # stock_id = "000025"
+        # stock_id = "002591"
 
         # import to DB
         k_unit_one_stock(stock_id, db)
