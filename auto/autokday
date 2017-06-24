@@ -44,6 +44,9 @@ cd ${PHOME}/src/decision && time python v1.py
 # 2.21 super volume-rate, 2017-2-11
 cd ${PHOME}/src/decision && time python v2.py
 
+# 2.22. v4.py top(vol) && top(close), 2017-6-25
+cd ${PHOME}/src/decision && time python v4.py
+
 # 2.3 apply the rules: fupai
 cd ${PHOME}/src/decision && time python d1.py
 
@@ -84,6 +87,7 @@ cd ${PHOME}/src/dayend && time python k_unit.py
 
 # 23. v3.py @2017-6-18
 cd ${PHOME}/src/decision && time python v3.py
+
 
 
 exec 3>&-

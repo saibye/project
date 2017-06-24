@@ -362,7 +362,7 @@ def ref_set3(_stock_id):
 
     return len(g_ref_this)
 
-def ref_set_tech(_stock_id):
+def ref_set_tech3(_stock_id):
     global g_ref_list
     global g_ref_detail
     global g_ref_this
@@ -375,6 +375,48 @@ def ref_set_tech(_stock_id):
 
     g_ref_this = g_ref_detail[g_ref_detail['stock_id'] == _stock_id]
     g_ref_this.set_index("pub_date_time", inplace=True)
+    # log_debug("this: \n%s", g_ref_this)
+
+    global g_ref_this_ma5
+    global g_ref_this_ma10
+    global g_ref_this_ma20
+    global g_ref_this_ma30
+    global g_ref_this_ma60
+    global g_ref_this_ma150
+    global g_ref_this_macd
+    global g_ref_this_diff
+    global g_ref_this_dea
+    global g_ref_this_vma5
+    global g_ref_this_vma10
+
+    g_ref_this_ma5  = g_ref_this['ma5']
+    g_ref_this_ma10 = g_ref_this['ma10']
+    g_ref_this_ma20 = g_ref_this['ma20']
+    g_ref_this_ma30 = g_ref_this['ma30']
+    g_ref_this_ma60 = g_ref_this['ma60']
+    g_ref_this_ma150= g_ref_this['ma150']
+    g_ref_this_macd = g_ref_this['macd']
+    g_ref_this_diff = g_ref_this['diff']
+    g_ref_this_dea  = g_ref_this['dea']
+    g_ref_this_vma5  = g_ref_this['vma5']
+    g_ref_this_vma10 = g_ref_this['vma10']
+
+    return len(g_ref_this)
+
+
+def ref_set_tech(_stock_id):
+    global g_ref_list
+    global g_ref_detail
+    global g_ref_this
+    global g_ref_tech
+
+    e = g_ref_list.get(_stock_id)
+    if e is None:
+        log_error("error: %s not exist!", _stock_id)
+        return -1
+
+    g_ref_this = g_ref_detail[g_ref_detail['stock_id'] == _stock_id]
+    g_ref_this.set_index("pub_date", inplace=True)
     # log_debug("this: \n%s", g_ref_this)
 
     global g_ref_this_ma5

@@ -215,7 +215,7 @@ def up_warrior():
     rule1_sub3 = vol5 > vol4 and vol4 > vol3
     rule1_sub4 = zt5 > zt4 and zt4 > zt3 and zt3 > 0
 
-    rule1 = rule1_sub1 and rule1_sub2 and rule1_sub3 and rule1_sub4
+    rule1 = False and rule1_sub1 and rule1_sub2 and rule1_sub3 and rule1_sub4
 
     # rule2: 4
     rule2 = False

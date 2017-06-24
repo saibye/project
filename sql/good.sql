@@ -281,4 +281,39 @@ limit 75
 )
 
 
+-- 2017-6-21
+select pub_date_time, deal_total_count from 
+(
+select pub_date_time, deal_total_count from tbl_30min where
+stock_id = '002510'
+and pub_date_time <= '2017-06-16 15:00:00'
+order by pub_date_time desc 
+limit 10
+) t1
+order by deal_total_count desc limit 1
+
+
+select pub_date_time, deal_total_count from 
+(
+select pub_date_time, deal_total_count from tbl_30min where
+stock_id = '002510'
+and pub_date_time <= '2017-06-16 10:00:00'
+order by pub_date_time desc 
+limit 200
+) t1
+order by deal_total_count desc limit 1
+
+
+select pub_date_time, deal_total_count from 
+(
+select pub_date_time, deal_total_count, close_price, open_price from tbl_30min where
+stock_id = '603222'
+and pub_date_time <= '2017-06-15 15:00:00'
+order by pub_date_time desc 
+limit 8
+) t1
+where close_price > open_price
+order by deal_total_count desc limit 1
+
+
 # good.sql
