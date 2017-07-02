@@ -94,7 +94,8 @@ values ('%s', '%s', '%s',  \
         # log_debug("%s", sql)
         rv = sql_to_db_nolog(sql, _db)
         if rv != 0:
-            log_error("error: sql_to_db %s", sql)
+            log_error("error: sql_to_db30: %s", sql)
+            return 0
 
     log_debug("%s: processed: %d", _stock_id, counter);
 
@@ -164,7 +165,7 @@ def k_unit_one_stock(_stock_id, _db):
         log_error("warn: stock %s is empty, next", _stock_id)
         return -2
 
-    df.sort_index(ascending=True, inplace=True)
+    df.sort_index(ascending=False, inplace=True)
     # df = df.sort_index(ascending=True)
     # df = df.reindex(index=range(0, len(df)))
     # log_debug("df: \n%s", df)

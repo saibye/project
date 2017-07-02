@@ -82,7 +82,7 @@ values ('%s', '%s', '%s',  \
        (row.loc['date'], _stock_id, 'cn', 
         row.loc['open'], row.loc['high'], row.loc['close'], row.loc['low'],
         last_close_price,
-        row.loc['volume'] / 1000000.00, 
+        row.loc['volume'] / 1000.00, 
         dt, tm)
 
         last_close_price = row.loc['close']
@@ -129,6 +129,7 @@ def k_day_one_stock(_stock_id, _db):
     # qfq
     if max_date is None:
         start_date = '2017-01-03'
+        start_date = '2016-02-01'
         log_debug("it's first time: [%s]", _stock_id)
     else:
         start_date = str(max_date)
@@ -245,13 +246,13 @@ def work():
 
 
     # step1: get from web
-    # stocks = get_stock_list_df_tu() # not real time 2017-5-31
+    stocks = get_stock_list_df_tu() # not real time 2017-5-31
 
     # stocks = get_stock_quotation() # bug only 100 rows 2017-6-7
 
     # TODO: TMP 2017-6-7
-    table = "tbl_day"
-    stocks = get_stock_list_table(table, db)
+    # table = "tbl_day"
+    # stocks = get_stock_list_table(table, db)
 
 
     # step2: to db

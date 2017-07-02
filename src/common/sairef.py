@@ -239,7 +239,7 @@ a.open_price open_price, a.close_price close_price,  \
 a.high_price high_price, a.low_price   low_price, \
 a.last_close_price last, a.deal_total_count total \
 from tbl_day a \
-where a.pub_date in (select * from (select distinct pub_date from tbl_day x where pub_date <='%s' order by pub_date desc limit 30) y) \
+where a.pub_date in (select * from (select distinct pub_date from tbl_day x where pub_date <='%s' order by pub_date desc limit 100) y) \
 order by 1, 2 desc" % (g_trade_date)
 
     log_debug("sql: \n%s", sql)
@@ -330,6 +330,8 @@ def ref_init2(_list_df, _detail_df):
 
     return 0
 
+
+# 30min
 def ref_set3(_stock_id):
     global g_ref_list
     global g_ref_detail
@@ -362,6 +364,8 @@ def ref_set3(_stock_id):
 
     return len(g_ref_this)
 
+
+# 30min
 def ref_set_tech3(_stock_id):
     global g_ref_list
     global g_ref_detail
@@ -404,6 +408,7 @@ def ref_set_tech3(_stock_id):
     return len(g_ref_this)
 
 
+# day: outer calculate
 def ref_set_tech(_stock_id):
     global g_ref_list
     global g_ref_detail
@@ -444,6 +449,87 @@ def ref_set_tech(_stock_id):
     g_ref_this_vma10 = g_ref_this['vma10']
 
     return len(g_ref_this)
+
+# day: self calculate
+def ref_set_with_tech(_stock_id):
+    global g_ref_list
+    global g_ref_detail
+    global g_ref_this
+    global g_ref_tech
+
+    e = g_ref_list.get(_stock_id)
+    if e is None:
+        log_error("error: %s not exist!", _stock_id)
+        return -1
+
+    g_ref_this = g_ref_detail[g_ref_detail['stock_id'] == _stock_id]
+    g_ref_this.set_index("pub_date", inplace=True)
+
+    global g_ref_this_close
+    global g_ref_this_open
+    global g_ref_this_high
+    global g_ref_this_low
+    global g_ref_this_last
+    global g_ref_this_total
+    global g_ref_this_ma5
+    global g_ref_this_ma10
+    global g_ref_this_ma20
+    global g_ref_this_ma30
+    global g_ref_this_ma60
+    global g_ref_this_ma150
+    global g_ref_this_macd
+    global g_ref_this_diff
+    global g_ref_this_dea
+    global g_ref_this_vma5
+    global g_ref_this_vma10
+
+    g_ref_this_close= g_ref_this['close_price']
+    g_ref_this_open = g_ref_this['open_price']
+    g_ref_this_high = g_ref_this['high_price']
+    g_ref_this_low  = g_ref_this['low_price']
+    g_ref_this_last = g_ref_this['last']
+    g_ref_this_total= g_ref_this['total']
+
+    # _detail_df.sort_index(ascending=False, inplace=True)
+
+    sc = g_ref_this_close.sort_index(ascending=True)
+
+    # sma5
+    g_ref_this_ma5 = calc_sma(sc, 5).sort_index(ascending=False)
+
+    # sma10
+    g_ref_this_ma10 = calc_sma(sc, 10).sort_index(ascending=False)
+
+    # sma20
+    g_ref_this_ma20 = calc_sma(sc, 20).sort_index(ascending=False)
+
+    # sma30
+    g_ref_this_ma30 = calc_sma(sc, 30).sort_index(ascending=False)
+
+    # sma60
+    g_ref_this_ma60 = calc_sma(sc, 60).sort_index(ascending=False)
+
+    # sma120
+    g_ref_this_ma120 = calc_sma(sc, 120).sort_index(ascending=False)
+
+    # sma150
+    g_ref_this_ma150 = calc_sma(sc, 150).sort_index(ascending=False)
+
+    # macd: ema(12), ema(26), diff, dea(9), macd
+    sm, sn, g_ref_this_diff, g_ref_this_dea, g_ref_this_macd = calc_macd_list0(sc, 12, 26, 9)
+    g_ref_this_diff.sort_index(ascending=False, inplace=True)
+    g_ref_this_dea.sort_index(ascending=False, inplace=True)
+    g_ref_this_macd.sort_index(ascending=False, inplace=True)
+
+
+    # volume - sma5
+    sv = g_ref_this_total.sort_index(ascending=True)
+    g_ref_this_vma5 = calc_sma(sv, 5).sort_index(ascending=False)
+
+    g_ref_this_vma10 = calc_sma(sv, 10).sort_index(ascending=False)
+
+    return len(g_ref_this)
+
 
 
 #######################################################################

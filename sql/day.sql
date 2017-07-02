@@ -30,3 +30,8 @@ create index IDX_TBL_DAY_1 on tbl_day
    stock_id
 );
 
+create index IDX_TBL_DAY_2 on tbl_day
+(
+   pub_date
+);
+

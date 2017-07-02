@@ -425,7 +425,6 @@ def main():
         # check holiday
         if today_is_weekend():
             log_info("today is weekend, exit")
-            # work() # XXX
         else:
             log_info("today is workday, come on")
             work()

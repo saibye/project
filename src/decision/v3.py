@@ -14,7 +14,7 @@ from saimail import *
 from sairef  import *
 
 #######################################################################
-# 策略：
+# 策略： 30min 最大量+最大价
 #######################################################################
 
 
@@ -580,7 +580,7 @@ def work_one(_stock_id, _till,  _db):
     # 之前n4单位的交易数据
     detail_df = get_v3_detail(_stock_id, n1_max_date_time, n4, _db);
     if detail_df is None:
-        log_info("[%s, %s, %s] detail is none", _stock_id, n1_max_date_time, max_volume)
+        log_info("[%s, %s] detail is none", _stock_id, n1_max_date_time)
         return -1
     elif detail_df.empty:
         log_debug("detail_df is empty: [%d]", len(detail_df))
@@ -698,6 +698,7 @@ def work_one(_stock_id, _till,  _db):
     log_info("nice+++ %s, %s", _stock_id, max_date_time)
 
     content += "%s @ %s\n" % (_stock_id, max_date_time)
+    content += "涨幅: %.2f%%\n" % (get_chg_rate(_stock_id))
 
     content += "+合计量比: %.2f\n"  % (vol_rate)
     content += "+当前量比: %.2f\n"  % (vol_rate2)
@@ -716,30 +717,46 @@ def work_one(_stock_id, _till,  _db):
     return 0
 
 
+def regression(_db):
+
+    till = get_date_by(-1) + " 15:00:00"
+
+    # 002510
+    till = "2017-06-16 15:00:00"
+
+
+    # 002302
+    till = "2017-06-14 15:00:00"
+
+    # 000025, n3=75
+    till = "2017-06-08 15:00:00"
+
+    # 002458, n3=100
+    till = "2017-06-09 15:00:00"
+
+    # 002510
+    till = "2017-06-16 15:00:00"
+
+    # 002591
+    till = "2017-06-15 15:00:00"
+
+    stock_id = "002591"
+
+    log_debug("[%s]------------------", stock_id)
+
+    work_one(stock_id, till, _db)
+
+    return 0
+
+
 def xxx(_db):
 
 
     if sai_is_product_mode():
         till = get_date_by(-1) + " 15:00:00"
     else:
-
-        # 002510
-        till = "2017-06-16 15:00:00"
-
-        # 002591
-        till = "2017-06-15 15:00:00"
-
-        # 002302
-        till = "2017-06-14 15:00:00"
-
-        # 000025, n3=75
-        till = "2017-06-08 15:00:00"
-
-        # 002458, n3=100
-        till = "2017-06-09 15:00:00"
-
-        # 002510
-        till = "2017-06-16 15:00:00"
+        regression(_db)
+        return
 
     log_info("till: %s", till)
 
