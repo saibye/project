@@ -145,6 +145,16 @@ def get_max_pub_date_time_kunit(_stock_id, _table, _db):
 
     return df
 
+"""
+2017-7-9
+"""
+def get_max_pub_date_kweek(_stock_id, _db):
+    sql = "select max(pub_date) pub_date from tbl_week where stock_id='%s'" % (_stock_id)
+
+    df = pd.read_sql_query(sql, _db);
+
+    return df
+
 def get_one_kunit(_stock_id, _pub_date, _table, _db):
     sql = "select * from %s where stock_id='%s' and pub_date_time='%s'" % (_table, _stock_id, _pub_date)
 

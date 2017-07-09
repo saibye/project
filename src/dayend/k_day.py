@@ -228,13 +228,16 @@ def k_day_one_check_bad(_stock_id, _db):
         #
         sql = "delete from tbl_day where stock_id = '%s'" % (_stock_id)
         log_debug("day sql: [%s]", sql)
-
         rv = sql_to_db(sql, _db)
 
         # add tbl_30min 2017-6-18
         sql = "delete from tbl_30min where stock_id = '%s'" % (_stock_id)
         log_debug("30min sql: [%s]", sql)
+        rv = sql_to_db(sql, _db)
 
+        # add tbl_week 2017-7-9
+        sql = "delete from tbl_week where stock_id = '%s'" % (_stock_id)
+        log_debug("week sql: [%s]", sql)
         rv = sql_to_db(sql, _db)
 
     return is_bad 
@@ -246,14 +249,13 @@ def work():
 
 
     # step1: get from web
-    stocks = get_stock_list_df_tu() # not real time 2017-5-31
+    # stocks = get_stock_list_df_tu() # not real time 2017-5-31
 
-    # stocks = get_stock_quotation() # bug only 100 rows 2017-6-7
+    stocks = get_stock_quotation() # bug only 100 rows 2017-6-7 -- fixed by upgrade 2017-7-5
 
     # TODO: TMP 2017-6-7
     # table = "tbl_day"
     # stocks = get_stock_list_table(table, db)
-
 
     # step2: to db
     begin = get_micro_second()

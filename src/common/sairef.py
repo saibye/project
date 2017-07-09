@@ -532,6 +532,66 @@ def ref_set_with_tech(_stock_id):
 
 
 
+# 2017-7-9
+def ref_init4(_detail_df):
+    global g_ref_detail
+
+    g_ref_detail = _detail_df
+    if g_ref_detail is None:
+        log_error("error: _detail_df not found")
+        return -1
+    else:
+        # log_debug("detail: %d", len(g_ref_detail))
+        pass
+
+    global g_ref_this_close
+    global g_ref_this_open
+    global g_ref_this_high
+    global g_ref_this_low
+    global g_ref_this_last
+    global g_ref_this_total
+
+    g_ref_this_close= g_ref_detail['close_price']
+    g_ref_this_open = g_ref_detail['open_price']
+    g_ref_this_high = g_ref_detail['high_price']
+    g_ref_this_low  = g_ref_detail['low_price']
+    g_ref_this_last = g_ref_detail['last']
+    g_ref_this_total= g_ref_detail['total']
+
+    return len(g_ref_detail)
+
+
+# 2017-7-9
+def ref_set_tech4():
+    global g_ref_detail
+
+    global g_ref_this_ma5
+    global g_ref_this_ma10
+    global g_ref_this_ma20
+    global g_ref_this_ma30
+    global g_ref_this_ma60
+    global g_ref_this_ma150
+    global g_ref_this_macd
+    global g_ref_this_diff
+    global g_ref_this_dea
+    global g_ref_this_vma5
+    global g_ref_this_vma10
+
+    g_ref_this_ma5   = g_ref_detail['ma5']
+    g_ref_this_ma10  = g_ref_detail['ma10']
+    g_ref_this_ma20  = g_ref_detail['ma20']
+    g_ref_this_ma30  = g_ref_detail['ma30']
+    g_ref_this_ma60  = g_ref_detail['ma60']
+    g_ref_this_ma150 = g_ref_detail['ma150']
+    g_ref_this_macd  = g_ref_detail['macd']
+    g_ref_this_diff  = g_ref_detail['diff']
+    g_ref_this_dea   = g_ref_detail['dea']
+    g_ref_this_vma5  = g_ref_detail['vma5']
+    g_ref_this_vma10 = g_ref_detail['vma10']
+
+    return len(g_ref_detail)
+
+
 #######################################################################
 if __name__=="__main__":
     sailog_set("sairef.log")

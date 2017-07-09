@@ -214,6 +214,7 @@ def work_one(_stock_id, _db):
 
 
     # 检查量比
+    # if ((rate1 > 0 or zt1 > 0) and vr1 >= 10) or ((rate2 > 0 or zt2 > 0) and vr2 >= 10):
     if ((rate1 > 0 or zt1 > 0) and vr1 >= 10) or ((rate2 > 0 or zt2 > 0) and vr2 >= 10):
         log_info("nice, a chance: [%s], since: [%s]", _stock_id, min_date)
 
