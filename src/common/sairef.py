@@ -44,6 +44,7 @@ g_ref_this_dea  = None #
 
 g_ref_this_vma5 = None #
 g_ref_this_vma10= None #
+g_ref_this_vma50= None #
 
 
 def ref_set(_stock_id):
@@ -177,6 +178,10 @@ def ref_vma5(_offset):
 def ref_vma10(_offset):
     global g_ref_this_vma10
     return float(g_ref_this_vma10[_offset])
+
+def ref_vma50(_offset):
+    global g_ref_this_vma50
+    return float(g_ref_this_vma50[_offset])
 
 
 """
@@ -588,6 +593,39 @@ def ref_set_tech4():
     g_ref_this_dea   = g_ref_detail['dea']
     g_ref_this_vma5  = g_ref_detail['vma5']
     g_ref_this_vma10 = g_ref_detail['vma10']
+
+    return len(g_ref_detail)
+
+
+# 2017-7-16
+def ref_set_tech5():
+    global g_ref_detail
+
+    global g_ref_this_ma5
+    global g_ref_this_ma10
+    global g_ref_this_ma20
+    global g_ref_this_ma30
+    global g_ref_this_ma60
+    global g_ref_this_ma150
+    global g_ref_this_macd
+    global g_ref_this_diff
+    global g_ref_this_dea
+    global g_ref_this_vma5
+    global g_ref_this_vma10
+    global g_ref_this_vma50
+
+    g_ref_this_ma5   = g_ref_detail['ma5']
+    g_ref_this_ma10  = g_ref_detail['ma10']
+    g_ref_this_ma20  = g_ref_detail['ma20']
+    g_ref_this_ma30  = g_ref_detail['ma30']
+    g_ref_this_ma60  = g_ref_detail['ma60']
+    g_ref_this_ma150 = g_ref_detail['ma150']
+    g_ref_this_macd  = g_ref_detail['macd']
+    g_ref_this_diff  = g_ref_detail['diff']
+    g_ref_this_dea   = g_ref_detail['dea']
+    g_ref_this_vma5  = g_ref_detail['vma5']
+    g_ref_this_vma10 = g_ref_detail['vma10']
+    g_ref_this_vma50 = g_ref_detail['vma50']
 
     return len(g_ref_detail)
 

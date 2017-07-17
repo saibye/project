@@ -75,7 +75,7 @@ cd ${PHOME}/src/decision && time python sao.py
 
 
 # 4. apply the rules: need MACD: cross ma*5
-cd ${PHOME}/src/decision && time python ma_cross5.py
+#cd ${PHOME}/src/decision && time python ma_cross5.py
 
 # 5. apply the rules: dadan3 back ma5 or cross ma10
 cd ${PHOME}/src/decision && time python good.py 
@@ -89,6 +89,9 @@ cd ${PHOME}/src/decision && time python v3.py
 
 # 24. flag.py @2017-7-13
 cd ${PHOME}/src/decision && time python flag.py
+
+# 25. flag.py @2017-7-18
+cd ${PHOME}/src/decision && time python cwh.py
 
 
 exec 3>&-
