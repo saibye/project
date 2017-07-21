@@ -333,10 +333,10 @@ def ct_ticks(_stocks, _trade_date, _db):
 
                 log_info("%s\n%s", subject1, content)
                 if sai_is_product_mode():
-                    saimail(subject1, content)
+                    saimail_dev(subject1, content)
                 else:
                     log_info("simulate: mail")
-                    # saimail(subject1, content)
+                    # saimail_dev(subject1, content)
         else:
             if rank >= 50:
                 log_info("nice: %s, rank: %d\n%s", stock_id, rank, content)
@@ -444,7 +444,7 @@ def work_one_stock(_stock_id, _start_date, _days, _db):
         body = body + all_info
 
         subject = "%s, start: %s, days: %s" % (_stock_id, _start_date, _days)
-        saimail(subject, body)
+        saimail_dev(subject, body)
 
     return
 

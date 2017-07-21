@@ -423,7 +423,7 @@ def work_one(_trade_date, _db):
             elif tech_is_cross4(stock_id, _trade_date, _db):
                 good = "++with 一阳4线\n"
             else:
-                good = "better if could cross"
+                good = "better if could cross\n"
             two += good
             two += get_basic_info_all(stock_id, _db)
             two += "--------------------------------\n"

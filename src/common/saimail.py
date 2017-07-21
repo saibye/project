@@ -171,6 +171,22 @@ def saimail(_subject, _body):
         log_info("send %s to mailbox: %s", mail_type, to_addr)
         saimail_inner(_subject, _body, to_addr, mail_type)
 
+# only to developer user # 2017-7-19
+def saimail_dev(_subject, _body):
+
+    mail_conf_js = analy_mail_conf()
+    if mail_conf_js == -1:
+        log_error("邮箱地址配置文件解析错误!")
+        return -1
+
+    mail_type = 'plain'
+
+    to_addr = ""
+    for item in mail_conf_js['dev_addrs']:
+        to_addr = item['mail']
+        log_info("send %s to DEV: %s", mail_type, to_addr)
+        saimail_inner(_subject, _body, to_addr, mail_type)
+
 
 if __name__=="__main__":
     sailog_set("saimail.log")
@@ -190,5 +206,9 @@ if __name__=="__main__":
     subject   = u"xxx subject"
     body      = u"hello, world, buy buy buy"
     saimail(subject, body)
+
+    subject   = u"DEV subject"
+    body      = u"hello, world, buy buy buy"
+    saimail_dev(subject, body)
 
 # saimail.py

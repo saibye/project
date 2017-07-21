@@ -28,7 +28,7 @@ def CwH_analyzer(_stock_id, _trade_date, _my_df, _db):
 
     lowest   = 0
     mailed = 0
-    content1 = "Cup with Handle"
+    content1 = "Cup with Handle\n"
     to_mail = False
 
     idx    = 0
@@ -294,7 +294,7 @@ def CwH_analyzer(_stock_id, _trade_date, _my_df, _db):
                         return -1
                     dv_AC = p_C / p_A
                     log_info("A-C  %s -- division: %.3f", _stock_id, dv_AC)
-                    if dv_AC < 0.88 or dv_AC > 1.05:
+                    if dv_AC < 0.88 or dv_AC > 1.08:
                         log_info("sorry: A-C BAD! %s -- division: %.3f", _stock_id, dv_AC)
                         return -1
                     if vr_C < 50:
@@ -376,11 +376,11 @@ def CwH_analyzer(_stock_id, _trade_date, _my_df, _db):
         info  = get_basic_info_all(_stock_id, _db)
         content1 += info
 
-        if d_E == _trade_date:
+        if str(d_E) == str(_trade_date):
             to_mail = True
             log_info("MAIL: %s", d_E)
         else:
-            log_info("obsolete: %s : %s", d_E, _trade_date)
+            log_info("obsolete: %s(%s) : %s(%s)", d_E, type(d_E), _trade_date, type(_trade_date))
 
 
     if to_mail:
@@ -389,7 +389,7 @@ def CwH_analyzer(_stock_id, _trade_date, _my_df, _db):
         log_info("mail:\n%s", content1)
         if sai_is_product_mode():
             mailed = 1
-            saimail(subject, content1)
+            saimail_dev(subject, content1)
     else:
         log_info("sorry1: %s, %s", _stock_id, _trade_date)
 
@@ -755,8 +755,12 @@ def work():
     if sai_is_product_mode():
         till_date = get_date_by(0)
         till_date = get_newest_trade_date(db)
+        # till_date = "2017-01-18"
+        """
         log_info("till_date: %s", till_date)
         CwH_work_one_day(till_date, db)
+        """
+
 
         """
         # 柳钢股份 case1 init
@@ -788,7 +792,23 @@ def work():
         till_date = "2017-07-06"
         stock_id  = "600191"
         CwH_work_one_day_stock(stock_id, till_date, db)
+
+        # 天茂集团 7 done
+        till_date = "2017-07-05"
+        stock_id  = "000627"
+        CwH_work_one_day_stock(stock_id, till_date, db)
+
+        # 东湖高新 8 TODO: high = vol*close_price
+        till_date = "2017-07-05"
+        stock_id  = "600133"
+        CwH_work_one_day_stock(stock_id, till_date, db)
         """
+
+        # 沧州大化 9 
+        till_date = "2017-07-10"
+        stock_id  = "600230"
+        CwH_work_one_day_stock(stock_id, till_date, db)
+
     else:
         regression(db)
 
@@ -798,7 +818,7 @@ def work():
 #######################################################################
 
 def main():
-    sailog_set("CwH2.log")
+    sailog_set("CwH.log")
 
     log_info("let's begin here!")
 

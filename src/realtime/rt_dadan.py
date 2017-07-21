@@ -135,7 +135,7 @@ def rt_dadan_check_buy(_stock_id, _df, _db, _vol_base, _count_base, _noticed, _l
                 for item in _list:
                     body   +=  item
                 log_info("mail3 %s", body)
-                saimail(subject, body)
+                saimail_dev(subject, body)
                 if volume >= 300000:
                     saimail2(subject, body)
 
@@ -323,7 +323,7 @@ def rt_dadan_rank_one(_stock_id, _dd_date, _db):
         subject = "rank: %d 净流入 %s (%.2f%%)" % (rank, _stock_id, get_chg_rate(_stock_id))
         content += get_basic_info_all(_stock_id, _db)
         log_info("nice: %s, %s", subject, content)
-        saimail(subject, content)
+        saimail_dev(subject, content)
 
     buy, sell, mid = get_buy_sell_sum2(df)
 
@@ -358,7 +358,7 @@ def rt_dadan_rank(_stocks, _trade_date, _db):
         content+= "买: %.2f (unit)\n" % (buy / 10000)
         content+= "卖: %.2f (unit)\n" % (sell / 10000)
         content+= "中: %.2f (unit)\n" % (mid / 10000)
-        saimail(subject, content)
+        saimail_dev(subject, content)
 
 
 def rt_dadan(_stocks, _trade_date, _db):
@@ -438,7 +438,7 @@ def rt_timer(_stocks, _db):
         global g_check_count
         if g_check_count == 0:
             log_info("all stock no data, exit")
-            saimail("dadan: no data at all", "take a rest2")
+            saimail_dev("dadan: no data at all", "take a rest2")
             break
         """
 
@@ -449,7 +449,7 @@ def rt_timer(_stocks, _db):
             body    = ""
             for item in g_good_list :
                 body   +=  item
-            saimail(subject, body)
+            saimail_dev(subject, body)
             saimail2(subject, body)
 
         # 策略2: mail
@@ -459,7 +459,7 @@ def rt_timer(_stocks, _db):
             body    = ""
             for item in g_good_list2 :
                 body   +=  item
-            saimail(subject, body)
+            saimail_dev(subject, body)
             saimail2(subject, body)
 
         # 策略3: mailed at realtime
@@ -516,7 +516,7 @@ def main():
         # check holiday
         if today_is_weekend():
             log_info("today is weekend, exit")
-            # saimail("dadan: weekend", "take a rest1")
+            # saimail_dev("dadan: weekend", "take a rest1")
         else:
             log_info("today is workday, come on")
             work()

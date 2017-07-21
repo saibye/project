@@ -18,6 +18,142 @@ from sairef  import *
 #######################################################################
 
 
+def v5_analyzer1(_stock_id, _min_date, _min_vol, _detail_df, _db):
+
+    zt1   = 0.0
+    vr1   = 0.0
+    rate1 = 0.0
+
+    zt2   = 0.0
+    vr2   = 0.0
+    rate2 = 0.0
+
+    warn  = ""
+
+    length = len(_detail_df)
+
+    if length == 1:
+        log_error("fatal: invalid length")
+        return -1
+
+    # 当日
+    vol0   = _detail_df['deal_total_count'][0]
+    date0  = _detail_df['pub_date'][0]
+    open0  = _detail_df['open_price'][0]
+    close0 = _detail_df['close_price'][0]
+    last0  = _detail_df['last_close_price'][0]
+    log_debug("volume0: [%.3f]", vol0)
+
+    # 无量跌停，不考虑
+    rate0  = (close0 - last0) / last0 * 100
+    if rate0 > 9.9:
+        log_info("sorry: [%s] 无量涨停", _stock_id)
+        return -1
+
+    # 无量跌停，不考虑
+    if rate0 < -9.8:
+        log_info("sorry: [%s] 无量跌停", _stock_id)
+        return -1
+
+    if length >= 2:
+        vol1   = _detail_df['deal_total_count'][1]
+        date1  = _detail_df['pub_date'][1]
+        open1  = _detail_df['open_price'][1]
+        close1 = _detail_df['close_price'][1]
+        rate1  = (close1 - close0) / close0 * 100
+        zt1    = (close1 - open1)  / close0 * 100
+        vr1    = vol1 / vol0
+        one    = "[%s]涨幅1: [%.2f], 量比1: [%.2f]" % (date1, rate1, vr1)
+        log_debug("one: %s", one)
+
+    if length >= 3:
+        vol2   = _detail_df['deal_total_count'][2]
+        date2  = _detail_df['pub_date'][2]
+        open2  = _detail_df['open_price'][2]
+        close2 = _detail_df['close_price'][2]
+        rate2  = (close2 - close1) / close1 * 100
+        zt2    = (close2 - open2)  / close1 * 100
+        vr2    = vol2 / vol0
+        two    = "[%s]涨幅2: [%.2f], 量比2: [%.2f]" % (date2, rate2, vr2)
+        log_debug("two: %s", two)
+
+    # 次日跌停不考虑 2016/12/11 for 300353
+    if rate1 < -9.8 or rate2 < -9.8:
+        log_info("sorry: 地量后，有跌停")
+        return -1
+
+    # 要求连续上涨 2017/5/29
+    if rate1 < 0 or rate2 < 0:
+        log_info("sorry: 之后两日不能下跌: %.2f, %.2f", rate1, rate2)
+        return -1
+
+    # 要求连续阳柱 2017/5/29
+    if zt1 < 0 or zt2 < 0:
+        log_info("sorry: 之后两日不能阴柱: %.2f, %.2f", zt1, zt2)
+        return -1
+
+
+    # 检查量比
+    if ((rate1 > 0 or zt1 > 0) and vr1 >= 10) or ((rate2 > 0 or zt2 > 0) and vr2 >= 10):
+        log_info("nice, a chance: [%s], since: [%s]", _stock_id, min_date)
+
+        warn += "+++务必：穿越3线，收复MA20,60\n"
+        warn += "+++最好：地量横盘2-3天\n"
+        warn += "+++加分：双底+多个锤子线+多个上影线\n"
+        log_info("%s", warn)
+
+        if vr2 > vr1:
+            warn += "++++增量放量\n"
+            log_info("%.2f > %.2f", vr2, vr1)
+            log_info("%s", warn)
+
+        if rate2 > rate1:
+            warn += "+++++增量涨幅\n"
+            log_info("%.2f > %.2f", rate2, rate1)
+            log_info("%s", warn)
+
+        item  = "%s 地量: [%.3f]@[%s]" % (_stock_id, vol0, min_date)
+
+        info  = get_basic_info_all(_stock_id, _db)
+        item += "\n%s\n%s\n%s\n%s" % (warn, one, two, info)
+
+        if vr1 >= 50 or vr2 >= 50:
+            subject  = "###diliang: %s" % (min_date)
+        elif vr1 >= 30 or vr2 >= 30:
+            subject  = "##diliang: %s" % (min_date)
+        elif vr1 >= 20 or vr2 >= 20:
+            subject  = "#diliang: %s" % (min_date)
+        else:
+            subject  = "diliang: %s" % (min_date)
+
+        # content += item
+        log_info("subject: \n%s", subject)
+        log_info("content: \n%s", item)
+        saimail_dev(subject, item)
+        sai_save_good(_stock_id, date0, "diliang", min_vol, vr1, vr2, min_date, _db)
+    else :
+        log_info("sorry... [%s]", _stock_id)
+
+    return 0
+
+
+def get_v5_detail_full(_stock_id, _pub_date, _n, _db):
+    sql = "select stock_id, pub_date, open_price, close_price, \
+deal_total_count total, last_close_price last, \
+high_price, low_price \
+from tbl_day a \
+where a.stock_id  = '%s' and a.pub_date <= '%s' \
+order by pub_date desc limit %d" % (_stock_id, _pub_date, _n)
+
+    # log_debug("detail-sql:\n%s", sql)
+
+    df = pd.read_sql_query(sql, _db);
+    if df is None:
+        log_info("'%s' not found in db", _stock_id)
+        return None
+    else:
+        return df
+
 def get_v5_list(_till, _db):
     sql = "select distinct stock_id from tbl_day \
 where pub_date = \
@@ -73,11 +209,32 @@ order by deal_total_count limit 1" % (_stock_id, _till2, _n2)
     else:
         return df
 
+"""
+最小vol后的成交日数据
+"""
+def get_v5_detail1(_stock_id, _pub_date, _n3, _db):
+    sql = "select stock_id, pub_date, open_price, close_price, \
+deal_total_count total, last_close_price last, \
+high_price, low_price \
+from tbl_day a where a.stock_id  = '%s' and   a.pub_date >= '%s' \
+order by pub_date limit %d" % (_stock_id, _pub_date, _n3)
+
+    # log_debug("sql: \n%s", sql)
+
+    df = pd.read_sql_query(sql, _db);
+    if df is None:
+        log_info("'%s' not found in db", _stock_id)
+        return None
+    else:
+        # df.set_index("pub_date", inplace=True)
+        # log_debug("detail df: \n%s", df)
+        return df
+
 
 """
 最小vol前的成交日数据
 """
-def get_v5_detail(_stock_id, _pub_date, _n3, _db):
+def get_v5_detail2(_stock_id, _pub_date, _n3, _db):
     sql = "select stock_id, pub_date, open_price, close_price, \
 deal_total_count total, last_close_price last, \
 high_price, low_price \
@@ -94,85 +251,6 @@ order by pub_date desc limit %d" % (_stock_id, _pub_date, _n3)
         # df.set_index("pub_date", inplace=True)
         # log_debug("detail df: \n%s", df)
         return df
-
-"""
-价格突破前高
-"""
-def get_v5_max_price_days(_detail_df, _max_price):
-    counter = 0
-    for row_index, row in _detail_df.iterrows():
-        if counter == 0:
-            counter = 1
-            continue
-
-        close_price = row['close_price']
-        if close_price <= _max_price:
-            counter += 1
-            # log_debug("[%s][%.3f] < [%.3f]", row['pub_date'], close_price, _max_price)
-        else:
-            break
-    return counter
-
-"""
-价格突破前高 -- 容错
-"""
-def get_v5_almost_max_price_days(_detail_df, _max_price):
-    counter = 0
-    for row_index, row in _detail_df.iterrows():
-        if counter == 0:
-            counter = 1
-            continue
-
-        close_price = row['close_price']
-        if close_price <= _max_price*1.01:
-            counter += 1
-            # log_debug("[%s][%.3f] < [%.3f]", row['pub_date'], close_price, _max_price)
-        else:
-            break
-    return counter
-
-"""
-量突破前高
-"""
-def get_v5_min_volume_days(_detail_df, _min_volume):
-    counter = 0
-    for row_index, row in _detail_df.iterrows():
-        if counter == 0:
-            counter = 1
-            continue
-
-        volume = row['total']
-        if volume < _min_volume:
-            counter += 1
-        else:
-            break
-    return counter
-
-
-def sum_v5_detail(_detail_df, _days, _db):
-
-    counter = 0
-    sum1 = 0.0
-    sum2 = 0.0
-    for row_index, row in _detail_df.iterrows():
-        close_price = row['close_price']
-        open_price  = row['open_price']
-        vol         = row['total']
-
-        if close_price > open_price:
-            # log_debug("<%s> red: %.3f", row_index, vol)
-            sum1 += vol
-        elif close_price < open_price:
-            # log_debug("<%s> gre: %.3f", row_index, vol)
-            sum2 += vol
-        else:
-            pass
-        counter = counter + 1
-        if counter >= _days:
-            log_info("counter: reach: %d", _days)
-            break
-
-    return sum1, sum2
 
 
 def v5_dynamic_calc_tech(_df):
@@ -224,42 +302,8 @@ def v5_dynamic_calc_tech(_df):
     se = calc_sma(sv, 10)
     _df['vma10'] = se;
 
-    return 0
-
-
-def v5_format_ref(_stock_id, _date_df, _detail_df):
-
-    rv = ref_init2(_date_df, _detail_df)
-    if rv < 0:
-        log_error("error: ref_init2")
-        return -1
-
-    # format
-    ref_set(_stock_id)
-
-    _detail_df.sort_index(ascending=False, inplace=True)
-    v5_dynamic_calc_tech(_detail_df)
-    _detail_df.sort_index(ascending=True,  inplace=True)
-
-    # log_debug("after tech: \n%s", _detail_df)
-
-    ref_set_tech(_stock_id)
-
-    if ref_amount(0) <= 0 or ref_close(0) <= 0:
-        log_error("error: invalid data: %s: %.2f, %.2f", _stock_id, ref_close(0), ref_amount(0))
-        return -1
-
-    log_debug("ref0[%.3f, %.3f] -- [%.3f]", ref_open(0), ref_close(0), ref_amount(0))
-    log_debug("ref1[%.3f, %.3f] -- [%.3f]", ref_open(1), ref_close(1), ref_amount(1))
-    log_debug("ref2[%.3f, %.3f] -- [%.3f]", ref_open(2), ref_close(2), ref_amount(2))
-    log_debug("ref3[%.3f, %.3f] -- [%.3f]", ref_open(3), ref_close(3), ref_amount(3))
-    log_debug("ref4[%.3f, %.3f] -- [%.3f]", ref_open(4), ref_close(4), ref_amount(4))
-
-    """
-    log_debug("tech0[%.3f] - [%.3f] - [%.3f] - [%.3f]", ref_ma5(0), ref_ma10(0), ref_vma5(0), ref_vma10(0))
-    log_debug("tech1[%.3f] - [%.3f] - [%.3f] - [%.3f]", ref_ma5(1), ref_ma10(1), ref_vma5(1), ref_vma10(1))
-    log_debug("tech2[%.3f] - [%.3f] - [%.3f] - [%.3f]", ref_ma5(2), ref_ma10(2), ref_vma5(2), ref_vma10(2))
-    """
+    se = calc_sma(sv, 50)
+    _df['vma50'] = se;
 
     return 0
 
@@ -267,61 +311,6 @@ def v5_format_ref(_stock_id, _date_df, _detail_df):
 #########################
 # 算法检查
 #########################
-def v5_exec_algo_check(_db):
-
-    # 放量大涨 rate >= 2.5
-    rate = (ref_close(0) - ref_close(1)) / ref_close(1) * 100
-    log_info("rate: %.2f", rate)
-
-    # 阳柱体 zt >= 2.5
-    zt = (ref_close(0) - ref_open(0)) / ref_close(1) * 100
-    log_info("zt: %.2f", zt)
-
-    # 阳柱到顶: close @= high
-    rate2 = ref_close(0) / ref_high(0) * 100
-    log_debug("rate2: %.3f", rate2)
-
-    if ref_vma5(3) == 0:
-        return -1, -1, -1, -1, False, False, False
-
-    # 成交量 : ref_vma5(3) >= 6
-    vol_rate2 = ref_vol(0) / ref_vma5(3)
-    log_debug("vol-rate2: %.3f", vol_rate2)
-
-    # 均线发散
-    log_debug("tech0: ma10[%.3f], ma20[%.3f], ma30[%.3f], ma60: [%.3f]", ref_ma10(0), ref_ma20(0), ref_ma30(0), ref_ma60(0))
-    log_debug("tech1: ma10[%.3f], ma20[%.3f], ma30[%.3f], ma60: [%.3f]", ref_ma10(1), ref_ma20(1), ref_ma30(1), ref_ma60(1))
-    log_debug("tech2: ma10[%.3f], ma20[%.3f], ma30[%.3f], ma60: [%.3f]", ref_ma10(2), ref_ma20(2), ref_ma30(2), ref_ma60(2))
-    log_debug("tech3: ma10[%.3f], ma20[%.3f], ma30[%.3f], ma60: [%.3f]", ref_ma10(3), ref_ma20(3), ref_ma30(3), ref_ma60(3))
-    log_debug("tech4: ma10[%.3f], ma20[%.3f], ma30[%.3f], ma60: [%.3f]", ref_ma10(4), ref_ma20(4), ref_ma30(4), ref_ma60(4))
-    log_debug("tech5: ma10[%.3f], ma20[%.3f], ma30[%.3f], ma60: [%.3f]", ref_ma10(5), ref_ma20(5), ref_ma30(5), ref_ma60(5))
-
-    # 
-    # 20, 30, 60  
-    fasan_sub1 = ref_ma20(0) >= ref_ma30(0) and  ref_ma30(0) >= ref_ma60(0)
-    fasan_sub2 = ref_ma20(1) >= ref_ma30(1) and  ref_ma30(1) >= ref_ma60(1)
-    fasan_sub3 = ref_ma20(2) >= ref_ma30(2) and  ref_ma30(2) >= ref_ma60(2)
-    fasan_rule1 = fasan_sub1 and fasan_sub2 and fasan_sub3
-    fasan = fasan_rule1
-
-    # cross
-    cross1_sub1 = ref_open(4) < ref_ma5(4) and ref_open(4) < ref_ma10(4) and ref_open(4) < ref_ma20(4) and ref_open(4) < ref_ma30(4) and ref_open(4) < ref_ma60(4)
-    cross1_sub2 = ref_close(0) > ref_ma5(0) and ref_close(0) > ref_ma10(0) and ref_close(0) > ref_ma20(0) and ref_close(0) > ref_ma30(0) and ref_close(0) > ref_ma60(0)
-    cross1 = cross1_sub1 and cross1_sub2
-
-    cross2_sub1 = ref_open(0) < ref_ma5(0) and ref_open(0) < ref_ma10(0) and ref_open(0) < ref_ma20(0) and ref_open(0) < ref_ma30(0) and ref_open(0) < ref_ma60(0)
-    cross2_sub2 = ref_close(0) > ref_ma5(0) and ref_close(0) > ref_ma10(0) and ref_close(0) > ref_ma20(0) and ref_close(0) > ref_ma30(0) and ref_close(0) > ref_ma60(0)
-    cross2 = cross2_sub1 and cross2_sub2
-
-    cross = cross1 or cross2
-
-    # bigger
-    big_sub1 = ref_vol(0)  > ref_vol(1)    and ref_vol(1) > ref_vol(2)
-    big_sub2 = ref_close(0) > ref_close(1) and ref_close(1) > ref_close(2)
-    bigger = big_sub1 and big_sub2
-
-    return rate, zt, rate2, vol_rate2, fasan, cross, bigger
-
 
 
 def work_one(_stock_id, _till,  _db):
@@ -349,7 +338,7 @@ def work_one(_stock_id, _till,  _db):
         n4 = 300
         n5 = 30
 
-    min_date_time = ""
+    min_date = ""
     min_volume = ""
 
 
@@ -362,17 +351,17 @@ def work_one(_stock_id, _till,  _db):
         log_debug("n1_df is empty: [%d]", len(n1_df))
         return 1
     else:
-        n1_min_date_time = n1_df.iloc[0, 0]
+        n1_min_date = n1_df.iloc[0, 0]
         n1_min_volume    = n1_df.iloc[0, 1]
         n1_min_close     = n1_df.iloc[0, 2]
-        log_debug("n1_date [%s]", n1_min_date_time);
+        log_debug("n1_date [%s]", n1_min_date);
         log_debug("n1_vol  [%s]", n1_min_volume);
         log_debug("n1_close[%.3f]", n1_min_close);
         n1_df = n1_df.set_index("stock_id")
         n1_df["1"] = "1"
 
     # 2017-6-21
-    n2_df = get_v5_n2_min(_stock_id, n1_min_date_time, n2, _db)
+    n2_df = get_v5_n2_min(_stock_id, n1_min_date, n2, _db)
     if n2_df is None:
         log_info("n2(%d) not match!", n2)
         return -1
@@ -380,16 +369,16 @@ def work_one(_stock_id, _till,  _db):
         log_debug("n2_df is empty: [%d]", len(n2_df))
         return 1
     else:
-        n2_min_date_time = n2_df.iloc[0, 0]
+        n2_min_date = n2_df.iloc[0, 0]
         n2_min_volume    = n2_df.iloc[0, 1]
-        log_debug("n2_date[%s], n2_vol[%.2f]", n2_min_date_time, n2_min_volume);
+        log_debug("n2_date[%s], n2_vol[%.2f]", n2_min_date, n2_min_volume);
 
     # check min-vol(n1) == min-vol(n2)
-    if n2_min_date_time != n1_min_date_time:
-        log_info("time: [%s] != [%s]", n1_min_date_time, n2_min_date_time)
+    if n2_min_date != n1_min_date:
+        log_info("time: [%s] != [%s]", n1_min_date, n2_min_date)
         return 1
     else:
-        log_info("match the same time: [%s]", n1_min_date_time)
+        log_info("match the same time: [%s]", n1_min_date)
 
     if n2_min_volume != n1_min_volume:
         log_info("not the same volume: [%s] != [%s]", n1_min_volume, n2_min_volume)
@@ -397,123 +386,52 @@ def work_one(_stock_id, _till,  _db):
     else:
         log_info("match the same volume: [%s]", n1_min_volume)
 
-
-    # 获取明细数据
-    # 之前n4单位的交易数据
-    detail_df = get_v5_detail(_stock_id, _till, n4, _db);
-    if detail_df is None:
-        log_info("[%s, %s] detail is none", _stock_id, _till)
+    # 获取明细数据1
+    # 地量之后n3单位的交易数据
+    after_df = get_v5_detail1(_stock_id, n1_min_date, n3, _db);
+    if after_df is None:
+        log_info("[%s, %s] detail is none", _stock_id, n1_min_date)
         return -1
-    elif detail_df.empty:
-        log_debug("detail_df is empty: [%d]", len(detail_df))
+    elif after_df.empty:
+        log_debug("after_df is empty: [%d]", len(after_df))
         return 1
     else:
-        log_debug("n4: len[%d]", len(detail_df))
+        log_debug("n4: len[%d]", len(after_df))
 
-    min_date = n1_min_date_time
-    min_volume    = n1_min_volume
-    log_debug("%s: min_date: [%s]", _stock_id, min_date)
-    log_debug("%s: min_volume:    [%s]", _stock_id, min_volume)
+    # TODO
+    # 检查量比
+
+    # 获取明细数据2
+    # 地量之前n4单位的交易数据
+    before_df = get_v5_detail2(_stock_id, n1_min_date, n4, _db);
+    if before_df is None:
+        log_info("[%s, %s] detail is none", _stock_id, n1_min_date)
+        return -1
+    elif before_df.empty:
+        log_debug("before_df is empty: [%d]", len(before_df))
+        return 1
+    else:
+        log_debug("n4: len[%d]", len(before_df))
+
+    # TODO
+    # 检查收盘价相近
+
+    min_date   = n1_min_date
+    min_volume = n1_min_volume
+    log_debug("%s: min_date:   [%s]", _stock_id, min_date)
+    log_debug("%s: min_volume: [%s]", _stock_id, min_volume)
 
     content += "%s @ %s\n" % (_stock_id, min_date)
 
     log_debug("min-close: [%.3f]", n1_min_close)
 
-    """
-    # 收盘价突破
-    days1 = get_v5_max_price_days(detail_df,  n1_min_close)
-    log_info("价格突破天数: %d", days1)
-    """
-
-    """
-    # 收盘价突破 -- 容错
-    days2 = get_v5_almost_max_price_days(detail_df,  n1_min_close)
-    log_info("价格突破天数(2): %d", days2)
-
-    if days1 >= n3 or days2 >= n3:
-        log_info("价格突破前高: %d > %d", days1, n3)
-    else:
-        log_info("sorry: price: 价格未突破[%d < %d]", days1, n3)
-        return 1
-    """
-
-    """
-    # 成交量突破
-    log_debug("max-volume: [%.2f]", n1_min_volume)
-    days2 = get_v5_min_volume_days(detail_df,  n1_min_volume)
-    log_info("成交量突破天数: %d", days2)
-
-    length = len(detail_df)
-    log_debug("detail: %d", length)
-
-    if length <= 8:
-        log_info("data-not-enough: %s", _stock_id)
-        return 1
-    """
-
-    # 阳柱成交量大 sum(red) / sum(green) > 2.5
-    sum1, sum2 = sum_v5_detail(detail_df, n5, _db)
-    log_info("red-sum: %.3f", sum1)
-    log_info("gre-sum: %.3f", sum2)
-    vol_rate = -1
-    if sum1 > 0 and sum2 > 0:
-        vol_rate = sum1 / sum2
-        log_info("vol-rate: %.3f", vol_rate)
-
 
     # 格式化数据
-    rv = v5_format_ref(_stock_id, n1_df, detail_df)
+    rv = v5_format_ref(_stock_id, before_df)
     if rv < 0:
         log_error("error: v5_format_ref: %s", _stock_id)
         return -1
 
-    # 涨幅，柱体，收盘/最高，量比，发散
-    rate, zt, rate2, vol_rate2, fasan, cross, bigger = v5_exec_algo_check(_db)
-    log_info("%.3f, %.3f, %.3f, %.3f, %s, %s, %s",
-            rate, zt, rate2, vol_rate2, fasan, cross, bigger)
-
-
-    # 
-    rule1 = rate >= 2.5 and zt >= 2.5 and rate2 >= 98.8 \
-               and vol_rate >= 1.2 \
-               and vol_rate2 >= 3  \
-               and days1 >= n3 \
-               and fasan and cross and bigger
-
-    # 600036
-    rule2 = rate >= 5.0 and zt >= 5.0 and rate2 >= 98.8 \
-               and vol_rate  >= 1.4 \
-               and vol_rate2 >= 4 \
-               and days1 >= n3 \
-               and cross and bigger
-
-    # 000852
-    rule3 = rate >= 9.8 and zt >= 9.8 and rate2 >= 99.8 \
-               and vol_rate  >= 2 \
-               and vol_rate2 >= 3 \
-               and days2 >= n3 \
-               and cross 
-
-    # 000912 TODO
-    rule4 = False and rate >= 3 and zt >= 1 and rate2 >= 96.0 \
-               and vol_rate  >= 2 \
-               and vol_rate2 >= 4 \
-               and days1 >= n3 \
-               and cross 
-
-    #
-    if rule1:
-        log_info("rule1: %s", _stock_id)
-        content += "rule1\n"
-    elif rule2:
-        log_info("rule2: %s", _stock_id)
-        content += "rule2\n"
-    elif rule3:
-        log_info("rule3: %s", _stock_id)
-        content += "rule3\n"
-    else:
-        log_info("sorry: not match")
-        return 1
 
     log_info("nice+++ %s, %s", _stock_id, min_date)
 
@@ -529,7 +447,7 @@ def work_one(_stock_id, _till,  _db):
 
     subject = "+++day: %s @%s" % (_stock_id, min_date)
     log_info("mail: \n%s\n%s", subject, content)
-    saimail(subject,  content)
+    # saimail(subject,  content)
 
     log_info("it costs %d us", get_micro_second() - begin)
 
@@ -561,6 +479,7 @@ def xxx(_db):
 
     if sai_is_product_mode():
         till = get_date_by(-1)
+        till = get_newest_trade_date(_db)
     else:
         regression(_db)
 
