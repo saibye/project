@@ -22,9 +22,8 @@ g_detail_fetched = 120
 g_detail_used    = 70
 
 
-def CwH_analyzer(_stock_id, _trade_date, _my_df, _db):
+def CwH_analyzer(_stock_id, _trade_date, _my_df, _used_len, _db):
     global g_detail_fetched 
-    global g_detail_used
 
     lowest   = 0
     mailed = 0
@@ -49,7 +48,7 @@ def CwH_analyzer(_stock_id, _trade_date, _my_df, _db):
     VR1    = 40
     VR2    = 50
 
-    BACK_AB = -13
+    BACK_AB = -13.5
 
     # 茶杯左端+
     p_A = 0
@@ -116,7 +115,7 @@ def CwH_analyzer(_stock_id, _trade_date, _my_df, _db):
     CD = 0 # C到D天数
 
     for row_index, row in _my_df.iterrows():
-        TECH_IDX = g_detail_used - idx - 1
+        TECH_IDX = _used_len - idx - 1
 
         close_price      = row['close_price']
         high_price       = row['high_price']
@@ -159,7 +158,7 @@ def CwH_analyzer(_stock_id, _trade_date, _my_df, _db):
                     d_A = pub_date
                     rt_A= rate
                     vr_A= vr
-                    log_info("放量new-A: %s: %.2f, %.2f", pub_date, v_A, p_A)
+                    log_info("放量new-A: %s: %.2f, %.2f, %d", pub_date, v_A, p_A, i_A)
                     log_info("vma10: %.2f, vma50: %.2f", ref_vma10(TECH_IDX), ref_vma50(TECH_IDX))
                     # 发现新的A时，同时更新B点
                     p_B = close_price
@@ -247,8 +246,8 @@ def CwH_analyzer(_stock_id, _trade_date, _my_df, _db):
                     log_info("nice+++确定B点%s", d_B)
                     AB    = i_B - i_A
                     if AB > 25 or AB < 11:
-                        log_info("sorry: AB too long! %s -- %d", _stock_id, AB)
-                        return -1
+                        log_info("sorry: AB exceeds! %s -- %d", _stock_id, AB)
+                        return i_B
                     dv_AB = (p_B / p_A - 1) * 100
                     log_info("A->B %s division: %.3f",  _stock_id, dv_AB)
                     if dv_AB < BACK_AB:
@@ -289,7 +288,8 @@ def CwH_analyzer(_stock_id, _trade_date, _my_df, _db):
                     got_C = True
                     BC = i_C - i_B
                     log_info("frame BC: %d", BC)
-                    if BC < 10 or BC > 25:
+                    # if BC < 10 or BC > 25:
+                    if BC < 10 or BC > 29:
                         log_info("sorry: BC BAD! %s -- BC: %d", _stock_id, BC)
                         return -1
                     dv_AC = p_C / p_A
@@ -683,11 +683,24 @@ def CwH_work_one_day_stock(_stock_id, _till,  _db):
         log_error("error: CwH_format_ref: %s", _stock_id)
         return -1
 
-    my_df = detail_df.sort_index(ascending=False).tail(g_detail_used)
-    rv = CwH_analyzer(_stock_id, _till, my_df, _db)
+    used_len = g_detail_used
+    my_df = detail_df.sort_index(ascending=False).tail(used_len)
+    rv = CwH_analyzer(_stock_id, _till, my_df, used_len, _db)
     if rv < 0:
-        log_error("error: CwH_analyzer: %s", _stock_id)
+        log_error("error: CwH_analyzer1: %s", _stock_id)
         return -1
+    elif rv > 0:
+        # 2017-7-21
+        left_len = used_len - (rv+1)
+        if left_len <= 10:
+            log_error("AGAIN: left too short: %d", left_len)
+            return -1
+        log_info("again: CwH_analyzer0: %s: %d: %d", _stock_id, rv, left_len)
+        my_df = my_df.tail(left_len)
+        rv = CwH_analyzer(_stock_id, _till, my_df, used_len, _db)
+        if rv < 0:
+            log_error("error: CwH_analyzer2: %s", _stock_id)
+            return -1
 
     return 0
 
@@ -729,7 +742,7 @@ def regression(_db):
     days = 1
 
     # XXX
-    max_date = "2017-07-16"
+    max_date = "2017-07-20"
     days = 30
 
     log_info("regress")
@@ -756,11 +769,8 @@ def work():
         till_date = get_date_by(0)
         till_date = get_newest_trade_date(db)
         # till_date = "2017-01-18"
-        """
         log_info("till_date: %s", till_date)
         CwH_work_one_day(till_date, db)
-        """
-
 
         """
         # 柳钢股份 case1 init
@@ -768,10 +778,6 @@ def work():
         stock_id  = "601003"
         CwH_work_one_day_stock(stock_id, till_date, db)
 
-        # 珠海港 2 TODO
-        till_date = "2017-04-10"
-        stock_id  = "000507"
-        CwH_work_one_day_stock(stock_id, till_date, db)
 
         # 海康威视 3
         till_date = "2017-01-18"
@@ -798,16 +804,26 @@ def work():
         stock_id  = "000627"
         CwH_work_one_day_stock(stock_id, till_date, db)
 
+        # 珠海港 2 TODO
+        till_date = "2017-04-10"
+        stock_id  = "000507"
+        CwH_work_one_day_stock(stock_id, till_date, db)
+
         # 东湖高新 8 TODO: high = vol*close_price
         till_date = "2017-07-05"
         stock_id  = "600133"
         CwH_work_one_day_stock(stock_id, till_date, db)
-        """
 
-        # 沧州大化 9 
+        # 沧州大化 9  TODO: fail: dynamic search
         till_date = "2017-07-10"
         stock_id  = "600230"
         CwH_work_one_day_stock(stock_id, till_date, db)
+
+        # 敦煌种业10  TODO
+        till_date = "2017-07-18"
+        stock_id  = "600354"
+        CwH_work_one_day_stock(stock_id, till_date, db)
+        """
 
     else:
         regression(db)
@@ -818,7 +834,7 @@ def work():
 #######################################################################
 
 def main():
-    sailog_set("CwH.log")
+    sailog_set("CwH3.log")
 
     log_info("let's begin here!")
 
