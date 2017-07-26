@@ -239,9 +239,9 @@ def cwha_analyzer(_stock_id, _k_date, _a_date, _b_date, _c_date, _d_date, _e_dat
         log_info("bingo: %s", _stock_id)
         rate_DE = h_E / l_D * 100.00
         len_DE  = i_E - i_D
-        rate_CE = h_E / h_E * 100.00
+        rate_CE = h_E / h_C * 100.00
         len_CD  = i_D - i_C
-        rate_AE = h_E / h_A * 100.00
+        rate_AE = h_A / h_E * 100.00
         len_AB  = i_B - i_A
         len_BC  = i_C - i_B
         len_AC  = i_C - i_A
@@ -262,9 +262,12 @@ def cwha_analyzer(_stock_id, _k_date, _a_date, _b_date, _c_date, _d_date, _e_dat
         log_info("data: %s: AE比率: %.2f",   _stock_id, rate_AE)
         log_info("data: %s: DE比率: %.2f",   _stock_id, rate_DE)
         log_info("data: %s: CE比率: %.2f",   _stock_id, rate_CE)
+        log_info("data: %s: B点量比: +%.2f", _stock_id, vr_B)
+        log_info("data: %s: D点量比: +%.2f", _stock_id, vr_D)
         log_info("data: %s: A点量比: +%.2f", _stock_id, vr_A) # TODO
         log_info("data: %s: C点量比: +%.2f", _stock_id, vr_C) # TODO
         log_info("data: %s: E点量比: +%.2f", _stock_id, vr_E) # TODO
+        log_info("data: %s: E点涨幅:  %.2f", _stock_id, rt_E)
 
         # A点附近最大成交量
         A1 = 4
@@ -279,7 +282,7 @@ def cwha_analyzer(_stock_id, _k_date, _a_date, _b_date, _c_date, _d_date, _e_dat
         log_info("data: %s: D点之前[%d]RPV比率: %.2f",
                 _stock_id, D2, D_rpv_rt)
 
-        # D点之前rpv
+        # B点方差最小的平均值
         B3 = 12
         B4 = 10
         B_mean, B_std, B_rel_date, B_rel_idx = cwha_devia(_my_df, _used_len, _b_date, B3, B4, _db)
@@ -287,7 +290,26 @@ def cwha_analyzer(_stock_id, _k_date, _a_date, _b_date, _c_date, _d_date, _e_dat
                 _stock_id, B3, B4, B_mean, B_std, B_rel_date)
 
         rate_BS = B_mean / l_B * 100.00
+        rate_AS = p_A / B_mean * 100.00
         log_info("data: %s: BS比率: %.2f",   _stock_id, rate_BS)
+        log_info("data: %s: AS比率: %.2f",   _stock_id, rate_AS)
+        # TODO: A点平均值
+
+        # E点突破天数
+        E_days, E_block_date = cwha_break_days(_my_df, _used_len, _e_date, h_E, _db)
+        log_info("data: %s: E突破: %d, %s",   _stock_id, E_days, E_block_date)
+
+        # C点之前rpv
+        C2 = 8
+        C_rpv_rt = cwha_rpv(_my_df, _used_len, _c_date, C2, _db)
+        log_info("data: %s: C点之前[%d]RPV比率: %.2f",
+                _stock_id, C2, C_rpv_rt)
+
+        # A点之前rpv
+        A2 = 8
+        A_rpv_rt = cwha_rpv(_my_df, _used_len, _a_date, A2, _db)
+        log_info("data: %s: A点之前[%d]RPV比率: %.2f",
+                _stock_id, A2, A_rpv_rt)
 
     else:
         log_info("error: not got all point")
@@ -402,7 +424,7 @@ def cwha_rpv(_detail_df, _used_len, _till, _n, _db):
         last_close_price = row['last']
         rate = (close_price - last_close_price) / last_close_price * 100
 
-        if idx >= start_idx and idx <= end_idx:
+        if idx > start_idx and idx <= end_idx:
             if rate > 0.0:
                 U_sum  += rate * vol
                 U_days += 1
@@ -489,6 +511,37 @@ def cwha_devia(_detail_df, _used_len, _date, _n1, _n2, _db):
     # log_debug("[%s]: %.2f, %.2f, %d", min_date, min_std, min_mean, min_idx)
 
     return min_mean, min_std, min_date, min_idx
+
+
+# E点往前突破天数
+#
+def cwha_break_days(_detail_df, _used_len, _date, _my_high, _db):
+
+    days = 0
+    last_date = ""
+
+    idx = 0
+    for row_index, row in _detail_df.iterrows():
+        pub_date         = row['pub_date']
+        close_price      = row['close_price']
+        high_price       = row['high_price']
+
+        if high_price >= _my_high:
+            days = 0
+            last_date = pub_date
+        else:
+            days = days + 1
+
+        if str(_date) == str(pub_date):
+            break
+
+        idx  = idx + 1
+
+    # log_info("date[%s] => idx[%d]", _date, idx)
+
+    # log_info("max vol: %.2f, v-rate: +%.2f%%, p-rate: %.2f%%", max_vol, rel_vr, rel_rt)
+
+    return days, last_date
 
 
 def cwha_exec_algo(_max_date, _detail_df, _db):
@@ -696,6 +749,7 @@ def cwha_format_ref(_stock_id, _detail_df):
 
     ref_set_tech5()
 
+    """
     log_debug("ref0:  [%.3f, %.3f] -- vol:[%.3f]", ref_open(0), ref_close(0), ref_vol(0))
     log_debug("ref1:  [%.3f, %.3f] -- vol:[%.3f]", ref_open(1), ref_close(1), ref_vol(1))
     log_debug("ref2:  [%.3f, %.3f] -- vol:[%.3f]", ref_open(2), ref_close(2), ref_vol(2))
@@ -707,6 +761,7 @@ def cwha_format_ref(_stock_id, _detail_df):
     log_debug("macd0: [%.3f] [%.3f], [%.3f]", ref_macd(0), ref_diff(0), ref_dea(0))
     log_debug("macd1: [%.3f] [%.3f], [%.3f]", ref_macd(1), ref_diff(1), ref_dea(1))
     log_debug("macd2: [%.3f] [%.3f], [%.3f]", ref_macd(2), ref_diff(2), ref_dea(2))
+    """
 
     return 0
 
@@ -871,15 +926,47 @@ def work():
     db = db_init()
 
     if sai_is_product_mode():
+
+        # 沧州大化 bingo
+        stock_id  = "600230"
         K_date = "2017-04-17"
         A_date = "2017-04-26"
         B_date = "2017-06-02"
         C_date = "2017-06-30"
         D_date = "2017-07-05"
         E_date = "2017-07-10"
+        cwha_work_one_day_stock(stock_id, K_date, A_date, B_date, C_date, D_date, E_date, db)
 
-        # 沧州大化
-        stock_id  = "600230"
+        """
+        """
+        # 敦煌种业
+        stock_id  = "600354"
+        K_date = "2017-04-25"
+        A_date = "2017-05-15" # high-price
+        B_date = "2017-06-02"
+        C_date = "2017-07-12"
+        D_date = "2017-07-17"
+        E_date = "2017-07-18"
+        cwha_work_one_day_stock(stock_id, K_date, A_date, B_date, C_date, D_date, E_date, db)
+
+        # 华资实业 bingo
+        stock_id  = "600191"
+        K_date = "2017-05-08"
+        A_date = "2017-05-16" # high-price
+        B_date = "2017-06-02"
+        C_date = "2017-06-26"
+        D_date = "2017-06-30"
+        E_date = "2017-07-05"
+        cwha_work_one_day_stock(stock_id, K_date, A_date, B_date, C_date, D_date, E_date, db)
+
+        # 晨鸣纸业
+        stock_id  = "000488"
+        K_date = "2017-03-30"
+        A_date = "2017-04-18" # high-price
+        B_date = "2017-05-11"
+        C_date = "2017-06-13"
+        D_date = "2017-06-19"
+        E_date = "2017-06-26"
         cwha_work_one_day_stock(stock_id, K_date, A_date, B_date, C_date, D_date, E_date, db)
 
     else:

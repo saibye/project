@@ -19,6 +19,10 @@ p1.py # 振幅，价格驱动，跌停开盘，最高接近涨停
 p2.py # 振幅，价格驱动，低开高走，涨停收盘
 p3.py # 振幅，价格驱动，低开高走 002584 - 2017-3-3
 
-cwh.py # cup with handle 2017-7-16
+sao.py  # 跌停扫货 # mail only dev 2017-7-24
+
+flag.py # 高窄旗 # disabled 2017-7-24
+
+cwh.py  # cup with handle 2017-7-16
 
 # README

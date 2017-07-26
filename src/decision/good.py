@@ -109,7 +109,7 @@ def xxx(_db):
     subject = "dd3-back20: %s" % (last_date)
     log_info("subject: \n%s", subject)
     log_info("content: \n%s", content)
-    saimail(subject, content)
+    saimail_dev(subject, content)
 
     return 0
 

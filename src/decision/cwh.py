@@ -834,7 +834,7 @@ def work():
 #######################################################################
 
 def main():
-    sailog_set("CwH3.log")
+    sailog_set("cwh.log")
 
     log_info("let's begin here!")
 

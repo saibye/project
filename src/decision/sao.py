@@ -117,7 +117,7 @@ def xxx(_db):
         log_info("mail: \n%s", content)
         subject = "跌停: %s" % (trade_date)
         if sai_is_product_mode():
-            saimail(subject, content)
+            saimail_dev(subject, content)
 
     return 0
 

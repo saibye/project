@@ -22,5 +22,6 @@ alias cdrt='cd ${HOME}/project/src/realtime'
 alias cdsd='cd ${HOME}/project/src/decision'
 alias cdsr='cd ${HOME}/project/src/report'
 alias cdsa='cd ${HOME}/project/src/analyzer'
+alias cdsh='cd ${HOME}/project/src/cwh'
 
 # dev.alias
