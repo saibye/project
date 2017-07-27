@@ -227,6 +227,7 @@ def cwha_analyzer(_stock_id, _k_date, _a_date, _b_date, _c_date, _d_date, _e_dat
             i_E = idx
             d_E = pub_date
             rt_E= rate
+            rt_E2= (h_E / last_close_price - 1) * 100.00
             vr_E= vr
             log_info("Data: %s-E: %s, high:%.2f, vol:%.2f, %d", _stock_id, pub_date, h_E, v_E, i_E)
 
@@ -268,12 +269,13 @@ def cwha_analyzer(_stock_id, _k_date, _a_date, _b_date, _c_date, _d_date, _e_dat
         log_info("data: %s: C点量比: +%.2f", _stock_id, vr_C) # TODO
         log_info("data: %s: E点量比: +%.2f", _stock_id, vr_E) # TODO
         log_info("data: %s: E点涨幅:  %.2f", _stock_id, rt_E)
+        log_info("data: %s: E点涨幅2: %.2f", _stock_id, rt_E2)
 
         # A点附近最大成交量
         A1 = 4
-        A_vol_max, A_rel_vr, A_rel_rt = cwha_max_vol(_my_df, _used_len, _a_date, A1, _db)
-        log_info("data: %s: A点附近[%d]最大成交量: %.2f, +%.2f%%, %.2f%%",
-                _stock_id, A1, A_vol_max, A_rel_vr, A_rel_rt)
+        A_vol_max, A_rel_vr, A_rel_rt, A_rel_rt2 = cwha_max_vol(_my_df, _used_len, _a_date, A1, _db)
+        log_info("data: %s: A点附近[%d]最大成交量: %.2f, +%.2f%%, %.2f%%, high:%.2f%%",
+                _stock_id, A1, A_vol_max, A_rel_vr, A_rel_rt, A_rel_rt2)
 
         # D点之前rpv
         D2 = 4
@@ -283,8 +285,8 @@ def cwha_analyzer(_stock_id, _k_date, _a_date, _b_date, _c_date, _d_date, _e_dat
                 _stock_id, D2, D_rpv_rt)
 
         # B点方差最小的平均值
-        B3 = 12
-        B4 = 10
+        B3 = 10
+        B4 = 5
         B_mean, B_std, B_rel_date, B_rel_idx = cwha_devia(_my_df, _used_len, _b_date, B3, B4, _db)
         log_info("data: %s: B点附近[%d]长度[%d]平均值: %.2f, 标准差: %.2f [%s]",
                 _stock_id, B3, B4, B_mean, B_std, B_rel_date)
@@ -310,6 +312,13 @@ def cwha_analyzer(_stock_id, _k_date, _a_date, _b_date, _c_date, _d_date, _e_dat
         A_rpv_rt = cwha_rpv(_my_df, _used_len, _a_date, A2, _db)
         log_info("data: %s: A点之前[%d]RPV比率: %.2f",
                 _stock_id, A2, A_rpv_rt)
+
+        # A点平均值
+        A_mean = cwha_mean(_my_df, _used_len, _a_date, 1, 1, _db)
+        log_info("A点附近[1]长度平均值: %.2f", A_mean)
+
+        rate_ABM= A_mean / B_mean * 100.00
+        log_info("data: %s: ABM比率: %.2f",   _stock_id, rate_ABM)
 
     else:
         log_info("error: not got all point")
@@ -357,10 +366,12 @@ def cwha_max_vol(_detail_df, _used_len, _date, _n, _db):
     for row_index, row in _detail_df.iterrows():
         TECH_IDX = _used_len - idx - 1
         close_price      = row['close_price']
+        high_price       = row['high_price']
         vol              = row['total']
         pub_date         = row['pub_date']
         last_close_price = row['last']
         rate = (close_price - last_close_price) / last_close_price * 100
+        rate2= (high_price - last_close_price) / last_close_price * 100
 
         if idx >= start_idx and idx < end_idx:
             # log_debug("[%s]: [%d, %d]: [%.2f, %.2f]", pub_date, idx, TECH_IDX, vol, ref_vma50(TECH_IDX))
@@ -373,6 +384,7 @@ def cwha_max_vol(_detail_df, _used_len, _date, _n, _db):
                 max_vol = vol
                 rel_vr  = vr
                 rel_rt  = rate
+                rel_rt2 = rate2
         else:
             pass
 
@@ -380,7 +392,7 @@ def cwha_max_vol(_detail_df, _used_len, _date, _n, _db):
 
     # log_info("max vol: %.2f, v-rate: +%.2f%%, p-rate: %.2f%%", max_vol, rel_vr, rel_rt)
 
-    return max_vol, rel_vr, rel_rt
+    return max_vol, rel_vr, rel_rt, rel_rt2
 
 # RPV
 # avg(+rate*vol)  / avg(-rate*vol)
@@ -463,6 +475,9 @@ def cwha_devia(_detail_df, _used_len, _date, _n1, _n2, _db):
     min_date = ""
     min_idx  = -1
 
+    start_idx2 = 0
+    end_idx2   = 0
+
     for row_index, row in _detail_df.iterrows():
         pub_date         = row['pub_date']
 
@@ -493,7 +508,11 @@ def cwha_devia(_detail_df, _used_len, _date, _n1, _n2, _db):
         rate = (close_price - last_close_price) / last_close_price * 100
 
         if idx >= start_idx and idx < end_idx:
-            s2 = s1[idx: idx+_n2]
+            start_idx2 = idx - _n2
+            end_idx2   = idx + _n2
+            if start_idx2 < 0 or end_idx2 > len(_detail_df):
+                continue
+            s2 = s1[start_idx2: end_idx2]
             # log_debug("[%s]:\n%s", pub_date, s2)
             std = s2.std()
             # log_debug("[%s]: std: %.2f, mean: %.2f", pub_date, std, s2.mean())
@@ -544,140 +563,39 @@ def cwha_break_days(_detail_df, _used_len, _date, _my_high, _db):
     return days, last_date
 
 
-def cwha_exec_algo(_max_date, _detail_df, _db):
+# A点附近平均值
+# A-frame
+def cwha_mean(_detail_df, _used_len, _date, _n1, _n2, _db):
 
-    # 涨幅
-    rate = (ref_close(0) - ref_close(1)) / ref_close(1) * 100
-    # log_debug("涨幅: %.2f", rate)
+    idx = 0
+    my_mean  = 0.0
 
-    # 柱体
-    zt = (ref_close(0) - ref_open(0)) / ref_close(1) * 100
-    # log_debug("柱体: %.2f", zt) 
-
-    # 成交量比1: vol/ref_vma5(3)
-    vol_rate1 = ref_vol(0) / ref_vma5(3)
-    # log_debug("当前量比1: %.3f", vol_rate1)
-
-    # 成交量比2
-    vol_rate2 = ref_vol(0) / ref_vma10(5)
-    # log_debug("当前量比2: %.3f", vol_rate2)
-
-    # ma60 bigger
-    ma60_bigger = ref_ma60(0) >= ref_ma60(10) and ref_ma60(5) >= ref_ma60(15)
-
-    # ma10 diviate
-    ma10_divia =  (ref_open(0) - ref_ma10(0)) / ref_ma10(0) * 100
-
-    # today
-    this_close = ref_close(0)
-    this_vol   = ref_vol(0)
-
-    # 收盘价突破
-    # log_debug("close: [%.2f]", this_close)
-    days1 = get_cwha_max_price_days(_detail_df,  this_close)
-    # log_debug("价格突破天数days1: %d", days1)
-
-    # 收盘价突破 -- 容错
-    days2 = get_cwha_almost_max_price_days(_detail_df,  this_close)
-    # log_debug("价格突破天数days2: %d", days2)
-
-    # 成交量突破
-    # log_debug("volume: [%.2f]", this_vol)
-    days3 = get_cwha_max_volume_days(_detail_df, this_vol)
-    # log_debug("成交量突破天数days3: %d", days3)
-
-    # 阳柱成交量大 sum(red) / sum(green) > 2.5
-    n = 30
-    sum1, sum2 = sum_cwha_detail(_detail_df, n, _db)
-    # log_debug("red-sum: %.3f", sum1)
-    # log_debug("gre-sum: %.3f", sum2)
-    vol_rate3 = -1
-    if sum1 > 0 and sum2 > 0:
-        vol_rate3 = sum1 / sum2
-        # log_debug("合计量比vol_rate3: %.3f", vol_rate3)
-
-    return rate, zt, days1, days2, days3, vol_rate1, vol_rate2, vol_rate3, ma60_bigger, ma10_divia
-
-
-def sum_cwha_detail(_detail_df, _days, _db):
-
-    counter = 0
-    sum1 = 0.0
-    sum2 = 0.0
     for row_index, row in _detail_df.iterrows():
-        close_price = row['close_price']
-        open_price  = row['open_price']
-        vol         = row['total']
+        pub_date         = row['pub_date']
 
-        if close_price > open_price:
-            # log_debug("<%s> red: %.3f", row_index, vol)
-            sum1 += vol
-        elif close_price < open_price:
-            # log_debug("<%s> gre: %.3f", row_index, vol)
-            sum2 += vol
-        else:
-            pass
-        counter = counter + 1
-        if counter >= _days:
-            # log_debug("counter: reach: %d", _days)
+        if str(_date) == str(pub_date):
             break
 
-    return sum1, sum2
+        idx  = idx + 1
 
-"""
-价格突破前高
-"""
-def get_cwha_max_price_days(_detail_df, _max_price):
-    counter = 0
-    for row_index, row in _detail_df.iterrows():
-        if counter == 0:
-            counter = 1
-            continue
+    # log_info("date[%s] => idx[%d]", _date, idx)
+    start_idx = idx - _n1
+    end_idx   = idx + _n2+1
+    # log_info("start:[%d] => end[%d]", start_idx, end_idx)
 
-        close_price = row['close_price']
-        if close_price <= _max_price:
-            counter += 1
-            # log_debug("[%s][%.3f] < [%.3f]", row['pub_date'], close_price, _max_price)
-        else:
-            break
-    return counter
+    if start_idx < 0 or end_idx > len(_detail_df):
+        log_error("error: exceeds: %d, %d", start_idx, end_idx)
+        return -1
 
-"""
-价格突破前高 -- 容错
-"""
-def get_cwha_almost_max_price_days(_detail_df, _max_price):
-    counter = 0
-    for row_index, row in _detail_df.iterrows():
-        if counter == 0:
-            counter = 1
-            continue
+    s1 = _detail_df['close_price']
 
-        close_price = row['close_price']
-        if close_price <= _max_price*1.01:
-            counter += 1
-            # log_debug("[%s][%.3f] < [%.3f]", row['pub_date'], close_price, _max_price)
-        else:
-            break
-    return counter
+    s2 = s1[start_idx: end_idx]
+    # log_debug("series: %s", s2)
+    my_mean = s2.mean()
 
-"""
-量突破前高
-"""
-def get_cwha_max_volume_days(_detail_df, _max_volume):
-    counter = 0
-    for row_index, row in _detail_df.iterrows():
-        if counter == 0:
-            counter = 1
-            continue
+    # log_debug("[%s]: %.2f, %.2f, %d", min_date, min_std, min_mean, min_idx)
 
-        volume = row['total']
-        if volume < _max_volume:
-            counter += 1
-            # log_debug("[%s][%.3f] < [%.3f]", row['pub_date'], close_price, _max_price)
-        else:
-            break
-    return counter
-
+    return my_mean
 
 
 def cwha_dynamic_calc_tech(_df):
@@ -959,7 +877,7 @@ def work():
         E_date = "2017-07-05"
         cwha_work_one_day_stock(stock_id, K_date, A_date, B_date, C_date, D_date, E_date, db)
 
-        # 晨鸣纸业
+        # 晨鸣纸业 not so match
         stock_id  = "000488"
         K_date = "2017-03-30"
         A_date = "2017-04-18" # high-price

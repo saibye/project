@@ -129,8 +129,8 @@ def CwH_analyzer(_stock_id, _trade_date, _my_df, _used_len, _db):
             vr = (vol / ref_vma50(TECH_IDX) - 1) * 100
         else:
             vr = 0
-        log_debug("--------------------%s-------------------", pub_date)
 
+        # log_debug("--------------------%s-------------------", pub_date)
 
         if vol > v_max:
             v_max  = vol
@@ -146,7 +146,7 @@ def CwH_analyzer(_stock_id, _trade_date, _my_df, _used_len, _db):
 
         # 寻找A点：阳柱+上涨
         if not got_A:
-            log_debug("searching A-point: %.2f", vr)
+            # log_debug("searching A-point: %.2f", vr)
             if zt > 0 and rate > 0 and vr > VR1 \
                 and close_price > ref_ma10(TECH_IDX) \
                 and close_price > ref_ma20(TECH_IDX):
@@ -182,7 +182,7 @@ def CwH_analyzer(_stock_id, _trade_date, _my_df, _used_len, _db):
 
         # 确定A点, 根据回撤Y1幅度
         if not got_A and B_updated:
-            log_debug("尝试确定A点")
+            # log_debug("尝试确定A点")
             if p_B > 0 and p_A > 0:
                 y1 = (p_B / p_A - 1) * 100.00
                 log_info("y1: %s: %.2f, %.2f, %.2f", pub_date, p_B, p_A, y1)
@@ -199,14 +199,15 @@ def CwH_analyzer(_stock_id, _trade_date, _my_df, _used_len, _db):
                     vr_B= vr
                     log_info("B-born: %s: 收:%.2f", pub_date, p_B)
                 else:
-                    log_info("回撤不够: %.2f", y1)
+                    # log_info("回撤不够: %.2f", y1)
+                    pass
         else:
             # log_debug("A点已定")
             pass
 
         if got_A and not got_B and i_max > i_A:
             u_A = (c_max / p_A - 1) * 100
-            log_debug("u_A: %.2f", u_A)
+            # log_debug("u_A: %.2f", u_A)
             if u_A > 5:
                 log_info("error: DIV1 %s, %.2f", _stock_id, u_A)
                 return -1
@@ -214,7 +215,7 @@ def CwH_analyzer(_stock_id, _trade_date, _my_df, _used_len, _db):
         # 寻找C点
         C_updated = False
         if not got_C and got_A:
-            log_debug("searching C-point")
+            # log_debug("searching C-point")
             if zt > 0 and rate > 0:
                 # 最大量，最高点
                 if vol > v_C: # price?
@@ -277,7 +278,7 @@ def CwH_analyzer(_stock_id, _trade_date, _my_df, _used_len, _db):
         # 确定C点
         # 根据回撤Y2幅度
         if not got_C and got_B and D_updated:
-            log_debug("尝试确定C点")
+            # log_debug("尝试确定C点")
             if p_D > 0 and p_C > 0:
                 y2 = (p_D / p_C - 1) * 100.00
                 CD = idx - i_C
@@ -384,7 +385,7 @@ def CwH_analyzer(_stock_id, _trade_date, _my_df, _used_len, _db):
 
 
     if to_mail:
-        subject = "CwH: %s -- %s" % (_stock_id, _trade_date)
+        subject = "CwH0: %s -- %s" % (_stock_id, _trade_date)
         log_info(subject)
         log_info("mail:\n%s", content1)
         if sai_is_product_mode():
@@ -602,6 +603,7 @@ def CwH_format_ref(_stock_id, _detail_df):
 
     ref_set_tech5()
 
+    """
     log_debug("ref0:  [%.3f, %.3f] -- vol:[%.3f]", ref_open(0), ref_close(0), ref_vol(0))
     log_debug("ref1:  [%.3f, %.3f] -- vol:[%.3f]", ref_open(1), ref_close(1), ref_vol(1))
     log_debug("ref2:  [%.3f, %.3f] -- vol:[%.3f]", ref_open(2), ref_close(2), ref_vol(2))
@@ -613,6 +615,7 @@ def CwH_format_ref(_stock_id, _detail_df):
     log_debug("macd0: [%.3f] [%.3f], [%.3f]", ref_macd(0), ref_diff(0), ref_dea(0))
     log_debug("macd1: [%.3f] [%.3f], [%.3f]", ref_macd(1), ref_diff(1), ref_dea(1))
     log_debug("macd2: [%.3f] [%.3f], [%.3f]", ref_macd(2), ref_diff(2), ref_dea(2))
+    """
 
     return 0
 
