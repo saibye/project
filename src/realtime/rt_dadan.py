@@ -323,7 +323,7 @@ def rt_dadan_rank_one(_stock_id, _dd_date, _db):
         subject = "rank: %d 净流入 %s (%.2f%%)" % (rank, _stock_id, get_chg_rate(_stock_id))
         content += get_basic_info_all(_stock_id, _db)
         log_info("nice: %s, %s", subject, content)
-        saimail_dev(subject, content)
+        # saimail_dev(subject, content)
 
     buy, sell, mid = get_buy_sell_sum2(df)
 

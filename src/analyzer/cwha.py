@@ -18,8 +18,8 @@ from saitech import *
 #
 #######################################################################
 
-g_detail_fetched = 120
-g_detail_used    = 70
+g_detail_fetched = 150
+g_detail_used    = 100
 
 
 def cwha_analyzer(_stock_id, _k_date, _a_date, _b_date, _c_date, _d_date, _e_date, _my_df, _used_len, _db):
@@ -277,6 +277,12 @@ def cwha_analyzer(_stock_id, _k_date, _a_date, _b_date, _c_date, _d_date, _e_dat
         log_info("data: %s: A点附近[%d]最大成交量: %.2f, +%.2f%%, %.2f%%, high:%.2f%%",
                 _stock_id, A1, A_vol_max, A_rel_vr, A_rel_rt, A_rel_rt2)
 
+        # C点附近最大成交量
+        C1 = 4
+        C_vol_max, C_rel_vr, C_rel_rt, C_rel_rt2 = cwha_max_vol(_my_df, _used_len, _c_date, C1, _db)
+        log_info("data: %s: C点附近[%d]最大成交量: %.2f, +%.2f%%, %.2f%%, high:%.2f%%",
+                _stock_id, C1, C_vol_max, C_rel_vr, C_rel_rt, C_rel_rt2)
+
         # D点之前rpv
         D2 = 4
         D2 = 20
@@ -297,9 +303,13 @@ def cwha_analyzer(_stock_id, _k_date, _a_date, _b_date, _c_date, _d_date, _e_dat
         log_info("data: %s: AS比率: %.2f",   _stock_id, rate_AS)
         # TODO: A点平均值
 
-        # E点突破天数
-        E_days, E_block_date = cwha_break_days(_my_df, _used_len, _e_date, h_E, _db)
-        log_info("data: %s: E突破: %d, %s",   _stock_id, E_days, E_block_date)
+        # E点最高价突破天数
+        E_days, E_block_date = cwha_price_break_days(_my_df, _used_len, _e_date, h_E, _db)
+        log_info("data: %s: E突破: %d, %s, %.2f(high-price)",   _stock_id, E_days, E_block_date, h_E)
+
+        # E点成交量突破天数
+        E_days2, E_block_date2 = cwha_vol_break_days(_my_df, _used_len, _e_date, v_E, _db)
+        log_info("data: %s: E突破2:%d, %s, %.2f(vol)",   _stock_id, E_days2, E_block_date2, v_E)
 
         # C点之前rpv
         C2 = 8
@@ -312,6 +322,12 @@ def cwha_analyzer(_stock_id, _k_date, _a_date, _b_date, _c_date, _d_date, _e_dat
         A_rpv_rt = cwha_rpv(_my_df, _used_len, _a_date, A2, _db)
         log_info("data: %s: A点之前[%d]RPV比率: %.2f",
                 _stock_id, A2, A_rpv_rt)
+
+        # E点之前rpv2
+        E3 = i_E - i_K
+        E_rpv_rt = cwha_rpv(_my_df, _used_len, _e_date, E3, _db)
+        log_info("data: %s: E点之前[%d]RPV比率: %.2f",
+                _stock_id, E3, E_rpv_rt)
 
         # A点平均值
         A_mean = cwha_mean(_my_df, _used_len, _a_date, 1, 1, _db)
@@ -532,9 +548,10 @@ def cwha_devia(_detail_df, _used_len, _date, _n1, _n2, _db):
     return min_mean, min_std, min_date, min_idx
 
 
+# 最高价
 # E点往前突破天数
 #
-def cwha_break_days(_detail_df, _used_len, _date, _my_high, _db):
+def cwha_price_break_days(_detail_df, _used_len, _date, _my_high, _db):
 
     days = 0
     last_date = ""
@@ -545,11 +562,49 @@ def cwha_break_days(_detail_df, _used_len, _date, _my_high, _db):
         close_price      = row['close_price']
         high_price       = row['high_price']
 
-        if high_price >= _my_high:
+        # log_debug("%s => %.2f", pub_date, high_price)
+
+        if high_price > _my_high:
             days = 0
             last_date = pub_date
         else:
             days = days + 1
+            # log_debug("add: %d", days)
+
+        if str(_date) == str(pub_date):
+            break
+
+        idx  = idx + 1
+
+    # log_info("date[%s] => idx[%d]", _date, idx)
+
+    # log_info("max vol: %.2f, v-rate: +%.2f%%, p-rate: %.2f%%", max_vol, rel_vr, rel_rt)
+
+    return days, last_date
+
+
+# 成交量
+# E点往前突破天数
+#
+def cwha_vol_break_days(_detail_df, _used_len, _date, _my_high_vol, _db):
+
+    days = 0
+    last_date = ""
+
+    idx = 0
+    for row_index, row in _detail_df.iterrows():
+        pub_date         = row['pub_date']
+        close_price      = row['close_price']
+        vol              = row['total']
+
+        # log_debug("%s => %.2f", pub_date, high_price)
+
+        if vol > _my_high_vol:
+            days = 0
+            last_date = pub_date
+        else:
+            days = days + 1
+            # log_debug("add: %d", days)
 
         if str(_date) == str(pub_date):
             break
@@ -887,6 +942,78 @@ def work():
         E_date = "2017-06-26"
         cwha_work_one_day_stock(stock_id, K_date, A_date, B_date, C_date, D_date, E_date, db)
 
+
+        # 方大碳素 VAR
+        stock_id  = "600516"
+        K_date = "2017-02-28"
+        A_date = "2017-03-03"
+        B_date = "2017-04-19"
+        C_date = "2017-05-04"
+        D_date = "2017-05-09"
+        E_date = "2017-05-11"
+        cwha_work_one_day_stock(stock_id, K_date, A_date, B_date, C_date, D_date, E_date, db)
+
+
+        # 洛阳钼业
+        stock_id  = "603993"
+        K_date = "2017-03-30"
+        A_date = "2017-04-07"
+        B_date = "2017-06-01"
+        C_date = "2017-06-16"
+        D_date = "2017-06-23"
+        E_date = "2017-07-05"
+        cwha_work_one_day_stock(stock_id, K_date, A_date, B_date, C_date, D_date, E_date, db)
+
+        # 东湖高新
+        stock_id  = "600133"
+        K_date = "2017-05-05"
+        A_date = "2017-05-15"
+        B_date = "2017-06-02"
+        C_date = "2017-07-05"
+        D_date = "2017-07-12"
+        E_date = "2017-07-17"
+        cwha_work_one_day_stock(stock_id, K_date, A_date, B_date, C_date, D_date, E_date, db)
+
+        # 天茂集团
+        stock_id  = "600133"
+        K_date = "2017-05-09"
+        A_date = "2017-05-15"
+        B_date = "2017-06-01"
+        C_date = "2017-06-26"
+        D_date = "2017-06-29"
+        E_date = "2017-07-06"
+        cwha_work_one_day_stock(stock_id, K_date, A_date, B_date, C_date, D_date, E_date, db)
+
+        # 晨鸣纸业
+        stock_id  = "000488"
+        K_date = "2017-03-31"
+        A_date = "2017-04-18"
+        B_date = "2017-05-11"
+        C_date = "2017-06-13"
+        D_date = "2017-06-19"
+        E_date = "2017-06-26"
+        cwha_work_one_day_stock(stock_id, K_date, A_date, B_date, C_date, D_date, E_date, db)
+
+        # 凌钢股份
+        stock_id  = "600231"
+        K_date = "2017-03-29"
+        A_date = "2017-04-05"
+        B_date = "2017-05-11"
+        C_date = "2017-07-10"
+        D_date = "2017-07-17"
+        E_date = "2017-07-19"
+        cwha_work_one_day_stock(stock_id, K_date, A_date, B_date, C_date, D_date, E_date, db)
+
+        # 南钢股份
+        stock_id  = "600282"
+        K_date = "2017-03-30"
+        A_date = "2017-04-07"
+        B_date = "2017-05-16"
+        C_date = "2017-07-10"
+        D_date = "2017-07-12"
+        E_date = "2017-07-18"
+        cwha_work_one_day_stock(stock_id, K_date, A_date, B_date, C_date, D_date, E_date, db)
+
     else:
         regression(db)
 
@@ -896,7 +1023,7 @@ def work():
 #######################################################################
 
 def main():
-    sailog_set("cwha3.log")
+    sailog_set("cwha1.log")
 
     log_info("let's begin here!")
 

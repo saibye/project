@@ -335,7 +335,7 @@ def work_one(_trade_date, _db):
         log_info("\n%s", content1)
         if sai_is_product_mode():
             mailed = 1
-            saimail(subject,  content1)
+            saimail_dev(subject,  content1)
     else:
         log_info("sorry1: %s", _trade_date)
 
@@ -345,7 +345,7 @@ def work_one(_trade_date, _db):
         log_info("\n%s", content2)
         if sai_is_product_mode():
             mailed = 1
-            saimail(subject,  content2)
+            saimail_dev(subject,  content2)
     else:
         log_info("sorry1: %s", _trade_date)
 
@@ -355,7 +355,7 @@ def work_one(_trade_date, _db):
         log_info("\n%s", content3)
         if sai_is_product_mode():
             mailed = 1
-            saimail(subject,  content3)
+            saimail_dev(subject,  content3)
     else:
         log_info("sorry1: %s", _trade_date)
 
