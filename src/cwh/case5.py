@@ -127,7 +127,7 @@ def CupWithHandle_analyzer5(_stock_id, _trade_date, _my_df, _used_len, _db):
     # D点指标
     LEN_CD_MIN = 2
     RATE_ED_MIN = 8  # n%
-    RATE_ED_MAX = 15 # n%
+    RATE_ED_MAX = 16 # n%
     RATE_ED_MAX2= 32 # n%
 
     # A点指标

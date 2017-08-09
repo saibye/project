@@ -46,6 +46,7 @@ def k_day_one_to_db(_stock_id, _df, _start_date, _db):
 close_price = round(close_price * %.3f, 2), \
 low_price   = round(low_price * %.3f,   2), \
 high_price  = round(high_price * %.3f,  2), \
+last_close_price = round(last_close_price * %.3f, 2), \
 deal_total_count = round(deal_total_count / %.3f, 0) \
 where stock_id = '%s' \
 and pub_date <= '%s'" % \
@@ -247,6 +248,11 @@ def k_day_one_check_bad(_stock_id, _db):
 def work():
     db = db_init()
 
+    """
+    stock_id = "601899"
+    log_debug("stock: %s", stock_id)
+    k_day_one_stock(stock_id, db)
+    """
 
     # step1: get from web
     # stocks = get_stock_list_df_tu() # not real time 2017-5-31
@@ -275,14 +281,6 @@ def work():
 
     log_info("save-all costs %d us", get_micro_second()-begin)
 
-    """
-    stock_id = "000002"
-    stock_id = "000420"
-    stock_id = "002780"
-    log_debug("stock: %s", stock_id)
-
-    k_day_one_stock(stock_id, db)
-    """
 
     """
     stock_id = "700002"

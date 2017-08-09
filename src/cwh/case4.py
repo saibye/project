@@ -125,12 +125,12 @@ def CupWithHandle_analyzer4(_stock_id, _trade_date, _my_df, _used_len, _db):
     # D点指标
     LEN_CD_MIN = 2
     RATE_ED_MIN = 8  # n%
-    RATE_ED_MAX = 15 # n%
+    RATE_ED_MAX = 16 # n%
 
     # A点指标
     A_VR   = 0 # XXX
     A_DAYS1 = 5
-    A_DAYS2 = 45
+    A_DAYS2 = 65
     # A_DAYS2 = 80 # new
     AA_DAYS3 = 4 # before
     AA_DAYS4 = 0 # after
@@ -310,6 +310,11 @@ def CupWithHandle_analyzer4(_stock_id, _trade_date, _my_df, _used_len, _db):
                 to_get_A = False
                 to_get_B = True
                 # warn: not make: got_A
+            elif E_break_days >= 90 and AA_vr > 40 and AA_rt > -2:
+                log_info("nice: A点即将确认2: max-vr: %.2f, len-AC: %d, rate-AE: %.2f", AA_vr, len_AC, rate_AE)
+                to_get_A = False
+                to_get_B = True
+                # warn: not make: got_A
             else:
                 log_debug("A点附近vr不满足: +%.2f, %.2f", AA_vr, AA_rt)
                 return 1
@@ -324,7 +329,7 @@ def CupWithHandle_analyzer4(_stock_id, _trade_date, _my_df, _used_len, _db):
             len_AB  = i_A - i_B
             log_info("rate-AB: %.2f%%, len-AB: %d", rate_AB, len_AB)
 
-            if rate_AB > 10 and rate_AB < 35 and len_AB >= 10:
+            if rate_AB > 10 and rate_AB < 38 and len_AB >= 10:
                 log_info("nice: 即将B点确认: %s, rate-AB:%.2f, len:%d", d_B, rate_AB, len_AB)
             else:
                 log_debug("B-point not match")
@@ -349,7 +354,7 @@ def CupWithHandle_analyzer4(_stock_id, _trade_date, _my_df, _used_len, _db):
             rate_SB = (B_mean / l_B - 1) * 100.00
             log_info("rate-AS: %.2f%%, rate-SB: %.2f%%", rate_ABM, rate_SB)
 
-            if B_std <= 0.20 and rate_ABM < 24 and rate_ABM > 5:
+            if B_std <= 0.20 and rate_ABM < 29 and rate_ABM > 5:
                 log_info("nice: B点确认: %s, 方差: %.2f, rate-ABM: %.2f", d_B, B_std, rate_ABM)
                 to_get_K = True
                 to_get_B = False

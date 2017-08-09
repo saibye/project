@@ -19,6 +19,8 @@ from case2   import *
 from case3   import *
 from case4   import *
 from case5   import *
+from case6   import *
+from case7   import *
 
 #######################################################################
 #
@@ -97,6 +99,20 @@ def CupWithHandle_work_one_day_stock(_stock_id, _till,  _db):
     rv = CupWithHandle_analyzer5(_stock_id, _till, my_df, used_len, _db)
     if rv == 0:
         log_info("nice5: %s", _stock_id)
+        return 0
+    log_debug("-------------------------------------------------")
+
+    # case6
+    rv = CupWithHandle_analyzer6(_stock_id, _till, my_df, used_len, _db)
+    if rv == 0:
+        log_info("nice6: %s", _stock_id)
+        return 0
+    log_debug("-------------------------------------------------")
+
+    # case7
+    rv = CupWithHandle_analyzer7(_stock_id, _till, my_df, used_len, _db)
+    if rv == 0:
+        log_info("nice7: %s", _stock_id)
         return 0
     log_debug("-------------------------------------------------")
 
@@ -187,8 +203,8 @@ def regression(_db):
     days = 30
 
     #
-    max_date = "2017-08-03"
-    days = 30
+    max_date = "2017-08-08"
+    days = 10
 
     log_info("regress")
 
@@ -288,6 +304,21 @@ def work():
         till_date = "2017-07-31"
         stock_id  = "000761"
         CupWithHandle_work_one_day_stock(stock_id, till_date, db)
+
+        # 中孚实业
+        till_date = "2017-07-31"
+        stock_id  = "600595"
+        CupWithHandle_work_one_day_stock(stock_id, till_date, db)
+
+        # 紫金矿业
+        till_date = "2017-07-26"
+        stock_id  = "601899"
+        CupWithHandle_work_one_day_stock(stock_id, till_date, db)
+
+        # 怡球资源
+        till_date = "2017-07-31"
+        stock_id  = "601388"
+        CupWithHandle_work_one_day_stock(stock_id, till_date, db)
         """
 
     else:
@@ -299,7 +330,7 @@ def work():
 #######################################################################
 
 def main():
-    sailog_set("CupWithHandle0.log")
+    sailog_set("CupWithHandle1.log")
 
     log_info("let's begin here!")
 

@@ -10,6 +10,7 @@ alias cdsb='cd ${HOME}/project/sbin'
 alias cdat='cd ${HOME}/project/auto'
 
 alias gitp='git push origin master'
+alias bkdb='mysqldump -uUser -pPass  tu | gzip > m.gz'
 
 alias cdsql='cd ${HOME}/project/sql'
 
