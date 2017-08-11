@@ -16,7 +16,7 @@ from saitu   import *
 
 #######################################################################
 
-def k_day_one_to_db(_stock_id, _df, _start_date, _db):
+def k_index_day_one_to_db(_stock_id, _df, _start_date, _db):
 
     dt = get_today()
     tm = get_time()
@@ -42,7 +42,7 @@ def k_day_one_to_db(_stock_id, _df, _start_date, _db):
             log_debug("[%s, %s] no need to fuquan", new_close_price, tbl_close_price)
         else:
             log_debug("warn! fuquan, rate: %.3f", rate)
-            sql = "update tbl_day set open_price = round(open_price * %.3f, 2), \
+            sql = "update tbl_index_day set open_price = round(open_price * %.3f, 2), \
 close_price = round(close_price * %.3f, 2), \
 low_price   = round(low_price * %.3f,   2), \
 high_price  = round(high_price * %.3f,  2), \
@@ -69,7 +69,7 @@ and pub_date <= '%s'" % \
         counter = counter + 1
 
         # 前复权
-        sql = "insert into tbl_day \
+        sql = "insert into tbl_index_day \
 (pub_date, stock_id, stock_loc, \
 open_price, high_price, close_price, low_price, \
 last_close_price, \
@@ -98,8 +98,11 @@ values ('%s', '%s', '%s',  \
     return 0
 
 
-def k_day_get_max_date(_stock_id, _db):
-    df = get_max_pub_date_kday(_stock_id, _db)
+
+def k_index_day_get_max_date(_stock_id, _db):
+    sql = "select max(pub_date) pub_date from tbl_index_day where stock_id='%s'" % _stock_id
+
+    df = pd.read_sql_query(sql, _db);
 
     if df is None :
         log_error("warn: stock %s max-pub-date is None, next", _stock_id)
@@ -118,18 +121,17 @@ def k_day_get_max_date(_stock_id, _db):
     return max_date
 
 
-def k_day_one_stock(_stock_id, _db):
-    log_info("k_day_one_stock begin")
+def k_index_day_one_stock(_stock_id, _db):
+    log_info("k_index_day_one_stock begin")
 
     # get max-date from table, as start date
-    max_date = k_day_get_max_date(_stock_id, _db)
+    max_date = k_index_day_get_max_date(_stock_id, _db)
     end_date = get_date_by(0)
 
     log_debug("[%s, %s]", max_date, end_date)
 
-    # qfq
+    #
     if max_date is None:
-        start_date = '2017-01-03'
         start_date = '2016-01-01'
         log_debug("it's first time: [%s]", _stock_id)
     else:
@@ -142,7 +144,7 @@ def k_day_one_stock(_stock_id, _db):
     begin = get_micro_second()
 
     try:
-        df = ts.get_k_data(_stock_id, autype='qfq', start=start_date, end=end_date)
+        df = ts.get_k_data(_stock_id, index=True, start=start_date, end=end_date)
         # df = ts.get_h_data(_stock_id, autype='qfq', start=start_date, end=end_date, retry_count=5, pause=6)
         # df = ts.get_h_data(_stock_id, start='2016-08-20', end='2016-10-30')
         # df = ts.get_h_data(_stock_id, autype='qfq')
@@ -168,80 +170,14 @@ def k_day_one_stock(_stock_id, _db):
 
     begin = get_micro_second()
 
-    k_day_one_to_db(_stock_id, df, max_date, _db)
+    k_index_day_one_to_db(_stock_id, df, max_date, _db)
 
     log_info("one_to_db costs %d us", get_micro_second() - begin)
 
-    log_info("function k_day_one_stock end")
+    log_info("function k_index_day_one_stock end")
 
     return 
 
-
-
-def k_day_one_check_bad(_stock_id, _db):
-    is_bad = False
-
-    # log_info("k_day_one_check begin")
-
-    sql = "select pub_date, close_price from tbl_day where stock_id='%s' order by pub_date" % _stock_id
-    # log_debug("%s", sql)
-
-    df = pd.read_sql_query(sql, _db);
-    if df is None :
-        log_error("warn: stock %s is None, next", _stock_id)
-        return False
-
-    if df.empty:
-        log_error("warn: stock %s is empty, return", _stock_id)
-        return False
-
-    if len(df) <= 2:
-        log_error("warn: stock %s is short, next", _stock_id)
-        return False
-
-    counter = 0
-    rate = 0
-    this_close = 0
-    last_close = 0
-    for row_index, row in df.iterrows():
-        this_close = row['close_price']
-        pub_date   = row['pub_date']
-
-        if this_close <= 0:
-            log_error("error: close data %.2f", this_close)
-            is_bad = True
-            break
-
-        if counter > 0 and last_close > 0:
-            rate = abs(this_close - last_close) / last_close * 100
-            if rate > 11:
-                log_error("bad: %s - %s - %.2f", pub_date, _stock_id, rate)
-                log_error("   : %s", sql)
-                is_bad = True
-                break
-
-        counter = counter + 1
-        last_close = this_close
-
-    if is_bad:
-        log_info("delete: %s is bad, let's clear data", _stock_id)
-
-        #
-        sql = "delete from tbl_day where stock_id = '%s'" % (_stock_id)
-        log_debug("day sql: [%s]", sql)
-        rv = sql_to_db(sql, _db)
-
-        # add tbl_30min 2017-6-18
-        sql = "delete from tbl_30min where stock_id = '%s'" % (_stock_id)
-        log_debug("30min sql: [%s]", sql)
-        rv = sql_to_db(sql, _db)
-
-        # add tbl_week 2017-7-9
-        sql = "delete from tbl_week where stock_id = '%s'" % (_stock_id)
-        log_debug("week sql: [%s]", sql)
-        rv = sql_to_db(sql, _db)
-
-    return is_bad 
 
 
 def work():
@@ -250,42 +186,24 @@ def work():
     """
     stock_id = "601899"
     log_debug("stock: %s", stock_id)
-    k_day_one_stock(stock_id, db)
+    k_index_day_one_stock(stock_id, db)
     """
 
     # step1: get from web
-    # stocks = get_stock_list_df_tu() # not real time 2017-5-31
-
-    stocks = get_stock_quotation() # bug only 100 rows 2017-6-7 -- fixed by upgrade 2017-7-5
-
-    # TODO: TMP 2017-6-7
-    # table = "tbl_day"
-    # stocks = get_stock_list_table(table, db)
+    stocks = ts.get_index()
 
     # step2: to db
     begin = get_micro_second()
 
     # to db
     for row_index, row in stocks.iterrows():
-        stock_id = row_index
+        stock_id = row['code']
         log_debug("stock: %s", stock_id)
 
-        # check bad data
-        # stock_id = "002837"
-        k_day_one_check_bad(stock_id, db)
-        # break
-
         # import to DB
-        k_day_one_stock(stock_id, db)
+        k_index_day_one_stock(stock_id, db)
 
     log_info("save-all costs %d us", get_micro_second()-begin)
-
-
-    """
-    stock_id = "700002"
-    start = k_day_get_max_date(stock_id, db);
-    log_debug("start: [%s]", start);
-    """
 
     db_end(db)
 
@@ -293,7 +211,7 @@ def work():
 #######################################################################
 
 def main():
-    sailog_set("kday0.log")
+    sailog_set("k_index_day.log")
 
     log_info("let's begin here!")
 
@@ -310,9 +228,8 @@ def main():
     return
 
 main()
-exit()
 
 #######################################################################
 
 
-# k_day.py
+# k_index_day.py

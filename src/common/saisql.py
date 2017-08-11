@@ -523,6 +523,31 @@ def is_ST(_stock_id):
 
     return 0
 
+
+"""
+2017/8/12
+最后一个交易日期
+"""
+def get_newest_index_trade_date(_db):
+    sql = "select max(pub_date) pub_date from tbl_index_day"
+
+    df = pd.read_sql_query(sql, _db);
+    if df is None :
+        log_error("warn: stock %s last-trade-date is None, next", _stock_id)
+        return None
+
+    if df.empty:
+        log_error("warn: stock %s last-trade-date is empty, next", _stock_id)
+        return None
+
+    newest_date = df.iloc[0, 0]
+
+    if newest_date is not None:
+        newest_date = str(newest_date)
+        log_info("newest trade date is %s", newest_date)
+
+    return newest_date
+
 #######################################################################
 if __name__=="__main__":
     sailog_set("saisql.log")

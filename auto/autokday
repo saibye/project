@@ -24,6 +24,11 @@ exec 1>&3
 exec 2>&4
 
 
+# PRE  of day 2017-8-11
+# 0. get  k-day data
+cd ${PHOME}/src/dayend && time python  k_index_day.py
+cd ${PHOME}/src/report && time python  index.py
+
 
 #nohup python k_day.py &
 # 1. get  k-day data
