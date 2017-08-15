@@ -243,7 +243,7 @@ def work():
         till_date = get_date_by(0)
         till_date = get_newest_trade_date(db)
         log_info("till_date: %s", till_date)
-        # CupWithHandle_work_one_day(till_date, db)
+        CupWithHandle_work_one_day(till_date, db)
 
         """
         # 沧州大化 1 done
@@ -260,8 +260,6 @@ def work():
         till_date = "2017-07-18"
         stock_id  = "600354"
         CupWithHandle_work_one_day_stock(stock_id, till_date, db)
-        """
-        """
 
         # 方大碳素 4 case2 done
         till_date = "2017-05-11"
@@ -342,12 +340,12 @@ def work():
         till_date = "2017-07-17"
         stock_id  = "000983"
         CupWithHandle_work_one_day_stock(stock_id, till_date, db)
-        """
 
         # 杭氧股份
         till_date = "2017-08-10"
         stock_id  = "002430"
         CupWithHandle_work_one_day_stock(stock_id, till_date, db)
+        """
 
     else:
         regression(db)
