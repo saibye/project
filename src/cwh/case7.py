@@ -109,6 +109,11 @@ def CupWithHandle_analyzer7(_stock_id, _trade_date, _my_df, _used_len, _db):
     E_VR   = 230
     E_DAYS = 50
 
+    E_VR3  = 170
+    E_RATE3= 6
+    E_VR4  = 140
+    E_RATE4= 5
+
     # C点指标
     C_VR   = 40
     C_DAYS1 = 3
@@ -130,7 +135,7 @@ def CupWithHandle_analyzer7(_stock_id, _trade_date, _my_df, _used_len, _db):
     A_VR   = 0 # XXX
     A_DAYS1 = 5
     A_DAYS2 = 65
-    AA_DAYS3 = 4 # before
+    AA_DAYS3 = 6 # before
     AA_DAYS4 = 0 # after
     LEN_AC_MIN = 25
     LEN_AC_MAX = 70
@@ -183,7 +188,10 @@ def CupWithHandle_analyzer7(_stock_id, _trade_date, _my_df, _used_len, _db):
         # 寻找E点：阳柱+上涨
         if to_get_E:
             log_debug("to-get E-point: rate: %.2f%%, %.2f%% vr:%.2f", rate, rate2, vr)
-            if vr > E_VR and (rate > E_RATE or rate2 > E_RATE2):
+            E_rule1 = vr > E_VR and (rate > E_RATE or rate2 > E_RATE2)
+            E_rule3 = vr > E_VR3 and rate > E_RATE3
+            E_rule4 = vr > E_VR4 and max(rate, rate2) > E_RATE4
+            if E_rule1 or E_rule3 or E_rule4:
                 d_E = pub_date
                 v_E = vol
                 p_E = close_price
@@ -203,6 +211,12 @@ def CupWithHandle_analyzer7(_stock_id, _trade_date, _my_df, _used_len, _db):
 
                 E_vol_break_days, E_vol_block_date = CupWithHandle_vol_break_days(_my_df, _used_len, d_E, v_E, _db)
                 log_debug("E-vol-break: %d, vol-block: %s", E_vol_break_days, E_vol_block_date)
+
+                if E_rule4:
+                    if not E_rule1 and not E_rule3 and E_vol_break_days < 99:
+                        log_debug("E-rule4: volume break days too little: %d", E_vol_break_days)
+                        return 1
+
 
         # 寻找C点： E点往前n1单位开始，n2单位内的最高点
         if to_get_C:
@@ -312,7 +326,10 @@ def CupWithHandle_analyzer7(_stock_id, _trade_date, _my_df, _used_len, _db):
                     log_debug("A点附近vr不满足: +%.2f, %.2f", AA_vr, AA_rt)
                     return 1
             else:
-                if AA_vr > 200 and max(AA_rt, AA_rt2) > 6.0:
+                A_rule1 =  AA_vr > 200 and max(AA_rt, AA_rt2) > 6.0
+                A_rule2 =  AA_vr > 250 and max(AA_rt, AA_rt2) > 5.0
+                A_rule3 =  AA_vr > 130 and max(AA_rt, AA_rt2) > 7.0
+                if A_rule1 or A_rule2 or A_rule3:
                     log_info("nice: A点即将确认2: max-vr: %.2f, len-AC: %d, rate-AE: %.2f", AA_vr, len_AC, rate_AE)
                     to_get_A = False
                     to_get_B = True
@@ -331,7 +348,7 @@ def CupWithHandle_analyzer7(_stock_id, _trade_date, _my_df, _used_len, _db):
             len_AB  = i_A - i_B
             log_info("rate-AB: %.2f%%, len-AB: %d", rate_AB, len_AB)
 
-            if rate_AB > 10 and rate_AB < 50 and len_AB >= 10:
+            if rate_AB > 10 and rate_AB < 51 and len_AB >= 10:
                 log_info("nice: 即将B点确认: %s, rate-AB:%.2f, len:%d", d_B, rate_AB, len_AB)
             else:
                 log_debug("B-point not match")
@@ -354,9 +371,9 @@ def CupWithHandle_analyzer7(_stock_id, _trade_date, _my_df, _used_len, _db):
 
             rate_ABM = (A_mean / B_mean - 1) * 100.00
             rate_SB = (B_mean / l_B - 1) * 100.00
-            log_info("rate-AS: %.2f%%, rate-SB: %.2f%%", rate_ABM, rate_SB)
+            log_info("rate-ABM: %.2f%%, rate-SB: %.2f%%", rate_ABM, rate_SB)
 
-            if B_std <= 0.10 and rate_ABM < 35 and rate_ABM > 5:
+            if B_std <= 0.16 and rate_ABM < 35 and rate_ABM > 5:
                 log_info("nice: B点确认: %s, 方差: %.2f, rate-ABM: %.2f", d_B, B_std, rate_ABM)
                 to_get_K = True
                 to_get_B = False

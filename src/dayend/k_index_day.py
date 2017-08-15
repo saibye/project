@@ -16,6 +16,13 @@ from saitu   import *
 
 #######################################################################
 
+def get_one_index_kday(_stock_id, _pub_date, _db):
+    sql = "select * from tbl_index_day where stock_id='%s' and pub_date='%s'" % (_stock_id, _pub_date)
+
+    df = pd.read_sql_query(sql, _db);
+
+    return df
+
 def k_index_day_one_to_db(_stock_id, _df, _start_date, _db):
 
     dt = get_today()
@@ -32,11 +39,12 @@ def k_index_day_one_to_db(_stock_id, _df, _start_date, _db):
         new_close_price = _df.iloc[0,2]
 
         # the close price of max-pub-date
-        tbl_df = get_one_kday(_stock_id, _start_date, _db)
+        tbl_df = get_one_index_kday(_stock_id, _start_date, _db)
         tbl_close_price = tbl_df['close_price'][0]
 
         log_debug("close: web[%s] : [%s]table", new_close_price, tbl_close_price)
         # compare, update if not equal
+        """
         rate = new_close_price / tbl_close_price
         if rate == 1.0:
             log_debug("[%s, %s] no need to fuquan", new_close_price, tbl_close_price)
@@ -56,6 +64,7 @@ and pub_date <= '%s'" % \
             if rv != 0:
                 log_error("error: sql_to_db %s", sql)
                 return -1
+        """
 
 
 

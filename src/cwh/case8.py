@@ -15,10 +15,12 @@ from sairef  import *
 from saitech import *
 from pub_CwH import *
 
-
+# 最高价突破所有
+# p(E) > p(C) > p(A)
 #
-# 600516 方大炭素 独此一家
-def CupWithHandle_analyzer2(_stock_id, _trade_date, _my_df, _used_len, _db):
+
+# 002430
+def CupWithHandle_analyzer8(_stock_id, _trade_date, _my_df, _used_len, _db):
     global g_detail_fetched 
 
     lowest   = 0
@@ -101,10 +103,10 @@ def CupWithHandle_analyzer2(_stock_id, _trade_date, _my_df, _used_len, _db):
     to_get_K = False
 
     # E点指标
-    E_RATE = 4.5
+    E_RATE = 5
     E_RATE2= 5
     E_VR   = 130
-    E_DAYS = 50
+    E_DAYS = 40
 
     # C点指标
     C_VR   = 40
@@ -114,25 +116,23 @@ def CupWithHandle_analyzer2(_stock_id, _trade_date, _my_df, _used_len, _db):
     C_DAYS3 = 8
     C_RPV   = 2
     LEN_CE_MIN = 4
-    LEN_CE_MAX = 14
-    # LEN_CE_MAX = 16 # new
+    LEN_CE_MAX = 10
     RATE_EC_MAX = 5 # 5%
 
     # D点指标
     LEN_CD_MIN = 3
-    RATE_ED_MIN = 8  # n%
-    RATE_ED_MAX = 15 # n%
+    RATE_ED_MIN = 9  # n%
+    RATE_ED_MAX = 18 # n%
 
     # A点指标
     A_VR   = 0 # XXX
     A_DAYS1 = 5
-    A_DAYS2 = 45
-    # A_DAYS2 = 80 # new
+    A_DAYS2 = 75
     AA_DAYS3 = 4 # before
     AA_DAYS4 = 0 # after
     LEN_AC_MIN = 25
-    LEN_AC_MAX = 70
-    RATE_AE_MIN = -7.0
+    LEN_AC_MAX = 80
+    RATE_AE_MIN = -12.0
     RATE_AE_MAX = 5
 
     # B点指标
@@ -207,19 +207,10 @@ def CupWithHandle_analyzer2(_stock_id, _trade_date, _my_df, _used_len, _db):
             if h_C < 1: 
                 log_info("sorry: C not high: %.2f", h_C)
                 return 1
-
-            h_C, p_C, d_C, i_C, v_C, rt_C, vr_C = CupWithHandle_preceding_high_red(_my_df, _used_len, d_C, 12, h_C, _db)
-            log_info("trying: C点2: %s, %.2f%%, +%.2f%%", d_C, rt_C, vr_C)
-            if h_C < 1: 
-                log_info("sorry: C2 not high: %.2f", h_C)
-                return 1
-
-            rate_EC = (p_E / h_C - 1) * 100.00
+            rate_EC = (h_E / h_C - 1) * 100.00
             len_CE  = i_C - i_E
             log_info("rate-EC: %.2f%%, len-CE: %d", rate_EC, len_CE)
-
-
-            if vr_C > C_VR and rate_EC > -0.5 and rate_EC < RATE_EC_MAX and len_CE >= LEN_CE_MIN and len_CE < LEN_CE_MAX:
+            if vr_C > C_VR and rate_EC >= 0 and rate_EC < RATE_EC_MAX and len_CE >= LEN_CE_MIN and len_CE <= LEN_CE_MAX:
                 log_info("C to check RPV")
                 # RPV-rt
                 rpv_C   = CupWithHandle_rpv(_my_df, _used_len, d_C, C_DAYS3, _db)
@@ -299,6 +290,11 @@ def CupWithHandle_analyzer2(_stock_id, _trade_date, _my_df, _used_len, _db):
                     to_get_A = False
                     to_get_B = True
                     # warn: not make: got_A
+                elif AA_vr > 45 and AA_rt > 3.5:
+                    log_info("nice: A点即将确认1: max-vr: %.2f, len-AC: %d, rate-AE: %.2f", AA_vr, len_AC, rate_AE)
+                    to_get_A = False
+                    to_get_B = True
+                    # warn: not make: got_A
                 else:
                     log_debug("A点附近vr不满足: +%.2f, %.2f", AA_vr, AA_rt)
                     return 1
@@ -322,7 +318,7 @@ def CupWithHandle_analyzer2(_stock_id, _trade_date, _my_df, _used_len, _db):
             len_AB  = i_A - i_B
             log_info("rate-AB: %.2f%%, len-AB: %d", rate_AB, len_AB)
 
-            if rate_AB > 10 and rate_AB < 35 and len_AB >= 10:
+            if rate_AB > 15 and rate_AB < 45 and len_AB >= 10:
                 log_info("nice: 即将B点确认: %s, rate-AB:%.2f, len:%d", d_B, rate_AB, len_AB)
             else:
                 log_debug("B-point not match")
@@ -345,9 +341,9 @@ def CupWithHandle_analyzer2(_stock_id, _trade_date, _my_df, _used_len, _db):
 
             rate_ABM = (A_mean / B_mean - 1) * 100.00
             rate_SB = (B_mean / l_B - 1) * 100.00
-            log_info("rate-AS: %.2f%%, rate-SB: %.2f%%", rate_ABM, rate_SB)
+            log_info("rate-ABM: %.2f%%, rate-SB: %.2f%%", rate_ABM, rate_SB)
 
-            if B_std <= 0.20 and rate_ABM < 24 and rate_ABM > 5:
+            if B_std <= 0.2 and rate_ABM < 30 and rate_ABM > 10:
                 log_info("nice: B点确认: %s, 方差: %.2f, rate-ABM: %.2f", d_B, B_std, rate_ABM)
                 to_get_K = True
                 to_get_B = False
@@ -399,12 +395,12 @@ def CupWithHandle_analyzer2(_stock_id, _trade_date, _my_df, _used_len, _db):
         content1 += "+++++++++++++++++++++++++\n"
         info  = get_basic_info_all(_stock_id, _db)
         content1 += info
-        # log_info("mail:\n%s", content1)
+        log_info("mail:\n%s", content1)
         to_mail = True
 
 
     if to_mail:
-        subject = "CwH2: %s -- %s" % (_stock_id, _trade_date)
+        subject = "CwH8: %s -- %s" % (_stock_id, _trade_date)
         log_info(subject)
         log_info("mail:\n%s", content1)
         if sai_is_product_mode():

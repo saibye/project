@@ -21,6 +21,7 @@ from case4   import *
 from case5   import *
 from case6   import *
 from case7   import *
+from case8   import *
 
 #######################################################################
 #
@@ -116,6 +117,13 @@ def CupWithHandle_work_one_day_stock(_stock_id, _till,  _db):
         return 0
     log_debug("-------------------------------------------------")
 
+    # case8
+    rv = CupWithHandle_analyzer8(_stock_id, _till, my_df, used_len, _db)
+    if rv == 0:
+        log_info("nice8: %s", _stock_id)
+        return 0
+    log_debug("-------------------------------------------------")
+
     return 1
 
 
@@ -203,8 +211,8 @@ def regression(_db):
     days = 30
 
     #
-    max_date = "2017-08-08"
-    days = 10
+    max_date = "2017-08-10"
+    days = 26
 
     log_info("regress")
 
@@ -235,7 +243,7 @@ def work():
         till_date = get_date_by(0)
         till_date = get_newest_trade_date(db)
         log_info("till_date: %s", till_date)
-        CupWithHandle_work_one_day(till_date, db)
+        # CupWithHandle_work_one_day(till_date, db)
 
         """
         # 沧州大化 1 done
@@ -319,7 +327,27 @@ def work():
         till_date = "2017-07-31"
         stock_id  = "601388"
         CupWithHandle_work_one_day_stock(stock_id, till_date, db)
+
+        # 中国铝业
+        till_date = "2017-07-17"
+        stock_id  = "601600"
+        CupWithHandle_work_one_day_stock(stock_id, till_date, db)
+
+        # 华新水泥
+        till_date = "2017-07-07"
+        stock_id  = "600801"
+        CupWithHandle_work_one_day_stock(stock_id, till_date, db)
+
+        # 西山煤电
+        till_date = "2017-07-17"
+        stock_id  = "000983"
+        CupWithHandle_work_one_day_stock(stock_id, till_date, db)
         """
+
+        # 杭氧股份
+        till_date = "2017-08-10"
+        stock_id  = "002430"
+        CupWithHandle_work_one_day_stock(stock_id, till_date, db)
 
     else:
         regression(db)
@@ -330,14 +358,14 @@ def work():
 #######################################################################
 
 def main():
-    sailog_set("CupWithHandle1.log")
+    sailog_set("CupWithHandle0.log")
 
     log_info("let's begin here!")
 
     if sai_is_product_mode():
         if today_is_weekend():
             log_info("today is weekend, exit")
-            # work()
+            work()
         else:
             log_info("today is workday, come on")
             work()

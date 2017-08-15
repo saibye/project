@@ -155,7 +155,7 @@ def CupWithHandle_preceding_high(_detail_df, _used_len, _date, _n1, _n2, _db):
                 # log_debug("reach n2: %d", days)
                 break
             else:
-                # log_debug("[%d, %s]", days, pub_date)
+                # log_debug("[%d, %s, %.2f]", days, pub_date, high_price)
                 if high_price > max_high and close_price > ref_ma20(TECH_IDX):
                     max_high  = high_price
                     high_close= close_price
