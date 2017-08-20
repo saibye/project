@@ -361,7 +361,7 @@ def work():
 #######################################################################
 
 def main():
-    sailog_set("CupWithHandle2.log")
+    sailog_set("CupWithHandle0.log")
 
     log_info("let's begin here!")
 
