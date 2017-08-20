@@ -21,6 +21,7 @@ from pub_CwH import *
 # 
 
 # 601388
+# 600117
 def CupWithHandle_analyzer7(_stock_id, _trade_date, _my_df, _used_len, _db):
     global g_detail_fetched 
 
@@ -140,7 +141,7 @@ def CupWithHandle_analyzer7(_stock_id, _trade_date, _my_df, _used_len, _db):
     LEN_AC_MIN = 25
     LEN_AC_MAX = 70
     RATE_AE_MIN = -8.0
-    RATE_AE_MAX = 11
+    RATE_AE_MAX = 15
 
     # B点指标
 
@@ -328,7 +329,7 @@ def CupWithHandle_analyzer7(_stock_id, _trade_date, _my_df, _used_len, _db):
             else:
                 A_rule1 =  AA_vr > 200 and max(AA_rt, AA_rt2) > 6.0
                 A_rule2 =  AA_vr > 250 and max(AA_rt, AA_rt2) > 5.0
-                A_rule3 =  AA_vr > 130 and max(AA_rt, AA_rt2) > 7.0
+                A_rule3 =  AA_vr > 130 and max(AA_rt, AA_rt2) > 3.0
                 if A_rule1 or A_rule2 or A_rule3:
                     log_info("nice: A点即将确认2: max-vr: %.2f, len-AC: %d, rate-AE: %.2f", AA_vr, len_AC, rate_AE)
                     to_get_A = False

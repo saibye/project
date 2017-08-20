@@ -345,6 +345,11 @@ def work():
         till_date = "2017-08-10"
         stock_id  = "002430"
         CupWithHandle_work_one_day_stock(stock_id, till_date, db)
+
+        # 西宁特钢
+        till_date = "2017-07-19"
+        stock_id  = "600117"
+        CupWithHandle_work_one_day_stock(stock_id, till_date, db)
         """
 
     else:
@@ -356,14 +361,14 @@ def work():
 #######################################################################
 
 def main():
-    sailog_set("CupWithHandle0.log")
+    sailog_set("CupWithHandle2.log")
 
     log_info("let's begin here!")
 
     if sai_is_product_mode():
         if today_is_weekend():
             log_info("today is weekend, exit")
-            work()
+            # work()
         else:
             log_info("today is workday, come on")
             work()
