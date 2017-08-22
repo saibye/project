@@ -291,66 +291,68 @@ def work():
         stock_id  = "000540"
         CupWithHandle_work_one_day_stock(stock_id, till_date, db)
 
-        # 南钢股份
+        # 南钢股份 10
         till_date = "2017-07-18"
         stock_id  = "600282"
         CupWithHandle_work_one_day_stock(stock_id, till_date, db)
 
-        # 云铝股份
+        # 云铝股份 11
         till_date = "2017-07-17"
         stock_id  = "000807"
         CupWithHandle_work_one_day_stock(stock_id, till_date, db)
 
-        # 凌钢股份
+        # 凌钢股份 12
         till_date = "2017-07-19"
         stock_id  = "600231"
         CupWithHandle_work_one_day_stock(stock_id, till_date, db)
 
-        # 本板钢材
-        till_date = "2017-07-31"
-        stock_id  = "000761"
-        CupWithHandle_work_one_day_stock(stock_id, till_date, db)
-
-        # 中孚实业
+        # 中孚实业 14
         till_date = "2017-07-31"
         stock_id  = "600595"
         CupWithHandle_work_one_day_stock(stock_id, till_date, db)
 
-        # 紫金矿业
+        # 紫金矿业 15
         till_date = "2017-07-26"
         stock_id  = "601899"
         CupWithHandle_work_one_day_stock(stock_id, till_date, db)
 
-        # 怡球资源
+        # 怡球资源 16
         till_date = "2017-07-31"
         stock_id  = "601388"
         CupWithHandle_work_one_day_stock(stock_id, till_date, db)
 
-        # 中国铝业
+        # 中国铝业 17
         till_date = "2017-07-17"
         stock_id  = "601600"
         CupWithHandle_work_one_day_stock(stock_id, till_date, db)
 
-        # 华新水泥
+        # 华新水泥 18
         till_date = "2017-07-07"
         stock_id  = "600801"
         CupWithHandle_work_one_day_stock(stock_id, till_date, db)
 
-        # 西山煤电
+        # 西山煤电 19
         till_date = "2017-07-17"
         stock_id  = "000983"
         CupWithHandle_work_one_day_stock(stock_id, till_date, db)
 
-        # 杭氧股份
+        # 杭氧股份 20
         till_date = "2017-08-10"
         stock_id  = "002430"
         CupWithHandle_work_one_day_stock(stock_id, till_date, db)
 
-        # 西宁特钢
+
+        # 西宁特钢 21
         till_date = "2017-07-19"
         stock_id  = "600117"
         CupWithHandle_work_one_day_stock(stock_id, till_date, db)
+
+        # 方大特钢 TODO 2017-8-22
+        till_date = "2017-06-19"
+        stock_id  = "600507"
+        CupWithHandle_work_one_day_stock(stock_id, till_date, db)
         """
+
 
     else:
         regression(db)

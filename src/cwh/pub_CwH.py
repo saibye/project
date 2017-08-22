@@ -296,8 +296,10 @@ def CupWithHandle_rpv(_detail_df, _used_len, _till, _n, _db):
         rpv_rt = -11.11
     elif D_days <= 0:
         rpv_rt = 9.99
-    elif D_sum <= 1:
+        # log_debug("D_days: %d", D_days)
+    elif abs(D_sum) <= 1:
         rpv_rt = 9.99
+        # log_debug("D_sum: %d",  D_sum)
     else:
         # log_info("[%.2f, %d], [%.2f, %d]", U_sum, U_days, D_sum, D_days)
         U_rpv = U_sum / U_days

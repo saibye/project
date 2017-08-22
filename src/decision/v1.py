@@ -243,13 +243,13 @@ def work_one(_stock_id, _db):
         item += "\n%s\n%s\n%s\n%s" % (warn, one, two, info)
 
         if vr1 >= 50 or vr2 >= 50:
-            subject  = "###diliang: %s" % (min_date)
+            subject  = "###diliang: %s#%s" % (_stock_id, min_date)
         elif vr1 >= 30 or vr2 >= 30:
-            subject  = "##diliang: %s" % (min_date)
+            subject  = "##diliang: %s#%s" % (_stock_id, min_date)
         elif vr1 >= 20 or vr2 >= 20:
-            subject  = "#diliang: %s" % (min_date)
+            subject  = "#diliang: %s#%s" % (_stock_id, min_date)
         else:
-            subject  = "diliang: %s" % (min_date)
+            subject  = "diliang: %s#%s" % (_stock_id, min_date)
 
         # content += item
         log_info("subject: \n%s", subject)

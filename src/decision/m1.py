@@ -140,7 +140,7 @@ def work_one_day(_trade_date, _db):
         log_info("mail:\n%s", content1)
         if sai_is_product_mode():
             mailed = 1
-            saimail(subject, content1)
+            saimail_dev(subject, content1)
     else:
         log_info("sorry1: %s", _trade_date)
 

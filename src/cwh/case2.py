@@ -18,6 +18,7 @@ from pub_CwH import *
 
 #
 # 600516 方大炭素 独此一家
+# 600133 东湖高新
 def CupWithHandle_analyzer2(_stock_id, _trade_date, _my_df, _used_len, _db):
     global g_detail_fetched 
 
@@ -224,8 +225,7 @@ def CupWithHandle_analyzer2(_stock_id, _trade_date, _my_df, _used_len, _db):
                 # RPV-rt
                 rpv_C   = CupWithHandle_rpv(_my_df, _used_len, d_C, C_DAYS3, _db)
                 log_info("rpv-C: %.2f", rpv_C)
-                # if rpv_C > 2:
-                if rpv_C > 1.9:
+                if rpv_C > 1.3:
                     log_info("nice: C点即将确认: rate-EC:%.2f, len:%d, rpv:%.2f", rate_EC, len_CE, rpv_C)
                     to_get_C = False
                     to_get_D = True
