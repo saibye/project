@@ -164,17 +164,18 @@ def regression(_db):
 def work():
     db = db_init()
 
+    """
     regression(db)
     return 0
+    """
 
     if sai_is_product_mode():
         till_date = get_date_by(0)
         till_date = get_newest_trade_date(db)
         till_date = "2017-08-25"
         log_info("till_date: %s", till_date)
-        thrive_work_one_day(till_date, db)
+        # thrive_work_one_day(till_date, db)
 
-        """
         # 华泰股份 600308 done
         till_date = "2017-07-18"
         stock_id  = "600308"
@@ -195,6 +196,7 @@ def work():
         stock_id  = "603357"
         thrive_work_one_day_stock(stock_id, till_date, db)
         """
+        """
 
 
     else:
@@ -206,7 +208,7 @@ def work():
 #######################################################################
 
 def main():
-    sailog_set("thrive30.log")
+    sailog_set("thrive.log")
 
     log_info("let's begin here!")
 

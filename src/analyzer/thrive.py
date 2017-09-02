@@ -104,6 +104,7 @@ def thrive_analyzer(_stock_id, _a_date, _b_date, _c_date, _d_date, _e_date, _my_
             d_B = pub_date
             rt_B= rate
             vr_B= vr
+            zt_B= zt
             log_info("Data: %s-B: %s, low:%.2f, vol:%.2f, %d", _stock_id, pub_date, l_B, v_B, i_B)
 
         # C点
@@ -118,6 +119,7 @@ def thrive_analyzer(_stock_id, _a_date, _b_date, _c_date, _d_date, _e_date, _my_
             d_C = pub_date
             rt_C= rate
             vr_C= vr
+            zt_C= zt
             log_info("Data: %s-C: %s, high:%.2f, vol:%.2f, %d", _stock_id, pub_date, h_C, v_C, i_C)
 
         # D点
@@ -132,6 +134,7 @@ def thrive_analyzer(_stock_id, _a_date, _b_date, _c_date, _d_date, _e_date, _my_
             d_D = pub_date
             rt_D= rate
             vr_D= vr
+            zt_D= zt
             log_info("Data: %s-D: %s, low:%.2f, vol:%.2f, %d", _stock_id, pub_date, l_D, v_D, i_D)
 
         # E点
@@ -147,6 +150,7 @@ def thrive_analyzer(_stock_id, _a_date, _b_date, _c_date, _d_date, _e_date, _my_
             rt_E= rate
             rt_E2= (h_E / last_close_price - 1) * 100.00
             vr_E= vr
+            zt_E= zt
             log_info("Data: %s-E: %s, high:%.2f, vol:%.2f, %d", _stock_id, pub_date, h_E, v_E, i_E)
 
 
@@ -173,6 +177,9 @@ def thrive_analyzer(_stock_id, _a_date, _b_date, _c_date, _d_date, _e_date, _my_
         log_info("data: %s: A点涨幅:  %.2f", _stock_id, rt_A)
         log_info("data: %s: A点柱体:  %.2f", _stock_id, zt_A)
 
+        log_info("data: %s: B点涨幅:  %.2f", _stock_id, rt_B)
+        log_info("data: %s: B点柱体:  %.2f", _stock_id, zt_B)
+
         # BC幅度
         rate_BC = (h_C / l_B - 1) * 100.00
         log_info("data: %s: 三线跌幅: -%.2f%%",   _stock_id, rate_BC)
@@ -185,8 +192,10 @@ def thrive_analyzer(_stock_id, _a_date, _b_date, _c_date, _d_date, _e_date, _my_
         # DE幅度
         len_DE  = i_E - i_D
         rate_DE = (h_D / l_E - 1) * 100.00
+        rate_DB = (h_D / l_B - 1) * 100.00
         log_info("data: %s: 升幅DE距离: %d",   _stock_id, len_DE)
         log_info("data: %s: 升幅DE幅度: %.2f%%", _stock_id, rate_DE)
+        log_info("data: %s: 参考DB幅度: %.2f%%，对比%.2f", _stock_id, rate_DB, rate_DE/rate_DB)
 
         # D点rpv
         D1 = 8
@@ -202,7 +211,6 @@ def thrive_analyzer(_stock_id, _a_date, _b_date, _c_date, _d_date, _e_date, _my_
         log_info(subject)
         log_info("mail:\n%s", content1)
         mailed = 1
-        saimail_dev(subject, content1)
     else:
         log_info("--: %s, %s", _stock_id, _a_date)
 

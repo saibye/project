@@ -16,11 +16,14 @@ from saitech import *
 
 from pub_thrive import *
 
-
-# 2017-8-28
+# 标准
+# 三线：三连低（high)，三连阴，至少二连降
 
 #
 # 600308
+# 002201
+# 002545
+# 603357
 #
 def thrive_analyzer1(_stock_id, _trade_date, _my_df, _used_len, _db):
     global g_detail_fetched 
@@ -113,6 +116,7 @@ def thrive_analyzer1(_stock_id, _trade_date, _my_df, _used_len, _db):
     E_DAYS2 = 6
     E_RATE  = 9
 
+    CONTRAST = 0.8
 
     for row_index, row in _my_df.iterrows():
         TECH_IDX = idx
@@ -132,6 +136,8 @@ def thrive_analyzer1(_stock_id, _trade_date, _my_df, _used_len, _db):
         # 柱体
         zt   = (close_price - open_price) / last_close_price * 100
         vr   = 0
+        # log_debug("%s-%s: %.2f, %.2f, %.3f", _stock_id, pub_date, close_price, open_price, zt)
+        # log_debug("%s-%s: %.2f, %.2f, %.3f", _stock_id, pub_date, close_price, open_price, rate)
 
         # A点
         if idx == 0:
@@ -197,11 +203,12 @@ def thrive_analyzer1(_stock_id, _trade_date, _my_df, _used_len, _db):
     # BC 连续下降
     rate_BC = (h_C / l_B - 1) * 100
     rule_C = h_C > h_K and h_K > h_B and rate_BC > C_RATE
-    rule_K = zt_B < 0 and zt_K < 0 and zt_C < 0
-    if rule_C and rule_K:
+    rule_B = rt_K < 0 and rt_B < 0
+    rule_K = zt_B <= 0 and zt_K <= 0 and zt_C <= 0
+    if rule_C and rule_B and rule_K:
         log_info("nice: C点确认: 跌幅: %.2f", rate_BC)
     else:
-        log_info("sorry: C-point not match")
+        log_info("sorry: C-point not match: %s, %s, %s", rule_C, rule_B, rule_K)
         return 1
 
     # 寻找D点： C点往前n1单位开始，n2单位内的最高点
@@ -224,12 +231,18 @@ def thrive_analyzer1(_stock_id, _trade_date, _my_df, _used_len, _db):
     log_info("try: E点: %s, %.2f%%, low(%.2f)", d_E, rt_E, l_E)
     rate_DE = (h_D / l_E - 1) * 100.00
     log_info("rate-DE: %.2f%%", rate_DE)
-    if rate_DE > E_RATE:
-        log_info("nice: 三五线成立")
-    else:
+    if rate_DE < E_RATE:
         log_info("sorry: E not so low: %.2f", l_E)
         return 1
 
+    rate_DB = (h_D / l_B - 1) * 100.00
+    contrast = rate_DE / rate_DB
+    log_info("rate-DB: %.2f%%, contrast: %.2f", rate_DE, contrast)
+    if contrast < CONTRAST:
+        log_info("sorry: up < down: %.2f", contrast)
+        return 1
+
+    log_info("nice: 三五线成立")
 
     log_info("+++++++++++++++++++++++++++++++++++++")
     log_info("bingo: %s counterback at %s", _stock_id, d_E)
@@ -240,7 +253,8 @@ def thrive_analyzer1(_stock_id, _trade_date, _my_df, _used_len, _db):
     log_info("E: %s", d_E)
     log_debug("XXX: %s", _stock_id)
     content1 += "%s -- %s\n" % (_stock_id, d_A)
-    content1 += "注意：下降三线的开盘价接近左收\n\n"
+    content1 += "注意：不能被ma200压制！\n"
+    content1 += "注意：下降三线的开盘价接近昨收\n"
     content1 += "A点: %s，涨幅: %.2f%%\n"  % (d_A, rt_A)
     content1 += "B点: %s，降幅: %.2f%%\n"  % (d_B, rate_BC)
     content1 += "C点: %s\n"  % (d_C)
