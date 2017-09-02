@@ -86,6 +86,10 @@ def index_dynamic_calc_tech(_df):
     se = calc_sma(sc, 150)
     _df['ma150'] = se;
 
+    # sma200
+    se = calc_sma(sc, 200)
+    _df['ma200'] = se;
+
     # macd: ema(12), ema(26), diff, dea(9), macd
     sm, sn, sd, se, sa = calc_macd_list0(sc, 12, 26, 9)
     _df['ema12'] = sm;

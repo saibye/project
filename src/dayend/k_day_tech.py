@@ -153,6 +153,10 @@ def calc_kday_tech_one(_stock_id, _db):
     se = calc_sma(sc, 150)
     df['ma150'] = se;
 
+    # sma200
+    se = calc_sma(sc, 200)
+    df['ma200'] = se;
+
     # macd: ema(12), ema(26), diff, dea(9), macd
     sm, sn, sd, se, sa = calc_macd_list0(sc, 12, 26, 9)
     df['ema12'] = sm;

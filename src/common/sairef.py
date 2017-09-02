@@ -37,6 +37,7 @@ g_ref_this_ma20 = None #
 g_ref_this_ma30 = None #
 g_ref_this_ma60 = None #
 g_ref_this_ma150= None #
+g_ref_this_ma200= None #
 
 g_ref_this_macd = None #
 g_ref_this_diff = None #
@@ -74,6 +75,7 @@ def ref_set(_stock_id):
     global g_ref_this_ma30
     global g_ref_this_ma60
     global g_ref_this_ma150
+    global g_ref_this_ma200
     global g_ref_this_macd
     global g_ref_this_diff
     global g_ref_this_dea
@@ -95,6 +97,7 @@ def ref_set(_stock_id):
         g_ref_this_ma30 = g_ref_this['ma30']
         g_ref_this_ma60 = g_ref_this['ma60']
         g_ref_this_ma150= g_ref_this['ma150']
+        g_ref_this_ma200= g_ref_this['ma200']
         g_ref_this_macd = g_ref_this['macd']
         g_ref_this_diff = g_ref_this['diff']
         g_ref_this_dea  = g_ref_this['dea']
@@ -158,6 +161,10 @@ def ref_ma60(_offset):
 def ref_ma150(_offset):
     global g_ref_this_ma150
     return float(g_ref_this_ma150[_offset])
+
+def ref_ma200(_offset):
+    global g_ref_this_ma200
+    return float(g_ref_this_ma200[_offset])
 
 def ref_macd(_offset):
     global g_ref_this_macd
@@ -392,6 +399,7 @@ def ref_set_tech3(_stock_id):
     global g_ref_this_ma30
     global g_ref_this_ma60
     global g_ref_this_ma150
+    global g_ref_this_ma200
     global g_ref_this_macd
     global g_ref_this_diff
     global g_ref_this_dea
@@ -404,6 +412,7 @@ def ref_set_tech3(_stock_id):
     g_ref_this_ma30 = g_ref_this['ma30']
     g_ref_this_ma60 = g_ref_this['ma60']
     g_ref_this_ma150= g_ref_this['ma150']
+    g_ref_this_ma200= g_ref_this['ma200']
     g_ref_this_macd = g_ref_this['macd']
     g_ref_this_diff = g_ref_this['diff']
     g_ref_this_dea  = g_ref_this['dea']
@@ -435,6 +444,7 @@ def ref_set_tech(_stock_id):
     global g_ref_this_ma30
     global g_ref_this_ma60
     global g_ref_this_ma150
+    global g_ref_this_ma200
     global g_ref_this_macd
     global g_ref_this_diff
     global g_ref_this_dea
@@ -447,6 +457,7 @@ def ref_set_tech(_stock_id):
     g_ref_this_ma30 = g_ref_this['ma30']
     g_ref_this_ma60 = g_ref_this['ma60']
     g_ref_this_ma150= g_ref_this['ma150']
+    g_ref_this_ma200= g_ref_this['ma200']
     g_ref_this_macd = g_ref_this['macd']
     g_ref_this_diff = g_ref_this['diff']
     g_ref_this_dea  = g_ref_this['dea']
@@ -482,6 +493,7 @@ def ref_set_with_tech(_stock_id):
     global g_ref_this_ma30
     global g_ref_this_ma60
     global g_ref_this_ma150
+    global g_ref_this_ma200
     global g_ref_this_macd
     global g_ref_this_diff
     global g_ref_this_dea
@@ -519,6 +531,9 @@ def ref_set_with_tech(_stock_id):
 
     # sma150
     g_ref_this_ma150 = calc_sma(sc, 150).sort_index(ascending=False)
+
+    # sma200
+    g_ref_this_ma200 = calc_sma(sc, 200).sort_index(ascending=False)
 
     # macd: ema(12), ema(26), diff, dea(9), macd
     sm, sn, g_ref_this_diff, g_ref_this_dea, g_ref_this_macd = calc_macd_list0(sc, 12, 26, 9)
@@ -576,6 +591,7 @@ def ref_set_tech4():
     global g_ref_this_ma30
     global g_ref_this_ma60
     global g_ref_this_ma150
+    global g_ref_this_ma200
     global g_ref_this_macd
     global g_ref_this_diff
     global g_ref_this_dea
@@ -588,6 +604,7 @@ def ref_set_tech4():
     g_ref_this_ma30  = g_ref_detail['ma30']
     g_ref_this_ma60  = g_ref_detail['ma60']
     g_ref_this_ma150 = g_ref_detail['ma150']
+    g_ref_this_ma200 = g_ref_detail['ma200']
     g_ref_this_macd  = g_ref_detail['macd']
     g_ref_this_diff  = g_ref_detail['diff']
     g_ref_this_dea   = g_ref_detail['dea']
@@ -607,6 +624,7 @@ def ref_set_tech5():
     global g_ref_this_ma30
     global g_ref_this_ma60
     global g_ref_this_ma150
+    global g_ref_this_ma200
     global g_ref_this_macd
     global g_ref_this_diff
     global g_ref_this_dea
@@ -620,6 +638,7 @@ def ref_set_tech5():
     g_ref_this_ma30  = g_ref_detail['ma30']
     g_ref_this_ma60  = g_ref_detail['ma60']
     g_ref_this_ma150 = g_ref_detail['ma150']
+    g_ref_this_ma200 = g_ref_detail['ma200']
     g_ref_this_macd  = g_ref_detail['macd']
     g_ref_this_diff  = g_ref_detail['diff']
     g_ref_this_dea   = g_ref_detail['dea']
