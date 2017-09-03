@@ -16,19 +16,13 @@ from saitech import *
 
 from pub_thrive import *
 
-# 标准
-# 三线：三连低（high)，三连阴，至少二连降
+# 三线：三连低（high)，三连阴，三连降
+# 变种：A点收盘价没有压制，而是最高价压制！
 
 #
-# 600308
-# 002201
-# 002545
-# 603357
+# 603616
 #
-def thrive_analyzer1(_stock_id, _trade_date, _my_df, _used_len, _db):
-    global g_detail_fetched 
-
-    lowest   = 0
+def thrive_analyzer2(_stock_id, _trade_date, _my_df, _used_len, _db):
     mailed = 0
     content1 = "three-five line\n"
     to_mail = False
@@ -100,23 +94,23 @@ def thrive_analyzer1(_stock_id, _trade_date, _my_df, _used_len, _db):
     to_get_K = False
 
     # A点指标
-    A_RATE = 3.6
+    A_RATE = 5.0
     A_ZT   = 2
 
-    B_RATE = -0.5
-    B_ZT   = -0.5
+    B_RATE = -1
+    B_ZT   = -1
 
-    C_RATE = 8
+    C_RATE = 20
 
     D_DAYS1 = 1
-    D_DAYS2 = 4
+    D_DAYS2 = 8
     D_DAYS3 = 8
 
     E_DAYS1 = 1
     E_DAYS2 = 6
-    E_RATE  = 9
+    E_RATE  = 30
 
-    CONTRAST = 0.8
+    CONTRAST = 1.5
 
     for row_index, row in _my_df.iterrows():
         TECH_IDX = idx
@@ -144,6 +138,7 @@ def thrive_analyzer1(_stock_id, _trade_date, _my_df, _used_len, _db):
             d_A = pub_date
             v_A = vol
             p_A = close_price
+            o_A = open_price
             h_A = high_price
             l_A = low_price
             i_A = idx
@@ -155,6 +150,7 @@ def thrive_analyzer1(_stock_id, _trade_date, _my_df, _used_len, _db):
             d_B = pub_date
             v_B = vol
             p_B = close_price
+            o_B = open_price
             h_B = high_price
             l_B = low_price
             i_B = idx
@@ -166,6 +162,7 @@ def thrive_analyzer1(_stock_id, _trade_date, _my_df, _used_len, _db):
             d_K = pub_date
             v_K = vol
             p_K = close_price
+            o_K = open_price
             h_K = high_price
             l_K = low_price
             i_K = idx
@@ -177,6 +174,7 @@ def thrive_analyzer1(_stock_id, _trade_date, _my_df, _used_len, _db):
             d_C = pub_date
             v_C = vol
             p_C = close_price
+            o_C = open_price
             h_C = high_price
             l_C = low_price
             i_C = idx
@@ -191,11 +189,11 @@ def thrive_analyzer1(_stock_id, _trade_date, _my_df, _used_len, _db):
     # 确认A点
     # log_debug("A点涨幅: %.2f%%, 柱体: %.2f%%", rt_A, zt_A)
     # log_debug("B点跌幅: %.2f%%, 柱体: %.2f%%", rt_B, zt_B)
-    rule_A = p_A > h_B and \
+    rule_A = h_A > h_B and p_A > max(p_B, o_B) and \
         rt_A > A_RATE and zt_A > A_ZT and \
         rt_B < B_RATE and zt_B < B_ZT
     if rule_A:
-        log_info("nice: AB点确认: %.2f > %.2f", p_A, h_B)
+        log_info("nice: AB点确认: %.2f > %.2f", h_A, h_B)
     else:
         log_info("sorry: AB not match")
         return 1
@@ -203,7 +201,7 @@ def thrive_analyzer1(_stock_id, _trade_date, _my_df, _used_len, _db):
     # BC 连续下降
     rate_BC = (h_C / l_B - 1) * 100
     rule_C = h_C > h_K and h_K > h_B and rate_BC > C_RATE
-    rule_B = rt_K < 0 and rt_B < 0
+    rule_B = rt_C < 0 and rt_K < 0 and rt_B < 0
     rule_K = zt_B <= 0 and zt_K <= 0 and zt_C <= 0
     if rule_C and rule_B and rule_K:
         log_info("nice: C点确认: 跌幅: %.2f", rate_BC)
@@ -269,7 +267,7 @@ def thrive_analyzer1(_stock_id, _trade_date, _my_df, _used_len, _db):
     to_mail = True
 
     if to_mail:
-        subject = "thrive1: %s -- %s" % (_stock_id, _trade_date)
+        subject = "thrive2: %s -- %s" % (_stock_id, _trade_date)
         log_info(subject)
         log_info("mail:\n%s", content1)
         if sai_is_product_mode():

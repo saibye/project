@@ -287,4 +287,59 @@ def thrive_preceding_low(_detail_df, _used_len, _date, _n1, _n2, _db):
 
     return min_low, low_close, low_date, low_idx, low_vol, low_rate
 
+
+#
+# X点往前n1单位内的最高high价
+#
+def thrive_preceding_high2(_detail_df, _used_len, _date, _n1, _db):
+    idx = 0
+    days = 0
+    to_start = False
+    to_count = False
+
+    max_high = 0.0
+    high_close = 0.0
+    high_date = ""
+    high_rate = 0.0
+    high_idx = 0
+    high_vol = 0
+    high_vr = 0
+
+    for row_index, row in _detail_df.iterrows():
+        TECH_IDX = idx
+
+        pub_date         = row['pub_date']
+        close_price      = row['close_price']
+        high_price       = row['high_price']
+
+        last_close_price = row['last']
+        open_price       = row['open_price']
+        vol              = row['total']
+
+        # log_debug("pub_date: [%s]", pub_date)
+
+        if str(_date) == str(pub_date):
+            to_start = True
+
+        if to_start:
+            days = days + 1
+            if days > _n1:
+                # log_debug("reach n2: %d", days)
+                break
+            else:
+                # log_debug("[%d, %s, %.2f]", days, pub_date, high_price)
+                if high_price > max_high:
+                    max_high  = high_price
+                    high_close= close_price
+                    high_date = pub_date
+                    high_idx  = idx
+                    high_vol  = vol
+                    # log_debug("high:[%s.2f, %s]", max_high, high_date)
+                    high_rate = (close_price - last_close_price) / last_close_price * 100
+
+
+        idx  = idx + 1
+
+    return max_high, high_close, high_date, high_idx, high_vol, high_rate, high_vr
+
 # pub_thrive.py

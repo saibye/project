@@ -458,6 +458,7 @@ def work():
     db = db_init()
 
 
+    # case1
     # 华泰股份
     stock_id  = "600308"
     A_date = "2017-07-18"
@@ -476,14 +477,6 @@ def work():
     E_date = "2017-08-11"
     thrive_work_one_day_stock(stock_id, A_date, B_date, C_date, D_date, E_date, db)
 
-    # 迅游科技
-    stock_id  = "300467"
-    A_date = "2017-08-25"
-    B_date = "2017-08-24"
-    C_date = "2017-08-22"
-    D_date = "2017-08-16"
-    E_date = "2017-08-11"
-    thrive_work_one_day_stock(stock_id, A_date, B_date, C_date, D_date, E_date, db)
 
     # 东方铁塔
     stock_id  = "002545"
@@ -494,6 +487,17 @@ def work():
     E_date = "2017-07-27"
     thrive_work_one_day_stock(stock_id, A_date, B_date, C_date, D_date, E_date, db)
 
+
+    # 设计总院
+    stock_id  = "603357"
+    A_date = "2017-08-10"
+    B_date = "2017-08-09"
+    C_date = "2017-08-07"
+    D_date = "2017-08-04"
+    E_date = "2017-08-01"
+    thrive_work_one_day_stock(stock_id, A_date, B_date, C_date, D_date, E_date, db)
+
+    # case2
     # 韩建河山 spe
     stock_id  = "603616"
     A_date = "2017-04-25"
@@ -503,13 +507,32 @@ def work():
     E_date = "2017-04-07"
     thrive_work_one_day_stock(stock_id, A_date, B_date, C_date, D_date, E_date, db)
 
-    # 设计总院
-    stock_id  = "603357"
-    A_date = "2017-08-10"
-    B_date = "2017-08-09"
-    C_date = "2017-08-07"
-    D_date = "2017-08-04"
-    E_date = "2017-08-01"
+    # case3
+    # 泸天化
+    stock_id  = "000912"
+    A_date = "2017-06-13"
+    B_date = "2017-06-12"
+    C_date = "2017-06-08"
+    D_date = "2017-06-08"
+    E_date = "2017-06-02"
+    thrive_work_one_day_stock(stock_id, A_date, B_date, C_date, D_date, E_date, db)
+
+    # 迅游科技
+    stock_id  = "300467"
+    A_date = "2017-08-25"
+    B_date = "2017-08-24"
+    C_date = "2017-08-22"
+    D_date = "2017-08-16"
+    E_date = "2017-08-11"
+    thrive_work_one_day_stock(stock_id, A_date, B_date, C_date, D_date, E_date, db)
+
+    # 西部建设
+    stock_id  = "002302"
+    A_date = "2017-01-17"
+    B_date = "2017-01-16"
+    C_date = "2017-01-12"
+    D_date = "2017-01-12"
+    E_date = "2017-01-04"
     thrive_work_one_day_stock(stock_id, A_date, B_date, C_date, D_date, E_date, db)
 
     db_end(db)

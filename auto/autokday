@@ -37,10 +37,13 @@ cd ${PHOME}/src/dayend && time python k_day.py
 # 3. calc k-day tech # back to end 2017-6-11
 cd ${PHOME}/src/dayend && time python k_day_tech.py
 
-# 25. CwH.py -- cup with handle @2017-7-27
+# CwH.py -- cup with handle @2017-7-27
 cd ${PHOME}/src/cwh && time python CwH.py
 
-# 25. cwh.py -- cup with handle @2017-7-18
+# thrive.py -- three-five line @2017-9-3
+cd ${PHOME}/src/thrive && time python thrive.py
+
+# cwh.py -- weak! cup with handle @2017-7-18
 cd ${PHOME}/src/decision && time python cwh.py
 
 # 2.1 apply the rules: K only, not depend on MACD

@@ -16,16 +16,13 @@ from saitech import *
 
 from pub_thrive import *
 
-# 标准
-# 三线：三连低（high)，三连阴，至少二连降
+# 三线：三连低（high)，三连阴，三连降
+# A点涨停
 
 #
-# 600308
-# 002201
-# 002545
-# 603357
+# 000912 # 2016-09-26
 #
-def thrive_analyzer1(_stock_id, _trade_date, _my_df, _used_len, _db):
+def thrive_analyzer4(_stock_id, _trade_date, _my_df, _used_len, _db):
     global g_detail_fetched 
 
     lowest   = 0
@@ -100,23 +97,24 @@ def thrive_analyzer1(_stock_id, _trade_date, _my_df, _used_len, _db):
     to_get_K = False
 
     # A点指标
-    A_RATE = 3.6
-    A_ZT   = 2
+    A_RATE = 9.6
+    A_ZT   = 5
 
     B_RATE = -0.5
     B_ZT   = -0.5
 
-    C_RATE = 8
+    C_RATE = 5.8
 
     D_DAYS1 = 1
-    D_DAYS2 = 4
+    D_DAYS2 = 8
     D_DAYS3 = 8
+    D_RPV   = 2.8
 
     E_DAYS1 = 1
     E_DAYS2 = 6
-    E_RATE  = 9
+    E_RATE  = 12
 
-    CONTRAST = 0.8
+    CONTRAST = 2
 
     for row_index, row in _my_df.iterrows():
         TECH_IDX = idx
@@ -208,7 +206,7 @@ def thrive_analyzer1(_stock_id, _trade_date, _my_df, _used_len, _db):
     if rule_C and rule_B and rule_K:
         log_info("nice: C点确认: 跌幅: %.2f", rate_BC)
     else:
-        log_info("sorry: C-point not match: %s, %s, %s", rule_C, rule_B, rule_K)
+        log_info("sorry: C-point not match: %s, %s, %s, %.2f", rule_C, rule_B, rule_K, rate_BC)
         return 1
 
     # 寻找D点： C点往前n1单位开始，n2单位内的最高点
@@ -221,7 +219,7 @@ def thrive_analyzer1(_stock_id, _trade_date, _my_df, _used_len, _db):
     # D点RPV
     rpv_D = thrive_rpv(_my_df, _used_len, d_D, D_DAYS3, _db)
     log_debug("rpv(D点): %.2f", rpv_D)
-    if rpv_D < 3:
+    if rpv_D < D_RPV:
         log_info("sorry: D rpv not match: %.2f", rpv_D)
         return 1
 
@@ -237,7 +235,7 @@ def thrive_analyzer1(_stock_id, _trade_date, _my_df, _used_len, _db):
 
     rate_DB = (h_D / l_B - 1) * 100.00
     contrast = rate_DE / rate_DB
-    log_info("rate-DB: %.2f%%, contrast: %.2f", rate_DE, contrast)
+    log_info("rate-DB: %.2f%%, contrast: %.2f", rate_DB, contrast)
     if contrast < CONTRAST:
         log_info("sorry: up < down: %.2f", contrast)
         return 1
@@ -269,7 +267,7 @@ def thrive_analyzer1(_stock_id, _trade_date, _my_df, _used_len, _db):
     to_mail = True
 
     if to_mail:
-        subject = "thrive1: %s -- %s" % (_stock_id, _trade_date)
+        subject = "thrive4: %s -- %s" % (_stock_id, _trade_date)
         log_info(subject)
         log_info("mail:\n%s", content1)
         if sai_is_product_mode():

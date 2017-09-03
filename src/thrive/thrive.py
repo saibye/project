@@ -16,6 +16,9 @@ from saitech import *
 
 from pub_thrive import *
 from case1   import *
+from case2   import *
+from case3   import *
+from case4   import *
 
 #######################################################################
 #
@@ -66,6 +69,27 @@ def thrive_work_one_day_stock(_stock_id, _till,  _db):
     rv = thrive_analyzer1(_stock_id, _till, my_df, used_len, _db)
     if rv == 0:
         log_info("nice1: %s", _stock_id)
+        return 0
+    log_debug("-------------------------------------------------")
+
+    # case2
+    rv = thrive_analyzer2(_stock_id, _till, my_df, used_len, _db)
+    if rv == 0:
+        log_info("nice2: %s", _stock_id)
+        return 0
+    log_debug("-------------------------------------------------")
+
+    # case3
+    rv = thrive_analyzer3(_stock_id, _till, my_df, used_len, _db)
+    if rv == 0:
+        log_info("nice3: %s", _stock_id)
+        return 0
+    log_debug("-------------------------------------------------")
+
+    # case4
+    rv = thrive_analyzer4(_stock_id, _till, my_df, used_len, _db)
+    if rv == 0:
+        log_info("nice4: %s", _stock_id)
         return 0
     log_debug("-------------------------------------------------")
 
@@ -142,7 +166,7 @@ def regression(_db):
 
     #
     max_date = "2017-08-31"
-    days = 30
+    days = 60
 
     log_info("regress")
 
@@ -172,10 +196,12 @@ def work():
     if sai_is_product_mode():
         till_date = get_date_by(0)
         till_date = get_newest_trade_date(db)
-        till_date = "2017-08-25"
+        # till_date = "2017-08-25"
         log_info("till_date: %s", till_date)
-        # thrive_work_one_day(till_date, db)
+        thrive_work_one_day(till_date, db)
 
+        """
+        # case1
         # 华泰股份 600308 done
         till_date = "2017-07-18"
         stock_id  = "600308"
@@ -195,7 +221,38 @@ def work():
         till_date = "2017-08-10"
         stock_id  = "603357"
         thrive_work_one_day_stock(stock_id, till_date, db)
-        """
+
+        # CASE2
+        # 韩建河山 603616
+        till_date = "2017-04-25"
+        stock_id  = "603616"
+        thrive_work_one_day_stock(stock_id, till_date, db)
+
+        # CASE3
+        # 西部建设
+        till_date = "2017-01-17"
+        stock_id  = "002302"
+        thrive_work_one_day_stock(stock_id, till_date, db)
+
+        # 迅游科技
+        till_date = "2017-08-25"
+        stock_id  = "300467"
+        thrive_work_one_day_stock(stock_id, till_date, db)
+
+        # 泸天化
+        till_date = "2017-06-13"
+        stock_id  = "000912"
+        thrive_work_one_day_stock(stock_id, till_date, db)
+
+        # 泸天化
+        till_date = "2016-09-26"
+        stock_id  = "000912"
+        thrive_work_one_day_stock(stock_id, till_date, db)
+
+        # 中孚信息
+        till_date = "2017-08-31"
+        stock_id  = "300659"
+        thrive_work_one_day_stock(stock_id, till_date, db)
         """
 
 
@@ -208,7 +265,7 @@ def work():
 #######################################################################
 
 def main():
-    sailog_set("thrive.log")
+    sailog_set("thrive2.log")
 
     log_info("let's begin here!")
 

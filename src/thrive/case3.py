@@ -16,19 +16,15 @@ from saitech import *
 
 from pub_thrive import *
 
-# 标准
-# 三线：三连低（high)，三连阴，至少二连降
+# 变种：三线有阴有阳
+# C点往前寻找D点时，包含自己
 
 #
-# 600308
-# 002201
-# 002545
-# 603357
+# 002302
+# 000912
+# 300467
 #
-def thrive_analyzer1(_stock_id, _trade_date, _my_df, _used_len, _db):
-    global g_detail_fetched 
-
-    lowest   = 0
+def thrive_analyzer3(_stock_id, _trade_date, _my_df, _used_len, _db):
     mailed = 0
     content1 = "three-five line\n"
     to_mail = False
@@ -101,22 +97,23 @@ def thrive_analyzer1(_stock_id, _trade_date, _my_df, _used_len, _db):
 
     # A点指标
     A_RATE = 3.6
-    A_ZT   = 2
+    A_ZT   = 4
 
-    B_RATE = -0.5
-    B_ZT   = -0.5
+    B_RATE = -2
+    B_ZT   = -1
 
     C_RATE = 8
 
-    D_DAYS1 = 1
-    D_DAYS2 = 4
+    D_DAYS1 = 0
+    D_DAYS2 = 8
     D_DAYS3 = 8
+    D_RPV   = 3.7
 
     E_DAYS1 = 1
     E_DAYS2 = 6
-    E_RATE  = 9
+    E_RATE  = 18
 
-    CONTRAST = 0.8
+    CONTRAST = 1.3
 
     for row_index, row in _my_df.iterrows():
         TECH_IDX = idx
@@ -144,6 +141,7 @@ def thrive_analyzer1(_stock_id, _trade_date, _my_df, _used_len, _db):
             d_A = pub_date
             v_A = vol
             p_A = close_price
+            o_A = open_price
             h_A = high_price
             l_A = low_price
             i_A = idx
@@ -155,6 +153,7 @@ def thrive_analyzer1(_stock_id, _trade_date, _my_df, _used_len, _db):
             d_B = pub_date
             v_B = vol
             p_B = close_price
+            o_B = open_price
             h_B = high_price
             l_B = low_price
             i_B = idx
@@ -166,6 +165,7 @@ def thrive_analyzer1(_stock_id, _trade_date, _my_df, _used_len, _db):
             d_K = pub_date
             v_K = vol
             p_K = close_price
+            o_K = open_price
             h_K = high_price
             l_K = low_price
             i_K = idx
@@ -177,6 +177,7 @@ def thrive_analyzer1(_stock_id, _trade_date, _my_df, _used_len, _db):
             d_C = pub_date
             v_C = vol
             p_C = close_price
+            o_C = open_price
             h_C = high_price
             l_C = low_price
             i_C = idx
@@ -193,9 +194,9 @@ def thrive_analyzer1(_stock_id, _trade_date, _my_df, _used_len, _db):
     # log_debug("B点跌幅: %.2f%%, 柱体: %.2f%%", rt_B, zt_B)
     rule_A = p_A > h_B and \
         rt_A > A_RATE and zt_A > A_ZT and \
-        rt_B < B_RATE and zt_B < B_ZT
+        rt_B < B_RATE
     if rule_A:
-        log_info("nice: AB点确认: %.2f > %.2f", p_A, h_B)
+        log_info("nice: AB点确认: %.2f > %.2f", h_A, h_B)
     else:
         log_info("sorry: AB not match")
         return 1
@@ -204,15 +205,14 @@ def thrive_analyzer1(_stock_id, _trade_date, _my_df, _used_len, _db):
     rate_BC = (h_C / l_B - 1) * 100
     rule_C = h_C > h_K and h_K > h_B and rate_BC > C_RATE
     rule_B = rt_K < 0 and rt_B < 0
-    rule_K = zt_B <= 0 and zt_K <= 0 and zt_C <= 0
-    if rule_C and rule_B and rule_K:
+    if rule_C and rule_B:
         log_info("nice: C点确认: 跌幅: %.2f", rate_BC)
     else:
-        log_info("sorry: C-point not match: %s, %s, %s", rule_C, rule_B, rule_K)
+        log_info("sorry: C-point not match: %s, %s", rule_C, rule_B)
         return 1
 
     # 寻找D点： C点往前n1单位开始，n2单位内的最高点
-    h_D, p_D, d_D, i_D, v_D, rt_D, vr_D = thrive_preceding_high(_my_df, _used_len, d_C, D_DAYS1, D_DAYS2, _db)
+    h_D, p_D, d_D, i_D, v_D, rt_D, vr_D = thrive_preceding_high2(_my_df, _used_len, d_C, D_DAYS2, _db)
     log_info("trying: D点: %s, %.2f%%, high(%.2f)", d_D, rt_D, h_D)
     if h_D < 1: 
         log_info("sorry: D not so high: %.2f", h_D)
@@ -220,8 +220,8 @@ def thrive_analyzer1(_stock_id, _trade_date, _my_df, _used_len, _db):
 
     # D点RPV
     rpv_D = thrive_rpv(_my_df, _used_len, d_D, D_DAYS3, _db)
-    log_debug("rpv(D点): %.2f", rpv_D)
-    if rpv_D < 3:
+    log_debug("rpv(D点)(%d): %.2f", D_DAYS3, rpv_D)
+    if rpv_D < D_RPV:
         log_info("sorry: D rpv not match: %.2f", rpv_D)
         return 1
 
@@ -269,7 +269,7 @@ def thrive_analyzer1(_stock_id, _trade_date, _my_df, _used_len, _db):
     to_mail = True
 
     if to_mail:
-        subject = "thrive1: %s -- %s" % (_stock_id, _trade_date)
+        subject = "thrive3: %s -- %s" % (_stock_id, _trade_date)
         log_info(subject)
         log_info("mail:\n%s", content1)
         if sai_is_product_mode():
