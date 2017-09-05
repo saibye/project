@@ -211,7 +211,7 @@ def thrive_analyzer3(_stock_id, _trade_date, _my_df, _used_len, _db):
         log_info("sorry: C-point not match: %s, %s", rule_C, rule_B)
         return 1
 
-    # 寻找D点： C点往前n1单位开始，n2单位内的最高点
+    # 寻找D点： C点往前n2单位内的最高点
     h_D, p_D, d_D, i_D, v_D, rt_D, vr_D = thrive_preceding_high2(_my_df, _used_len, d_C, D_DAYS2, _db)
     log_info("trying: D点: %s, %.2f%%, high(%.2f)", d_D, rt_D, h_D)
     if h_D < 1: 
@@ -242,10 +242,8 @@ def thrive_analyzer3(_stock_id, _trade_date, _my_df, _used_len, _db):
         log_info("sorry: up < down: %.2f", contrast)
         return 1
 
-    log_info("nice: 三五线成立")
-
     log_info("+++++++++++++++++++++++++++++++++++++")
-    log_info("bingo: %s counterback at %s", _stock_id, d_E)
+    log_info("bingo: %s counterback at %s", _stock_id, d_A)
     log_info("A: %s", d_A)
     log_info("B: %s", d_B)
     log_info("C: %s", d_C)

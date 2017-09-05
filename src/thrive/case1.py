@@ -76,28 +76,6 @@ def thrive_analyzer1(_stock_id, _trade_date, _my_df, _used_len, _db):
     rt_E = 0
     vr_E = 0
 
-    v_max = 0
-    c_max = 0
-    i_max = -1
-    c_min = 1000
-    i_min = -1
-
-    got_A = False
-    got_B = False
-    got_C = False
-    got_D = False
-    got_E = False
-
-    AB = 0 # A到B天数
-    BC = 0 # B到C天数
-    CD = 0 # C到D天数
-
-    to_get_A = True
-    to_get_B = False
-    to_get_C = False
-    to_get_D = False
-    to_get_E = False
-    to_get_K = False
 
     # A点指标
     A_RATE = 3.6
@@ -242,10 +220,8 @@ def thrive_analyzer1(_stock_id, _trade_date, _my_df, _used_len, _db):
         log_info("sorry: up < down: %.2f", contrast)
         return 1
 
-    log_info("nice: 三五线成立")
-
     log_info("+++++++++++++++++++++++++++++++++++++")
-    log_info("bingo: %s counterback at %s", _stock_id, d_E)
+    log_info("bingo: %s counterback at %s", _stock_id, d_A)
     log_info("A: %s", d_A)
     log_info("B: %s", d_B)
     log_info("C: %s", d_C)

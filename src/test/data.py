@@ -48,7 +48,7 @@ def data_day(_stock_id, _db):
     df = None
 
     start_date = "2017-08-31"
-    end_date   = get_date_by(0)
+    end_date   = get_date_by(1)
 
     try:
         df = ts.get_k_data(_stock_id, autype='qfq', start=start_date, end=end_date)

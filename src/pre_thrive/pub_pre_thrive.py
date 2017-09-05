@@ -19,10 +19,20 @@ from saitech import *
 #######################################################################
 
 
+def pre_thrive_mail_content():
+    content = ""
+    content += "注意：不能被ma200压制！\n"
+    content += "优先：附近有ma200支撑！\n"
+    content += "优先：收复ma20或伴随5/10穿越最佳！\n"
+
+    return content
+
+
+
 # X点往前
 # RPV
 # avg(+rate*vol)  / avg(-rate*vol)
-def thrive_rpv(_detail_df, _used_len, _till, _n, _db):
+def pre_thrive_rpv(_detail_df, _used_len, _till, _n, _db):
     U_sum = 0.0 # up
     U_days = 0
     D_sum = 0.0 # down
@@ -89,7 +99,7 @@ def thrive_rpv(_detail_df, _used_len, _till, _n, _db):
 
 
 
-def thrive_dynamic_calc_tech(_df):
+def pre_thrive_dynamic_calc_tech(_df):
 
     sc = _df['close_price']
 
@@ -148,7 +158,7 @@ def thrive_dynamic_calc_tech(_df):
     return 0
 
 
-def thrive_format_ref(_stock_id, _detail_df):
+def pre_thrive_format_ref(_stock_id, _detail_df):
 
     # _detail MUST be sorted
     rv = ref_init4(_detail_df)
@@ -157,7 +167,7 @@ def thrive_format_ref(_stock_id, _detail_df):
         return -1
 
     _detail_df.sort_index(ascending=False, inplace=True)
-    thrive_dynamic_calc_tech(_detail_df)
+    pre_thrive_dynamic_calc_tech(_detail_df)
     _detail_df.sort_index(ascending=True,  inplace=True)
 
     ref_set_tech5()
@@ -169,7 +179,7 @@ def thrive_format_ref(_stock_id, _detail_df):
 #
 # X点往前n1单位起始，n2单位内的最高high价
 #
-def thrive_preceding_high(_detail_df, _used_len, _date, _n1, _n2, _db):
+def pre_thrive_preceding_high(_detail_df, _used_len, _date, _n1, _n2, _db):
     idx = 0
     days = 0
     to_start = False
@@ -220,19 +230,20 @@ def thrive_preceding_high(_detail_df, _used_len, _date, _n1, _n2, _db):
                     high_vol  = vol
                     # log_debug("high:[%s.2f, %s]", max_high, high_date)
                     high_rate = (close_price - last_close_price) / last_close_price * 100
+                    high_zt = (close_price - open_price) / last_close_price * 100
 
         if str(_date) == str(pub_date):
             to_start = True
 
         idx  = idx + 1
 
-    return max_high, high_close, high_date, high_idx, high_vol, high_rate, high_vr
+    return max_high, high_close, high_date, high_idx, high_vol, high_rate, high_zt
 
 
 #
 # X点往前n1单位起始，n2单位内的最低low价
 #
-def thrive_preceding_low(_detail_df, _used_len, _date, _n1, _n2, _db):
+def pre_thrive_preceding_low(_detail_df, _used_len, _date, _n1, _n2, _db):
     idx = 0
     days = 0
     low_date = ""
@@ -291,7 +302,7 @@ def thrive_preceding_low(_detail_df, _used_len, _date, _n1, _n2, _db):
 #
 # X点往前n1单位内的最高high价
 #
-def thrive_preceding_high2(_detail_df, _used_len, _date, _n1, _db):
+def pre_thrive_preceding_high2(_detail_df, _used_len, _date, _n1, _db):
     idx = 0
     days = 0
     to_start = False
@@ -346,7 +357,7 @@ def thrive_preceding_high2(_detail_df, _used_len, _date, _n1, _db):
 #
 # X点往前n1单位内最高价连续走低的天数
 #
-def thrive_desceding_days(_detail_df, _used_len, _date, _n1, _db):
+def pre_thrive_desceding_days(_detail_df, _used_len, _date, _n1, _db):
     idx = 0
     days = 0
     to_start = False
@@ -402,7 +413,7 @@ def thrive_desceding_days(_detail_df, _used_len, _date, _n1, _db):
 # X点往前突破天数
 # 最高价
 #
-def thrive_break_days(_detail_df, _used_len, _date, _my_high, _db):
+def pre_thrive_break_days(_detail_df, _used_len, _date, _my_high, _db):
 
     days = 0
     last_date = ""
@@ -428,4 +439,27 @@ def thrive_break_days(_detail_df, _used_len, _date, _my_high, _db):
     return days, last_date
 
 
-# pub_thrive.py
+def pre_thrive_save(_stock_id, _pub_date, _price, _title, _message, _db):
+    inst_date = get_today()
+    inst_time = get_time()
+
+    sql = "insert into tbl_watch \
+(pub_date, stock_id, stock_loc, good_type, \
+expect_price, expect_direction, \
+title, message, \
+inst_date, inst_time) \
+values ('%s', '%s', '%s', '%s', \
+'%.2f', '%s', \
+'%s', '%s', \
+'%s', '%s')" % \
+    (_pub_date, _stock_id, 'cn', 'pre-thrive',
+     _price, '00',
+     _title, _message, 
+     inst_date, inst_time)
+
+    log_debug("sql: [%s]", sql)
+    rv = sql_to_db(sql, _db)
+
+    return rv
+
+# pub_pre_thrive.py

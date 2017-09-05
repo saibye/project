@@ -43,6 +43,9 @@ cd ${PHOME}/src/cwh && time python CwH.py
 # thrive.py -- three-five line @2017-9-3
 cd ${PHOME}/src/thrive && time python thrive.py
 
+# pre-thrive.py -- pre-three-five line @2017-9-5
+cd ${PHOME}/src/pre_thrive && time python pre_thrive.py
+
 # cwh.py -- weak! cup with handle @2017-7-18
 cd ${PHOME}/src/decision && time python cwh.py
 

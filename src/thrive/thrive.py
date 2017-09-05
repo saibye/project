@@ -19,6 +19,9 @@ from case1   import *
 from case2   import *
 from case3   import *
 from case4   import *
+from case5   import *
+from case6   import *
+from case7   import *
 
 #######################################################################
 #
@@ -90,6 +93,27 @@ def thrive_work_one_day_stock(_stock_id, _till,  _db):
     rv = thrive_analyzer4(_stock_id, _till, my_df, used_len, _db)
     if rv == 0:
         log_info("nice4: %s", _stock_id)
+        return 0
+    log_debug("-------------------------------------------------")
+
+    # case5 TODO FIXME 2017-9-5
+    # rv = thrive_analyzer5(_stock_id, _till, my_df, used_len, _db)
+    # if rv == 0:
+    #    log_info("nice5: %s", _stock_id)
+    #     return 0
+    # log_debug("-------------------------------------------------")
+
+    # case6
+    rv = thrive_analyzer6(_stock_id, _till, my_df, used_len, _db)
+    if rv == 0:
+        log_info("nice6: %s", _stock_id)
+        return 0
+    log_debug("-------------------------------------------------")
+
+    # case7
+    rv = thrive_analyzer7(_stock_id, _till, my_df, used_len, _db)
+    if rv == 0:
+        log_info("nice7: %s", _stock_id)
         return 0
     log_debug("-------------------------------------------------")
 
@@ -165,8 +189,8 @@ def thrive_work_one_day(_till_date, _db):
 def regression(_db):
 
     #
-    max_date = "2017-08-31"
-    days = 60
+    max_date = "2017-09-01"
+    days = 10
 
     log_info("regress")
 
@@ -253,8 +277,63 @@ def work():
         till_date = "2017-08-31"
         stock_id  = "300659"
         thrive_work_one_day_stock(stock_id, till_date, db)
-        """
 
+        # CASE5
+        # 水晶光电
+        till_date = "2017-08-25"
+        stock_id  = "002273"
+        thrive_work_one_day_stock(stock_id, till_date, db)
+
+        # 西部建设
+        till_date = "2017-02-06"
+        stock_id  = "002302"
+        thrive_work_one_day_stock(stock_id, till_date, db)
+
+        # 浙大网新
+        till_date = "2017-08-31"
+        stock_id  = "600797"
+        thrive_work_one_day_stock(stock_id, till_date, db)
+
+        # 中信国安
+        till_date = "2017-08-29"
+        stock_id  = "000839"
+        thrive_work_one_day_stock(stock_id, till_date, db)
+
+        # 露天煤业
+        till_date = "2017-08-24"
+        stock_id  = "002128"
+        thrive_work_one_day_stock(stock_id, till_date, db)
+
+        # 中国神华 discarded
+        till_date = "2017-05-22"
+        stock_id  = "601088"
+        thrive_work_one_day_stock(stock_id, till_date, db)
+
+        # 龙净环保 discared
+        till_date = "2017-08-31"
+        stock_id  = "600388"
+        thrive_work_one_day_stock(stock_id, till_date, db)
+
+        # 中科曙光
+        till_date = "2017-08-28"
+        stock_id  = "603019"
+        thrive_work_one_day_stock(stock_id, till_date, db)
+
+        # 先河环保
+        till_date = "2017-04-24"
+        stock_id  = "300137"
+        thrive_work_one_day_stock(stock_id, till_date, db)
+
+        # 神州泰岳
+        till_date = "2017-08-28"
+        stock_id  = "300002"
+        thrive_work_one_day_stock(stock_id, till_date, db)
+
+        # 先进数通
+        till_date = "2017-09-01"
+        stock_id  = "300541"
+        thrive_work_one_day_stock(stock_id, till_date, db)
+        """
 
     else:
         regression(db)

@@ -23,7 +23,7 @@ g_detail_fetched = 150
 g_detail_used    = 100
 
 
-def thrive_analyzer(_stock_id, _a_date, _b_date, _c_date, _d_date, _e_date, _my_df, _used_len, _db):
+def pre_thrive_analyzer(_stock_id, _a_date, _b_date, _c_date, _d_date, _e_date, _my_df, _used_len, _db):
     global g_detail_fetched 
 
     lowest   = 0
@@ -157,27 +157,17 @@ def thrive_analyzer(_stock_id, _a_date, _b_date, _c_date, _d_date, _e_date, _my_
         idx  = idx + 1
     # for
 
-    # A点量比
-
-    # B点颜色
-    # BC幅度
-
-    # C点颜色
-
-    # D点颜色
-    # D点rpv
-
-    # DE幅度
-
-
-    if got_A and got_B and got_C and got_D and got_E:
+    if got_B and got_C and got_D and got_E:
         log_info("bingo: %s", _stock_id)
-
-        log_info("data: %s: A点涨幅:  %.2f", _stock_id, rt_A)
-        log_info("data: %s: A点柱体:  %.2f", _stock_id, zt_A)
 
         log_info("data: %s: B点涨幅:  %.2f", _stock_id, rt_B)
         log_info("data: %s: B点柱体:  %.2f", _stock_id, zt_B)
+
+        log_info("data: %s: C点涨幅:  %.2f", _stock_id, rt_C)
+        log_info("data: %s: C点柱体:  %.2f", _stock_id, zt_C)
+
+        log_info("data: %s: D点涨幅:  %.2f", _stock_id, rt_D)
+        log_info("data: %s: D点柱体:  %.2f", _stock_id, zt_D)
 
         # BC幅度
         rate_BC = (h_C / l_B - 1) * 100.00
@@ -187,26 +177,45 @@ def thrive_analyzer(_stock_id, _a_date, _b_date, _c_date, _d_date, _e_date, _my_
         len_CD  = i_D - i_C
         log_info("data: %s: 高点CD距离: %d", _stock_id, len_CD)
 
+        # DB幅度
+        rate_DB = (h_D / l_B - 1) * 100.00
+        log_info("data: %s: 高点跌幅: -%.2f%%",   _stock_id, rate_DB)
+
         # DE长度
         # DE幅度
         len_DE  = i_E - i_D
         rate_DE = (h_D / l_E - 1) * 100.00
-        rate_DB = (h_D / l_B - 1) * 100.00
+        step_DE = rate_DE / len_DE
         log_info("data: %s: 升幅DE距离: %d",   _stock_id, len_DE)
         log_info("data: %s: 升幅DE幅度: %.2f%%", _stock_id, rate_DE)
+        log_info("data: %s: 升幅DE步长: %.2f", _stock_id, step_DE)
+
+        # 升降对比
         log_info("data: %s: 参考DB幅度: %.2f%%，对比%.2f", _stock_id, rate_DB, rate_DE/rate_DB)
 
         # D点rpv
         D1 = 8
-        D_rpv_rt = thrive_rpv(_my_df, _used_len, _d_date, D1, _db)
+        D_rpv_rt = pre_thrive_rpv(_my_df, _used_len, _d_date, D1, _db)
         log_info("data: %s: D点之前[%d]RPV比率: %.2f", _stock_id, D1, D_rpv_rt)
 
+        # D点往前最低！
+        D2 = 0
+        D3 = 5
+        min_low, low_close, low_date, low_idx, low_vol, low_rate = pre_thrive_preceding_low(_my_df, _used_len, _d_date, D2, D3, _db)
+        rate_DX = (h_D / min_low - 1) * 100.00
+        log_info("data: %s: D点之前[%02d]最低: %s: low: %.2f, rate: %.2f%%", _stock_id, D3, low_date, min_low, rate_DX)
+
+        D2 = 0
+        D3 = 10
+        min_low, low_close, low_date, low_idx, low_vol, low_rate = pre_thrive_preceding_low(_my_df, _used_len, _d_date, D2, D3, _db)
+        rate_DX = (h_D / min_low - 1) * 100.00
+        log_info("data: %s: D点之前[%02d]最低: %s: low: %.2f, rate: %.2f%%", _stock_id, D3, low_date, min_low, rate_DX)
 
     else:
         log_info("error: not got all point")
 
     if to_mail:
-        subject = "thrive: %s -- %s" % (_stock_id, _e_date)
+        subject = "pre_thrive: %s -- %s" % (_stock_id, _e_date)
         log_info(subject)
         log_info("mail:\n%s", content1)
         mailed = 1
@@ -215,7 +224,7 @@ def thrive_analyzer(_stock_id, _a_date, _b_date, _c_date, _d_date, _e_date, _my_
 
     return 0
 
-def thrive_work_one_day_stock(_stock_id, _a_date, _b_date, _c_date, _d_date, _e_date, _db):
+def pre_thrive_work_one_day_stock(_stock_id, _a_date, _b_date, _c_date, _d_date, _e_date, _db):
 
     global g_detail_fetched 
     global g_detail_used
@@ -225,7 +234,7 @@ def thrive_work_one_day_stock(_stock_id, _a_date, _b_date, _c_date, _d_date, _e_
     # 获取明细数据
     # 之前n1单位的交易数据
     n1 = g_detail_fetched
-    detail_df = get_thrive_detail(_stock_id, _a_date, n1, _db);
+    detail_df = get_pre_thrive_detail(_stock_id, _a_date, n1, _db);
     if detail_df is None:
         log_info("[%s, %s] detail is none", _stock_id, _a_date)
         return -1
@@ -244,16 +253,16 @@ def thrive_work_one_day_stock(_stock_id, _a_date, _b_date, _c_date, _d_date, _e_
 
     """
     # 格式化数据
-    rv = thrive_format_ref(_stock_id, detail_df)
+    rv = pre_thrive_format_ref(_stock_id, detail_df)
     if rv < 0:
-        log_error("error: thrive_format_ref: %s", _stock_id)
+        log_error("error: pre_thrive_format_ref: %s", _stock_id)
         return -1
     """
 
     used_len = g_detail_used
     my_df = detail_df.head(used_len)
 
-    rv = thrive_analyzer(_stock_id, _a_date, _b_date, _c_date, _d_date, _e_date, my_df, used_len, _db)
+    rv = pre_thrive_analyzer(_stock_id, _a_date, _b_date, _c_date, _d_date, _e_date, my_df, used_len, _db)
     if rv == 0:
         log_info("nice1: %s", _stock_id)
         return 0
@@ -265,11 +274,68 @@ def thrive_work_one_day_stock(_stock_id, _a_date, _b_date, _c_date, _d_date, _e_
 
 
 
+#
+# X点往前n1单位起始，n2单位内的最低low价
+#
+def pre_thrive_preceding_low(_detail_df, _used_len, _date, _n1, _n2, _db):
+    idx = 0
+    days = 0
+    low_date = ""
+    to_start = False
+    to_count = False
+    min_low = 1000.0
+    low_close = 0.0
+
+    for row_index, row in _detail_df.iterrows():
+        TECH_IDX = idx
+
+        pub_date         = row['pub_date']
+        close_price      = row['close_price']
+        high_price       = row['high_price']
+        low_price        = row['low_price']
+
+        last_close_price = row['last']
+        open_price       = row['open_price']
+        vol              = row['total']
+
+
+        # log_debug("pub_date: [%s]", pub_date)
+
+        if to_start:
+            days = days + 1
+            if days >= _n1:
+                # log_debug("to count: %s", pub_date)
+                to_start = False
+                to_count = True
+                days = 0
+
+        if to_count:
+            days = days + 1
+            if days > _n2:
+                # log_debug("reach n2: %d", days)
+                break
+            else:
+                # log_debug("[%d, %s]", days, pub_date)
+                if low_price < min_low:
+                    min_low = low_price
+                    low_close= close_price
+                    low_date = pub_date
+                    low_idx  = idx
+                    low_vol  = vol
+                    # log_debug("low:[%s.2f, %s]", min_low, low_date)
+                    low_rate = (close_price - last_close_price) / last_close_price * 100
+
+        if str(_date) == str(pub_date):
+            to_start = True
+
+        idx  = idx + 1
+
+    return min_low, low_close, low_date, low_idx, low_vol, low_rate
 
 # X点往前
 # RPV
 # avg(+rate*vol)  / avg(-rate*vol)
-def thrive_rpv(_detail_df, _used_len, _till, _n, _db):
+def pre_thrive_rpv(_detail_df, _used_len, _till, _n, _db):
     U_sum = 0.0 # up
     U_days = 0
     D_sum = 0.0 # down
@@ -335,7 +401,7 @@ def thrive_rpv(_detail_df, _used_len, _till, _n, _db):
     return abs(rpv_rt)
 
 
-def thrive_dynamic_calc_tech(_df):
+def pre_thrive_dynamic_calc_tech(_df):
 
     sc = _df['close_price']
 
@@ -394,7 +460,7 @@ def thrive_dynamic_calc_tech(_df):
     return 0
 
 
-def thrive_format_ref(_stock_id, _detail_df):
+def pre_thrive_format_ref(_stock_id, _detail_df):
 
     # _detail MUST be sorted
     rv = ref_init4(_detail_df)
@@ -403,7 +469,7 @@ def thrive_format_ref(_stock_id, _detail_df):
         return -1
 
     _detail_df.sort_index(ascending=False, inplace=True)
-    thrive_dynamic_calc_tech(_detail_df)
+    pre_thrive_dynamic_calc_tech(_detail_df)
     _detail_df.sort_index(ascending=True,  inplace=True)
 
     ref_set_tech5()
@@ -413,7 +479,7 @@ def thrive_format_ref(_stock_id, _detail_df):
 
 
 
-def get_thrive_detail(_stock_id, _pub_date, _n, _db):
+def get_pre_thrive_detail(_stock_id, _pub_date, _n, _db):
     sql = "select stock_id, pub_date, open_price, close_price, \
 deal_total_count total, last_close_price last, \
 high_price, low_price \
@@ -431,7 +497,7 @@ order by pub_date desc limit %d" % (_stock_id, _pub_date, _n)
         return df
 
 
-def get_thrive_stock_list(_till, _db):
+def get_pre_thrive_stock_list(_till, _db):
     sql = "select distinct stock_id from tbl_day \
 where pub_date = \
 (select max(pub_date) from tbl_day \
@@ -457,24 +523,51 @@ def work():
     db = db_init()
 
 
-    # case1
-    # 华泰股份
-    stock_id  = "600308"
-    A_date = "2017-07-18"
-    B_date = "2017-07-17"
-    C_date = "2017-07-13"
-    D_date = "2017-07-10"
-    E_date = "2017-07-04"
-    thrive_work_one_day_stock(stock_id, A_date, B_date, C_date, D_date, E_date, db)
+    # 中孚信息 +++
+    stock_id  = "300659"
+    A_date = "2017-08-31"
+    B_date = "2017-08-30"
+    C_date = "2017-08-28"
+    D_date = "2017-08-25"
+    E_date = "2017-08-21"
+    pre_thrive_work_one_day_stock(stock_id, A_date, B_date, C_date, D_date, E_date, db)
 
-    # 九鼎新材
-    stock_id  = "002201"
-    A_date = "2017-08-25"
-    B_date = "2017-08-24"
-    C_date = "2017-08-22"
-    D_date = "2017-08-16"
-    E_date = "2017-08-11"
-    thrive_work_one_day_stock(stock_id, A_date, B_date, C_date, D_date, E_date, db)
+    # 韩建河山
+    stock_id  = "603616"
+    A_date = "2017-04-25"
+    B_date = "2017-04-24"
+    C_date = "2017-04-20"
+    D_date = "2017-04-18"
+    E_date = "2017-04-06"
+    pre_thrive_work_one_day_stock(stock_id, A_date, B_date, C_date, D_date, E_date, db)
+
+    # 万科A
+    stock_id  = "000002"
+    A_date = "2016-08-12"
+    B_date = "2016-08-11"
+    C_date = "2016-08-09"
+    D_date = "2016-08-08"
+    E_date = "2016-08-01"
+    pre_thrive_work_one_day_stock(stock_id, A_date, B_date, C_date, D_date, E_date, db)
+
+    # 泸天化
+    stock_id  = "000912"
+    A_date = "2016-09-26"
+    B_date = "2016-09-23"
+    C_date = "2016-09-21"
+    D_date = "2016-09-20"
+    E_date = "2016-09-12"
+    pre_thrive_work_one_day_stock(stock_id, A_date, B_date, C_date, D_date, E_date, db)
+
+
+    # 西部建设
+    stock_id  = "002302"
+    A_date = "2017-01-17"
+    B_date = "2017-01-16"
+    C_date = "2017-01-12"
+    D_date = "2017-01-12"
+    E_date = "2017-01-04"
+    pre_thrive_work_one_day_stock(stock_id, A_date, B_date, C_date, D_date, E_date, db)
 
 
     # 东方铁塔
@@ -484,110 +577,19 @@ def work():
     C_date = "2017-08-02"
     D_date = "2017-08-01"
     E_date = "2017-07-27"
-    thrive_work_one_day_stock(stock_id, A_date, B_date, C_date, D_date, E_date, db)
+    pre_thrive_work_one_day_stock(stock_id, A_date, B_date, C_date, D_date, E_date, db)
 
 
-    # 设计总院
-    stock_id  = "603357"
-    A_date = "2017-08-10"
-    B_date = "2017-08-09"
-    C_date = "2017-08-07"
-    D_date = "2017-08-04"
-    E_date = "2017-08-01"
-    thrive_work_one_day_stock(stock_id, A_date, B_date, C_date, D_date, E_date, db)
+    # 青山纸业
+    stock_id  = "600103"
+    A_date = "2017-07-12"
+    B_date = "2017-07-11"
+    C_date = "2017-07-07"
+    D_date = "2017-07-06"
+    E_date = "2017-06-30"
+    pre_thrive_work_one_day_stock(stock_id, A_date, B_date, C_date, D_date, E_date, db)
 
-    # case2
-    # 韩建河山 spe
-    stock_id  = "603616"
-    A_date = "2017-04-25"
-    B_date = "2017-04-24"
-    C_date = "2017-04-20"
-    D_date = "2017-04-18"
-    E_date = "2017-04-07"
-    thrive_work_one_day_stock(stock_id, A_date, B_date, C_date, D_date, E_date, db)
 
-    # case3
-    # 泸天化
-    stock_id  = "000912"
-    A_date = "2017-06-13"
-    B_date = "2017-06-12"
-    C_date = "2017-06-08"
-    D_date = "2017-06-08"
-    E_date = "2017-06-02"
-    thrive_work_one_day_stock(stock_id, A_date, B_date, C_date, D_date, E_date, db)
-
-    # 迅游科技
-    stock_id  = "300467"
-    A_date = "2017-08-25"
-    B_date = "2017-08-24"
-    C_date = "2017-08-22"
-    D_date = "2017-08-16"
-    E_date = "2017-08-11"
-    thrive_work_one_day_stock(stock_id, A_date, B_date, C_date, D_date, E_date, db)
-
-    # 西部建设
-    stock_id  = "002302"
-    A_date = "2017-01-17"
-    B_date = "2017-01-16"
-    C_date = "2017-01-12"
-    D_date = "2017-01-12"
-    E_date = "2017-01-04"
-    thrive_work_one_day_stock(stock_id, A_date, B_date, C_date, D_date, E_date, db)
-
-    # 2017-9-4
-    # 水晶光电
-    stock_id  = "002273"
-    A_date = "2017-08-25"
-    B_date = "2017-08-24"
-    C_date = "2017-08-18"
-    D_date = "2017-08-16"
-    E_date = "2017-08-10"
-    thrive_work_one_day_stock(stock_id, A_date, B_date, C_date, D_date, E_date, db)
-
-    # 西部建设
-    stock_id  = "002302"
-    A_date = "2017-02-06"
-    B_date = "2017-02-03"
-    C_date = "2017-01-23"
-    D_date = "2017-01-23"
-    E_date = "2017-01-16"
-    thrive_work_one_day_stock(stock_id, A_date, B_date, C_date, D_date, E_date, db)
-
-    # 浙大网新
-    stock_id  = "600797"
-    A_date = "2017-08-31"
-    B_date = "2017-08-30"
-    C_date = "2017-08-28"
-    D_date = "2017-08-18"
-    E_date = "2017-08-11"
-    thrive_work_one_day_stock(stock_id, A_date, B_date, C_date, D_date, E_date, db)
-
-    # 中信国安
-    stock_id  = "000839"
-    A_date = "2017-08-29"
-    B_date = "2017-08-28"
-    C_date = "2017-08-23"
-    D_date = "2017-08-21"
-    E_date = "2017-08-14"
-    thrive_work_one_day_stock(stock_id, A_date, B_date, C_date, D_date, E_date, db)
-
-    # 露天煤业
-    stock_id  = "002128"
-    A_date = "2017-08-24"
-    B_date = "2017-08-23"
-    C_date = "2017-08-21"
-    D_date = "2017-08-21"
-    E_date = "2017-08-14"
-    thrive_work_one_day_stock(stock_id, A_date, B_date, C_date, D_date, E_date, db)
-
-    # 中科曙光
-    stock_id  = "603019"
-    A_date = "2017-08-28"
-    B_date = "2017-08-25"
-    C_date = "2017-08-22"
-    D_date = "2017-08-22"
-    E_date = "2017-08-15"
-    thrive_work_one_day_stock(stock_id, A_date, B_date, C_date, D_date, E_date, db)
 
     db_end(db)
 
@@ -595,7 +597,7 @@ def work():
 #######################################################################
 
 def main():
-    sailog_set("A_thrive.log")
+    sailog_set("A_pre_thrive.log")
 
     log_info("let's begin here!")
 
@@ -611,4 +613,4 @@ main()
 
 #######################################################################
 
-# thrive.py
+# pre_thrive.py

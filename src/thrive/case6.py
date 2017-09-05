@@ -16,19 +16,39 @@ from saitech import *
 
 from pub_thrive import *
 
-# 三线：三连低（high)，三连阴，三连降
-# 变种：A点收盘价没有压制，而是最高价压制！
+# 变种：三线有阴有阳
+# B点可以是小阳线
+# CD间距放宽
 
 #
-# 603616
+# 600797
 #
-def thrive_analyzer2(_stock_id, _trade_date, _my_df, _used_len, _db):
+def thrive_analyzer6(_stock_id, _trade_date, _my_df, _used_len, _db):
     mailed = 0
     content1 = "three-five line\n"
     to_mail = False
 
     idx    = 0
     TECH_IDX = 0
+
+
+    # A点指标
+    A_RATE = 1
+    A_ZT   = 1
+
+    B_RATE = 3
+
+    C_RATE = 10
+
+    D_DAYS2 = 7
+    D_DAYS3 = 8
+    D_RPV   = 7
+
+    E_DAYS1 = 1
+    E_DAYS2 = 6
+    E_RATE  = 20
+
+    CONTRAST = 2
 
     # A: 今日！ 突破点
     p_A = 0
@@ -70,24 +90,6 @@ def thrive_analyzer2(_stock_id, _trade_date, _my_df, _used_len, _db):
     rt_E = 0
     vr_E = 0
 
-    # A点指标
-    A_RATE = 5.0
-    A_ZT   = 2
-
-    B_RATE = -1
-    B_ZT   = -1
-
-    C_RATE = 20
-
-    D_DAYS1 = 1
-    D_DAYS2 = 8
-    D_DAYS3 = 8
-
-    E_DAYS1 = 1
-    E_DAYS2 = 6
-    E_RATE  = 30
-
-    CONTRAST = 1.5
 
     for row_index, row in _my_df.iterrows():
         TECH_IDX = idx
@@ -166,9 +168,9 @@ def thrive_analyzer2(_stock_id, _trade_date, _my_df, _used_len, _db):
     # 确认A点
     # log_debug("A点涨幅: %.2f%%, 柱体: %.2f%%", rt_A, zt_A)
     # log_debug("B点跌幅: %.2f%%, 柱体: %.2f%%", rt_B, zt_B)
-    rule_A = h_A > h_B and p_A > max(p_B, o_B) and \
+    rule_A = p_A > h_B and \
         rt_A > A_RATE and zt_A > A_ZT and \
-        rt_B < B_RATE and zt_B < B_ZT
+        rt_B < B_RATE
     if rule_A:
         log_info("nice: AB点确认: %.2f > %.2f", h_A, h_B)
     else:
@@ -177,17 +179,16 @@ def thrive_analyzer2(_stock_id, _trade_date, _my_df, _used_len, _db):
 
     # BC 连续下降
     rate_BC = (h_C / l_B - 1) * 100
-    rule_C = h_C > h_K and h_K > h_B and rate_BC > C_RATE
-    rule_B = rt_C < 0 and rt_K < 0 and rt_B < 0
-    rule_K = zt_B <= 0 and zt_K <= 0 and zt_C <= 0
-    if rule_C and rule_B and rule_K:
+    rule_C = h_C > h_K and h_K > h_B
+    rule_BC= rate_BC > C_RATE
+    if rule_C and rule_BC:
         log_info("nice: C点确认: 跌幅: %.2f", rate_BC)
     else:
-        log_info("sorry: C-point not match: %s, %s, %s", rule_C, rule_B, rule_K)
+        log_info("sorry: C-point not match: %s, %s", rule_C, rule_BC)
         return 1
 
-    # 寻找D点： C点往前n1单位开始，n2单位内的最高点
-    h_D, p_D, d_D, i_D, v_D, rt_D, vr_D = thrive_preceding_high(_my_df, _used_len, d_C, D_DAYS1, D_DAYS2, _db)
+    # 寻找D点： C点往前n2单位内的最高点
+    h_D, p_D, d_D, i_D, v_D, rt_D, vr_D = thrive_preceding_high2(_my_df, _used_len, d_C, D_DAYS2, _db)
     log_info("trying: D点: %s, %.2f%%, high(%.2f)", d_D, rt_D, h_D)
     if h_D < 1: 
         log_info("sorry: D not so high: %.2f", h_D)
@@ -195,8 +196,8 @@ def thrive_analyzer2(_stock_id, _trade_date, _my_df, _used_len, _db):
 
     # D点RPV
     rpv_D = thrive_rpv(_my_df, _used_len, d_D, D_DAYS3, _db)
-    log_debug("rpv(D点): %.2f", rpv_D)
-    if rpv_D < 3:
+    log_debug("rpv(D点)(%d): %.2f", D_DAYS3, rpv_D)
+    if rpv_D < D_RPV:
         log_info("sorry: D rpv not match: %.2f", rpv_D)
         return 1
 
@@ -242,7 +243,7 @@ def thrive_analyzer2(_stock_id, _trade_date, _my_df, _used_len, _db):
     to_mail = True
 
     if to_mail:
-        subject = "thrive2: %s -- %s" % (_stock_id, _trade_date)
+        subject = "thrive6: %s -- %s" % (_stock_id, _trade_date)
         log_info(subject)
         log_info("mail:\n%s", content1)
         if sai_is_product_mode():
