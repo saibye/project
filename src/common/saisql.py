@@ -548,6 +548,19 @@ def get_newest_index_trade_date(_db):
 
     return newest_date
 
+
+"""
+2017/9/6
+"""
+def get_stock_list_table_quick(_table, _db):
+    sql = "select distinct stock_id from tbl_day where pub_date=(select max(pub_date) from tbl_day) order by 1"
+
+    df = pd.read_sql_query(sql, _db);
+    if df is None:
+        return None
+    else :
+        return df.set_index('stock_id')
+
 #######################################################################
 if __name__=="__main__":
     sailog_set("saisql.log")

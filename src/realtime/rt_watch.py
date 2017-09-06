@@ -43,7 +43,7 @@ def work_one(_stock_id, _row, _db):
     log_info(" expect-price: %.2f", expect_price)
     log_info("current-price: %.2f", curr_price)
 
-    if curr_price > expect_price:
+    if curr_price > expect_price + 0.1:
         to_mail = True
         rs = True
         log_info("nice: price-reached: curr %.2f > %.2f expect", curr_price, expect_price)

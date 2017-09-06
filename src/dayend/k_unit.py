@@ -189,9 +189,9 @@ def work():
 
     # stocks = get_stock_quotation() # bug only 100 rows 2017-6-7
 
-    # TODO: TMP 2017-6-7
+    # 2017-9-6
     table = "tbl_day"
-    stocks = get_stock_list_table(table, db)
+    stocks = get_stock_list_table_quick(table, db)
 
 
     # step2: to db
@@ -202,13 +202,8 @@ def work():
         stock_id = row_index
         log_debug("stock: %s", stock_id)
 
-        # stock_id = "002458"
-        # stock_id = "000025"
-        # stock_id = "002591"
-
         # import to DB
         k_unit_one_stock(stock_id, db)
-        # break
 
     log_info("save-all costs %d us", get_micro_second()-begin)
 

@@ -241,6 +241,11 @@ def k_day_one_check_bad(_stock_id, _db):
         log_debug("week sql: [%s]", sql)
         rv = sql_to_db(sql, _db)
 
+        # add tbl_30min 2017-9-6
+        sql = "delete from tbl_15min where stock_id = '%s'" % (_stock_id)
+        log_debug("15min sql: [%s]", sql)
+        rv = sql_to_db(sql, _db)
+
     return is_bad 
 
 
