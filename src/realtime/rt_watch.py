@@ -39,24 +39,26 @@ def work_one(_stock_id, _row, _db):
     content = ""
 
     expect_price = _row['expect_price']
+    to_buy_price = expect_price + 0.1 # XXX
     curr_price = get_curr_price(_stock_id)
     log_info(" expect-price: %.2f", expect_price)
+    log_info(" to-buy-price: %.2f", to_buy_price)
     log_info("current-price: %.2f", curr_price)
 
-    if curr_price > expect_price + 0.1:
+    if curr_price > to_buy_price:
         to_mail = True
         rs = True
-        log_info("nice: price-reached: curr %.2f > %.2f expect", curr_price, expect_price)
+        log_info("nice: price-reached: curr %.2f > %.2f expect", curr_price, to_buy_price)
     else:
         to_mail = False
         rs = False
-        log_debug("sorry: price not match: curr %.2f < %.2f expect", curr_price, expect_price)
+        log_debug("sorry: price not match: curr %.2f < %.2f expect", curr_price, to_buy_price)
 
     if to_mail:
         curr_date = get_today()
         curr_time = get_time()
         subject = "pre-thrive: %s#%s %s" % (_stock_id, curr_date, curr_time)
-        content += "建议买入: %.2f+\n\n" % (expect_price)
+        content += "建议买入: %.2f元+\n\n" % (to_buy_price)
         content += _row['message']
         log_info("subject: \n%s", subject)
         log_info("mail: \n%s", content)

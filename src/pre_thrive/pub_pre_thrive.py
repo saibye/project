@@ -354,60 +354,6 @@ def pre_thrive_preceding_high2(_detail_df, _used_len, _date, _n1, _db):
     return max_high, high_close, high_date, high_idx, high_vol, high_rate, high_vr
 
 
-#
-# X点往前n1单位内最高价连续走低的天数
-#
-def pre_thrive_desceding_days(_detail_df, _used_len, _date, _n1, _db):
-    idx = 0
-    days = 0
-    to_start = False
-    to_count = False
-
-    counter = 0
-    top_date = ""
-    top_price = 0.0
-
-    last_high = 0.0
-
-    for row_index, row in _detail_df.iterrows():
-        TECH_IDX = idx
-
-        pub_date         = row['pub_date']
-        close_price      = row['close_price']
-        high_price       = row['high_price']
-
-        last_close_price = row['last']
-        open_price       = row['open_price']
-        vol              = row['total']
-
-        rate = (close_price - last_close_price) / last_close_price * 100
-        # log_debug("pub_date: [%s]", pub_date)
-
-        if str(_date) == str(pub_date):
-            to_start = True
-
-        if to_start:
-            days = days + 1
-            if days > _n1:
-                # log_debug("reach n2: %d", days)
-                break
-            else:
-                # log_debug("[%d, %s, %.2f, %.2f]", days, pub_date, high_price, rate)
-                if rate < 3 and high_price > last_high:
-                    counter += 1
-                    top_date = pub_date
-                    top_price = high_price
-                    # log_debug("desceding high:[%s, %.2f]", pub_date, rate)
-                else:
-                    # log_debug("not match: rate[%.2f], this[%.2f], [%.2f]last", rate, high_price, last_high)
-                    break
-
-            last_high = high_price
-
-
-        idx  = idx + 1
-
-    return top_date, top_price, counter
 
 # 
 # X点往前突破天数

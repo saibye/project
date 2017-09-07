@@ -22,6 +22,9 @@ from case4   import *
 from case5   import *
 from case6   import *
 from case7   import *
+from case8   import *
+from case9   import *
+from case10  import *
 
 #######################################################################
 #
@@ -117,6 +120,27 @@ def thrive_work_one_day_stock(_stock_id, _till,  _db):
         return 0
     log_debug("-------------------------------------------------")
 
+    # case8
+    rv = thrive_analyzer8(_stock_id, _till, my_df, used_len, _db)
+    if rv == 0:
+        log_info("nice8: %s", _stock_id)
+        return 0
+    log_debug("-------------------------------------------------")
+
+    # case9
+    rv = thrive_analyzer9(_stock_id, _till, my_df, used_len, _db)
+    if rv == 0:
+        log_info("nice9: %s", _stock_id)
+        return 0
+    log_debug("-------------------------------------------------")
+
+    # case10
+    rv = thrive_analyzer10(_stock_id, _till, my_df, used_len, _db)
+    if rv == 0:
+        log_info("nice10: %s", _stock_id)
+        return 0
+    log_debug("-------------------------------------------------")
+
     log_debug("-------------------------------------------------")
 
     return 1
@@ -189,7 +213,7 @@ def thrive_work_one_day(_till_date, _db):
 def regression(_db):
 
     #
-    max_date = "2017-09-01"
+    max_date = "2017-09-06"
     days = 10
 
     log_info("regress")
@@ -225,6 +249,7 @@ def work():
         thrive_work_one_day(till_date, db)
 
         """
+
         # case1
         # 华泰股份 600308 done
         till_date = "2017-07-18"
@@ -333,6 +358,22 @@ def work():
         till_date = "2017-09-01"
         stock_id  = "300541"
         thrive_work_one_day_stock(stock_id, till_date, db)
+
+        # 建科院
+        till_date = "2017-08-11"
+        stock_id  = "300675"
+        thrive_work_one_day_stock(stock_id, till_date, db)
+
+        # 精工钢构
+        till_date = "2017-08-28"
+        stock_id  = "600496"
+        thrive_work_one_day_stock(stock_id, till_date, db)
+
+        # 万东医疗
+        till_date = "2017-08-28"
+        stock_id  = "600055"
+        thrive_work_one_day_stock(stock_id, till_date, db)
+
         """
 
     else:
@@ -344,7 +385,7 @@ def work():
 #######################################################################
 
 def main():
-    sailog_set("thrive2.log")
+    sailog_set("thrive.log")
 
     log_info("let's begin here!")
 

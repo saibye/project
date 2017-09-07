@@ -16,6 +16,7 @@ from saitech import *
 
 from pub_pre_thrive import *
 from case1   import *
+from case2   import *
 
 #######################################################################
 #
@@ -66,6 +67,13 @@ def pre_thrive_work_one_day_stock(_stock_id, _till,  _db):
     rv = pre_thrive_analyzer1(_stock_id, _till, my_df, used_len, _db)
     if rv == 0:
         log_info("nice1: %s", _stock_id)
+        return 0
+    log_debug("-------------------------------------------------")
+
+    # case2
+    rv = pre_thrive_analyzer2(_stock_id, _till, my_df, used_len, _db)
+    if rv == 0:
+        log_info("nice2: %s", _stock_id)
         return 0
     log_debug("-------------------------------------------------")
 
@@ -144,8 +152,8 @@ def regression(_db):
     max_date = "2017-08-30"
     days = 2
 
-    max_date = "2017-09-04"
-    days = 30
+    max_date = "2017-09-06"
+    days = 20
 
     log_info("regress")
 
@@ -180,6 +188,7 @@ def work():
         pre_thrive_work_one_day(till_date, db)
 
         """
+        # case1
         # 中孚信息 300659
         stock_id  = "300659"
         till_date = "2017-08-30"
@@ -209,6 +218,12 @@ def work():
         till_date = "2017-07-11"
         stock_id  = "600103"
         pre_thrive_work_one_day_stock(stock_id, till_date, db)
+
+        # 九鼎新材 002201 # case2
+        till_date = "2017-09-05"
+        stock_id  = "002201"
+        pre_thrive_work_one_day_stock(stock_id, till_date, db)
+
         """
 
     else:
@@ -220,7 +235,7 @@ def work():
 #######################################################################
 
 def main():
-    sailog_set("pre_thrive.log")
+    sailog_set("pre_thrive3.log")
 
     log_info("let's begin here!")
 

@@ -589,6 +589,24 @@ def work():
     E_date = "2017-08-15"
     thrive_work_one_day_stock(stock_id, A_date, B_date, C_date, D_date, E_date, db)
 
+    # 精工钢构 2017-9-7
+    stock_id  = "600496"
+    A_date = "2017-08-28"
+    B_date = "2017-08-25"
+    C_date = "2017-08-22"
+    D_date = "2017-08-21"
+    E_date = "2017-08-14"
+    thrive_work_one_day_stock(stock_id, A_date, B_date, C_date, D_date, E_date, db)
+
+    # 万东医疗
+    stock_id  = "600055"
+    A_date = "2017-08-28"
+    B_date = "2017-08-25"
+    C_date = "2017-08-23"
+    D_date = "2017-08-22"
+    E_date = "2017-08-14"
+    thrive_work_one_day_stock(stock_id, A_date, B_date, C_date, D_date, E_date, db)
+
     db_end(db)
 
 

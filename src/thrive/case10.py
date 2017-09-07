@@ -16,42 +16,23 @@ from saitech import *
 
 from pub_thrive import *
 
-# 变种：不止三线
-# 动态查找C点，更合理!
+# 变种：CASE1
+# 三线：三连低（high, close)，不要求阴阳
+# 寻找D点，不包括C点
 
 #
-# 002273
+# 600055
 #
-def thrive_analyzer5(_stock_id, _trade_date, _my_df, _used_len, _db):
+def thrive_analyzer10(_stock_id, _trade_date, _my_df, _used_len, _db):
+    global g_detail_fetched 
+
+    lowest   = 0
     mailed = 0
     content1 = "three-five line\n"
     to_mail = False
 
     idx    = 0
     TECH_IDX = 0
-
-    # A点指标
-    A_RATE = 0.4
-    A_ZT   = 0.4
-
-    B_RATE = 1.2
-
-    C_DAYS1 = 7
-
-    C_RATE = 4.8
-
-
-    D_DAYS1 = 3
-    D_DAYS3 = 8
-    D_DAYS4 = 20
-    D_RPV   = 1.3
-    D_RATE = 5
-
-    E_DAYS1 = 1
-    E_DAYS2 = 6
-    E_RATE  = 10
-
-    CONTRAST = 1.5
 
     # A: 今日！ 突破点
     p_A = 0
@@ -94,6 +75,23 @@ def thrive_analyzer5(_stock_id, _trade_date, _my_df, _used_len, _db):
     vr_E = 0
 
 
+    # A点指标
+    A_RATE = 1
+
+    B_RATE = 2
+
+    C_RATE = 7.8
+
+    D_DAYS1 = 1
+    D_DAYS2 = 2
+    D_DAYS3 = 8
+    D_RPV   = 2
+
+    E_DAYS1 = 1
+    E_DAYS2 = 6
+    E_RATE  = 16
+
+    CONTRAST = 3
 
     for row_index, row in _my_df.iterrows():
         TECH_IDX = idx
@@ -121,7 +119,6 @@ def thrive_analyzer5(_stock_id, _trade_date, _my_df, _used_len, _db):
             d_A = pub_date
             v_A = vol
             p_A = close_price
-            o_A = open_price
             h_A = high_price
             l_A = low_price
             i_A = idx
@@ -133,74 +130,78 @@ def thrive_analyzer5(_stock_id, _trade_date, _my_df, _used_len, _db):
             d_B = pub_date
             v_B = vol
             p_B = close_price
-            o_B = open_price
             h_B = high_price
             l_B = low_price
             i_B = idx
             rt_B= rate
             zt_B= zt
 
+        # K点 (BC中间的点)
+        elif idx == 2:
+            d_K = pub_date
+            v_K = vol
+            p_K = close_price
+            h_K = high_price
+            l_K = low_price
+            i_K = idx
+            rt_K= rate
+            zt_K= zt
+
+        # C点
+        elif idx == 3:
+            d_C = pub_date
+            v_C = vol
+            p_C = close_price
+            h_C = high_price
+            l_C = low_price
+            i_C = idx
+            rt_C= rate
+            zt_C= zt
+            break
+
+
         idx  = idx + 1
 
 
-    # 确认A/B点
-    log_debug("A点涨幅: %.2f%%, 柱体: %.2f%%", rt_A, zt_A)
-    log_debug("B点跌幅: %.2f%%, 柱体: %.2f%%", rt_B, zt_B)
-    rule_A = p_A >= h_B and \
-        rt_A > A_RATE and zt_A > A_ZT and \
+    # 确认A点
+    # log_debug("A点涨幅: %.2f%%, 柱体: %.2f%%", rt_A, zt_A)
+    # log_debug("B点跌幅: %.2f%%, 柱体: %.2f%%", rt_B, zt_B)
+    rule_A = p_A > h_B and \
+        rt_A > A_RATE and zt_A >= 0 and \
         rt_B < B_RATE
     if rule_A:
-        log_info("nice: AB点确认: %.2f > %.2f", h_A, h_B)
+        log_info("nice: AB点确认: %.2f > %.2f", p_A, h_B)
     else:
-        log_info("sorry: AB not match: %.3f pk %.3f", p_A, h_B)
+        log_info("sorry: AB not match")
         return 1
 
-    # 寻找前高，确认C点
-    d_C, h_C, days_C, rt_C, zt_C = thrive_desceding_days(_my_df, _used_len, d_B, C_DAYS1, _db)
-    log_info("trying: C点: %s, %d", d_C, days_C)
-    if days_C < 3 or days_C > 6: 
-        log_info("sorry: C not match: %s, %d", d_C, days_C)
-        return 1
-
-    # BC 有下降
+    # BC 连续下降
     rate_BC = (h_C / l_B - 1) * 100
-    rule_C = rate_BC > C_RATE
-    if rule_C:
+    rule_C = h_C > h_K and h_K > h_B
+    rule_K = p_C > p_K and p_K > p_B
+    rule_B = rate_BC > C_RATE
+    if rule_C and rule_B and rule_K:
         log_info("nice: C点确认: 跌幅: %.2f", rate_BC)
     else:
-        log_info("sorry: C-point not match: %s, %.2f", rule_C, rate_BC)
+        log_info("sorry: C-point not match: %s, %s, %s", rule_C, rule_B, rule_K)
         return 1
 
-
-    # 寻找D点： C点往前n1单位内的最高点
-    h_D, p_D, d_D, i_D, v_D, rt_D, vr_D = thrive_preceding_high2(_my_df, _used_len, d_C, D_DAYS1, _db)
+    # 寻找D点： C点往前n1单位开始，n2单位内的最高点
+    h_D, p_D, d_D, i_D, v_D, rt_D, vr_D = thrive_preceding_high(_my_df, _used_len, d_C, D_DAYS1, D_DAYS2, _db)
     log_info("trying: D点: %s, %.2f%%, high(%.2f)", d_D, rt_D, h_D)
     if h_D < 1: 
         log_info("sorry: D not so high: %.2f", h_D)
         return 1
 
+    if rt_D < 3:
+        log_info("sorry: D not so red: %.2f", rt_D)
+        return 1
+
     # D点RPV
     rpv_D = thrive_rpv(_my_df, _used_len, d_D, D_DAYS3, _db)
-    log_debug("rpv(D点)(%d): %.2f", D_DAYS3, rpv_D)
+    log_debug("rpv(D点): %.2f", rpv_D)
     if rpv_D < D_RPV:
         log_info("sorry: D rpv not match: %.2f", rpv_D)
-        return 1
-
-
-    # DB 深幅下跌
-    rate_DB = (h_D / l_B - 1) * 100.00
-    rule_D = rate_DB > D_RATE
-    log_debug("DB降幅: %.2f", rate_DB)
-    if not rule_D:
-        log_info("sorry: D-point not match: DB幅度: %s, %.2f", rule_D, rate_DB)
-        return 1
-
-
-    # D点是新高
-    break_days, block_date = thrive_break_days(_my_df, _used_len, d_D, h_D, _db)
-    log_debug("D block days: %d @%s", break_days, block_date)
-    if break_days < D_DAYS4:
-        log_info("sorry: D-point not match: block-days: %d", break_days)
         return 1
 
 
@@ -213,9 +214,9 @@ def thrive_analyzer5(_stock_id, _trade_date, _my_df, _used_len, _db):
         log_info("sorry: E not so low: %.2f", l_E)
         return 1
 
-    # 升降对比
+    rate_DB = (h_D / l_B - 1) * 100.00
     contrast = rate_DE / rate_DB
-    log_info("rate-DB: %.2f%%, contrast: %.2f", rate_DE, contrast)
+    log_info("rate-DB: %.2f%%, contrast: %.2f", rate_DB, contrast)
     if contrast < CONTRAST:
         log_info("sorry: up < down: %.2f", contrast)
         return 1
@@ -245,12 +246,12 @@ def thrive_analyzer5(_stock_id, _trade_date, _my_df, _used_len, _db):
     to_mail = True
 
     if to_mail:
-        subject = "thrive5: %s -- %s" % (_stock_id, _trade_date)
+        subject = "thrive10: %s -- %s" % (_stock_id, _trade_date)
         log_info(subject)
         log_info("mail:\n%s", content1)
         if sai_is_product_mode():
             mailed = 1
-            # saimail_dev(subject, content1)
+            saimail_dev(subject, content1)
             return 0
     else:
         # log_info("sorry: %s, %s", _stock_id, _trade_date)

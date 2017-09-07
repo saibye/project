@@ -145,8 +145,8 @@ def thrive_analyzer7(_stock_id, _trade_date, _my_df, _used_len, _db):
 
 
     # 确认A/B点
-    log_debug("A点涨幅: %.2f%%, 柱体: %.2f%%", rt_A, zt_A)
-    log_debug("B点跌幅: %.2f%%, 柱体: %.2f%%", rt_B, zt_B)
+    # log_debug("A点涨幅: %.2f%%, 柱体: %.2f%%", rt_A, zt_A)
+    # log_debug("B点跌幅: %.2f%%, 柱体: %.2f%%", rt_B, zt_B)
     rule_A = p_A > p_B and h_A > h_B and \
         rt_A > A_RATE and zt_A > A_ZT and \
         rt_B < B_RATE
@@ -157,7 +157,7 @@ def thrive_analyzer7(_stock_id, _trade_date, _my_df, _used_len, _db):
         return 1
 
     # 寻找前高，确认C点
-    d_C, h_C, days_C = thrive_desceding_days(_my_df, _used_len, d_B, C_DAYS1, _db)
+    d_C, h_C, days_C, rt_C, zt_C = thrive_desceding_days(_my_df, _used_len, d_B, C_DAYS1, _db)
     log_info("trying: C点: %s, %d", d_C, days_C)
     if days_C < 3 or days_C > 5: 
         log_info("sorry: C not match: %s, %d", d_C, days_C)

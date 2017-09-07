@@ -17,6 +17,7 @@ from saitech import *
 from pub_pre_thrive import *
 
 # 标准
+# 三连跌
 
 #
 # 300659
@@ -164,7 +165,7 @@ def pre_thrive_analyzer1(_stock_id, _trade_date, _my_df, _used_len, _db):
     rule_C = h_C > h_K and h_K > h_B
     rule_B = rate_BC > BC_RATE
     if rule_C and rule_B:
-        log_info("nice: C点确认: 跌幅: %.2f", rate_BC)
+        log_info("nice: C点确认: %s, 跌幅: %.2f", d_C, rate_BC)
     else:
         log_info("sorry: C-point not match: %s, %s", rule_C, rule_B)
         return 1

@@ -182,6 +182,7 @@ def thrive_preceding_high(_detail_df, _used_len, _date, _n1, _n2, _db):
     high_idx = 0
     high_vol = 0
     high_vr = 0
+    high_zt = 0
 
     for row_index, row in _detail_df.iterrows():
         TECH_IDX = idx
@@ -220,13 +221,14 @@ def thrive_preceding_high(_detail_df, _used_len, _date, _n1, _n2, _db):
                     high_vol  = vol
                     # log_debug("high:[%s.2f, %s]", max_high, high_date)
                     high_rate = (close_price - last_close_price) / last_close_price * 100
+                    high_zt   = (close_price - open_price) / last_close_price * 100
 
         if str(_date) == str(pub_date):
             to_start = True
 
         idx  = idx + 1
 
-    return max_high, high_close, high_date, high_idx, high_vol, high_rate, high_vr
+    return max_high, high_close, high_date, high_idx, high_vol, high_rate, high_zt
 
 
 #
@@ -355,6 +357,8 @@ def thrive_desceding_days(_detail_df, _used_len, _date, _n1, _db):
     counter = 0
     top_date = ""
     top_price = 0.0
+    top_rate = 0.0
+    top_zt   = 0.0
 
     last_high = 0.0
 
@@ -364,7 +368,6 @@ def thrive_desceding_days(_detail_df, _used_len, _date, _n1, _db):
         pub_date         = row['pub_date']
         close_price      = row['close_price']
         high_price       = row['high_price']
-
         last_close_price = row['last']
         open_price       = row['open_price']
         vol              = row['total']
@@ -386,6 +389,8 @@ def thrive_desceding_days(_detail_df, _used_len, _date, _n1, _db):
                     counter += 1
                     top_date = pub_date
                     top_price = high_price
+                    top_rate = (close_price - last_close_price) / last_close_price * 100
+                    top_zt   = (close_price - open_price) / last_close_price * 100
                     # log_debug("desceding high:[%s, %.2f]", pub_date, rate)
                 else:
                     # log_debug("not match: rate[%.2f], this[%.2f], [%.2f]last", rate, high_price, last_high)
@@ -396,7 +401,7 @@ def thrive_desceding_days(_detail_df, _used_len, _date, _n1, _db):
 
         idx  = idx + 1
 
-    return top_date, top_price, counter
+    return top_date, top_price, counter, top_rate, top_zt
 
 # 
 # X点往前突破天数
