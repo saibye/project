@@ -16,12 +16,13 @@ from saitech import *
 
 from pub_pre_thrive import *
 
-# 4连阴，4连跌
+# 4线
+# 前期巨大涨幅（连续多次涨停）
 
 #
-# 002201 @2017-9-6
+# 300635 # 2017-9-7
 #
-def pre_thrive_analyzer2(_stock_id, _trade_date, _my_df, _used_len, _db):
+def pre_thrive_analyzer3(_stock_id, _trade_date, _my_df, _used_len, _db):
     global g_detail_fetched 
 
     lowest   = 0
@@ -66,26 +67,26 @@ def pre_thrive_analyzer2(_stock_id, _trade_date, _my_df, _used_len, _db):
     vr_E = 0
 
 
-    B_RATE = -1.8
+    B_RATE = -1.0
 
-    C_RATE = -2
-    BX_RATE= 10
+    C_RATE = 0
+    BX_RATE= 16
 
     D_DAYS1 = 1
     D_DAYS2 = 2
     D_DAYS3 = 8
-    D_RATE  = 4
-    D_ZT  = 4
-    D_RPV   = 5
+    D_RATE  = 9
+    D_ZT  = 0
+    D_RPV   = 9.8
 
     E_DAYS1 = 1
     E_DAYS2 = 6
     E_DAYS2 = 5
     E_RATE  = 20
 
-    E_STEP  = 5
+    E_STEP  = 9
 
-    CONTRAST = 1.8
+    CONTRAST = 4
 
     for row_index, row in _my_df.iterrows():
         TECH_IDX = idx
@@ -113,6 +114,7 @@ def pre_thrive_analyzer2(_stock_id, _trade_date, _my_df, _used_len, _db):
             d_B = pub_date
             v_B = vol
             p_B = close_price
+            o_B = open_price
             h_B = high_price
             l_B = low_price
             i_B = idx
@@ -124,6 +126,7 @@ def pre_thrive_analyzer2(_stock_id, _trade_date, _my_df, _used_len, _db):
             d_K = pub_date
             v_K = vol
             p_K = close_price
+            o_K = open_price
             h_K = high_price
             l_K = low_price
             i_K = idx
@@ -135,6 +138,7 @@ def pre_thrive_analyzer2(_stock_id, _trade_date, _my_df, _used_len, _db):
             d_C = pub_date
             v_C = vol
             p_C = close_price
+            o_C = open_price
             h_C = high_price
             l_C = low_price
             i_C = idx
@@ -146,6 +150,7 @@ def pre_thrive_analyzer2(_stock_id, _trade_date, _my_df, _used_len, _db):
             d_X = pub_date
             v_X = vol
             p_X = close_price
+            o_X = open_price
             h_X = high_price
             l_X = low_price
             i_X = idx
@@ -174,8 +179,8 @@ def pre_thrive_analyzer2(_stock_id, _trade_date, _my_df, _used_len, _db):
     rate_BX = (h_X / l_B - 1) * 100
     rule_B = rate_BX > BX_RATE
     rule_C = h_X > h_C and h_C > h_K and h_K > h_B
-    rule_X = rt_X < 0 and rt_C < 0 and rt_K < 0 and rt_B < 0
-    rule_K = zt_X <= 0 and zt_C <= 0 and zt_K <= 0 and zt_B <= 0
+    rule_X = max(o_X, p_X) > max(o_C, p_C) and max(o_C, p_C) > max(o_K, p_K)
+    rule_K = max(o_K, p_K) > max(o_B, p_B)
     if rule_C and rule_B and rule_X and rule_K:
         log_info("nice: C点确认: %s, 跌幅: %.2f", d_C, rate_BX)
     else:
@@ -254,7 +259,7 @@ def pre_thrive_analyzer2(_stock_id, _trade_date, _my_df, _used_len, _db):
 
     if to_mail:
 
-        subject = "pre_thrive2: %s -- %s" % (_stock_id, _trade_date)
+        subject = "pre_thrive3: %s -- %s" % (_stock_id, _trade_date)
 
         pre_thrive_save(_stock_id, _trade_date, h_B, subject, content1, _db)
 

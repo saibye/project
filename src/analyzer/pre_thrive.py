@@ -589,6 +589,15 @@ def work():
     E_date = "2017-06-30"
     pre_thrive_work_one_day_stock(stock_id, A_date, B_date, C_date, D_date, E_date, db)
 
+    # 达安股份 case3
+    stock_id  = "300635"
+    A_date = "2017-09-07"
+    B_date = "2017-09-06"
+    C_date = "2017-09-01"
+    D_date = "2017-08-31"
+    E_date = "2017-08-24"
+    pre_thrive_work_one_day_stock(stock_id, A_date, B_date, C_date, D_date, E_date, db)
+
 
 
     db_end(db)

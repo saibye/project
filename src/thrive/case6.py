@@ -243,7 +243,7 @@ def thrive_analyzer6(_stock_id, _trade_date, _my_df, _used_len, _db):
     to_mail = True
 
     if to_mail:
-        subject = "thrive6: %s -- %s" % (_stock_id, _trade_date)
+        subject = "thrive6+: %s -- %s" % (_stock_id, _trade_date)
         log_info(subject)
         log_info("mail:\n%s", content1)
         if sai_is_product_mode():
