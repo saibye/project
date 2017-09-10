@@ -1,0 +1,3 @@
+
+select distinct stock_id from tbl_15min where pub_date_time = (select max(pub_date_time) from tbl_15min where pub_date_time <= '2017-08-25 15:00:00')
+

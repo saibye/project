@@ -166,6 +166,8 @@ def u15m_format_ref(_stock_id, _detail_df):
     return 0
 
 
+
+
 #
 # X点往前n1单位起始，n2单位内的最高high价
 #
@@ -426,6 +428,128 @@ def u15m_break_days(_detail_df, _used_len, _date, _my_high, _db):
             to_count = True
 
     return days, last_date
+
+
+
+################################################################################
+
+
+# 支撑: 一直在ma200之上的单位数
+# X点往前再次触及ma200的单位数
+#
+def u15m_sustain_ma200_unit(_detail_df, _used_len, _date_time, _db):
+    idx = 0
+    days = 0
+    to_start = False
+
+    high_date_time = ""
+    high_idx = 0
+
+    for row_index, row in _detail_df.iterrows():
+        TECH_IDX = idx
+
+        pub_date_time    = row['pub_date_time']
+        close_price      = row['close_price']
+        open_price       = row['open_price']
+        high_price       = row['high_price']
+        low_price        = row['low_price']
+
+        last_close_price = row['last']
+        vol              = row['total']
+        ma200            = ref_ma200(TECH_IDX)
+
+
+        # log_debug("%s: low: %.2f, ma: %.2f, high: %.2f, unit: %d", pub_date_time, low_price, ma200, high_price, days)
+
+        if to_start:
+            if close_price >= ma200:
+                days = days + 1
+
+            if high_price >= ma200 and low_price <= ma200:
+                high_date_time = pub_date_time
+                high_idx  = idx
+                break
+
+        if str(_date_time) == str(pub_date_time):
+            to_start = True
+
+        idx  = idx + 1
+
+    return days, high_date_time, high_idx
+
+
+#
+# X点往后高位徘徊
+# X点往后收盘价高于X点收盘价的单位数
+#
+def u15m_upper_hover_units(_detail_df, _used_len, _price, _idx, _db):
+    days = 0
+
+    start_idx =  0
+    end_idx = _idx
+
+    target_price = _price * 0.99
+
+    df = _detail_df[start_idx: end_idx].sort_index(ascending=False)
+    # log_debug("df: \n%s", df)
+
+    for row_index, row in df.iterrows():
+        pub_date_time    = row['pub_date_time']
+        close_price      = row['close_price']
+
+        log_debug("%s -- this: %.3f, target: %.3f", pub_date_time, close_price, target_price)
+
+        if close_price >= target_price: 
+            days = days + 1
+            # log_debug("%s -- %d", pub_date_time, days)
+        else:
+            break
+
+    return days
+
+
+# 突破: 一直在ma200之下的单位数
+# X点往前再次触及ma200的单位数
+#
+def u15m_break_ma200_unit(_detail_df, _used_len, _date_time, _db):
+    idx = 0
+    days = 0
+    to_start = False
+
+    high_date_time = ""
+    high_idx = 0
+
+    for row_index, row in _detail_df.iterrows():
+        TECH_IDX = idx
+
+        pub_date_time    = row['pub_date_time']
+        close_price      = row['close_price']
+        open_price       = row['open_price']
+        high_price       = row['high_price']
+        low_price        = row['low_price']
+
+        last_close_price = row['last']
+        vol              = row['total']
+        ma200            = ref_ma200(TECH_IDX)
+
+
+        # log_debug("%s: low: %.2f, ma: %.2f, high: %.2f, unit: %d", pub_date_time, low_price, ma200, high_price, days)
+
+        if to_start:
+            if close_price <= ma200:
+                days = days + 1
+
+            if high_price >= ma200 and low_price <= ma200:
+                high_date_time = pub_date_time
+                high_idx  = idx
+                break
+
+        if str(_date_time) == str(pub_date_time):
+            to_start = True
+
+        idx  = idx + 1
+
+    return days, high_date_time, high_idx
 
 
 # pub_u15m.py

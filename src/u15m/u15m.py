@@ -15,14 +15,16 @@ from sairef  import *
 from saitech import *
 
 from pub_u15m import *
+
 from case1   import *
+from case2   import *
 
 #######################################################################
 #
 #######################################################################
 
 g_detail_fetched = 450
-g_detail_used    = 400
+g_detail_used    = 300
 
 
 def u15m_work_one_day_stock(_stock_id, _till,  _db):
@@ -43,7 +45,8 @@ def u15m_work_one_day_stock(_stock_id, _till,  _db):
         log_debug("detail_df is empty: [%d]", len(detail_df))
         return 1
     else:
-        log_debug("n1: len[%d]\n%s", len(detail_df), detail_df)
+        log_debug("n1: len[%d]", len(detail_df))
+        # log_debug("n1: len[%d]\n%s", len(detail_df), detail_df)
         pass
 
     length = len(detail_df)
@@ -60,6 +63,7 @@ def u15m_work_one_day_stock(_stock_id, _till,  _db):
     used_len = g_detail_used
     my_df = detail_df.head(used_len)
 
+    """
     log_debug("ref0: p[%.3f] -- v[%.3f]", ref_close(0), ref_vol(0))
     log_debug("ref1: p[%.3f] -- v[%.3f]", ref_close(1), ref_vol(1))
     log_debug("ref2: p[%.3f] -- v[%.3f]", ref_close(2), ref_vol(2))
@@ -71,14 +75,23 @@ def u15m_work_one_day_stock(_stock_id, _till,  _db):
     log_debug("vma0: 5[%.3f] - 10[%.3f] - 50[%.3f]", ref_vma5(0), ref_vma10(0), ref_vma50(0))
     log_debug("vma1: 5[%.3f] - 10[%.3f] - 50[%.3f]", ref_vma5(1), ref_vma10(1), ref_vma50(1))
     log_debug("vma2: 5[%.3f] - 10[%.3f] - 50[%.3f]", ref_vma5(2), ref_vma10(2), ref_vma50(2))
+    """
 
 
     # case1
+    """
     rv = u15m_analyzer1(_stock_id, _till, my_df, used_len, _db)
     if rv == 0:
         log_info("nice1: %s", _stock_id)
         return 0
     log_debug("-------------------------------------------------")
+    """
+
+    # case2
+    rv = u15m_analyzer2(_stock_id, _till, my_df, used_len, _db)
+    if rv == 0:
+        log_info("nice2: %s", _stock_id)
+        return 0
 
     log_debug("-------------------------------------------------")
 
@@ -93,7 +106,7 @@ from tbl_15min a \
 where a.stock_id  = '%s' and a.pub_date_time <= '%s' \
 order by pub_date_time desc limit %d" % (_stock_id, _pub_date, _n)
 
-    log_debug("detail-sql:\n%s", sql)
+    # log_debug("detail-sql:\n%s", sql)
 
     df = pd.read_sql_query(sql, _db);
     if df is None:
@@ -106,10 +119,10 @@ order by pub_date_time desc limit %d" % (_stock_id, _pub_date, _n)
 def get_u15m_stock_list(_till, _db):
     sql = "select distinct stock_id from tbl_15min \
 where pub_date_time = \
-(select max(pub_date_time) from tbl_day \
-where pub_date_time <= '%s')" % (_till)
+(select max(pub_date_time) from tbl_15min \
+where pub_date_time <= '%s') order by 1" % (_till)
 
-    # log_debug("stock list sql:\n%s", sql)
+    log_debug("stock list sql:\n%s", sql)
 
     df = pd.read_sql_query(sql, _db);
     if df is None:
@@ -152,8 +165,8 @@ def u15m_work_one_day(_till_date, _db):
 def regression(_db):
 
     #
-    max_date = "2017-09-01"
-    days = 10
+    max_date = "2017-08-26"
+    days = 1
 
     log_info("regress")
 
@@ -162,10 +175,10 @@ def regression(_db):
         log_error("error: get_recent_pub_date failure")
         return -1
     else:
-        date_df.set_index("pub_date_time", inplace=True)
+        date_df.set_index("pub_date", inplace=True)
 
     for row_index, row in date_df.iterrows():
-        till_date = row_index
+        till_date = str(row_index) + " 15:00:00"
         log_debug("[%s]------------------", till_date)
         u15m_work_one_day(till_date, _db)
 
@@ -187,18 +200,42 @@ def work():
         log_info("till_date: %s", till_date)
         # u15m_work_one_day(till_date, db)
 
+
+        """
+        # CASE1: 跌破+立即收复 TODO
+        # 隆基股份
+        till_date = "2017-09-04 10:00:00"
+        stock_id  = "601012"
+        u15m_work_one_day_stock(stock_id, till_date, db)
+
+
         # 韵达股份 
         till_date = "2017-09-01 15:00:00"
         stock_id  = "002120"
         u15m_work_one_day_stock(stock_id, till_date, db)
-
         """
-        # 隆基股份
-        till_date = "2017-09-04"
-        stock_id  = "601012"
+
+        # CASE2: 放量6线+高位徘徊
+        # 韶钢松山
+        till_date = "2017-08-25 11:00:00"
+        stock_id  = "000717"
         u15m_work_one_day_stock(stock_id, till_date, db)
 
-        """
+        # 昆百大A: case2
+        till_date = "2017-08-29 11:00:00"
+        stock_id  = "000560"
+        u15m_work_one_day_stock(stock_id, till_date, db)
+
+        # 融捷股份 case2
+        till_date = "2017-08-31 11:00:00"
+        stock_id  = "002192"
+        u15m_work_one_day_stock(stock_id, till_date, db)
+
+        # 科大国创 case2 TODO
+        till_date = "2017-08-28 11:00:00"
+        stock_id  = "300520"
+        u15m_work_one_day_stock(stock_id, till_date, db)
+
 
     else:
         regression(db)

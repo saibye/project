@@ -848,7 +848,7 @@ def main():
     if sai_is_product_mode():
         if today_is_weekend():
             log_info("today is weekend, exit")
-            work()
+            # work()
         else:
             log_info("today is workday, come on")
             work()

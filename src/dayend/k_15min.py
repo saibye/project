@@ -26,8 +26,8 @@ def k_15min_one_to_db(_stock_id, _df, _db):
 
     # init last close price
     # last_close_price = _df['close'][0]
-    last_close_price = _df.iloc[0,2]
 
+    length = len(_df)
 
     # import dataframe to db
     counter = 0
@@ -39,6 +39,14 @@ def k_15min_one_to_db(_stock_id, _df, _db):
         trade_date_time = row.loc['date']
         open_price = row.loc['open']
         volume = row.loc['volume']
+
+        if counter >= length:
+            last_close_price = _df.iloc[counter-1,2]
+            log_debug("end-time: %.2f", last_close_price)
+        else:
+            last_close_price = _df.iloc[counter,2]
+            # log_debug("last-clo: %.2f", last_close_price)
+
 
         # 前复权
         sql = "insert into tbl_15min \
@@ -58,7 +66,7 @@ values ('%s', '%s', '%s',  \
         volume, 
         dt, tm)
 
-        last_close_price = row.loc['close']
+        # last_close_price = row.loc['close']
 
         # log_debug("%s", sql)
         rv = sql_to_db_nolog(sql, _db)
@@ -124,9 +132,10 @@ def work():
     # step2: to db
     begin = get_micro_second()
 
-    # TEST mode
     """
+    # TEST mode
     stock_id = "000002"
+    stock_id = "000717"
     k_15min_one_stock(stock_id, db)
     return 0
     """

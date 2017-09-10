@@ -93,19 +93,11 @@ def u15m_analyzer1(_stock_id, _trade_date, _my_df, _used_len, _db):
 
     log_debug("CASE1--")
 
-    log_debug("ref0: o[%.3f] - p[%.3f] - l[%.3f] - h[%.3f] -- v[%.3f]", ref_open(14), ref_close(14), ref_low(14), ref_high(14), ref_vol(14))
-    log_debug("ref1: o[%.3f] - p[%.3f] - l[%.3f] - h[%.3f] -- v[%.3f]", ref_open(15), ref_close(15), ref_low(15), ref_high(15), ref_vol(15))
-    log_debug("ref2: o[%.3f] - p[%.3f] - l[%.3f] - h[%.3f] -- v[%.3f]", ref_open(16), ref_close(16), ref_low(16), ref_high(16), ref_vol(16))
 
-    log_debug("ma0:  5[%.3f] - 10[%.3f] - 20[%.3f] - 200[%.3f]", ref_ma5(14), ref_ma10(14), ref_ma20(14), ref_ma200(14))
-    log_debug("ma1:  5[%.3f] - 10[%.3f] - 20[%.3f] - 200[%.3f]", ref_ma5(15), ref_ma10(15), ref_ma20(15), ref_ma200(15))
-    log_debug("ma2:  5[%.3f] - 10[%.3f] - 20[%.3f] - 200[%.3f]", ref_ma5(16), ref_ma10(16), ref_ma20(16), ref_ma200(16))
+    log_debug("ref0: o[%.3f] - p[%.3f] - l[%.3f] - h[%.3f] -- v[%.3f]", ref_open(0), ref_close(0), ref_low(0), ref_high(0), ref_vol(0))
+    log_debug("ma0:  5[%.3f] - 10[%.3f] - 20[%.3f] - 200[%.3f]", ref_ma5(0), ref_ma10(0), ref_ma20(0), ref_ma200(0))
+    log_debug("vma0: 5[%.3f] - 10[%.3f] - 50[%.3f]", ref_vma5(0), ref_vma10(0), ref_vma50(0))
 
-    log_debug("vma0: 5[%.3f] - 10[%.3f] - 50[%.3f]", ref_vma5(14), ref_vma10(14), ref_vma50(14))
-    log_debug("vma1: 5[%.3f] - 10[%.3f] - 50[%.3f]", ref_vma5(15), ref_vma10(15), ref_vma50(15))
-    log_debug("vma2: 5[%.3f] - 10[%.3f] - 50[%.3f]", ref_vma5(16), ref_vma10(16), ref_vma50(16))
-
-    """
     for row_index, row in _my_df.iterrows():
         TECH_IDX = idx
 
@@ -127,20 +119,16 @@ def u15m_analyzer1(_stock_id, _trade_date, _my_df, _used_len, _db):
         # log_debug("%s-%s: %.2f, %.2f, %.3f", _stock_id, pub_date, close_price, open_price, zt)
         # log_debug("%s-%s: %.2f, %.2f, %.3f", _stock_id, pub_date, close_price, open_price, rate)
 
-        # A点
-        if idx == 0:
-            d_A = pub_date_time
-            v_A = vol
-            p_A = close_price
-            h_A = high_price
-            l_A = low_price
-            i_A = idx
-            rt_A= rate
-            zt_A= zt
 
-        # B点
-        elif idx == 1:
-            d_B = pub_date
+        ma200 = ref_ma200(TECH_IDX)
+
+        log_debug("%s-%s: %.3f, %.3f, %.3f", _stock_id, pub_date_time, low_price,  ma200, high_price)
+        log_debug("%s-%s: %.3f, %.3f, %.3f", _stock_id, pub_date_time, open_price, ma200, close_price)
+
+        if high_price >= ma200 and low_price <= ma200:
+            log_info("nice: get B point: %s", pub_date_time)
+
+            d_B = pub_date_time
             v_B = vol
             p_B = close_price
             h_B = high_price
@@ -149,31 +137,23 @@ def u15m_analyzer1(_stock_id, _trade_date, _my_df, _used_len, _db):
             rt_B= rate
             zt_B= zt
 
-        # K点 (BC中间的点)
-        elif idx == 2:
-            d_K = pub_date
-            v_K = vol
-            p_K = close_price
-            h_K = high_price
-            l_K = low_price
-            i_K = idx
-            rt_K= rate
-            zt_K= zt
-
-        # C点
-        elif idx == 3:
-            d_C = pub_date
-            v_C = vol
-            p_C = close_price
-            h_C = high_price
-            l_C = low_price
-            i_C = idx
-            rt_C= rate
-            zt_C= zt
             break
+        else:
+            log_info("sorry: %s not cross!", pub_date_time)
+
 
 
         idx  = idx + 1
+
+    # 确定在ma200上方运行的单位数
+    units, touch_date_time, touch_idx = u15m_sustain_ma200_unit(_my_df, _used_len, d_B, _db)
+    len_BC = touch_idx - i_B
+    log_info("在其上运行单位数: %d，日期：%s, 距离: %d", units, touch_date_time, len_BC)
+    if units < 80:
+        log_info("sorry: short: %d", units)
+        return 1
+
+    return 0
 
 
     # 确认A点
@@ -265,7 +245,6 @@ def u15m_analyzer1(_stock_id, _trade_date, _my_df, _used_len, _db):
     else:
         # log_info("sorry: %s, %s", _stock_id, _trade_date)
         pass
-    """
 
     return 1
 
