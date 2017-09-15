@@ -556,6 +556,26 @@ def calc_macd_list0(_close, _m, _n, _k):
         pd.Series(dea,   _close.index), \
         pd.Series(macd,  _close.index)
 
+
+def calc_last(_sc):
+
+    l1 = []      # result list
+
+    for s_index, s_val in _sc.iteritems():
+
+        if s_index == 0:
+            l1.append(s_val)
+        else:
+            l1.append(last_value)
+
+        last_value = s_val
+
+
+    # create result set from list
+    se = pd.Series(l1, _sc.index)
+
+    return se
+
 if __name__ == "__main__":
     sailog_set("saicalc.log")
 
