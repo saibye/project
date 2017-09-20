@@ -49,21 +49,21 @@ def work_one(_stock_id, _row, _db):
     # log_debug("+++++++++++++++++\n%s", df)
 
 
-    """
     rv = rt_u15m_case1(_stock_id, df, _db)
     if rv == 0:
         rs = True
         log_info("nice1: %s single pivot", _stock_id)
         return rs
     log_debug("-----------------------------------------")
-    """
 
+    """
     rv = rt_u15m_case2(_stock_id, df, _db)
     if rv == 0:
         rs = True
         log_info("nice2: %s six-cross", _stock_id)
         return rs
     log_debug("-----------------------------------------")
+    """
 
 
     return rs
@@ -93,11 +93,19 @@ def rt_u15m_case1(_stock_id, _detail_df, _db):
         log_info("point-C: [%s, %d]", C_date_time, C_len)
         log_info("point-D: [%s]", D_date_time)
 
+    # 逐步阳线！
+    A_red_unit, A_zt_unit = rt_u15m_red_units(_stock_id, _detail_df, B_date_time, B_len, _db)
+    log_info("red-unit: %d, zt_unit: %d", A_red_unit, A_zt_unit)
+    if A_red_unit < 4 or A_zt_unit < 4:
+        log_info("sorry: after B: red too little: %d", A_red_unit)
+        return 3
+
     # after B point
     A_upper_unit, A_below_unit = rt_u15m_after_units(_stock_id, _detail_df, B_date_time, _db)
     log_debug("upper: %d, under: %d", A_upper_unit, A_below_unit)
 
-    # TODO: 逐步阳线！ FIXME
+
+    # TODO: 巨大涨幅?
     # TODO: rpv?
     # TODO: rate(AB), rate(CD)
 
@@ -130,67 +138,134 @@ def rt_u15m_case1(_stock_id, _detail_df, _db):
         log_info("subject: \n%s", subject)
         log_info("mail: \n%s", content)
         saimail_dev(subject, content)
-        # saimail2(subject, content)
+        saimail2(subject, content)
         return 0
 
     return 1
 
+"""
+        B_date_time, B_len, B_close_price = rt_u15m_recent_touch6(_stock_id, _detail_df, B_UNIT, _db)
+        if B_date_time == "":
+            log_info("sorry: B: no recent touch point: %s, %d", B_date_time, B_len)
+            return 1
+        else:
+            is_touch6 = True
+            log_info("point-B: [%s, %d, %.2f] touch", B_date_time, B_len, B_close_price)
+"""
 
 # 6线突破
 #
 def rt_u15m_case2(_stock_id, _detail_df, _db):
     to_mail = False
+    is_cross6 = False
+    is_touch6 = False
 
     # get B point
+    # 先检查cross，再检查touch
     B_UNIT = 300
     B_date_time, B_len, B_close_price = rt_u15m_recent_cross6(_stock_id, _detail_df, B_UNIT, _db)
     if B_date_time == "":
         log_info("sorry: B: no recent touch point: %s, %d", B_date_time, B_len)
         return 1
     else:
-        B_idx = B_len
-        log_info("point-B: [%s, %d, %.2f]", B_date_time, B_len, B_close_price)
+        is_cross6 = True
+        log_info("point-B: [%s, %d, %.2f] cross", B_date_time, B_len, B_close_price)
+
+    B_idx = B_len
 
     # get A point
-    A_date_time, A_vr50, A_vr10, A_rate = rt_u15m_volume_rate(_stock_id, _detail_df, B_date_time, B_idx, _db)
+    A_date_time, A_vr50, A_vr10, A_rate, A_close_price = rt_u15m_volume_rate(_stock_id, _detail_df, B_date_time, B_idx, _db)
     # log_debug("point-A: [%s, vr50:%.2f, vr10:%.2f, rate:%.2f%%]", A_date_time, A_vr50, A_vr10, A_rate)
-    if A_vr50 >= 3 and A_vr10 >= 2 and A_rate >= 0.5: # TODO: FIXME
-        log_info("point-A: [%s, vr50:%.2f, vr10:%.2f, rate:%.2f%%]", A_date_time, A_vr50, A_vr10, A_rate)
+    if A_vr50 >= 2 and A_vr10 >= 1.4 and A_rate >= 0.0: # TODO: FIXME
+        log_info("point-A: [%s, vr50:%.2f, vr10:%.2f, rate:%.2f%%] %s", A_date_time, A_vr50, A_vr10, A_rate, _stock_id)
     else:
-        log_info("sorry: A: not volume surge: %.2f, %.2f, %.2f", A_vr50, A_vr10, A_rate)
+        log_info("sorry: A: not volume surge: %.2f, %.2f, %.2f%%", A_vr50, A_vr10, A_rate)
         return 1
 
     # B点后高位徘徊
-    B_unit1, B_unit2, upper_date_time, upper_price = rt_u15m_upper_wander_units(_stock_id, _detail_df, B_date_time, B_idx, B_close_price, _db)
-    if B_unit1 >= 2 or B_unit2 >= 3:
-        log_info("after-upper-wander: [%d, %d; %s, %.2f]", B_unit1, B_unit2, upper_date_time, upper_price)
+    B_unit1, B_unit2, B_unit3, upper_date_time, upper_price = rt_u15m_upper_wander_units(_stock_id, _detail_df, B_date_time, B_idx, B_close_price, _db)
+    if B_unit1 >= 1 or B_unit2 >= 2:
+        log_info("after-upper-wander: [%d, %d, %d; %s, %.2f] %s", B_unit1, B_unit2, B_unit3, upper_date_time, upper_price, _stock_id)
     else:
         log_info("sorry: B: not upper wander: %d, %d", B_unit1, B_unit2)
         return 1
 
+    # 综合检查
+    # 000560: 大放量，大涨幅，可降低高位徘徊要求
+    # 000996: 小放量，要求持续阳线+阳柱 TODO
+    if A_vr50 > 8:
+        # 放巨量
+        to_mail = True
+    elif A_vr50 > 4:
+        # 放量
+        if B_unit1 >= 2 or B_unit2 >= 2:
+            to_mail = True
+    else:
+        # 放小量
+        if B_unit1 >= 3 and B_unit3 >= 3:
+            to_mail = True
 
     if to_mail:
+        log_info("bingo: %s surge with volume after %s", _stock_id, B_date_time)
         curr_date = get_today()
         curr_time = get_time()
-        subject = "malaw(15)-single: %s#%s" % (_stock_id, B_date_time)
-        content  = "u15min-ma200-single-pivot\n"
+        subject = "malaw(15)-cross6: %s#%s" % (_stock_id, B_date_time)
+        content  = "u15min-ma200-cross6\n"
         content += "B点: %s\n" % (B_date_time)
-        content += "C点: %s\n" % (C_date_time)
-        content += "D点: %s\n" % (D_date_time)
-        content += "CD距离: %d+\n" % (C_len)
-        content += "AB距离: %d+\n" % (B_len)
-        content += "AB-upper: %d+\n" % (A_upper_unit)
-        content += "AB-below: %d+\n" % (A_below_unit)
+        content += "A点: %s\n" % (A_date_time)
+        content += "高位徘徊: %d\n" % (B_unit1)
+        content += "最大放量: %.2f(+)\n" % (A_vr50)
         content += "+++++++++++++++++++++++++\n"
         info  = get_basic_info_all(_stock_id, _db)
         content += info
         log_info("subject: \n%s", subject)
         log_info("mail: \n%s", content)
-        saimail_dev(subject, content)
-        saimail2(subject, content)
+        # saimail_dev(subject, content)
+        # saimail2(subject, content)
         return 0
 
     return 1
+
+
+# 新高
+#
+# X点往前突破的单位数
+# case2
+def rt_u15m_new_high_units(_stock_id, _detail_df, _till, _price,  _db):
+
+    idx = 0
+    TECH_IDX = 0
+
+    unit = 0
+    to_start = False
+
+    for row_index, row in _detail_df.iterrows():
+        TECH_IDX = idx
+        stock_id   = row['stock_id']
+        open_price = row['open_price']
+        close_price= row['close_price']
+        high_price = row['high_price']
+        low_price  = row['low_price']
+        last_close_price = row['last']
+        pub_date_time =  row['pub_date_time']
+        vol   = row['volume']
+
+        # log_debug("----[%s, close: %.2f, ma200: %.2f]----", pub_date_time, close_price, ma200)
+        # log_debug("----[%s, volum: %.2f, vma10: %.2f, vma50: %.2f]----", pub_date_time, vol, vol10, vol50)
+
+        if to_start:
+            if _price > close_price:
+                unit += 1
+            else:
+                break
+
+        if not to_start and str(_till) == str(pub_date_time):
+            to_start = True
+
+        idx += 1
+
+
+    return unit
 
 
 # 放巨量
@@ -208,6 +283,7 @@ def rt_u15m_volume_rate(_stock_id, _detail_df, _from, _from_idx, _db):
     max_vr10 = 0.0
     max_rate = 0.0
     max_date = ""
+    max_close = 0.0
 
     for row_index, row in _detail_df.iterrows():
         TECH_IDX = idx
@@ -247,6 +323,7 @@ def rt_u15m_volume_rate(_stock_id, _detail_df, _from, _from_idx, _db):
                 max_vr10 = vr10
                 max_rate = rate
                 max_date = pub_date_time
+                max_close = close_price
                 # log_debug("max-refresh: %s -- %.2f", max_date, max_vr50)
         else:
             pass
@@ -257,7 +334,7 @@ def rt_u15m_volume_rate(_stock_id, _detail_df, _from, _from_idx, _db):
         idx += 1
 
 
-    return max_date, max_vr50, max_vr10, max_rate
+    return max_date, max_vr50, max_vr10, max_rate, max_close
 
 
 # 高位徘徊
@@ -273,11 +350,12 @@ def rt_u15m_upper_wander_units(_stock_id, _detail_df, _from, _from_idx, _price, 
 
     unit1 = 0
     unit2 = 0 # ALT
+    unit3 = 0 # rate
 
     max_close = 0.0
     max_date = ""
 
-    alt_price = _price * 0.99
+    alt_price = _price * 0.995
 
     for row_index, row in _detail_df.iterrows():
         TECH_IDX = idx
@@ -290,6 +368,7 @@ def rt_u15m_upper_wander_units(_stock_id, _detail_df, _from, _from_idx, _price, 
         pub_date_time =  row['pub_date_time']
         vol   = row['volume']
         ma200 = ref_ma200(TECH_IDX)
+        rate  = (close_price - last_close_price) / last_close_price * 100
 
         if str(_from) == str(pub_date_time):
             break
@@ -308,6 +387,9 @@ def rt_u15m_upper_wander_units(_stock_id, _detail_df, _from, _from_idx, _price, 
             if close_price >= alt_price:
                 unit2 += 1
 
+            if rate > 0:
+                unit3 += 1
+
             if close_price > max_close:
                 max_close = close_price
                 max_date  = pub_date_time
@@ -318,10 +400,11 @@ def rt_u15m_upper_wander_units(_stock_id, _detail_df, _from, _from_idx, _price, 
         idx += 1
 
 
-    return unit1, unit2, max_date, max_close
+    return unit1, unit2, unit3, max_date, max_close
 
-
+# 
 # 寻找B点
+# 开盘 -- 收盘
 # case2
 def rt_u15m_recent_cross6(_stock_id, _detail_df, _n1, _db):
 
@@ -357,8 +440,56 @@ def rt_u15m_recent_cross6(_stock_id, _detail_df, _n1, _db):
                and close_price >= ma10 and open_price <= ma10 \
                and close_price >= ma5  and open_price <= ma5
         if rule:
-            log_info("nice: %s cross-6", pub_date_time)
+            # log_info("nice: %s cross-6", pub_date_time)
             touch_date_time = pub_date_time
+            touch_close_price = close_price
+            break
+
+        idx += 1
+
+
+    return touch_date_time, idx, touch_close_price
+
+# 寻找B点
+# 最低 -- 最高
+# case2
+def rt_u15m_recent_touch6(_stock_id, _detail_df, _n1, _db):
+
+    idx = 0
+    TECH_IDX = 0
+    touch_date_time = ""
+    touch_close_price = 0.0
+    for row_index, row in _detail_df.iterrows():
+        TECH_IDX = idx
+        stock_id   = row['stock_id']
+        open_price = row['open_price']
+        close_price= row['close_price']
+        high_price = row['high_price']
+        low_price  = row['low_price']
+        last_close_price = row['last']
+        pub_date_time =  row['pub_date_time']
+
+        ma200 = ref_ma200(TECH_IDX)
+        ma5   = ref_ma5(TECH_IDX)
+        ma10  = ref_ma10(TECH_IDX)
+        ma20  = ref_ma20(TECH_IDX)
+        ma30  = ref_ma30(TECH_IDX)
+        ma60  = ref_ma60(TECH_IDX)
+
+        # log_debug("-----[%s, %d, %.2f]----", pub_date_time, TECH_IDX, ma200)
+        if idx >= _n1:
+            break
+
+        rule = close_price >= ma200 and low_price <= ma200 \
+               and close_price >= ma60 and low_price <= ma60 \
+               and close_price >= ma30 and low_price <= ma30 \
+               and close_price >= ma20 and low_price <= ma20 \
+               and close_price >= ma10 and low_price <= ma10 \
+               and close_price >= ma5  and low_price <= ma5
+
+        if rule:
+            # log_info("nice: %s touch-6", pub_date_time)
+            touch_date_time   = pub_date_time
             touch_close_price = close_price
             break
 
@@ -399,6 +530,58 @@ def rt_u15m_recent_touch(_stock_id, _detail_df, _n1, _db):
 
 
     return touch_date_time, idx
+
+
+# 持续上涨
+#
+# X点后5单位内
+# 上涨个数、阳柱个数
+# 不包括自己 
+# case1
+def rt_u15m_red_units(_stock_id, _detail_df, _from, _from_idx, _db):
+
+    idx = 0
+    TECH_IDX = 0
+
+    unit1 = 0 # rate
+    unit2 = 0 # zt
+
+    for row_index, row in _detail_df.iterrows():
+        TECH_IDX = idx
+        stock_id   = row['stock_id']
+        open_price = row['open_price']
+        close_price= row['close_price']
+        high_price = row['high_price']
+        low_price  = row['low_price']
+        last_close_price = row['last']
+        pub_date_time =  row['pub_date_time']
+        vol   = row['volume']
+        ma200 = ref_ma200(TECH_IDX)
+        rate  = (close_price - last_close_price) / last_close_price * 100
+        zt    = (close_price - open_price) / last_close_price * 100
+
+        if str(_from) == str(pub_date_time):
+            break
+
+        diff = _from_idx - idx
+
+
+        # 只关心X点之后5个单位
+        if diff >= 0 and diff <= 5:
+            if rate > 0:
+                unit1 += 1
+
+            if zt > 0:
+                unit2 += 1
+
+        else:
+            pass
+
+
+        idx += 1
+
+
+    return unit1, unit2
 
 # 寻找C点
 # B点往前，存在点C，使得有N单位在ma200之上。
@@ -645,31 +828,6 @@ def rt_u15m_dynamic_calc_tech(_df):
     return 0
 
 
-def get_u15m_list(_trade_date, _db):
-    sql = "select distinct stock_id from tbl_day a \
-where  a.pub_date  = '%s' \
-and    a.stock_id = '000807' \
-order by 1" % (_trade_date)
-
-    sql = "select distinct stock_id from tbl_day a \
-where  a.pub_date  = '%s' \
-order by 1" % (_trade_date)
-
-    sql = "select distinct stock_id from tbl_day a \
-where  a.pub_date  = '%s' \
-and    a.stock_id = '000717' \
-order by 1" % (_trade_date)
-
-    log_debug("sql: \n%s", sql)
-
-    df = pd.read_sql_query(sql, _db);
-    if df is None:
-        log_info("'%s' not found in db", _stock_id)
-        return None
-    else:
-        # df.set_index("stock_id", inplace=True)
-        return df
-
 
 def xxx(_db):
     has_noticed = {}
@@ -695,9 +853,14 @@ def xxx(_db):
         log_debug("list df: \n%s", list_df)
 
     end_time  = '15:05:00'
-    # end_time  = '23:05:00'
     lun_time1 = '11:40:00'
     lun_time2 = '13:00:00'
+
+    # TODO: delete me!
+    # end_time  = '23:05:00'
+    end_time  = '15:05:00'
+    lun_time1 = '01:40:00'
+    lun_time2 = '03:00:00'
 
     counter  = 0
     while 1:
@@ -739,7 +902,7 @@ def xxx(_db):
             break
 
         # TODO: delete me
-        # break
+        break
 
         time.sleep(600)
         # time.sleep(20)
@@ -760,6 +923,41 @@ def work():
     db_end(db)
 
 
+def get_u15m_list(_trade_date, _db):
+
+
+    # CASE2
+    sql = "select distinct stock_id from tbl_day a \
+where  a.pub_date  = '%s' \
+and    (a.stock_id in ('000717', '300064', '000560', '600516', '600804', '600405', '002192', '300457') or a.stock_id in ('000996')) \
+order by 1" % (_trade_date) # case2
+
+
+    # CASE1
+    sql = "select distinct stock_id from tbl_day a \
+where  a.pub_date  = '%s' \
+and    (a.stock_id in ( '000807') or a.stock_id in ('002850')) \
+order by 1" % (_trade_date) # case1
+
+    # real
+    sql = "select distinct stock_id from tbl_day a \
+where  a.pub_date  = '%s' \
+order by 1" % (_trade_date)
+
+
+
+    log_debug("sql: \n%s", sql)
+
+    df = pd.read_sql_query(sql, _db);
+    if df is None:
+        log_info("'%s' not found in db", _stock_id)
+        return None
+    else:
+        # df.set_index("stock_id", inplace=True)
+        return df
+
+
+
 #######################################################################
 
 def main():
@@ -770,6 +968,7 @@ def main():
     if sai_is_product_mode():
         if today_is_weekend():
             log_info("today is weekend, exit")
+            # work()
         else:
             log_info("today is workday, come on")
             work()

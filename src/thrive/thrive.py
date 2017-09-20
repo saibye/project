@@ -25,6 +25,9 @@ from case7   import *
 from case8   import *
 from case9   import *
 from case10  import *
+from case11  import *
+from case12  import *
+from case13  import *
 
 #######################################################################
 #
@@ -141,6 +144,25 @@ def thrive_work_one_day_stock(_stock_id, _till,  _db):
         return 0
     log_debug("-------------------------------------------------")
 
+    # case11
+    rv = thrive_analyzer11(_stock_id, _till, my_df, used_len, _db)
+    if rv == 0:
+        log_info("nice11: %s", _stock_id)
+        return 0
+    log_debug("-------------------------------------------------")
+
+    # case12
+    rv = thrive_analyzer12(_stock_id, _till, my_df, used_len, _db)
+    if rv == 0:
+        log_info("nice12: %s", _stock_id)
+        return 0
+    log_debug("-------------------------------------------------")
+
+    # case13
+    rv = thrive_analyzer13(_stock_id, _till, my_df, used_len, _db)
+    if rv == 0:
+        log_info("nice13: %s", _stock_id)
+        return 0
     log_debug("-------------------------------------------------")
 
     return 1
@@ -374,6 +396,21 @@ def work():
         stock_id  = "600055"
         thrive_work_one_day_stock(stock_id, till_date, db)
 
+
+        # 万科A done
+        till_date = "2017-09-05"
+        stock_id  = "000002"
+        thrive_work_one_day_stock(stock_id, till_date, db)
+
+        # 贝瑞基因
+        till_date = "2017-08-31"
+        stock_id  = "000710"
+        thrive_work_one_day_stock(stock_id, till_date, db)
+
+        # 山鹰纸业
+        till_date = "2017-09-08"
+        stock_id  = "600567"
+        thrive_work_one_day_stock(stock_id, till_date, db)
         """
 
     else:

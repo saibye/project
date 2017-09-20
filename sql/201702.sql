@@ -170,6 +170,9 @@ order by pub_date
 select distinct stock_id from tbl_day where pub_date=(select max(pub_date) from tbl_day) order by 1
 
 
+select open_price, close_price from tbl_day
+where stock_id='300520'
+and pub_date = '2017-09-14'
 
 
 

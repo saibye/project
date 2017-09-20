@@ -14,7 +14,7 @@ export LANG=zh_CN.utf8
 
 
 today=$(date +%Y%m%d)
-log=${LOG}/dadan_${today}.log
+log=${LOG}/dadan_${today}.out
 err=${LOG}/dadan_${today}.err
 
 

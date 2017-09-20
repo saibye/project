@@ -13,7 +13,7 @@ export LOG=/p1/sai/project/log
 export LANG=zh_CN.utf8
 
 today=$(date +%Y%m%d)
-log=${LOG}/test_${today}.log
+log=${LOG}/test_${today}.out
 err=${LOG}/test_${today}.err
 
 exec 3>${log}

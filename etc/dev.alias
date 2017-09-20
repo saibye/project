@@ -27,6 +27,8 @@ alias cdsh='cd ${HOME}/project/src/cwh'
 alias cddk='cd ${HOME}/project/src/duck'
 alias cdth='cd ${HOME}/project/src/thrive'
 alias cdsp='cd ${HOME}/project/src/pre_thrive'
+alias cdsm='cd ${HOME}/project/src/morning'
+alias cdap='cd ${HOME}/project/src/thrap'
 
 alias ck='echo "select pub_date, count(1) from tbl_day group by pub_date order by 1"'
 

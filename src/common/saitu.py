@@ -102,7 +102,9 @@ def get_chg_rate(_stock_id):
     if df is not None:
         close = float(df['price'][0])
         pre   = float(df['pre_close'][0])
-        chg   = (close / pre - 1) * 100
+        chg   = 0.0
+        if pre > 0:
+            chg   = (close / pre - 1) * 100
     else:
         chg   = None
 

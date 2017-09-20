@@ -607,6 +607,25 @@ def work():
     E_date = "2017-08-14"
     thrive_work_one_day_stock(stock_id, A_date, B_date, C_date, D_date, E_date, db)
 
+    # 2017-9-16
+    # 贝瑞基因
+    stock_id  = "000710"
+    A_date = "2017-08-31"
+    B_date = "2017-08-30"
+    C_date = "2017-08-28"
+    D_date = "2017-08-24"
+    E_date = "2017-08-18"
+    thrive_work_one_day_stock(stock_id, A_date, B_date, C_date, D_date, E_date, db)
+
+    # 山鹰纸业
+    stock_id  = "600567"
+    A_date = "2017-09-08"
+    B_date = "2017-09-07"
+    C_date = "2017-09-05"
+    D_date = "2017-09-04"
+    E_date = "2017-08-25"
+    thrive_work_one_day_stock(stock_id, A_date, B_date, C_date, D_date, E_date, db)
+
     db_end(db)
 
 

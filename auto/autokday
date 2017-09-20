@@ -14,7 +14,7 @@ export LANG=zh_CN.utf8
 
 
 today=$(date +%Y%m%d)
-log=${LOG}/kday_${today}.log
+log=${LOG}/kday_${today}.out
 err=${LOG}/kday_${today}.err
 
 
@@ -45,6 +45,11 @@ cd ${PHOME}/src/thrive && time python thrive.py
 
 # pre-thrive.py -- pre-three-five line @2017-9-5
 cd ${PHOME}/src/pre_thrive && time python pre_thrive.py
+
+
+# thrap.py -- three line with loop conditoin @2017-9-20
+cd ${PHOME}/src/thrap && time python thrap.py
+
 
 # cwh.py -- weak! cup with handle @2017-7-18
 cd ${PHOME}/src/decision && time python cwh.py

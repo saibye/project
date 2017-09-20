@@ -19,10 +19,20 @@ from saitech import *
 #######################################################################
 
 
+def thrap_mail_content():
+    content = ""
+    content += "注意：不能被ma200压制！\n"
+    content += "优先：附近有ma200支撑！\n"
+    content += "优先：收复ma20或伴随5/10穿越最佳！\n"
+
+    return content
+
+
+
 # X点往前
 # RPV
 # avg(+rate*vol)  / avg(-rate*vol)
-def thrive_rpv(_detail_df, _used_len, _till, _n, _db):
+def thrap_rpv(_detail_df, _used_len, _till, _n, _db):
     U_sum = 0.0 # up
     U_days = 0
     D_sum = 0.0 # down
@@ -73,10 +83,10 @@ def thrive_rpv(_detail_df, _used_len, _till, _n, _db):
     if U_days <= 0:
         rpv_rt = -11.11
     elif D_days <= 0:
-        rpv_rt = 9.99
+        rpv_rt = 99.99
         # log_debug("D_days: %d", D_days)
     elif abs(D_sum) <= 1:
-        rpv_rt = 9.99
+        rpv_rt = 99.99
         # log_debug("D_sum: %d",  D_sum)
     else:
         # log_info("[%.2f, %d], [%.2f, %d]", U_sum, U_days, D_sum, D_days)
@@ -89,7 +99,7 @@ def thrive_rpv(_detail_df, _used_len, _till, _n, _db):
 
 
 
-def thrive_dynamic_calc_tech(_df):
+def thrap_dynamic_calc_tech(_df):
 
     sc = _df['close_price']
 
@@ -148,7 +158,7 @@ def thrive_dynamic_calc_tech(_df):
     return 0
 
 
-def thrive_format_ref(_stock_id, _detail_df):
+def thrap_format_ref(_stock_id, _detail_df):
 
     # _detail MUST be sorted
     rv = ref_init4(_detail_df)
@@ -157,7 +167,7 @@ def thrive_format_ref(_stock_id, _detail_df):
         return -1
 
     _detail_df.sort_index(ascending=False, inplace=True)
-    thrive_dynamic_calc_tech(_detail_df)
+    thrap_dynamic_calc_tech(_detail_df)
     _detail_df.sort_index(ascending=True,  inplace=True)
 
     ref_set_tech5()
@@ -169,7 +179,7 @@ def thrive_format_ref(_stock_id, _detail_df):
 #
 # X点往前n1单位起始，n2单位内的最高high价
 #
-def thrive_preceding_high(_detail_df, _used_len, _date, _n1, _n2, _db):
+def thrap_preceding_high(_detail_df, _used_len, _date, _n1, _n2, _db):
     idx = 0
     days = 0
     to_start = False
@@ -182,7 +192,6 @@ def thrive_preceding_high(_detail_df, _used_len, _date, _n1, _n2, _db):
     high_idx = 0
     high_vol = 0
     high_vr = 0
-    high_zt = 0
 
     for row_index, row in _detail_df.iterrows():
         TECH_IDX = idx
@@ -221,7 +230,7 @@ def thrive_preceding_high(_detail_df, _used_len, _date, _n1, _n2, _db):
                     high_vol  = vol
                     # log_debug("high:[%s.2f, %s]", max_high, high_date)
                     high_rate = (close_price - last_close_price) / last_close_price * 100
-                    high_zt   = (close_price - open_price) / last_close_price * 100
+                    high_zt = (close_price - open_price) / last_close_price * 100
 
         if str(_date) == str(pub_date):
             to_start = True
@@ -234,7 +243,7 @@ def thrive_preceding_high(_detail_df, _used_len, _date, _n1, _n2, _db):
 #
 # X点往前n1单位起始，n2单位内的最低low价
 #
-def thrive_preceding_low(_detail_df, _used_len, _date, _n1, _n2, _db):
+def thrap_preceding_low(_detail_df, _used_len, _date, _n1, _n2, _db):
     idx = 0
     days = 0
     low_date = ""
@@ -293,7 +302,7 @@ def thrive_preceding_low(_detail_df, _used_len, _date, _n1, _n2, _db):
 #
 # X点往前n1单位内的最高high价
 #
-def thrive_preceding_high2(_detail_df, _used_len, _date, _n1, _db):
+def thrap_preceding_high2(_detail_df, _used_len, _date, _n1, _db):
     idx = 0
     days = 0
     to_start = False
@@ -345,69 +354,12 @@ def thrive_preceding_high2(_detail_df, _used_len, _date, _n1, _db):
     return max_high, high_close, high_date, high_idx, high_vol, high_rate, high_vr
 
 
-#
-# X点往前n1单位内最高价连续走低的天数
-#
-def thrive_desceding_days(_detail_df, _used_len, _date, _n1, _db):
-    idx = 0
-    days = 0
-    to_start = False
-    to_count = False
-
-    counter = 0
-    top_date = ""
-    top_price = 0.0
-    top_rate = 0.0
-    top_zt   = 0.0
-
-    last_high = 0.0
-
-    for row_index, row in _detail_df.iterrows():
-        TECH_IDX = idx
-
-        pub_date         = row['pub_date']
-        close_price      = row['close_price']
-        high_price       = row['high_price']
-        last_close_price = row['last']
-        open_price       = row['open_price']
-        vol              = row['total']
-
-        rate = (close_price - last_close_price) / last_close_price * 100
-        # log_debug("pub_date: [%s]", pub_date)
-
-        if str(_date) == str(pub_date):
-            to_start = True
-
-        if to_start:
-            days = days + 1
-            if days > _n1:
-                # log_debug("reach n2: %d", days)
-                break
-            else:
-                # log_debug("[%d, %s, %.2f, %.2f]", days, pub_date, high_price, rate)
-                if rate < 3 and high_price > last_high:
-                    counter += 1
-                    top_date = pub_date
-                    top_price = high_price
-                    top_rate = (close_price - last_close_price) / last_close_price * 100
-                    top_zt   = (close_price - open_price) / last_close_price * 100
-                    # log_debug("desceding high:[%s, %.2f]", pub_date, rate)
-                else:
-                    # log_debug("not match: rate[%.2f], this[%.2f], [%.2f]last", rate, high_price, last_high)
-                    break
-
-            last_high = high_price
-
-
-        idx  = idx + 1
-
-    return top_date, top_price, counter, top_rate, top_zt
 
 # 
 # X点往前突破天数
 # 最高价
 #
-def thrive_break_days(_detail_df, _used_len, _date, _my_high, _db):
+def thrap_break_days(_detail_df, _used_len, _date, _my_high, _db):
 
     days = 0
     last_date = ""
@@ -433,49 +385,27 @@ def thrive_break_days(_detail_df, _used_len, _date, _my_high, _db):
     return days, last_date
 
 
-#
-# X点往前n2单位内，开盘等于收盘的个数
-#
-def thrive_preceding_one(_detail_df, _used_len, _date, _n2, _db):
-    idx = 0
-    days = 0
-    to_start = False
-    to_count = False
-    unit = 0
+def thrap_save(_stock_id, _pub_date, _price, _title, _message, _db):
+    inst_date = get_today()
+    inst_time = get_time()
 
-    for row_index, row in _detail_df.iterrows():
-        TECH_IDX = idx
+    sql = "insert into tbl_watch \
+(pub_date, stock_id, stock_loc, good_type, \
+expect_price, expect_direction, \
+title, message, \
+inst_date, inst_time) \
+values ('%s', '%s', '%s', '%s', \
+'%.2f', '%s', \
+'%s', '%s', \
+'%s', '%s')" % \
+    (_pub_date, _stock_id, 'cn', 'thrap',
+     _price, '00',
+     _title, _message, 
+     inst_date, inst_time)
 
-        pub_date         = row['pub_date']
-        close_price      = row['close_price']
-        high_price       = row['high_price']
-        low_price        = row['low_price']
+    log_debug("sql: [%s]", sql)
+    rv = sql_to_db(sql, _db)
 
-        last_close_price = row['last']
-        open_price       = row['open_price']
-        vol              = row['total']
+    return rv
 
-        rate = (close_price - last_close_price) / last_close_price * 100
-
-        # log_debug("pub_date: [%s]", pub_date)
-
-        if str(_date) == str(pub_date):
-            to_start = True
-
-        if to_start:
-            days = days + 1
-            if days > _n2:
-                # log_debug("reach n2: %d", days)
-                break
-            else:
-                # log_debug("[%d, %s]", days, pub_date)
-                if rate > 4 and open_price == close_price:
-                    unit += 1
-
-
-        idx  = idx + 1
-
-    return unit
-
-
-# pub_thrive.py
+# pub_thrap.py

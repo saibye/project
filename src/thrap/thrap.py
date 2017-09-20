@@ -14,13 +14,9 @@ from saimail import *
 from sairef  import *
 from saitech import *
 
-from pub_pre_thrive import *
+from pub_thrap import *
 from case1   import *
-from case2   import *
-from case3   import *
-from case4   import *
-from case5   import *
-from case6   import *
+
 
 #######################################################################
 #
@@ -30,7 +26,7 @@ g_detail_fetched = 150
 g_detail_used    = 100
 
 
-def pre_thrive_work_one_day_stock(_stock_id, _till,  _db):
+def thrap_work_one_day_stock(_stock_id, _till,  _db):
 
     global g_detail_fetched 
     global g_detail_used
@@ -40,7 +36,7 @@ def pre_thrive_work_one_day_stock(_stock_id, _till,  _db):
     # 获取明细数据
     # 之前n1单位的交易数据
     n1 = g_detail_fetched
-    detail_df = get_pre_thrive_detail(_stock_id, _till, n1, _db);
+    detail_df = get_thrap_detail(_stock_id, _till, n1, _db);
     if detail_df is None:
         log_info("[%s, %s] detail is none", _stock_id, _till)
         return -1
@@ -58,9 +54,9 @@ def pre_thrive_work_one_day_stock(_stock_id, _till,  _db):
 
     """
     # 格式化数据
-    rv = pre_thrive_format_ref(_stock_id, detail_df)
+    rv = thrap_format_ref(_stock_id, detail_df)
     if rv < 0:
-        log_error("error: pre_thrive_format_ref: %s", _stock_id)
+        log_error("error: thrap_format_ref: %s", _stock_id)
         return -1
     """
 
@@ -68,53 +64,19 @@ def pre_thrive_work_one_day_stock(_stock_id, _till,  _db):
     my_df = detail_df.head(used_len)
 
     # case1
-    rv = pre_thrive_analyzer1(_stock_id, _till, my_df, used_len, _db)
+    rv = thrap_analyzer1(_stock_id, _till, my_df, used_len, _db)
     if rv == 0:
         log_info("nice1: %s", _stock_id)
         return 0
     log_debug("-------------------------------------------------")
 
-    # case2
-    rv = pre_thrive_analyzer2(_stock_id, _till, my_df, used_len, _db)
-    if rv == 0:
-        log_info("nice2: %s", _stock_id)
-        return 0
-    log_debug("-------------------------------------------------")
-
-    # case3
-    rv = pre_thrive_analyzer3(_stock_id, _till, my_df, used_len, _db)
-    if rv == 0:
-        log_info("nice3: %s", _stock_id)
-        return 0
-    log_debug("-------------------------------------------------")
-
-    # case4
-    rv = pre_thrive_analyzer4(_stock_id, _till, my_df, used_len, _db)
-    if rv == 0:
-        log_info("nice4: %s", _stock_id)
-        return 0
-    log_debug("-------------------------------------------------")
-
-    # case5
-    rv = pre_thrive_analyzer5(_stock_id, _till, my_df, used_len, _db)
-    if rv == 0:
-        log_info("nice5: %s", _stock_id)
-        return 0
-    log_debug("-------------------------------------------------")
-
-    # case6
-    rv = pre_thrive_analyzer6(_stock_id, _till, my_df, used_len, _db)
-    if rv == 0:
-        log_info("nice6: %s", _stock_id)
-        return 0
-    log_debug("-------------------------------------------------")
 
     log_debug("-------------------------------------------------")
 
     return 1
 
 
-def get_pre_thrive_detail(_stock_id, _pub_date, _n, _db):
+def get_thrap_detail(_stock_id, _pub_date, _n, _db):
     sql = "select stock_id, pub_date, open_price, close_price, \
 deal_total_count total, last_close_price last, \
 high_price, low_price \
@@ -132,7 +94,7 @@ order by pub_date desc limit %d" % (_stock_id, _pub_date, _n)
         return df
 
 
-def get_pre_thrive_stock_list(_till, _db):
+def get_thrap_stock_list(_till, _db):
     sql = "select distinct stock_id from tbl_day \
 where pub_date = \
 (select max(pub_date) from tbl_day \
@@ -151,13 +113,13 @@ where pub_date <= '%s')" % (_till)
 
 
 
-def pre_thrive_work_one_day(_till_date, _db):
+def thrap_work_one_day(_till_date, _db):
 
     log_info("date: %s", _till_date)
 
-    list_df = get_pre_thrive_stock_list(_till_date, _db)
+    list_df = get_thrap_stock_list(_till_date, _db)
     if list_df is None:
-        log_error("error: get_pre_thrive_stock_list failure")
+        log_error("error: get_thrap_stock_list failure")
         return -1
     else:
         # log_debug("list df:\n%s", list_df)
@@ -171,7 +133,7 @@ def pre_thrive_work_one_day(_till_date, _db):
 
         # log_debug("==============================")
 
-        pre_thrive_work_one_day_stock(stock_id, _till_date, _db)
+        thrap_work_one_day_stock(stock_id, _till_date, _db)
 
     log_info("DAY [%s] costs %d us", _till_date, get_micro_second() - begin)
 
@@ -181,14 +143,9 @@ def pre_thrive_work_one_day(_till_date, _db):
 def regression(_db):
 
     #
-    max_date = "2017-08-30"
-    days = 2
 
-    max_date = "2017-09-07"
-    days = 20
-
-    max_date = "2017-09-16"
-    days = 20
+    max_date = "2017-09-17"
+    days = 10
 
     log_info("regress")
 
@@ -202,7 +159,7 @@ def regression(_db):
     for row_index, row in date_df.iterrows():
         till_date = row_index
         log_debug("[%s]------------------", till_date)
-        pre_thrive_work_one_day(till_date, _db)
+        thrap_work_one_day(till_date, _db)
 
     return 0
 
@@ -220,64 +177,67 @@ def work():
         till_date = get_newest_trade_date(db)
         # till_date = "2017-08-25"
         log_info("till_date: %s", till_date)
-        pre_thrive_work_one_day(till_date, db)
+        thrap_work_one_day(till_date, db)
 
         """
-        # case1
-        # 中孚信息 300659
-        stock_id  = "300659"
-        till_date = "2017-08-30"
-        pre_thrive_work_one_day_stock(stock_id, till_date, db)
-
-        # 韩建河山 603616
-        till_date = "2017-04-24"
-        stock_id  = "603616"
-        pre_thrive_work_one_day_stock(stock_id, till_date, db)
-
-        # 万科A 000002
-        till_date = "2016-08-11"
-        stock_id  = "000002"
-        pre_thrive_work_one_day_stock(stock_id, till_date, db)
-
-        # 西部建设 002302
-        till_date = "2017-01-16"
-        stock_id  = "002302"
-        pre_thrive_work_one_day_stock(stock_id, till_date, db)
-
-        # 东方铁塔 002545
-        till_date = "2017-08-04"
-        stock_id  = "002545"
-        pre_thrive_work_one_day_stock(stock_id, till_date, db)
-
         # 青山纸业 600103
         till_date = "2017-07-11"
         stock_id  = "600103"
-        pre_thrive_work_one_day_stock(stock_id, till_date, db)
+        thrap_work_one_day_stock(stock_id, till_date, db)
 
-        # 九鼎新材 002201 # case2
-        till_date = "2017-09-05"
-        stock_id  = "002201"
-        pre_thrive_work_one_day_stock(stock_id, till_date, db)
-
-        # 达安股份 case3
-        till_date = "2017-09-06"
-        stock_id  = "300635"
-        pre_thrive_work_one_day_stock(stock_id, till_date, db)
-
-        # 科大国创 case4 done
-        till_date = "2017-09-11"
-        stock_id  = "300520"
-        pre_thrive_work_one_day_stock(stock_id, till_date, db)
-
-        # 盈方微
-        till_date = "2017-09-11"
-        stock_id  = "000670"
-        pre_thrive_work_one_day_stock(stock_id, till_date, db)
 
         # 溢多利
         till_date = "2017-09-13"
         stock_id  = "300381"
-        pre_thrive_work_one_day_stock(stock_id, till_date, db)
+        thrap_work_one_day_stock(stock_id, till_date, db)
+
+        till_date = "2017-09-11"
+        stock_id  = "300520"
+        thrap_work_one_day_stock(stock_id, till_date, db)
+
+        till_date = "2017-09-08"
+        stock_id  = "002407"
+        thrap_work_one_day_stock(stock_id, till_date, db)
+
+        till_date = "2017-08-10"
+        stock_id  = "300675"
+        thrap_work_one_day_stock(stock_id, till_date, db)
+
+        till_date = "2017-05-18"
+        stock_id  = "601088"
+        thrap_work_one_day_stock(stock_id, till_date, db)
+
+        till_date = "2017-09-04"
+        stock_id  = "000002"
+        thrap_work_one_day_stock(stock_id, till_date, db)
+
+        till_date = "2017-08-25"
+        stock_id  = "300002"
+        thrap_work_one_day_stock(stock_id, till_date, db)
+
+        till_date = "2017-09-18"
+        stock_id  = "300035"
+        thrap_work_one_day_stock(stock_id, till_date, db)
+
+        till_date = "2017-04-28"
+        stock_id  = "600908"
+        thrap_work_one_day_stock(stock_id, till_date, db)
+
+        till_date = "2017-09-18"
+        stock_id  = "600711"
+        thrap_work_one_day_stock(stock_id, till_date, db)
+
+        till_date = "2017-09-07"
+        stock_id  = "600567"
+        thrap_work_one_day_stock(stock_id, till_date, db)
+
+        till_date = "2017-09-08"
+        stock_id  = "002632"
+        thrap_work_one_day_stock(stock_id, till_date, db)
+
+        till_date = "2016-09-23"
+        stock_id  = "000912"
+        thrap_work_one_day_stock(stock_id, till_date, db)
         """
 
     else:
@@ -289,7 +249,7 @@ def work():
 #######################################################################
 
 def main():
-    sailog_set("pre_thrive5.log")
+    sailog_set("thrap.log")
 
     log_info("let's begin here!")
 
@@ -314,4 +274,4 @@ main()
 
 #######################################################################
 
-# pre_thrive.py
+# thrap.py

@@ -598,6 +598,70 @@ def work():
     E_date = "2017-08-24"
     pre_thrive_work_one_day_stock(stock_id, A_date, B_date, C_date, D_date, E_date, db)
 
+    # 达安股份 case3
+    stock_id  = "300635"
+    A_date = "2017-09-07"
+    B_date = "2017-09-06"
+    C_date = "2017-09-01"
+    D_date = "2017-08-31"
+    E_date = "2017-08-24"
+    pre_thrive_work_one_day_stock(stock_id, A_date, B_date, C_date, D_date, E_date, db)
+
+
+    # 2017-9-16
+    # 科大国创
+    stock_id  = "300520"
+    A_date = "2017-09-12"
+    B_date = "2017-09-11"
+    C_date = "2017-09-07"
+    D_date = "2017-09-06"
+    E_date = "2017-08-30"
+    pre_thrive_work_one_day_stock(stock_id, A_date, B_date, C_date, D_date, E_date, db)
+
+    # 多氟多
+    stock_id  = "002407"
+    A_date = "2017-09-11"
+    B_date = "2017-09-08"
+    C_date = "2017-09-06"
+    D_date = "2017-09-05"
+    E_date = "2017-08-30"
+    pre_thrive_work_one_day_stock(stock_id, A_date, B_date, C_date, D_date, E_date, db)
+
+    # 先导智能
+    stock_id  = "300450"
+    A_date = "2017-09-11"
+    B_date = "2017-09-08"
+    C_date = "2017-09-06"
+    D_date = "2017-09-05"
+    E_date = "2017-08-30"
+    pre_thrive_work_one_day_stock(stock_id, A_date, B_date, C_date, D_date, E_date, db)
+
+    # 溢多利
+    stock_id  = "300381"
+    A_date = "2017-09-14"
+    B_date = "2017-09-13"
+    C_date = "2017-09-11"
+    D_date = "2017-09-08"
+    E_date = "2017-09-06"
+    pre_thrive_work_one_day_stock(stock_id, A_date, B_date, C_date, D_date, E_date, db)
+
+    # 盈方微
+    stock_id  = "000670"
+    A_date = "2017-09-12"
+    B_date = "2017-09-11"
+    C_date = "2017-09-07"
+    D_date = "2017-09-06"
+    E_date = "2017-08-30"
+    pre_thrive_work_one_day_stock(stock_id, A_date, B_date, C_date, D_date, E_date, db)
+
+    # 晨鸣纸业
+    stock_id  = "000488"
+    A_date = "2017-09-08"
+    B_date = "2017-09-07"
+    C_date = "2017-09-05"
+    D_date = "2017-09-04"
+    E_date = "2017-08-29"
+    pre_thrive_work_one_day_stock(stock_id, A_date, B_date, C_date, D_date, E_date, db)
 
 
     db_end(db)
