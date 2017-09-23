@@ -131,6 +131,7 @@ def k_day_one_stock(_stock_id, _db):
     if max_date is None:
         start_date = '2017-01-03'
         start_date = '2016-01-01'
+        # start_date = '2014-01-01'
         log_debug("it's first time: [%s]", _stock_id)
     else:
         start_date = str(max_date)
@@ -253,9 +254,11 @@ def work():
     db = db_init()
 
     """
-    stock_id = "601899"
+    stock_id = "600050"
+    stock_id = "002460"
     log_debug("stock: %s", stock_id)
     k_day_one_stock(stock_id, db)
+    return 0
     """
 
     # step1: get from web
@@ -305,6 +308,7 @@ def main():
     if sai_is_product_mode():
         if today_is_weekend():
             log_info("today is weekend, exit")
+            # work()
         else:
             log_info("today is workday, come on")
             work()
