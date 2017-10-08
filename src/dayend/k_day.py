@@ -256,6 +256,7 @@ def work():
     """
     stock_id = "600050"
     stock_id = "002460"
+    stock_id = "000932"
     log_debug("stock: %s", stock_id)
     k_day_one_stock(stock_id, db)
     return 0

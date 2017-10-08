@@ -117,12 +117,12 @@ def work_one(_stock_id, _row, _db):
     curr_date = get_today()
     curr_time = get_time()
 
-    if open_price > that_high and curr_price > that_high:
+    if open_price > that_high and curr_price > that_high and curr_price > open_price:
         subject = "gap-高高: %s#%s %s" % (_stock_id, curr_date, curr_time)
         to_mail = True
         rs = True
         log_info("nice: price-reached: open %.2f > %.2f high", open_price, that_high)
-    elif open_price > to_buy_price and curr_price > to_buy_price:
+    elif open_price > to_buy_price and curr_price > to_buy_price and curr_price > open_price:
         subject = "gap-高开: %s#%s %s" % (_stock_id, curr_date, curr_time)
         to_mail = True
         rs = True
@@ -144,7 +144,7 @@ def work_one(_stock_id, _row, _db):
         log_info("subject: \n%s", subject)
         log_info("mail: \n%s", content)
         saimail_dev(subject, content)
-        saimail2(subject, content)
+        # saimail2(subject, content)
 
     return rs
 

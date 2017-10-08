@@ -28,6 +28,9 @@ from case10  import *
 from case11  import *
 from case12  import *
 from case13  import *
+from case14  import *
+from case15  import *
+from case16  import *
 
 #######################################################################
 #
@@ -73,6 +76,7 @@ def thrive_work_one_day_stock(_stock_id, _till,  _db):
 
     used_len = g_detail_used
     my_df = detail_df.head(used_len)
+
 
     # case1
     rv = thrive_analyzer1(_stock_id, _till, my_df, used_len, _db)
@@ -165,6 +169,27 @@ def thrive_work_one_day_stock(_stock_id, _till,  _db):
         return 0
     log_debug("-------------------------------------------------")
 
+    # case14
+    rv = thrive_analyzer14(_stock_id, _till, my_df, used_len, _db)
+    if rv == 0:
+        log_info("nice14: %s", _stock_id)
+        return 0
+    log_debug("-------------------------------------------------")
+
+    # case15
+    rv = thrive_analyzer15(_stock_id, _till, my_df, used_len, _db)
+    if rv == 0:
+        log_info("nice15: %s", _stock_id)
+        return 0
+    log_debug("-------------------------------------------------")
+
+    # case16
+    rv = thrive_analyzer16(_stock_id, _till, my_df, used_len, _db)
+    if rv == 0:
+        log_info("nice16: %s", _stock_id)
+        return 0
+    log_debug("-------------------------------------------------")
+
     return 1
 
 
@@ -235,8 +260,8 @@ def thrive_work_one_day(_till_date, _db):
 def regression(_db):
 
     #
-    max_date = "2017-09-06"
-    days = 10
+    max_date = "2017-09-29"
+    days = 20
 
     log_info("regress")
 
@@ -270,7 +295,40 @@ def work():
         log_info("till_date: %s", till_date)
         thrive_work_one_day(till_date, db)
 
+
         """
+        # 顺丰控股
+        till_date = "2017-02-21"
+        stock_id  = "002352"
+        thrive_work_one_day_stock(stock_id, till_date, db)
+
+        # 中通国脉 case15
+        till_date = "2017-09-19"
+        stock_id  = "603559"
+        thrive_work_one_day_stock(stock_id, till_date, db)
+
+        # 英博尔
+        till_date = "2017-08-09"
+        stock_id  = "300681"
+        thrive_work_one_day_stock(stock_id, till_date, db)
+
+        # 无锡银行
+        till_date = "2017-05-02"
+        stock_id  = "600908"
+        thrive_work_one_day_stock(stock_id, till_date, db)
+
+
+        # 英维克 case14
+        till_date = "2017-06-05"
+        stock_id  = "002837"
+        thrive_work_one_day_stock(stock_id, till_date, db)
+
+        # 超频三 case14
+        till_date = "2017-05-23"
+        stock_id  = "300647"
+        thrive_work_one_day_stock(stock_id, till_date, db)
+
+
 
         # case1
         # 华泰股份 600308 done

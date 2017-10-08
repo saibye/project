@@ -17,6 +17,7 @@ from saitech import *
 from pub_malaw import *
 from case1   import *
 from case2   import *
+from case3   import *
 
 
 #######################################################################
@@ -74,6 +75,13 @@ def malaw_work_one_day_stock(_stock_id, _till,  _db):
     rv = malaw_analyzer2(_stock_id, _till, my_df, used_len, _db)
     if rv == 0:
         log_info("nice2: %s", _stock_id)
+        return 0
+    log_debug("-------------------------------------------------")
+
+    # case3
+    rv = malaw_analyzer3(_stock_id, _till, my_df, used_len, _db)
+    if rv == 0:
+        log_info("nice3: %s", _stock_id)
         return 0
     log_debug("-------------------------------------------------")
 
@@ -151,10 +159,11 @@ def regression(_db):
 
     #
 
-    max_date = "2017-08-31"
-    days = 1
 
     max_date = "2017-09-21"
+    days = 20
+
+    max_date = "2017-08-31"
     days = 20
 
     log_info("regress")
@@ -187,9 +196,76 @@ def work():
         till_date = get_newest_trade_date(db)
         # till_date = "2017-08-25"
         log_info("till_date: %s", till_date)
-        # malaw_work_one_day(till_date, db)
+        malaw_work_one_day(till_date, db)
+
+
 
         """
+
+        # 600050 中国联通 case3
+        till_date = "2016-10-11"
+        stock_id  = "600050"
+        malaw_work_one_day_stock(stock_id, till_date, db)
+
+        # 600460 士兰微
+        till_date = "2017-09-05"
+        stock_id  = "600460"
+        malaw_work_one_day_stock(stock_id, till_date, db)
+
+
+        # 600588  用友网络
+        till_date = "2017-08-15"
+        stock_id  = "600588"
+        malaw_work_one_day_stock(stock_id, till_date, db)
+
+        # 600558  大西洋 case3
+        till_date = "2017-08-24"
+        stock_id  = "600558"
+        malaw_work_one_day_stock(stock_id, till_date, db)
+
+
+        # 002670 国盛金控 case3
+        till_date = "2017-08-30"
+        stock_id  = "002670"
+        malaw_work_one_day_stock(stock_id, till_date, db)
+
+        # 600641  万业企业 case3
+        till_date = "2017-08-21"
+        stock_id  = "600641"
+        malaw_work_one_day_stock(stock_id, till_date, db)
+
+        # 002405 四维图新 case3
+        till_date = "2017-08-15"
+        stock_id  = "002405"
+        malaw_work_one_day_stock(stock_id, till_date, db)
+
+        # 000006 深振业 case3 discard
+        # till_date = "2017-09-05"
+        # stock_id  = "000006"
+        # malaw_work_one_day_stock(stock_id, till_date, db)
+
+        # 002362 汉王科技 case3
+        till_date = "2017-08-18"
+        stock_id  = "002362"
+        malaw_work_one_day_stock(stock_id, till_date, db)
+
+        # 002460 赣锋锂业 case3
+        till_date = "2017-03-06"
+        stock_id  = "002460"
+        malaw_work_one_day_stock(stock_id, till_date, db)
+
+
+        # 002446 盛路通信 case3
+        till_date = "2017-09-28"
+        stock_id  = "002446"
+        malaw_work_one_day_stock(stock_id, till_date, db)
+
+
+        # 000932 ST华菱 case2
+        till_date = "2017-07-18"
+        stock_id  = "000932"
+        malaw_work_one_day_stock(stock_id, till_date, db)
+
         # case1
         # 600460 士兰微
         till_date = "2017-08-31"
@@ -295,7 +371,7 @@ def main():
     if sai_is_product_mode():
         if today_is_weekend():
             log_info("today is weekend, exit")
-            work()
+            # work()
         else:
             log_info("today is workday, come on")
             work()

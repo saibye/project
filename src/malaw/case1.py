@@ -17,6 +17,7 @@ from saitech import *
 from pub_malaw import *
 
 # 标准
+# ma5, 10, 200粘合
 
 #
 # 
