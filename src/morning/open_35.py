@@ -90,7 +90,7 @@ def work_one(_stock_id, _row, _db):
         content += _row['message']
         log_info("subject: \n%s", subject)
         log_info("mail: \n%s", content)
-        saimail_dev(subject, content)
+        saimail(subject, content)
         saimail2(subject, content)
 
     return rs

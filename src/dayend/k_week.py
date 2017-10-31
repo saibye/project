@@ -17,18 +17,6 @@ from saitu   import *
 #######################################################################
 
 
-def is_open_time(_date_time):
-    dt = str(_date_time)
-    if dt.find("09:30") != -1:
-        return 1
-    return 0
-
-def is_subsequent_open_time(_date_time):
-    dt = str(_date_time)
-    if dt.find("10:00") != -1:
-        return 1
-    return 0
-
 def k_week_one_to_db(_stock_id, _df, _start_date, _db):
 
     dt = get_today()
@@ -40,35 +28,14 @@ def k_week_one_to_db(_stock_id, _df, _start_date, _db):
     # last_close_price = _df['close'][0]
     last_close_price = _df.iloc[0,2]
 
-    # XXX: check time is '09:30', 2017-6-18
-
     # import dataframe to db
     counter = 0
     volume  = 0
-    open_volume = 0
     open_price = -1
     for row_index, row in _df.iterrows():
         counter = counter + 1
-        trade_date_time = row.loc['date']
-        if is_open_time(trade_date_time):
-            open_volume = row.loc['volume']
-            open_price = row.loc['open']
-            log_debug("open: %s -- %.2f", trade_date_time, open_volume)
-            continue
-        elif is_subsequent_open_time(trade_date_time):
-            volume = row.loc['volume'] + open_volume
-            if open_volume > 0:
-                # use last open-price
-                pass
-            else:
-                open_price = row.loc['open']
-            open_volume = 0
-            # log_debug("open subsequent: %.2f -- %.2f -- %.3f", row.loc['volume'], volume, open_price)
-        else:
-            volume = row.loc['volume']
-            open_volume = 0
-            open_price = row.loc['open']
-            # log_debug("others: %s -- %.2f", trade_date_time, volume)
+        open_price = row.loc['open']
+        volume     = row.loc['volume']
 
         # 前复权
         sql = "insert into tbl_week \
@@ -132,7 +99,7 @@ def k_week_one_stock(_stock_id, _db):
 
     # qfq
     if max_date is None:
-        start_date = '2014-01-01'
+        start_date = '2008-01-01'
         log_debug("it's first time: [%s]", _stock_id)
     else:
         start_date = str(max_date)
@@ -145,9 +112,6 @@ def k_week_one_stock(_stock_id, _db):
 
     try:
         df = ts.get_k_data(_stock_id, ktype='W', autype='qfq', start=start_date, end=end_date)
-        # df = ts.get_h_data(_stock_id, autype='qfq', start=start_date, end=end_date, retry_count=5, pause=6)
-        # df = ts.get_h_data(_stock_id, start='2016-08-20', end='2016-10-30')
-        # df = ts.get_h_data(_stock_id, autype='qfq')
     except Exception:
         log_error("warn:error: %s get_k_data exception!", _stock_id)
         return -4
@@ -163,7 +127,7 @@ def k_week_one_stock(_stock_id, _db):
         log_error("warn: stock %s is empty, next", _stock_id)
         return -2
 
-    df.sort_index(ascending=False, inplace=True)
+    # df.sort_index(ascending=False, inplace=True)
     # df = df.sort_index(ascending=True)
     # df = df.reindex(index=range(0, len(df)))
     # log_debug("df: \n%s", df)
@@ -182,8 +146,14 @@ def k_week_one_stock(_stock_id, _db):
 def work():
     db = db_init()
 
+    # test mode
+    """
+    stock_id = "000725"
+    k_week_one_stock(stock_id, db)
+    return 0
+    """
 
-    stocks = get_stock_quotation() # bug only 100 rows 2017-6-7
+    stocks = get_stock_quotation()
 
     # step2: to db
     begin = get_micro_second()
@@ -196,6 +166,7 @@ def work():
         # stock_id = "002458"
         # stock_id = "000025"
         # stock_id = "002591"
+        # stock_id = "000725"
 
         # import to DB
         k_week_one_stock(stock_id, db)
@@ -216,6 +187,7 @@ def main():
     if sai_is_product_mode():
         if today_is_weekend():
             log_info("today is weekend, exit")
+            work()
         else:
             log_info("today is workday, come on")
             work()
@@ -229,6 +201,5 @@ main()
 exit()
 
 #######################################################################
-
 
 # k_week.py
