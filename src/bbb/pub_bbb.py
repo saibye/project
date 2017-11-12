@@ -230,4 +230,129 @@ def bbb_vol_break_preceding_days(_detail_df, _used_len, _date, _my_high, _db):
     return days, last_date
 
 
+
+# X点往前n单位内的最大升幅
+def bbb_get_max_raise(_detail_df, _till, _n, _db):
+
+    idx  = 0
+    days = 0
+
+    to_start = False
+    from_price = 0.0
+
+    max_rate  = 0.0
+    max_step  = 0.0
+
+    max_rate_idx = 0
+    max_rate_step = 0.0
+
+    max_rate_date = ""
+    max_step_date = ""
+
+    for row_index, row in _detail_df.iterrows():
+        close_price      = row['close_price']
+        pub_date         = row['pub_date']
+        # log_debug("date: %s pk %s", _till, pub_date)
+
+        if to_start:
+
+            days = days + 1
+            if days > _n:
+                # log_debug("bye: %s -- %d", pub_date, days)
+                break
+
+            rate = (from_price - close_price) * 100.00 / close_price
+            step = rate / days
+            # log_debug("%s -- rate:%.2f%%, step:%.2f%%", pub_date, rate, step)
+
+            if rate > max_rate:
+                max_rate = rate
+                max_rate_date = pub_date
+                max_rate_step = step
+                max_rate_idx  = idx
+
+
+        if not to_start and str(_till) == str(pub_date):
+            to_start = True
+            from_price = close_price
+
+        idx  = idx + 1
+
+    return max_rate, max_rate_step, max_rate_date, max_rate_idx
+
+
+# 寻找拐点
+#
+#
+def bbb_inflection_point(_detail_df, _till, _p1, _p2, _db):
+
+    to_start = False
+
+    idx  = 0
+    D1 = 50 # 50单位内最大最大涨幅
+    D2 = 200 # 只处理前200
+
+    max_step = 0.0
+    max_step_start = ""
+    max_step_end   = ""
+
+    max_rate = 0.0
+    max_rate_step = 0.0
+    max_rate_start = ""
+    max_rate_end   = ""
+    max_rate_start_idx = 0
+    max_rate_end_idx   = 0
+
+    for row_index, row in _detail_df.iterrows():
+        close_price      = row['close_price']
+        pub_date         = row['pub_date']
+
+        if to_start:
+            if close_price < _p1 or close_price > _p2:
+                # not in range [p1, p2] region, ignore
+                idx = idx + 1
+                continue
+
+            this_rate, this_step, this_rate_date, this_idx = bbb_get_max_raise(_detail_df, pub_date, D1, _db)
+            if this_rate > 10.0:
+
+                if this_rate > max_rate:
+                    max_rate = this_rate
+                    max_rate_step  = this_step
+                    max_rate_start = this_rate_date
+                    max_rate_end   = pub_date
+                    max_rate_start_idx = this_idx
+                    max_rate_end_idx   = idx
+
+            else:
+                # log_debug("no raise, don't care: %s, %.2f%%", pub_date, this_rate)
+                pass
+
+        if not to_start and str(_till) == str(pub_date):
+            # log_debug("let's start1: %s", pub_date)
+            to_start = True
+
+        idx  = idx + 1
+
+    # log_info("rate-max: %.2f%%, step:%.2f%% -- [%s, %s]", max_rate, max_rate_step, max_rate_start, max_rate_end)
+
+    return max_rate, max_rate_step, max_rate_start, max_rate_end, max_rate_start_idx, max_rate_end_idx
+
+
+# 取区域的标准差、平均值
+# BC-frame
+def bbb_devia(_detail_df, _n1, _n2, _db):
+
+    s1 = _detail_df['close_price']
+    # log_debug("series: %s", s1)
+
+    s2 = s1[_n1: _n2]
+    # log_debug("[%s]:\n%s", s2)
+    my_std  = s2.std()
+    my_mean = s2.mean()
+
+    # log_debug("[%d, %d]: %.2f, %.2f", _n1, _n2, my_std, my_mean)
+
+    return my_std, my_mean
+
 # pub_bbb.py

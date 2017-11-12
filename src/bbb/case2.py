@@ -17,10 +17,10 @@ from saitech import *
 from pub_bbb import *
 
 
+# 放量300+
+# 变种：不要求C点
 #
-# 
-#
-def bbb_analyzer1(_stock_id, _trade_date, _my_df, _used_len, _db):
+def bbb_analyzer2(_stock_id, _trade_date, _my_df, _used_len, _db):
     global g_detail_fetched 
 
     lowest   = 0
@@ -34,12 +34,10 @@ def bbb_analyzer1(_stock_id, _trade_date, _my_df, _used_len, _db):
     #
 
     A_RATE  = 5
-    A_VR    = 190
+    A_VR    = 300
 
-    A_DAYS1 = 100 # 收盘突破天数
-    A_RATE1 = 99  # 收盘突破比率
-
-    A_DAYS2 = 50  # 成交量突破天数
+    A_DAYS1 = 300  # 收盘价突破天数
+    A_DAYS2 = 200  # 成交量突破天数
 
     BC_DAYS = 20
     CD_RATE = 10
@@ -120,12 +118,11 @@ def bbb_analyzer1(_stock_id, _trade_date, _my_df, _used_len, _db):
     # A点收盘突破天数
     break_days_A1, block_date_A1 = bbb_break_preceding_days(_my_df, _used_len, d_A, p_A, _db)
     rate_A1 = break_days_A1 * 100.00 / length
-    rule_A3 = break_days_A1 > 100 and rate_A1 > 99
-    rule_A4 = break_days_A1 > 200 and rate_A1 > 60
-    if rule_A3 or rule_A4:
+    rule_A3 = break_days_A1 > A_DAYS1 and rate_A1 > 90
+    if rule_A3:
         log_info("A点: break days: %d, %.2f%%, block_at: %s", break_days_A1, rate_A1, block_date_A1)
     else:
-        log_info("sorry: A not break so much: days:%s, %s -- %d, %.2f", rule_A3, rule_A4, break_days_A1, rate_A1)
+        log_info("sorry: A not break so much: days:%s -- %d, %.2f", rule_A3, break_days_A1, rate_A1)
         return 1
 
     # A点成交量突破天数
@@ -139,37 +136,11 @@ def bbb_analyzer1(_stock_id, _trade_date, _my_df, _used_len, _db):
         return 1
 
     # B点
-    upper_price_B = p_B * (1 + 0.02)
-    lower_price_B = p_B * (1 - 0.02)
-    log_debug("B点决定区间：[%.2f, %.2f]", lower_price_B, upper_price_B)
-
     # C点 -- 拐点
     # D点
-    rate_CD, step_CD, d_D, d_C, i_D, i_C = bbb_inflection_point(_my_df, d_B, lower_price_B, upper_price_B, _db)
-    log_debug("C点: %s, rise:%.2f%%, step: %.2f%%, idx: %d", d_C, rate_CD, step_CD, i_C)
-    log_debug("D点: %s, idx: %d", d_D, i_D)
-
-    len_BC = i_C - i_B
-    len_CD = i_D - i_C
-    log_debug("len(BC): %d, len(CD): %d", len_BC, len_CD)
-
-    rule_B1 = len_BC > BC_DAYS
-    rule_C1 = rate_CD > CD_RATE
-    if rule_B1 and rule_C1:
-        log_info("BC-long: %d, CD-rate: %.2f", len_BC, rate_CD)
-    else:
-        log_info("BC, CD not match: %s, %s", rule_B1, rule_C1)
-        return 1
-
-    # frame(BC): 标准差、平均值
-    std_BC, mean_BC = bbb_devia(_my_df, i_B, i_C, _db)
-    log_debug("BC: std: %.2f, mean: %.2f", std_BC, mean_BC)
-
-    rate_AM = (p_A - mean_BC) * 100.00 / mean_BC
-    log_debug("AM: %.2f%%", rate_AM)
 
     # 综合处理
-    rule1 = rate_AM > AM_RATE
+    rule1 = True
     rule2 = False
 
     if rule1 or rule2:
@@ -185,13 +156,11 @@ def bbb_analyzer1(_stock_id, _trade_date, _my_df, _used_len, _db):
         content1 += "A点: %s，放量: %.2f%%+\n"  % (d_A, vr_A)
         content1 += "A点: 收盘突破: %d+\n"  % (break_days_A1)
         content1 += "A点: 成交突破: %d+\n"  % (break_days_A2)
-        content1 += "BC:  区间长度: %d\n" % (len_BC)
-        content1 += "CD:  上升幅度: %.2f\n" % (rate_CD)
         content1 += "+++++++++++++++++++++++++\n"
         info  = get_basic_info_all(_stock_id, _db)
         content1 += info
 
-        subject = "bbb1: %s -- %s" % (_stock_id, _trade_date)
+        subject = "bbb2(非标): %s -- %s" % (_stock_id, _trade_date)
 
         # bbb_save(_stock_id, _trade_date, expect_price, subject, content1, _db)
 

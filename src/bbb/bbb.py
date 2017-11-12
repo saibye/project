@@ -16,6 +16,8 @@ from saitech import *
 
 from pub_bbb import *
 from case1   import *
+from case2   import *
+from case3   import *
 
 
 #######################################################################
@@ -23,7 +25,7 @@ from case1   import *
 #######################################################################
 
 g_detail_fetched = 400
-g_detail_used    = 300
+g_detail_used    = 100
 
 
 def bbb_work_one_day_stock(_stock_id, _till,  _db):
@@ -68,6 +70,19 @@ def bbb_work_one_day_stock(_stock_id, _till,  _db):
         log_info("nice1: %s", _stock_id)
         return 0
     log_debug("-------------------------------------------------")
+
+    # case2
+    rv = bbb_analyzer2(_stock_id, _till, my_df, used_len, _db)
+    if rv == 0:
+        log_info("nice2: %s", _stock_id)
+        return 0
+    log_debug("-------------------------------------------------")
+
+    # case3
+    rv = bbb_analyzer3(_stock_id, _till, my_df, used_len, _db)
+    if rv == 0:
+        log_info("nice3: %s", _stock_id)
+        return 0
 
     log_debug("-------------------------------------------------")
 
@@ -141,9 +156,20 @@ def bbb_work_one_day(_till_date, _db):
 def regression(_db):
 
     #
+    max_date = "2017-10-13"
+    days = 1
 
-    max_date = "2017-08-31"
-    days = 20
+    max_date = "2017-09-28"
+    days = 1
+
+    max_date = "2017-09-19"
+    days = 1
+
+    max_date = "2017-09-18"
+    days = 1
+
+    max_date = "2017-11-03"
+    days = 10
 
     log_info("regress")
 
@@ -175,12 +201,68 @@ def work():
         till_date = get_newest_trade_date(db)
         # till_date = "2017-08-25"
         log_info("till_date: %s", till_date)
-        # bbb_work_one_day(till_date, db)
+        bbb_work_one_day(till_date, db)
 
+
+        """
+
+        # 国星光电 (weak) TODO
+        till_date = "2017-10-23"
+        stock_id  = "002449"
+        bbb_work_one_day_stock(stock_id, till_date, db)
+
+        # 健康元 done case3
+        till_date = "2017-09-01"
+        stock_id  = "600380"
+        bbb_work_one_day_stock(stock_id, till_date, db)
+
+        # 恒立液压  done case2
+        till_date = "2017-11-01"
+        stock_id  = "601100"
+        bbb_work_one_day_stock(stock_id, till_date, db)
+
+        # 士兰微 done case1
+        till_date = "2017-09-19"
+        stock_id  = "600460"
+        bbb_work_one_day_stock(stock_id, till_date, db)
+
+        # 永辉超市 done case1
+        till_date = "2017-09-19"
+        stock_id  = "601933"
+        bbb_work_one_day_stock(stock_id, till_date, db)
+
+
+        # 阳光电源 done case1
+        till_date = "2017-09-13"
+        stock_id  = "300274"
+        bbb_work_one_day_stock(stock_id, till_date, db)
+
+
+        # 京东方 done case1 -- all in all
         till_date = "2017-09-28"
         stock_id  = "000725"
         bbb_work_one_day_stock(stock_id, till_date, db)
 
+        # 鸿特精密 done case1
+        till_date = "2017-10-13"
+        stock_id  = "300176"
+        bbb_work_one_day_stock(stock_id, till_date, db)
+
+        # 长春高新 done case1
+        till_date = "2017-08-18"
+        stock_id  = "000661"
+        bbb_work_one_day_stock(stock_id, till_date, db)
+
+        # 招商银行 done case1
+        till_date = "2017-05-12"
+        stock_id  = "600036"
+        bbb_work_one_day_stock(stock_id, till_date, db)
+
+        # 普利制药 done case1
+        till_date = "2017-09-01"
+        stock_id  = "300630"
+        bbb_work_one_day_stock(stock_id, till_date, db)
+        """
 
     else:
         regression(db)
@@ -198,7 +280,7 @@ def main():
     if sai_is_product_mode():
         if today_is_weekend():
             log_info("today is weekend, exit")
-            work()
+            # work()
         else:
             log_info("today is workday, come on")
             work()
