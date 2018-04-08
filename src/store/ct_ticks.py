@@ -269,7 +269,7 @@ def ct_ticks(_stocks, _trade_date, _db):
         # if rank >= 100 or (rank >= 109 and rank % 100 == 9):
         # if rank >= 109 or (rank >= 100 and tdchg > 9.5) or (rank >= 59 and rate >= 2.0):
         # if rank >= 100 or (rank >= 50 and tdchg > 9.8) or (rank >= 50 and rate >= 2.0):
-        if rank >= 200 or (rank >= 50 and tdchg > 9.8) or (rank >= 100 and rate >= 2.0):
+        if rank >= 300 or (rank >= 100 and tdchg > 9.8) or (rank >= 200 and rate >= 2.0):
             # very good
 
             if tdchg > 9.8 and rate >= 2.0:

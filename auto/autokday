@@ -109,7 +109,7 @@ cd ${PHOME}/src/decision && time python good.py
 
 #
 # 21. get  k-30min data @2017-6-18
-cd ${PHOME}/src/dayend && time python k_unit.py
+#cd ${PHOME}/src/dayend && time python k_unit.py
 
 
 # 23. v3.py @2017-6-18
@@ -120,7 +120,7 @@ cd ${PHOME}/src/decision && time python flag.py
 
 #
 # 25. get  k-15min data @2017-9-6
-cd ${PHOME}/src/dayend && time python k_15min.py
+#cd ${PHOME}/src/dayend && time python k_15min.py
 
 
 
