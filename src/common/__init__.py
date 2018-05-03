@@ -2,19 +2,19 @@ __version__ = '0.1.0'
 __author__  = 'Sai'
 
 
+from sailog     import *
+from saiutil    import *
+from saimail    import *
+from saitu      import *
 from saicalc    import *
 from saiconf    import *
 from saidb      import *
 from saifmt     import *
-from sailog     import *
-from saimail    import *
 from sairank    import *
 from sairef     import *
 from saisql     import *
 from saitech    import *
 from saitick    import *
-from saitu      import *
-from saiutil    import *
 
 
 __all__ = ['log_debug',

@@ -156,7 +156,7 @@ def get_one_kunit(_stock_id, _pub_date, _table, _db):
 
 
 def get_recent_pub_date(_pub_date, _N, _db):
-    sql = "select distinct pub_date from tbl_day_tech x where pub_date <='%s' order by pub_date desc limit %d" % (_pub_date, _N)
+    sql = "select distinct pub_date from tbl_day x where pub_date <='%s' order by pub_date desc limit %d" % (_pub_date, _N)
 
     df = pd.read_sql_query(sql, _db);
 

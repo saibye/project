@@ -138,7 +138,7 @@ def sai_fmt_set(_stock_id, _till_date, _mode, _n, _db):
         log_debug("detail_df is empty: [%d]", len(detail_df))
         return None
     else:
-        log_debug("len[%d]", len(detail_df))
+        # log_debug("len[%d]", len(detail_df))
         pass
 
     length = len(detail_df)

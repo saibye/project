@@ -27,7 +27,7 @@ def sai_conf_get2(_section, _key):
 
 def sai_load_conf():
     sai_conf_path = "%s/.local/sai.json" % os.getenv('HOME')
-    log_debug("loading config [%s]", sai_conf_path)
+    # log_debug("loading config [%s]", sai_conf_path)
     if os.path.isfile(sai_conf_path):
         json_file_fd = file(sai_conf_path)
         return json.load(json_file_fd)
@@ -45,7 +45,7 @@ def sai_conf_get(_section, _key):
             log_error("error: sai_load_conf failure")
             return -1
         else:
-            log_debug("config load succeed")
+            # log_debug("config load succeed")
             pass
     else:
         # log_debug("already loaded")

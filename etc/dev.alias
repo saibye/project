@@ -17,19 +17,12 @@ alias cdsql='cd ${HOME}/project/sql'
 
 alias mktag='cd ${HOME}/project && ctags -f .tags -R * && cd - >/dev/null'
 
-alias cdss='cd ${HOME}/project/src/store'
+alias cdsw='cd ${HOME}/project/src/wine'
 alias cdsc='cd ${HOME}/project/src/common'
 alias cdst='cd ${HOME}/project/src/test'
-alias cdrt='cd ${HOME}/project/src/realtime'
-alias cdsd='cd ${HOME}/project/src/decision'
 alias cdsr='cd ${HOME}/project/src/report'
 alias cdsa='cd ${HOME}/project/src/analyzer'
 alias cdsh='cd ${HOME}/project/src/cwh'
-alias cddk='cd ${HOME}/project/src/duck'
-alias cdth='cd ${HOME}/project/src/thrive'
-alias cdsp='cd ${HOME}/project/src/pre_thrive'
-alias cdsm='cd ${HOME}/project/src/morning'
-alias cdap='cd ${HOME}/project/src/thrap'
 
 alias ck='echo "select pub_date, count(1) from tbl_day group by pub_date order by 1"'
 
