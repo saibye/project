@@ -2,11 +2,11 @@
 # -*- encoding: utf8 -*-
 
 import saiobj
-
 from common  import *
-
 from pub     import *
+
 from fresh   import *
+from two     import *
 
 
 def my_work_one_day_stock(_txn_list, _one, _date, _db):
@@ -143,11 +143,11 @@ def work():
     if len(args) == 0:
         print('usage')
         print('python %s case-name' % (__file__))
-        return 1
+        case_name = 'all'
+    else:
+        case_name = args[0]
 
     sai_load_conf2('wine.cfg')
-
-    case_name = args[0]
 
     # check is-regressoin ?
     if case_name == 're':

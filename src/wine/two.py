@@ -8,29 +8,30 @@ from pub    import *
 
 
 
-def fresh_load_cfg():
-    saiobj.g_wine_start_rate= float(sai_conf_get2('fresh', 'start_rate'))
-    saiobj.g_wine_step      = int(sai_conf_get2('fresh', 'find_step'))
-    saiobj.g_wine_step_zt   = float(sai_conf_get2('fresh', 'green_zt'))
-    saiobj.g_wine_step_rate = float(sai_conf_get2('fresh', 'green_rate'))
-    saiobj.g_wine_total_down= float(sai_conf_get2('fresh', 'total_down'))
-    saiobj.g_wine_total_up  = float(sai_conf_get2('fresh', 'total_up'))
-    saiobj.g_wine_up_down_rt= float(sai_conf_get2('fresh', 'up_down_rate'))
+def two_load_cfg():
+    saiobj.g_wine_start_rate= float(sai_conf_get2('two', 'start_rate'))
+    saiobj.g_wine_step      = int(sai_conf_get2('two', 'find_step'))
+    saiobj.g_wine_step_zt   = float(sai_conf_get2('two', 'green_zt'))
+    saiobj.g_wine_step_rate = float(sai_conf_get2('two', 'green_rate'))
+    saiobj.g_wine_total_down= float(sai_conf_get2('two', 'total_down'))
+    saiobj.g_wine_total_up  = float(sai_conf_get2('two', 'total_up'))
+    saiobj.g_wine_up_down_rt= float(sai_conf_get2('two', 'up_down_rate'))
     saiobj.g_wine_cfg_loaded= True
-    log_debug('fresh config loaded')
+    log_debug('two config loaded')
 
 
 
-def fresh_run(_stock_id, _date, _df):
-    log_debug('tran fresh: %s', _date)
+def two_run(_stock_id, _date, _df):
+    log_debug('tran two: %s', _date)
 
+    """
     length = len(_df)
     if length > 30:
         log_debug('%s too long: %d', _stock_id, length)
         return 0
 
     if not saiobj.g_wine_cfg_loaded:
-        fresh_load_cfg()
+        two_load_cfg()
 
     START_RATE = saiobj.g_wine_start_rate
 
@@ -72,15 +73,16 @@ def fresh_run(_stock_id, _date, _df):
     if total_up > TOTAL_UP and abs(total_up/total_down) > 2:
         log_info('bingo: %s -- %s', _stock_id, _date)
         return 1
+    """
 
     return 0
 
 
-saiobj.g_func_map['fresh'] = fresh_run
+saiobj.g_func_map['two'] = two_run
 
 
 if __name__=="__main__":
-    sailog_set("fresh.log")
+    sailog_set("two.log")
 
     db = db_init()
     sai_load_conf2('wine.cfg')
@@ -90,11 +92,11 @@ if __name__=="__main__":
 
     sai_fmt_set_fetch_len(40)
     df = sai_fmt_simple(stock_id, trade_dt, db)
-    fresh_run(stock_id, trade_dt, df)
+    two_run(stock_id, trade_dt, df)
 
     db_end(db)
 
     log_debug("--end")
 
 
-# fresh.py
+# two.py
