@@ -67,14 +67,6 @@ def df_to_db(_stock_id, _df, _db):
     return
 
 
-def get_stock_list_df_db(_db):
-    sql = "select distinct stock_id from tbl_30min order by 1"
-
-    df = pd.read_sql_query(sql, _db);
-
-    return df.set_index('stock_id')
-
-
 
 def row_to_sql(_stock_id, _row_index, _row, _dt, _tm):
     date1, time1 = _row_index.split()
@@ -552,7 +544,7 @@ def get_newest_index_trade_date(_db):
 """
 2017/9/6
 """
-def get_stock_list_table_quick(_table, _db):
+def get_stock_list_table_quick(_db):
     sql = "select distinct stock_id from tbl_day where pub_date=(select max(pub_date) from tbl_day) order by 1"
 
     df = pd.read_sql_query(sql, _db);

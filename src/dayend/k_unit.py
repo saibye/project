@@ -201,7 +201,7 @@ def work():
 
     # 2017-9-6
     table = "tbl_day"
-    stocks = get_stock_list_table_quick(table, db)
+    stocks = get_stock_list_table_quick(db)
 
 
     # step2: to db

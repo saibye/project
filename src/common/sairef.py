@@ -23,6 +23,7 @@ g_ref_detail    = None # dataframe
 
 g_ref_this      = None # dateframe(stock_id)
 
+g_ref_this_date = None # 2018-4-30
 g_ref_this_close= None # close price series
 g_ref_this_open = None #
 g_ref_this_high = None #
@@ -107,8 +108,12 @@ def ref_set(_stock_id):
     return len(g_ref_this)
 
 def ref_len():
-    global g_ref_list
-    return len(g_ref_this)
+    global g_ref_this_close
+    return len(g_ref_this_close)
+
+def ref_date(_offset):
+    global g_ref_this_date
+    return g_ref_this_date[_offset]
 
 def ref_close(_offset):
     global g_ref_this_close
@@ -190,54 +195,6 @@ def ref_vma50(_offset):
     global g_ref_this_vma50
     return float(g_ref_this_vma50[_offset])
 
-
-"""
--- 2016/11/20
-"""
-def get_recent_detail_all_1(_db):
-    global g_trade_date
-    sql = "select a.stock_id stock_id, a.pub_date pub_date, \
-a.open_price open_price, a.close_price close_price,  \
-a.high_price high_price, a.low_price   low_price,  \
-a.last_close_price last, a.deal_total_count total, \
-b.ma5 ma5, b.ma10 ma10, b.ma20 ma20, b.ma30 ma30, \
-b.ma60 ma60, b.ma150 ma150, macd, diff, dea \
-from tbl_day a, tbl_day_tech b \
-where a.pub_date in (select * from (select distinct pub_date from tbl_day_tech x where pub_date <='%s' order by pub_date desc limit 10) y) \
-and a.stock_id=b.stock_id \
-and a.pub_date=b.pub_date \
-order by 1, 2 desc" % (g_trade_date)
-    log_debug("sql: \n%s", sql)
-
-    df = pd.read_sql_query(sql, _db);
-    if df is None:
-        log_info("no data in db")
-        return None
-    else:
-        log_debug("df: \n%s", df)
-        return df
-
-
-
-def get_recent_list_1(_db):
-    global g_trade_date
-    sql = "select distinct a.stock_id stock_id \
-from tbl_day a, tbl_day_tech b \
-where a.pub_date in (select * from (select distinct pub_date from tbl_day_tech x where pub_date <='%s' order by pub_date desc limit 10) y) \
-and a.stock_id=b.stock_id \
-and a.pub_date=b.pub_date \
-order by 1" % (g_trade_date)
-
-    # log_debug("%s", sql)
-
-    df = pd.read_sql_query(sql, _db);
-    if df is None:
-        log_info("no data in db: %s", sql)
-        return None
-    else:
-        df.set_index("stock_id", inplace=True)
-        df["1"] = "1"
-        return df
 
 
 """
@@ -564,6 +521,7 @@ def ref_init4(_detail_df):
         # log_debug("detail: %d", len(g_ref_detail))
         pass
 
+    global g_ref_this_date
     global g_ref_this_close
     global g_ref_this_open
     global g_ref_this_high
@@ -571,6 +529,7 @@ def ref_init4(_detail_df):
     global g_ref_this_last
     global g_ref_this_total
 
+    g_ref_this_date = g_ref_detail['pub_date']
     g_ref_this_close= g_ref_detail['close_price']
     g_ref_this_open = g_ref_detail['open_price']
     g_ref_this_high = g_ref_detail['high_price']

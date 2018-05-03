@@ -3,22 +3,22 @@
 
 import MySQLdb
 
-# ´ò¿ªÊý¾Ý¿âÁ¬½Ó
+# æ‰“å¼€æ•°æ®åº“è¿žæŽ¥
 db = MySQLdb.connect("127.0.0.1", "tudev", "wangfei", "tu") 
 
-# Ê¹ÓÃcursor()·½·¨»ñÈ¡²Ù×÷ÓÎ±ê 
+# ä½¿ç”¨cursor()æ–¹æ³•èŽ·å–æ“ä½œæ¸¸æ ‡ 
 cursor = db.cursor()
 
-# SQL ¸üÐÂÓï¾ä
+# SQL æ›´æ–°è¯­å¥
 sql = "UPDATE EMPLOYEE SET AGE = AGE + 1 WHERE SEX = '%c'" % ('M')
 try:
-   # Ö´ÐÐSQLÓï¾ä
+   # æ‰§è¡ŒSQLè¯­å¥
    cursor.execute(sql)
-   # Ìá½»µ½Êý¾Ý¿âÖ´ÐÐ
+   # æäº¤åˆ°æ•°æ®åº“æ‰§è¡Œ
    db.commit()
 except:
-   # ·¢Éú´íÎóÊ±»Ø¹ö
+   # å‘ç”Ÿé”™è¯¯æ—¶å›žæ»š
    db.rollback()
 
-# ¹Ø±ÕÊý¾Ý¿âÁ¬½Ó
+# å…³é—­æ•°æ®åº“è¿žæŽ¥
 db.close()

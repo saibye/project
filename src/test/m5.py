@@ -3,19 +3,19 @@
 
 import MySQLdb
 
-# ´ò¿ªÊı¾İ¿âÁ¬½Ó
+# æ‰“å¼€æ•°æ®åº“è¿æ¥
 db = MySQLdb.connect("127.0.0.1", "tudev", "wangfei", "tu" )
 
-# Ê¹ÓÃcursor()·½·¨»ñÈ¡²Ù×÷ÓÎ±ê 
+# ä½¿ç”¨cursor()æ–¹æ³•è·å–æ“ä½œæ¸¸æ ‡ 
 cursor = db.cursor()
 
-# SQL ²éÑ¯Óï¾ä
+# SQL æŸ¥è¯¢è¯­å¥
 sql = "SELECT * FROM EMPLOYEE \
        WHERE INCOME > '%d'" % (1000)
 try:
-   # Ö´ĞĞSQLÓï¾ä
+   # æ‰§è¡ŒSQLè¯­å¥
    cursor.execute(sql)
-   # »ñÈ¡ËùÓĞ¼ÇÂ¼ÁĞ±í
+   # è·å–æ‰€æœ‰è®°å½•åˆ—è¡¨
    results = cursor.fetchall()
    for row in results:
       fname = row[0]
@@ -23,11 +23,11 @@ try:
       age = row[2]
       sex = row[3]
       income = row[4]
-      # ´òÓ¡½á¹û
+      # æ‰“å°ç»“æœ
       print "fname=%s,lname=%s,age=%d,sex=%s,income=%d" % \
              (fname, lname, age, sex, income )
 except:
    print "Error: unable to fecth data"
 
-# ¹Ø±ÕÊı¾İ¿âÁ¬½Ó
+# å…³é—­æ•°æ®åº“è¿æ¥
 db.close()

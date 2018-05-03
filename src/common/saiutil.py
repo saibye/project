@@ -29,12 +29,13 @@ def get_micro_second():
     tm = time.time() * 1000000
     return tm 
 
-def get_date_by(n=0):
-    '''''
+
+'''
     if n>=0,date is larger than today
     if n<0,date is less than today
     date format = "YYYY-MM-DD"
-    '''
+'''
+def get_date_by(n=0):
     if (n<0):
         n = abs(n)
         dt = date.today()-timedelta(days=n)
@@ -45,17 +46,18 @@ def get_date_by(n=0):
 
 
 
+'''''
+get today,date format="YYYY-MM-DD"
+'''''
 def today():
-    '''''
-    get today,date format="YYYY-MM-DD"
-    '''''
     return date.today()
 
 
+
+'''''
+get datetime,format="YYYY-MM-DD HH:MM:SS"
+'''
 def dai_datetime():
-    '''''
-    get datetime,format="YYYY-MM-DD HH:MM:SS"
-    '''
     return strftime("%Y-%m-%d %H:%M:%S",localtime())
 
 # 2016/8/21
@@ -91,6 +93,7 @@ def check_time_to_run(_time_map):
             log_info("nice: trigger: %s > %s", curr, item)
 
     return to_run
+
 
 # 此函数只能调用一次 
 def get_args():

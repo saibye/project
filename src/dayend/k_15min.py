@@ -126,7 +126,7 @@ def work():
     # stocks = get_stock_quotation() # slow and no need
 
     table = "tbl_day"
-    stocks = get_stock_list_table_quick(table, db)
+    stocks = get_stock_list_table_quick(db)
     log_debug("recent list:\n%s", stocks)
 
     # step2: to db

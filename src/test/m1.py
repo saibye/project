@@ -3,22 +3,22 @@
 
 import MySQLdb
 
-# ´ò¿ªÊı¾İ¿âÁ¬½Ó
+# æ‰“å¼€æ•°æ®åº“è¿æ¥
 # db = MySQLdb.connect("localhost", "hqdev", "wangfei", "hq" ) # bad
 
 #db = MySQLdb.connect("127.0.0.1", "hqdev", "wangfei", "hq" ) # good 
 db = MySQLdb.connect("127.0.0.1", "tudev", "wangfei", "tu" ) # good 
 
-# Ê¹ÓÃcursor()·½·¨»ñÈ¡²Ù×÷ÓÎ±ê 
+# ä½¿ç”¨cursor()æ–¹æ³•è·å–æ“ä½œæ¸¸æ ‡ 
 cursor = db.cursor()
 
-# Ê¹ÓÃexecute·½·¨Ö´ĞĞSQLÓï¾ä
+# ä½¿ç”¨executeæ–¹æ³•æ‰§è¡ŒSQLè¯­å¥
 cursor.execute("SELECT VERSION()")
 
-# Ê¹ÓÃ fetchone() ·½·¨»ñÈ¡Ò»ÌõÊı¾İ¿â¡£
+# ä½¿ç”¨ fetchone() æ–¹æ³•è·å–ä¸€æ¡æ•°æ®åº“ã€‚
 data = cursor.fetchone()
 
 print "Database version : %s " % data
 
-# ¹Ø±ÕÊı¾İ¿âÁ¬½Ó
+# å…³é—­æ•°æ®åº“è¿æ¥
 db.close()

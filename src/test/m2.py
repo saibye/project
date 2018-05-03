@@ -3,16 +3,16 @@
 
 import MySQLdb
 
-# ´ò¿ªÊý¾Ý¿âÁ¬½Ó
+# æ‰“å¼€æ•°æ®åº“è¿žæŽ¥
 db = MySQLdb.connect("127.0.0.1", "tudev", "wangfei", "tu" )
 
-# Ê¹ÓÃcursor()·½·¨»ñÈ¡²Ù×÷ÓÎ±ê 
+# ä½¿ç”¨cursor()æ–¹æ³•èŽ·å–æ“ä½œæ¸¸æ ‡ 
 cursor = db.cursor()
 
-# Èç¹ûÊý¾Ý±íÒÑ¾­´æÔÚÊ¹ÓÃ execute() ·½·¨É¾³ý±í¡£
+# å¦‚æžœæ•°æ®è¡¨å·²ç»å­˜åœ¨ä½¿ç”¨ execute() æ–¹æ³•åˆ é™¤è¡¨ã€‚
 cursor.execute("DROP TABLE IF EXISTS EMPLOYEE")
 
-# ´´½¨Êý¾Ý±íSQLÓï¾ä
+# åˆ›å»ºæ•°æ®è¡¨SQLè¯­å¥
 sql = """CREATE TABLE EMPLOYEE (
          FIRST_NAME  CHAR(20) NOT NULL,
          LAST_NAME  CHAR(20),
@@ -22,5 +22,5 @@ sql = """CREATE TABLE EMPLOYEE (
 
 cursor.execute(sql)
 
-# ¹Ø±ÕÊý¾Ý¿âÁ¬½Ó
+# å…³é—­æ•°æ®åº“è¿žæŽ¥
 db.close()

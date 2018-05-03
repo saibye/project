@@ -3,25 +3,25 @@
 
 import MySQLdb
 
-# ´ò¿ªÊý¾Ý¿âÁ¬½Ó
+# æ‰“å¼€æ•°æ®åº“è¿žæŽ¥
 db = MySQLdb.connect("127.0.0.1", "tudev", "wangfei", "tu" )
 
-# Ê¹ÓÃcursor()·½·¨»ñÈ¡²Ù×÷ÓÎ±ê 
+# ä½¿ç”¨cursor()æ–¹æ³•èŽ·å–æ“ä½œæ¸¸æ ‡ 
 cursor = db.cursor()
 
-# SQL ²åÈëÓï¾ä
+# SQL æ’å…¥è¯­å¥
 sql = "INSERT INTO EMPLOYEE(FIRST_NAME, \
        LAST_NAME, AGE, SEX, INCOME) \
        VALUES ('%s', '%s', '%d', '%c', '%d' )" % \
        ('Mac', 'Mohan', 20, 'M', 2000)
 try:
-   # Ö´ÐÐsqlÓï¾ä
+   # æ‰§è¡Œsqlè¯­å¥
    cursor.execute(sql)
-   # Ìá½»µ½Êý¾Ý¿âÖ´ÐÐ
+   # æäº¤åˆ°æ•°æ®åº“æ‰§è¡Œ
    db.commit()
 except:
-   # ·¢Éú´íÎóÊ±»Ø¹ö
+   # å‘ç”Ÿé”™è¯¯æ—¶å›žæ»š
    db.rollback()
 
-# ¹Ø±ÕÊý¾Ý¿âÁ¬½Ó
+# å…³é—­æ•°æ®åº“è¿žæŽ¥
 db.close()

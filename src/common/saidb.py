@@ -8,9 +8,6 @@ from saiconf import *
 
 def db_init():
     # 打开数据库连接
-    # db = MySQLdb.connect("127.0.0.1", "tudev", "wangfei", "tu" )
-    # db = MySQLdb.connect(host="127.0.0.1", user="tudev", passwd="wangfei", db="tu", charset="utf8")  # 000
-    # db = MySQLdb.connect(host="000000000000", user="tudev", passwd="wangfei", db="tu", charset="utf8")  # 111
     host    = sai_conf_get_mysql_host()
     dbname  = sai_conf_get_mysql_database()
     user    = sai_conf_get_mysql_user()

@@ -3,22 +3,22 @@
 
 import MySQLdb
 
-# ´ò¿ªÊý¾Ý¿âÁ¬½Ó
+# æ‰“å¼€æ•°æ®åº“è¿žæŽ¥
 db = MySQLdb.connect("127.0.0.1", "tudev", "wangfei", "tu" )
 
-# Ê¹ÓÃcursor()·½·¨»ñÈ¡²Ù×÷ÓÎ±ê 
+# ä½¿ç”¨cursor()æ–¹æ³•èŽ·å–æ“ä½œæ¸¸æ ‡ 
 cursor = db.cursor()
 
-# SQL É¾³ýÓï¾ä
+# SQL åˆ é™¤è¯­å¥
 sql = "DELETE FROM EMPLOYEE WHERE AGE > '%d'" % (20)
 try:
-   # Ö´ÐÐSQLÓï¾ä
+   # æ‰§è¡ŒSQLè¯­å¥
    cursor.execute(sql)
-   # Ìá½»ÐÞ¸Ä
+   # æäº¤ä¿®æ”¹
    db.commit()
 except:
-   # ·¢Éú´íÎóÊ±»Ø¹ö
+   # å‘ç”Ÿé”™è¯¯æ—¶å›žæ»š
    db.rollback()
 
-# ¹Ø±ÕÁ¬½Ó
+# å…³é—­è¿žæŽ¥
 db.close()

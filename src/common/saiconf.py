@@ -7,12 +7,23 @@ from email.mime.text import MIMEText
 from email.utils import parseaddr, formataddr
 import smtplib
 import json
+import ConfigParser
 
 from sailog  import *
 
 
 g_sai_conf = None
 
+cf = ConfigParser.ConfigParser()
+
+def sai_load_conf2(_file_name):
+    global cf
+    sai_conf_path = "%s/project/cfg/%s" % (os.getenv('HOME'), _file_name)
+    cf.read(sai_conf_path)
+
+def sai_conf_get2(_section, _key):
+    global cf
+    return cf.get(_section, _key)
 
 def sai_load_conf():
     sai_conf_path = "%s/.local/sai.json" % os.getenv('HOME')
@@ -93,6 +104,9 @@ if __name__=="__main__":
     log_debug("[%s]", sai_conf_get_mysql_user())
     log_debug("[%s]", sai_conf_get_mysql_passwd())
     log_debug("[%s]", sai_conf_get_mysql_encode())
+
+    sai_load_conf2('lihua.cfg')
+    log_debug('[%s]', sai_conf_get2('wine', 'start_rate'))
 
 
 # saiconf.py

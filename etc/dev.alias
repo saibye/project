@@ -5,6 +5,7 @@ alias cdd='cd ${HOME}/project/data'
 alias cde='cd ${HOME}/project/etc'
 alias cds='cd ${HOME}/project/src'
 alias cdl='cd ${HOME}/project/log'
+alias cdc='cd ${HOME}/project/cfg'
 
 alias cdsb='cd ${HOME}/project/sbin'
 alias cdat='cd ${HOME}/project/auto'

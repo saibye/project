@@ -1,14 +1,14 @@
 #!/bin/bash
 
-export LD_LIBRARY_PATH=/usr/lib64:/usr/local/lib64:/p1/sai/tools/lib64:.:/usr/local/mysql/lib
+export LD_LIBRARY_PATH=/usr/lib64:/usr/local/lib64:/home/sai/tools/lib64:.
 export LIBPATH=${LD_LIBRARY_PATH}
-export PATH=/anaconda2/bin:/p1/sai/project/bin:/p1/sai/project/sbin:/usr/local/bin:/usr/local/sbin:/usr/sbin:/p1/sai/bin:/usr/local/bin:/usr/bin:/bin:/usr/X11R6/bin:/usr/games:.:/usr/local/mysql/bin
+export PATH=/public/anaconda2/bin:/home/sai/project/bin:/home/sai/project/sbin:/usr/local/bin:/usr/local/sbin:/usr/sbin:/home/sai/bin:/public/anaconda2/bin:/home/sai/bin:/home/sai/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/usr/local/mysql/bin
 
-export PYTHONPATH=/p1/sai/project/src/common
+export PYTHONPATH=/home/sai/project/src/common:/usr/local/lib64/pkgconfig:/usr/lib64/pkgconfig:/usr/local/apr/lib/pkgconfig
 
-export PHOME=/p1/sai/project
-export DATA=/p1/sai/project/data
-export LOG=/p1/sai/project/log
+export PHOME=/home/sai/project
+export DATA=/home/sai/project/data
+export LOG=/home/sai/project/log
 
 export LANG=zh_CN.utf8
 
@@ -24,21 +24,18 @@ exec 1>&3
 exec 2>&4
 
 
-# PRE  of day 2017-8-11
-# 0. get  k-day data
-cd ${PHOME}/src/dayend && time python  k_index_day.py
-cd ${PHOME}/src/report && time python  index.py
+## index  data
+#cd ${PHOME}/src/dayend && time python  k_index_day.py
+#cd ${PHOME}/src/report && time python  index.py
 
 
-#nohup python k_day.py &
-# 1. get  k-day data
+# python k_day.py &
+# step. get  k-day data
 cd ${PHOME}/src/dayend && time python k_day.py
 
-# 3. calc k-day tech # back to end 2017-6-11
+# step. calc k-day tech
 cd ${PHOME}/src/dayend && time python k_day_tech.py
 
-# CwH.py -- cup with handle @2017-7-27
-cd ${PHOME}/src/cwh && time python CwH.py
 
 # thrive.py -- three-five line @2017-9-3
 cd ${PHOME}/src/thrive && time python thrive.py
@@ -49,79 +46,6 @@ cd ${PHOME}/src/pre_thrive && time python pre_thrive.py
 
 # thrap.py -- three line with loop conditoin @2017-9-20
 cd ${PHOME}/src/thrap && time python thrap.py
-
-# malaw.py -- malaw @2017-9-23
-cd ${PHOME}/src/malaw && time python malaw.py
-
-# volumn-break -- bbb.py @ 2017-11-5
-cd ${PHOME}/src/bbb && time python bbb.py
-
-# cwh.py -- weak! cup with handle @2017-7-18
-cd ${PHOME}/src/decision && time python cwh.py
-
-# 2.1 apply the rules: K only, not depend on MACD
-cd ${PHOME}/src/decision && time python k1.py
-
-# 2017-6-18
-cd ${PHOME}/src/decision && time python k2.py
-
-# 2017-6-27
-cd ${PHOME}/src/decision && time python m1.py
-
-# 2.2 apply the rules: volume only, not depend on MACD 2016/12/4
-cd ${PHOME}/src/decision && time python v1.py
-
-# 2.21 super volume-rate, 2017-2-11
-cd ${PHOME}/src/decision && time python v2.py
-
-# 2.22. v4.py top(vol) && top(close), 2017-6-25
-cd ${PHOME}/src/decision && time python v4.py
-
-# 2.3 apply the rules: fupai
-cd ${PHOME}/src/decision && time python d1.py
-
-# 2.4 apply the rules: zhenfu
-cd ${PHOME}/src/decision && time python p1.py
-
-# 2.5 apply the rules: zhenfu
-cd ${PHOME}/src/decision && time python p2.py
-
-# 2.6 apply the rules: zhenfu 2017-3-10
-cd ${PHOME}/src/decision && time python p3.py
-
-
-# 2.7 apply the rules: hengpan 2017-4-16
-cd ${PHOME}/src/decision && time python break.py
-
-# 2.8 apply the rules: rename 2017-5-29
-cd ${PHOME}/src/decision && time python name.py
-
-# 2.9 apply the rules: diliang 2017-6-11
-cd ${PHOME}/src/decision && time python sao.py
-
-
-
-# 4. apply the rules: need MACD: cross ma*5
-#cd ${PHOME}/src/decision && time python ma_cross5.py
-
-# 5. apply the rules: dadan3 back ma5 or cross ma10
-cd ${PHOME}/src/decision && time python good.py 
-
-#
-# 21. get  k-30min data @2017-6-18
-#cd ${PHOME}/src/dayend && time python k_unit.py
-
-
-# 23. v3.py @2017-6-18
-cd ${PHOME}/src/decision && time python v3.py
-
-# 24. flag.py @2017-7-13 # 2017-7-24
-cd ${PHOME}/src/decision && time python flag.py
-
-#
-# 25. get  k-15min data @2017-9-6
-#cd ${PHOME}/src/dayend && time python k_15min.py
-
 
 
 exec 3>&-

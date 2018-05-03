@@ -25,9 +25,9 @@ def dump_df(_df, _base):
     sell = 0
     for s_idx, s_val in gp.iteritems():
         log_debug("--: %s, %s", s_idx, s_val)
-        if s_idx == "买盘":
+        if s_idx == "涔扮洏":
             buy = s_val
-        elif s_idx == "卖盘":
+        elif s_idx == "鍗栫洏":
             sell = s_val
         else :
             pass
@@ -45,9 +45,9 @@ def get_buy_sell_rate(_df, _base):
     gp = df[df.volume > _base].groupby('type')['volume'].sum()
 
     for s_idx, s_val in gp.iteritems():
-        if s_idx == "买盘":
+        if s_idx == "涔扮洏":
             buy = s_val
-        elif s_idx == "卖盘":
+        elif s_idx == "鍗栫洏":
             sell = s_val
         else :
             pass
@@ -199,9 +199,9 @@ log_debug("\n%s", df)
 
 # sell
 day     = '2016-08-16'
-stock   = '300015' # 爱尔眼科 # right
-stock   = '600120' # 浙江东方
-stock   = '002142' # 宁波银行
+stock   = '300015' # 鐖卞皵鐪肩 # right
+stock   = '600120' # 娴欐睙涓滄柟
+stock   = '002142' # 瀹佹尝閾惰
 
 # buy
 """
@@ -213,8 +213,8 @@ stock   = '603028' #
 # buy
 """
 day     = '2016-08-16'
-stock   = '300185' # 通裕重工
-stock   = '600705' # 中航资本
+stock   = '300185' # 閫氳閲嶅伐
+stock   = '600705' # 涓埅璧勬湰
 stock   = '300459' #
 stock   = '002495' #
 stock   = '600570' #
@@ -263,12 +263,12 @@ log_debug("head.1:\n%s", df)
 
 """
 
-#df[df.type == '买盘']['volume'] = 0
-#df.loc[df.type=='买盘', 'volume'] = 0
+#df[df.type == '涔扮洏']['volume'] = 0
+#df.loc[df.type=='涔扮洏', 'volume'] = 0
 df['buy']  = df['volume']
 df['sell'] = df['volume']
-df.loc[df.type=='卖盘', 'buy']  = 0
-df.loc[df.type=='买盘', 'sell'] = 0
+df.loc[df.type=='鍗栫洏', 'buy']  = 0
+df.loc[df.type=='涔扮洏', 'sell'] = 0
 log_debug("head.2:\n%s", df)
 df = df.set_index('time').sort_index()
 kk = df.loc[:, ['buy', 'sell']].cumsum()
@@ -319,8 +319,8 @@ def rt_dadan_check_sell(_stock_id, _df, _vol_base, _count_base, _price):
 
     good = 0
 
-    buy  = "买盘"
-    sell = "卖盘"
+    buy  = "涔扮洏"
+    sell = "鍗栫洏"
 
     con1 = 0
 
@@ -339,143 +339,7 @@ def rt_dadan_check_sell(_stock_id, _df, _vol_base, _count_base, _price):
         if volume >= _vol_base:
             if direction == sell:
                 con1 = con1 + 1
-                log_info("连续sell: [%d, %s, %d, %s]", con1, tm, volume, direction)
+                log_info("杩炵画sell: [%d, %s, %d, %s]", con1, tm, volume, direction)
             else :
                 con1 = 0
-                log_info("有buy盘: 重置 [%d, %s, %d, %s]", con1, tm, volume, direction)
-
-            if con1 >= _count_base and price >= _price :
-                log_info("warn: sell [%s]: at [%s, %.2f, %d] %dth", stock_id, tm, price, volume, con1)
-                good = 1
-                body   += u"%s, %s: price: %.2f,  vol: %d, times: %d\n" % (stock_id, tm, price, volume, con1)
-
-    if len(body) > 0 :
-        body += "++++++++++++++++++++++++++++++++\n"
-        log_info("nice:\n%s", body)
-
-    return good
-
-"""
-day     = '2016-08-22'
-base    = 100
-stock   = '600838'
-stock   = '000002'
-df = ts.get_sina_dd(stock, date=day, vol=base)
-
-# convert to 手
-df['volume'] = df['volume'] / 100
-
-df = df.sort_index(ascending=False)
-
-log_debug("head.1:\n%s", df)
-
-#rt_dadan_check_sell(stock, df, 1000, 6, 10.0)
-#rt_dadan_check_sell(stock, df, 2500, 4, 10.0)
-rt_dadan_check_sell(stock, df, 3300, 3, 10.0)
-
-"""
-
-"""
-df = ts.get_tick_data('600868',date='2015-08-06')
-log_debug("\n%s", df)
-"""
-
-"""
-df = ts.get_report_data(2016, 2)
-log_debug("get_report_data\n%s", df)
-"""
-
-"""
-df = ts.get_growth_data(2016, 2)
-log_debug("get_growth_data\n%s", df)
-"""
-
-"""
-df = ts.get_stock_basics()
-log_debug("get_stock_basics\n%s", df)
-"""
-
-"""
-df = ts.xsg_data()
-log_debug("xsg_data:1\n%s", df)
-
-df = ts.xsg_data("2016", "11")
-log_debug("xsg_data:2\n%s", df)
-"""
-
-"""
-df = ts.xsg_data("2017", "11")
-log_debug("xsg_data:3\n%s", df)
-"""
-
-"""
-print ts.get_hist_data('600848',start='2015-01-05',end='2015-01-09')
-"""
-
-"""
-print ts.get_today_all()
-"""
-
-"""
-print ts.get_stock_basics()
-"""
-
-"""
-print ts.__version__
-#df = ts.get_k_data('600868')
-_stock_id='000001'
-start_date='2016-11-18'
-end_date='2016-11-22'
-begin = get_micro_second()
-df = ts.get_k_data(_stock_id, autype='qfq', start=start_date, end=end_date)
-print get_micro_second() - begin
-print df.head()
-"""
-
-"""
-df = ts.get_today_all()
-print df.head()
-"""
-
-"""
-df = ts.get_k_data('600000', ktype='W')
-print df.head(10)
-
-df = ts.get_k_data('600000', ktype='30')
-print df.head(20)
-"""
-
-"""
-df = ts.cap_tops()
-print df
-"""
-
-# 每日龙虎榜列表
-#df = ts.top_list('2016-12-30')
-df = ts.top_list('2017-02-24')
-print df
-
-#ts.top_list('2016-06-12')
-
-# 个股上榜统计
-df = ts.cap_tops(days=30)
-print df
-log_info("个股上榜统计\n%s", df)
-
-# 营业部上榜统计
-df = ts.broker_tops(days=60)
-print df
-log_info("营业部上榜统计\n%s", df)
-
-# 机构席位追踪
-df = ts.inst_tops(days=10)
-print df
-log_info("机构席位追踪\n%s", df)
-
-# 机构成交明细
-#df = ts.inst_detail()
-#print df
-
-
-
-# end
+                log_info("鏈塨uy鐩

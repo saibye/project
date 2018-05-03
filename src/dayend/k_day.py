@@ -265,11 +265,11 @@ def work():
     # step1: get from web
     # stocks = get_stock_list_df_tu() # not real time 2017-5-31
 
-    stocks = get_stock_quotation() # bug only 100 rows 2017-6-7 -- fixed by upgrade 2017-7-5
+    # stocks = get_stock_quotation() # bug only 100 rows 2017-6-7 -- fixed by upgrade 2017-7-5
 
     # TODO: TMP 2017-6-7
-    # table = "tbl_day"
-    # stocks = get_stock_list_table(table, db)
+    table = "tbl_day"
+    stocks = get_stock_list_table(table, db)
 
     # step2: to db
     begin = get_micro_second()
