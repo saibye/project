@@ -3,6 +3,8 @@
 
 import MySQLdb
 
+import saiobj
+
 from sailog  import *
 from saiconf import *
 

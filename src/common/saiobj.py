@@ -3,7 +3,6 @@
 
 from sailog  import *
 
-
 g_db = None
 
 
@@ -13,10 +12,14 @@ g_fetch_len = 100
 # 0: no ref; 1: ref_close; 2: ref_ma10
 g_fmt_mode  = 2
 
+# 0: no mail; 1: send mail
+g_to_send_mail = False
 
 # function map
 g_func_map = {}
 
+# 
+g_mail_sep = '/_'*20 + '/\n'
 
 # fresh
 g_wine_cfg_loaded = False

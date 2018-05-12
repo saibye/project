@@ -23,6 +23,7 @@ g_ref_detail    = None # dataframe
 
 g_ref_this      = None # dateframe(stock_id)
 
+g_ref_this_id   = None # 2018-5-12
 g_ref_this_date = None # 2018-4-30
 g_ref_this_close= None # close price series
 g_ref_this_open = None #
@@ -114,6 +115,10 @@ def ref_len():
 def ref_date(_offset):
     global g_ref_this_date
     return g_ref_this_date[_offset]
+
+def ref_id(_offset):
+    global g_ref_this_id
+    return g_ref_this_id[_offset]
 
 def ref_close(_offset):
     global g_ref_this_close
@@ -521,6 +526,7 @@ def ref_init4(_detail_df):
         # log_debug("detail: %d", len(g_ref_detail))
         pass
 
+    global g_ref_this_id
     global g_ref_this_date
     global g_ref_this_close
     global g_ref_this_open
@@ -529,6 +535,7 @@ def ref_init4(_detail_df):
     global g_ref_this_last
     global g_ref_this_total
 
+    g_ref_this_id   = g_ref_detail['stock_id']
     g_ref_this_date = g_ref_detail['pub_date']
     g_ref_this_close= g_ref_detail['close_price']
     g_ref_this_open = g_ref_detail['open_price']

@@ -205,7 +205,7 @@ if __name__=="__main__":
 
     subject   = u"xxx subject"
     body      = u"hello, world, buy buy buy"
-    saimail(subject, body)
+    # saimail(subject, body)
 
     subject   = u"DEV subject"
     body      = u"hello, world, buy buy buy"

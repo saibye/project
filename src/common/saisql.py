@@ -367,7 +367,7 @@ def get_dadan_info(_stock_id, _db):
     for row_index, row in dd.iterrows():
         info += "%s,%s - %s, %.0f手(%.0f), p%s\n" % (row['pub_date'], row['v4'], row['good_type'], row['v1'], row['v3'], row['v2'])
 
-    log_debug("info:\n%s", info)
+    # log_debug("info:\n%s", info)
 
     return info
 

@@ -7,6 +7,18 @@ from common import *
 from pub    import *
 
 
+# 次新
+# code at 2018-5-12
+# 几乎连续三个跌停
+# 300624 万兴科技 2018-5-12
+"""
+     u
+    u  d 
+   u    d 
+  u      d
+ u
+u
+"""
 
 def fresh_load_cfg():
     saiobj.g_wine_start_rate= float(sai_conf_get2('fresh', 'start_rate'))
@@ -21,34 +33,51 @@ def fresh_load_cfg():
 
 
 
-def fresh_run(_stock_id, _date, _df):
-    log_debug('tran fresh: %s', _date)
+def fresh_run():
+    body = ''
 
-    length = len(_df)
+    stock_id  = ref_id(0)
+    this_date = ref_date(0)
+
+    log_debug('TRAN fresh: %s -- %s', stock_id, this_date)
+
+    length = ref_len()
     if length > 30:
-        log_debug('%s too long: %d', _stock_id, length)
+        log_debug('%s too long: %d', stock_id, length)
         return 0
+    body += '次新天数: %d\n' % (length)
 
     if not saiobj.g_wine_cfg_loaded:
         fresh_load_cfg()
-
-    START_RATE = saiobj.g_wine_start_rate
 
     rate = 100.00 * (ref_close(0) - ref_close(1)) / ref_close(1)
     log_info("rate: %.2f%%", rate)
     zt   = 100.00 * (ref_close(0) - ref_open(0))  / ref_close(1)
     log_info("zt:   %.2f%%", zt)
 
+    START_RATE = saiobj.g_wine_start_rate
+    if rate > START_RATE:
+        log_info('start rate not match: %.2f%% > %.2f%%', rate, START_RATE)
+        return 0
+
     step = saiobj.g_wine_step
     log_debug('step: %d', step)
 
     start = 0+1
     k2 = wine_find_previous_green(start, step)
-    log_info('got k2 -- %d', k2)
+    if k2 == 0:
+        log_info('not found k2')
+        return 0
+    else:
+        log_info('got k2 -- %d', k2)
 
     start = k2+1
     k3 = wine_find_previous_green(start, step)
-    log_info('got k3 -- %d', k3)
+    if k3 == 0:
+        log_info('not found k3')
+        return 0
+    else:
+        log_info('got k3 -- %d', k3)
 
     if k3+1 >= length:
         log_info('k3 -- %d', k3)
@@ -60,6 +89,7 @@ def fresh_run(_stock_id, _date, _df):
     if total_down > TOTAL_DOWN:
         log_error('error: total-rate not matched: %.2f', total_down)
         return 0
+    body += '累计跌幅: %.2f%%\n' % (total_down)
 
     start = k3+1
     min_close = wine_find_total_up(start, 7)
@@ -67,10 +97,12 @@ def fresh_run(_stock_id, _date, _df):
         log_error('error: invalid min-close: %.2f', min_close)
         return 0
     total_up = 100.00 * (ref_close(k3+1) - min_close) / min_close
+    body += '累计上升: %.2f%%\n' % (total_up)
     TOTAL_UP = saiobj.g_wine_total_up
     log_info('up-rate -- %.2f --> %.2f =  %.2f%%', min_close, ref_close(k3+1), total_up)
-    if total_up > TOTAL_UP and abs(total_up/total_down) > 2:
-        log_info('bingo: %s -- %s', _stock_id, _date)
+    if total_up > TOTAL_UP and abs(total_up/total_down) > saiobj.g_wine_up_down_rt:
+        log_info('bingo: %s -- %s', stock_id, this_date)
+        wine_mail('fresh', body)
         return 1
 
     return 0
@@ -83,14 +115,16 @@ if __name__=="__main__":
     sailog_set("fresh.log")
 
     db = db_init()
+    saiobj.g_db = db
     sai_load_conf2('wine.cfg')
 
-    stock_id = '300675'
-    trade_dt = '2017-08-10'
+    # 万兴科技
+    stock_id = '300624'
+    trade_dt = '2018-02-06'
 
     sai_fmt_set_fetch_len(40)
     df = sai_fmt_simple(stock_id, trade_dt, db)
-    fresh_run(stock_id, trade_dt, df)
+    fresh_run()
 
     db_end(db)
 

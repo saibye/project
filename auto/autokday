@@ -14,8 +14,8 @@ export LANG=zh_CN.utf8
 
 
 today=$(date +%Y%m%d)
-log=${LOG}/kday_${today}.out
-err=${LOG}/kday_${today}.err
+log=${LOG}/AUTO_kday_${today}.out
+err=${LOG}/AUTO_kday_${today}.err
 
 
 exec 3>${log}

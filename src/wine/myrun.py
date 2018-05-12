@@ -7,6 +7,7 @@ from pub     import *
 
 from fresh   import *
 from two     import *
+from san     import *
 
 
 def my_work_one_day_stock(_txn_list, _one, _date, _db):
@@ -24,12 +25,12 @@ def my_work_one_day_stock(_txn_list, _one, _date, _db):
         log_debug('is empty')
         return 0
     else:
-        log_debug('length(detail(%s)): %d', _one, len(df))
+        # log_debug('length(detail(%s)): %d', _one, len(df))
         pass
 
     for txn_name in _txn_list:
         myfunc = saiobj.g_func_map[txn_name]
-        rv += myfunc(_one, _date, df)
+        rv += myfunc()
 
     return rv
 
@@ -51,9 +52,10 @@ def my_is_valid(_txn_list):
             log_error('error: [%s] not callable', one)
             return False
 
-    log_debug('nice, all txn has function')
+    log_debug('nice: txn verified')
 
     return True
+
 
 def my_get_txn_list(_txns):
     txn_list = _txns.split(',')
@@ -83,15 +85,16 @@ def my_get_trade_date(_trade_date):
 
 def my_work_one_day(_date, _stock_list, _txn_list, _db):
 
-    log_debug('my_work_one_day begin')
+    # log_debug('my_work_one_day begin')
 
     for one, row in _stock_list.iterrows():
-        one = '603214'
+        # one = '002930'
         log_debug("-- %s --", one)
         my_work_one_day_stock(_txn_list, one, _date, _db)
-        break
+        # break
 
-    log_debug('my_work_one_day end')
+    # log_debug('my_work_one_day end')
+    return 0
 
 
 def regression():
@@ -114,10 +117,11 @@ def regression():
     till_date = my_get_trade_date(till_date)
     log_debug('till_date: [%s]', till_date)
 
-    days = int(sai_conf_get2('regression', 'interval'))
-    log_debug('interval: [%d]', days)
+    days = int(sai_conf_get2('regression', 'days'))
+    log_debug('days: [%d]', days)
 
     db = db_init()
+    saiobj.g_db = db
 
     date_df = get_recent_pub_date(till_date, days, db)
     if date_df is None:
@@ -172,7 +176,12 @@ def work():
     trade_date = my_get_trade_date(trade_date)
     log_debug('trade_date: [%s]', trade_date)
 
+    to_mail = sai_conf_get2('boot', 'mail')
+    if to_mail == '1':
+        saiobj.g_to_send_mail = True
+
     db = db_init()
+    saiobj.g_db = db
 
     stock_list = get_stock_list_table_quick(db)
 
