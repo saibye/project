@@ -47,10 +47,13 @@ cd ${PHOME}/src/pre_thrive && time python pre_thrive.py
 # thrap.py -- three line with loop conditoin @2017-9-20
 cd ${PHOME}/src/thrap && time python thrap.py
 
+# 2018 #
+# wine -- wine-field
+cd ${PHOME}/src/wine && time python myrun.py
 
 exec 3>&-
 exec 4>&-
 
-echo "shell: run k_day.py succeeds."
+echo "shell: run kday succeeds."
 
 #autokday

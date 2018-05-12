@@ -43,12 +43,12 @@ def two_run():
 
     length = ref_len()
     if length > 30:
-        log_debug('%s too old: %d', stock_id, length)
+        # log_debug('%s too old: %d', stock_id, length)
         return 0
     body += '次新天数: %d\n' % (length)
 
-    if not saiobj.g_wine_cfg_loaded:
-        two_load_cfg()
+    # if not saiobj.g_wine_cfg_loaded:
+    two_load_cfg()
 
 
     rate = 100.00 * (ref_close(0) - ref_close(1)) / ref_close(1)
