@@ -91,15 +91,21 @@ def k_week_get_max_date(_stock_id, _db):
 def k_week_one_stock(_stock_id, _db):
     log_info("k_week_one_stock begin")
 
+    # clear week anyway
+    sql = "delete from tbl_week where stock_id = '%s'" % (_stock_id)
+    log_debug("clear week sql: [%s]", sql)
+    rv = sql_to_db(sql, _db)
+
     # get max-date from table, as start date
     max_date = k_week_get_max_date(_stock_id, _db)
     end_date = get_date_by(0)
 
     log_debug("[%s, %s]", max_date, end_date)
 
+
     # qfq
     if max_date is None:
-        start_date = '2008-01-01'
+        start_date = '2010-01-01'
         log_debug("it's first time: [%s]", _stock_id)
     else:
         start_date = str(max_date)
@@ -127,6 +133,8 @@ def k_week_one_stock(_stock_id, _db):
         log_error("warn: stock %s is empty, next", _stock_id)
         return -2
 
+
+    # df.sort_index(ascending=True, inplace=True)
     # df.sort_index(ascending=False, inplace=True)
     # df = df.sort_index(ascending=True)
     # df = df.reindex(index=range(0, len(df)))
@@ -153,7 +161,8 @@ def work():
     return 0
     """
 
-    stocks = get_stock_quotation()
+    # stocks = get_stock_quotation()
+    stocks = get_stock_list_table('tbl_day', db)
 
     # step2: to db
     begin = get_micro_second()
