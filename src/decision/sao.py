@@ -38,8 +38,9 @@ def sao_analyze_one(_stock_id, _trade_date, _db):
     log_debug("sum 成交额占比: %.3f", 100 * sum_rate)
     log_debug("扫货力度:   %.3f", sao_rate)
 
-    # 300155 @2017-06-01
-    rule1 = time_rate < 0.30 and sum_rate > 0.24 and sao_rate > 0.84
+    # 300155 @2017-06-01 deleted
+    # 300216 @2018-05-03 
+    rule1 = time_rate < 0.10 and sum_rate > 0.24 and sao_rate > 2.54
  
     # 300585 @2017-06-12
     rule2 = False and time_rate < 0.18 and sum_rate > 0.06 and sao_rate > 0.37
@@ -91,6 +92,7 @@ def xxx(_db):
     trade_date = "2017-06-12" # 300585
     trade_date = "2017-06-01" # 300155
     trade_date = "2017-06-13" # 600892
+    trade_date = "2018-05-03" # 300216
     trade_date = get_today()
     trade_date = get_date_by(-1)
     trade_date = get_newest_trade_date(_db)
@@ -115,7 +117,7 @@ def xxx(_db):
 
     if len(content) > 0:
         log_info("mail: \n%s", content)
-        subject = "跌停: %s" % (trade_date)
+        subject = "new跌停: %s" % (trade_date)
         if sai_is_product_mode():
             saimail_dev(subject, content)
 
