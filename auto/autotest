@@ -12,21 +12,24 @@ export LOG=/home/sai/project/log
 
 export LANG=zh_CN.utf8
 
+
 today=$(date +%Y%m%d)
-log=${LOG}/AUTO_week_${today}.out
-err=${LOG}/AUTO_week_${today}.err
+log=${LOG}/AUTO_test_${today}.out
+err=${LOG}/AUTO_test_${today}.err
+
 
 exec 3>${log}
 exec 4>${err}
 exec 1>&3
 exec 2>&4
 
-# 1
-cd ${PHOME}/src/dayend && time python k_week.py
+# TEST #
+# WINE -- WINE-FIELD
+cd ${PHOME}/src/wine && time python myrun.py
 
 exec 3>&-
 exec 4>&-
 
-echo "shell: run succeeds."
+echo "shell: run test succeeds."
 
-#autoweek
+#autotest

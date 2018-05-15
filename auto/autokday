@@ -4,7 +4,7 @@ export LD_LIBRARY_PATH=/usr/lib64:/usr/local/lib64:/home/sai/tools/lib64:.
 export LIBPATH=${LD_LIBRARY_PATH}
 export PATH=/public/anaconda2/bin:/home/sai/project/bin:/home/sai/project/sbin:/usr/local/bin:/usr/local/sbin:/usr/sbin:/home/sai/bin:/public/anaconda2/bin:/home/sai/bin:/home/sai/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/usr/local/mysql/bin
 
-export PYTHONPATH=/home/sai/project/src/common:/usr/local/lib64/pkgconfig:/usr/lib64/pkgconfig:/usr/local/apr/lib/pkgconfig
+export PYTHONPATH=/home/sai/project/src/common:/home/sai/project/src:/usr/local/lib64/pkgconfig:/usr/lib64/pkgconfig:/usr/local/apr/lib/pkgconfig
 
 export PHOME=/home/sai/project
 export DATA=/home/sai/project/data
