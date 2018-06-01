@@ -45,7 +45,7 @@ cd ${PHOME}/src/pre_thrive && time python pre_thrive.py
 
 
 # thrap.py -- three line with loop conditoin @2017-9-20
-cd ${PHOME}/src/thrap && time python thrap.py
+#cd ${PHOME}/src/thrap && time python thrap.py
 
 
 # sao.py -- saohuo

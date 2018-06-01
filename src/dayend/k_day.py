@@ -262,14 +262,35 @@ def work():
     return 0
     """
 
+
+    # max-much
+    # stocks = get_stock_quotation() # bug only 100 rows 2017-6-7 -- fixed by upgrade 2017-7-5
+
+    # much
     # step1: get from web
     # stocks = get_stock_list_df_tu() # not real time 2017-5-31
 
-    # stocks = get_stock_quotation() # bug only 100 rows 2017-6-7 -- fixed by upgrade 2017-7-5
-
     # TODO: TMP 2017-6-7
-    table = "tbl_day"
-    stocks = get_stock_list_table(table, db)
+    # table = "tbl_day"
+    # stocks = get_stock_list_table(table, db)
+
+
+    # 2018-6-1
+    stocks = get_stock_quotation()
+    if stocks is None:
+        log_error('error: warn:  get_stock_quotation failure')
+        stocks = get_stock_list_df_tu()
+        if stocks is None:
+            log_error('error: warn:  get_stock_list_df_tu failure')
+            stocks = get_stock_list_table('tbl_day', db)
+            log_info('3: stock list used from table: %d', len(stocks))
+        else:
+            log_info('2: stock list used from get_stock_list_df_tu -- get_stock_basics')
+    else:
+        log_info('1: stock list used from get_stock_quotation -- get_today_all')
+
+
+    log_info('stock list length: %d', len(stocks))
 
     # step2: to db
     begin = get_micro_second()

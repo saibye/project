@@ -81,7 +81,7 @@ def work_one(_stock_id, _row, _db):
     if to_mail:
         curr_date = get_today()
         curr_time = get_time()
-        subject = "pre-高开: %s#%s %s" % (_stock_id, curr_date, curr_time)
+        subject = "QQ-pre-高开: %s#%s %s" % (_stock_id, curr_date, curr_time)
         content += "建议买入: %.2f元+\n\n" % (to_buy_price)
         content += "昨收: %.2f元\n" % (that_close)
         content += "昨开: %.2f元\n" % (that_open)

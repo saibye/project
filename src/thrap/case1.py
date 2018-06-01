@@ -274,7 +274,7 @@ def thrap_analyzer1(_stock_id, _trade_date, _my_df, _used_len, _db):
         thrap_save(_stock_id, _trade_date, expect_price, subject, content1, _db)
 
         log_info(subject)
-        log_info("mail:\n%s", content1)
+        # log_info("mail:\n%s", content1)
         if sai_is_product_mode():
             mailed = 1
             # saimail_dev(subject, content1)
