@@ -9,6 +9,12 @@ from fresh   import *
 from two     import *
 from san     import *
 
+from stop    import *
+
+from skip    import *
+
+from sixc    import *
+
 
 def my_work_one_day_stock(_txn_list, _one, _date, _db):
     rv = 0
@@ -98,7 +104,11 @@ def my_work_one_day(_date, _stock_list, _txn_list, _db):
 
 
 def regression():
+    sailog_set("re.log")
     log_debug('this is regression mode')
+
+
+    saiobj.g_to_send_mail = True
 
     txns = sai_conf_get2('regression', 'case')
     txn_list = my_get_txn_list(txns)
@@ -134,7 +144,7 @@ def regression():
 
     for row_index, row in date_df.iterrows():
         trade_date = row_index
-        log_debug("trade_date -----[%s]-----", trade_date)
+        log_debug("regression-trade_date -----[%s]-----", trade_date)
         my_work_one_day(trade_date, stock_list, txn_list, db)
 
     db_end(db)
