@@ -186,6 +186,7 @@ def work():
     trade_date = "2017-05-04"
     trade_date = "2017-05-03"
     trade_date = "2017-05-02"
+    trade_date = "2018-06-01"
 
     trade_date = g_inst_date
     rv = sum_tick_all(trade_date, db)

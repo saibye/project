@@ -7,43 +7,34 @@ from common import *
 from pub    import *
 
 
-# 不强求次新
-# ref_k(0) --> ref_k(m) --> ref_k(m+n)
-# code at 2018-6-4
-# 603518 维格娜丝
-"""
-     u
-    u  d  u
-   u    d 
-  u         d
- u
-u
-"""
+# 比skip根据宽松
+# code at 2018-6-6
+#
 
-def skip_load_cfg():
-    saiobj.g_wine_start_rate= float(sai_conf_get2('skip', 'start_rate'))
-    saiobj.g_wine_step      = int(sai_conf_get2('skip', 'find_step'))
-    saiobj.g_wine_step_zt   = float(sai_conf_get2('skip', 'green_zt'))
-    saiobj.g_wine_step_rate = float(sai_conf_get2('skip', 'green_rate'))
-    saiobj.g_wine_total_down= float(sai_conf_get2('skip', 'total_down'))
-    saiobj.g_wine_total_up  = float(sai_conf_get2('skip', 'total_up'))
-    saiobj.g_wine_up_down_rt= float(sai_conf_get2('skip', 'up_down_rate'))
+def loos_load_cfg():
+    saiobj.g_wine_start_rate= float(sai_conf_get2('loos', 'start_rate'))
+    saiobj.g_wine_step      = int(sai_conf_get2('loos', 'find_step'))
+    saiobj.g_wine_step_zt   = float(sai_conf_get2('loos', 'green_zt'))
+    saiobj.g_wine_step_rate = float(sai_conf_get2('loos', 'green_rate'))
+    saiobj.g_wine_total_down= float(sai_conf_get2('loos', 'total_down'))
+    saiobj.g_wine_total_up  = float(sai_conf_get2('loos', 'total_up'))
+    saiobj.g_wine_up_down_rt= float(sai_conf_get2('loos', 'up_down_rate'))
     saiobj.g_wine_cfg_loaded= True
-    #log_debug('skip config loaded')
+    #log_debug('loos config loaded')
 
 
 
-def skip_run():
+def loos_run():
     body = ''
 
     stock_id  = ref_id(0)
     this_date = ref_date(0)
 
-    log_debug('TRAN skip: %s -- %s', stock_id, this_date)
+    log_debug('TRAN loos: %s -- %s', stock_id, this_date)
 
     length = ref_len()
 
-    skip_load_cfg()
+    loos_load_cfg()
 
     rate = 100.00 * (ref_close(0) - ref_close(1)) / ref_close(1)
     # log_info("rate: %.2f%%", rate)
@@ -93,7 +84,7 @@ def skip_run():
     body += '累计跌幅: %.2f%%\n' % (total_down)
 
     start = k3+1
-    min_close = wine_find_total_up(start, 7)
+    min_close = wine_find_total_up(start, 15)
     if min_close > 1000:
         log_error('error: invalid min-close: %.2f', min_close)
         return 0
@@ -101,51 +92,46 @@ def skip_run():
     body += '累计上升: %.2f%%\n' % (total_up)
     TOTAL_UP = saiobj.g_wine_total_up
     log_info('up-rate -- %.2f --> %.2f =  %.2f%%', min_close, ref_close(k3+1), total_up)
+    log_info('up-rate/down-rate -- %.2f', abs(total_up/total_down))
     if total_up > TOTAL_UP and abs(total_up/total_down) > saiobj.g_wine_up_down_rt:
         log_info('bingo: %s -- %s', stock_id, this_date)
-        wine_mail('skip', body)
+        wine_mail('loos', body)
         return 1
 
     return 0
 
 
-saiobj.g_func_map['skip'] = skip_run
+saiobj.g_func_map['loos'] = loos_run
 
 
 if __name__=="__main__":
-    sailog_set("skip.log")
+    sailog_set("loos.log")
 
     db = db_init()
     saiobj.g_db = db
 
     sai_load_conf2('wine.cfg')
 
-    # 
-    stock_id = '603518'
-    trade_dt = '2018-02-09'
-
-    # 
-    stock_id = '603386'
-    trade_dt = '2018-06-01'
-
-    # 
-    stock_id = '603056'
-    trade_dt = '2018-02-13'
-
 
     # 
     stock_id = '603356'
     trade_dt = '2018-03-23'
 
+    stock_id = '300644'
+    trade_dt = '2018-03-23'
+
+    stock_id = '000735'
+    trade_dt = '2018-04-26'
+
     saiobj.g_to_send_mail = True
 
     sai_fmt_set_fetch_len(200)
     df = sai_fmt_simple(stock_id, trade_dt, db)
-    skip_run()
+    loos_run()
 
     db_end(db)
 
     log_debug("--end")
 
 
-# skip.py
+# loos.py
