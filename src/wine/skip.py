@@ -11,14 +11,6 @@ from pub    import *
 # ref_k(0) --> ref_k(m) --> ref_k(m+n)
 # code at 2018-6-4
 # 603518 维格娜丝
-"""
-     u
-    u  d  u
-   u    d 
-  u         d
- u
-u
-"""
 
 def skip_load_cfg():
     saiobj.g_wine_start_rate= float(sai_conf_get2('skip', 'start_rate'))
@@ -55,7 +47,7 @@ def skip_run():
 
     START_RATE = saiobj.g_wine_start_rate
     if rate > START_RATE:
-        log_info('start rate not match: %.2f%% > %.2f%%', rate, START_RATE)
+        # log_info('start rate not match: %.2f%% > %.2f%%', rate, START_RATE)
         return 0
 
     step = saiobj.g_wine_step
@@ -136,6 +128,7 @@ if __name__=="__main__":
     # 
     stock_id = '603356'
     trade_dt = '2018-03-23'
+
 
     saiobj.g_to_send_mail = True
 

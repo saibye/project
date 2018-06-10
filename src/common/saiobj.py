@@ -30,6 +30,19 @@ g_wine_step_rate = -4
 g_wine_total_down= -20
 g_wine_total_up  = 40
 g_wine_up_down_rt= 2
+g_wine_stage     = 5
+g_wine_gap       = 4
+
+
+g_wine_last_rate = -8
+g_wine_last_zt   = -8
+g_wine_vr5       = 2
+g_wine_vr10      = 2
+g_wine_vr50      = 5
+g_wine_last_rate = -8
+g_wine_last_rate = -8
+g_wine_open_rate = -9
+g_wine_gap_rate  = -3
 
 
 

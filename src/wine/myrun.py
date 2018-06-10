@@ -10,11 +10,15 @@ from two     import *
 from san     import *
 
 from stop    import *
+from take    import *
 
 from skip    import *
 from loos    import *
+from stage   import *
 
 from sixc    import *
+
+from qiming  import *
 
 
 def my_work_one_day_stock(_txn_list, _one, _date, _db):
@@ -109,7 +113,9 @@ def regression():
     log_debug('this is regression mode')
 
 
-    saiobj.g_to_send_mail = True
+    re_to_mail = sai_conf_get2('regression', 'mail')
+    if re_to_mail == '1':
+        saiobj.g_to_send_mail = True
 
     txns = sai_conf_get2('regression', 'case')
     txn_list = my_get_txn_list(txns)

@@ -1,0 +1,42 @@
+#!/bin/bash
+
+export LD_LIBRARY_PATH=/usr/lib64:/usr/local/lib64:/home/sai/tools/lib64:.
+export LIBPATH=${LD_LIBRARY_PATH}
+export PATH=/public/anaconda2/bin:/home/sai/project/bin:/home/sai/project/sbin:/usr/local/bin:/usr/local/sbin:/usr/sbin:/home/sai/bin:/public/anaconda2/bin:/home/sai/bin:/home/sai/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/usr/local/mysql/bin
+
+export PYTHONPATH=/home/sai/project/src/common:/home/sai/project/src:/usr/local/lib64/pkgconfig:/usr/lib64/pkgconfig:/usr/local/apr/lib/pkgconfig
+
+export PHOME=/home/sai/project
+export DATA=/home/sai/project/data
+export LOG=/home/sai/project/log
+
+export LANG=zh_CN.utf8
+
+
+today=$(date +%Y%m%d)
+log=${LOG}/AUTO_report_${today}.out
+err=${LOG}/AUTO_report_${today}.err
+
+
+exec 3>${log}
+exec 4>${err}
+exec 1>&3
+exec 2>&4
+
+
+########################################
+#today=$(date +%Y-%m-%d)
+
+cd ${PHOME}/src/report && python sum_tick.py
+
+########################################
+cd ${PHOME}/src/report && python sum_report.py
+
+########################################
+
+exec 3>&-
+exec 4>&-
+
+echo "shell: run report succeeds."
+
+#autoreport
