@@ -220,18 +220,21 @@ def work_one_stock(_stock_id, _till,  _db):
 
     if macd < 0 and diff < 0 and dea < 0:
         to_mail = True
-        content += "MACD水下死叉，建议清仓！！！\n\n"
+        content += "MACD水下死叉，危险！！\n\n"
         dangerous1 = True
 
     if ma5 < ma10 and ma10 < ma20 and ma20 < ma60:
         to_mail = True
-        content += "均线5/10/20/60压制，建议清仓！！！\n\n"
+        content += "均线5/10/20/60压制，危险！！\n\n"
         dangerous2 = True
 
+    if dangerous1 and dangerous2:
+        content += "！！！双死叉，建议清仓！！！\n\n"
+        subject = "水下死叉+均线压制: %s" % (_till)
 
     if macd < 0 and ma5 < ma10:
         to_mail = True
-        content += "双死叉，建议清仓！！！\n\n"
+        content += "双死叉，危险！！\n\n"
 
     if macd < 0:
         to_mail = True
@@ -250,8 +253,6 @@ def work_one_stock(_stock_id, _till,  _db):
 
     content += "@群众在想什么@"
 
-    if dangerous1 and dangerous2:
-        subject = "水下死叉+均线压制: %s" % (_till)
 
     if to_mail:
         log_info("mail: \n%s\n%s", subject, content)
