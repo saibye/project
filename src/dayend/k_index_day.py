@@ -44,28 +44,6 @@ def k_index_day_one_to_db(_stock_id, _df, _start_date, _db):
 
         log_debug("close: web[%s] : [%s]table", new_close_price, tbl_close_price)
         # compare, update if not equal
-        """
-        rate = new_close_price / tbl_close_price
-        if rate == 1.0:
-            log_debug("[%s, %s] no need to fuquan", new_close_price, tbl_close_price)
-        else:
-            log_debug("warn! fuquan, rate: %.3f", rate)
-            sql = "update tbl_index_day set open_price = round(open_price * %.3f, 2), \
-close_price = round(close_price * %.3f, 2), \
-low_price   = round(low_price * %.3f,   2), \
-high_price  = round(high_price * %.3f,  2), \
-last_close_price = round(last_close_price * %.3f, 2), \
-deal_total_count = round(deal_total_count / %.3f, 0) \
-where stock_id = '%s' \
-and pub_date <= '%s'" % \
-                   (rate, rate, rate, rate, rate, rate, \
-                    _stock_id, _start_date)
-            rv = sql_to_db(sql, _db)
-            if rv != 0:
-                log_error("error: sql_to_db %s", sql)
-                return -1
-        """
-
 
 
     # init last close price
@@ -77,7 +55,7 @@ and pub_date <= '%s'" % \
     for row_index, row in _df.iterrows():
         counter = counter + 1
 
-        # 前复权
+        #
         sql = "insert into tbl_index_day \
 (pub_date, stock_id, stock_loc, \
 open_price, high_price, close_price, low_price, \
@@ -141,7 +119,7 @@ def k_index_day_one_stock(_stock_id, _db):
 
     #
     if max_date is None:
-        start_date = '2016-01-01'
+        start_date = '2017-01-01'
         log_debug("it's first time: [%s]", _stock_id)
     else:
         start_date = str(max_date)

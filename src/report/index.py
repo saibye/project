@@ -215,12 +215,12 @@ def work_one_stock(_stock_id, _till,  _db):
     dangerous1 = False
     dangerous2 = False
 
-    content += "%.2f\n\n" % (cp)
+    content += "： %.2f\n\n" % (cp)
 
 
     if macd < 0 and diff < 0 and dea < 0:
         to_mail = True
-        content += "MACD水下死叉，危险！！\n\n"
+        content += "MACD水下死叉，危险！！\n"
         dangerous1 = True
 
     if ma5 < ma10 and ma10 < ma20 and ma20 < ma60:
@@ -234,7 +234,7 @@ def work_one_stock(_stock_id, _till,  _db):
 
     if macd < 0 and ma5 < ma10:
         to_mail = True
-        content += "双死叉，危险！！\n\n"
+        content += "双死叉，危险！\n\n"
 
     if macd < 0:
         to_mail = True
