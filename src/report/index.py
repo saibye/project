@@ -159,7 +159,7 @@ def work_one_stock(_stock_id, _till,  _db):
 
     subject = "CAUTION: %s" % (content)
 
-    content += "\n(注意MACD柱线的背离！)\n\n"
+    # content += "\n(注意MACD柱线的背离！)\n\n"
 
     begin = get_micro_second()
 
@@ -210,6 +210,24 @@ def work_one_stock(_stock_id, _till,  _db):
     ma5  = ref_ma5(0)
     ma10 = ref_ma10(0)
     ma20 = ref_ma20(0)
+    ma60 = ref_ma60(0)
+
+    dangerous1 = False
+    dangerous2 = False
+
+    content += "%.2f\n\n" % (cp)
+
+
+    if macd < 0 and diff < 0 and dea < 0:
+        to_mail = True
+        content += "MACD水下死叉，建议清仓！！！\n\n"
+        dangerous1 = True
+
+    if ma5 < ma10 and ma10 < ma20 and ma20 < ma60:
+        to_mail = True
+        content += "均线5/10/20/60压制，建议清仓！！！\n\n"
+        dangerous2 = True
+
 
     if macd < 0 and ma5 < ma10:
         to_mail = True
@@ -230,7 +248,10 @@ def work_one_stock(_stock_id, _till,  _db):
         to_mail = True
         content += "收盘低于ma20！(%.2f)\n==> close[%.2f] < ma20[%.2f]\n\n" % (cp-ma20, cp, ma20)
 
-    content += "@不建议逆势而为@"
+    content += "@群众在想什么@"
+
+    if dangerous1 and dangerous2:
+        subject = "水下死叉+均线压制: %s" % (_till)
 
     if to_mail:
         log_info("mail: \n%s\n%s", subject, content)

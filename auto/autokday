@@ -24,12 +24,9 @@ exec 1>&3
 exec 2>&4
 
 
-## index  data
-#cd ${PHOME}/src/dayend && time python  k_index_day.py
-#cd ${PHOME}/src/report && time python  index.py
 
 
-# python k_day.py &
+#
 # step. get  k-day data
 cd ${PHOME}/src/dayend && time python k_day.py
 
@@ -54,6 +51,14 @@ cd ${PHOME}/src/decision && time python sao.py
 # 2018 #
 # wine -- wine-field
 cd ${PHOME}/src/wine && time python myrun.py
+
+
+
+## index  data 
+# 2018-6-22 re-start
+cd ${PHOME}/src/dayend && time python  k_index_day.py
+cd ${PHOME}/src/report && time python  index.py
+
 
 exec 3>&-
 exec 4>&-

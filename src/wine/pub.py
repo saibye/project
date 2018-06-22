@@ -30,9 +30,9 @@ def wine_find_previous_green(_start, _width):
         amp  = 100.00 * (ref_high(i)  - ref_low(i)) / ref_close(i+1)
         zt   = 100.00 * (ref_close(i) - ref_open(i)) / ref_close(i+1)
         # log_debug('++date(%d): %s', i, ref_date(i))
-        log_debug('++rate(%d): %.2f%%', i, rate)
+        # log_debug('++rate(%d): %.2f%%', i, rate)
         # log_debug('++amp (%d): %.2f', i, amp)
-        log_debug('++zt  (%d): %.2f', i, zt)
+        # log_debug('++zt  (%d): %.2f', i, zt)
         if zt < ZT and rate < RATE and low_price < ref_low(i):
             log_info('++%s -- ref(%d) matched: zt:%.2f%%, rate:%.2f%%', ref_date(i), i, zt, rate)
             return i
@@ -134,11 +134,11 @@ def wine_find_previous_stage(_start, _width):
             return 0
 
         # log_debug('++date(%d): %s', i, ref_date(i))
-        log_debug('++rate(%d): %.2f%%', i, rate)
+        # log_debug('++rate(%d): %.2f%%', i, rate)
         # log_debug('++amp (%d): %.2f', i, amp)
-        log_debug('++zt  (%d): %.2f', i, zt)
-        log_debug('++st  (%d): %.2f%%', i, stage)
-        log_debug('++gp  (%d): %.2f%%', i, gap)
+        # log_debug('++zt  (%d): %.2f', i, zt)
+        # log_debug('++st  (%d): %.2f%%', i, stage)
+        # log_debug('++gp  (%d): %.2f%%', i, gap)
         if zt < ZT and rate < RATE and next_low < ref_low(i) and stage < STAGE:
             log_info('++%s -- ref(%d) matched: zt:%.2f%%, rate:%.2f%%, stage: %.2f%%, gap: %.2f%%', ref_date(i), i, zt, rate, stage, gap)
             return i

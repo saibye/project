@@ -39,7 +39,8 @@ def k_day_one_to_db(_stock_id, _df, _start_date, _db):
         # compare, update if not equal
         rate = new_close_price / tbl_close_price
         if rate == 1.0:
-            log_debug("[%s, %s] no need to fuquan", new_close_price, tbl_close_price)
+            # log_debug("[%s, %s] no need to fuquan", new_close_price, tbl_close_price)
+            pass
         else:
             log_debug("warn! fuquan, rate: %.3f", rate)
             sql = "update tbl_day set open_price = round(open_price * %.3f, 2), \
@@ -113,19 +114,20 @@ def k_day_get_max_date(_stock_id, _db):
         max_date = row['pub_date']
 
     if max_date is not None:
-        log_info("max pub_date is %s", max_date)
+        # log_info("max pub_date is %s", max_date)
+        pass
 
     return max_date
 
 
 def k_day_one_stock(_stock_id, _db):
-    log_info("k_day_one_stock begin")
+    # log_info("k_day_one_stock begin")
 
     # get max-date from table, as start date
     max_date = k_day_get_max_date(_stock_id, _db)
     end_date = get_date_by(0)
 
-    log_debug("[%s, %s]", max_date, end_date)
+    # log_debug("[%s, %s]", max_date, end_date)
 
     # qfq
     if max_date is None:
@@ -135,7 +137,7 @@ def k_day_one_stock(_stock_id, _db):
         log_debug("it's first time: [%s]", _stock_id)
     else:
         start_date = str(max_date)
-        log_debug("a old friend: [%s]", _stock_id)
+        # log_debug("a old friend: [%s]", _stock_id)
 
     log_debug("[%s, %s]", start_date, end_date)
 
@@ -173,7 +175,7 @@ def k_day_one_stock(_stock_id, _db):
 
     log_info("one_to_db costs %d us", get_micro_second() - begin)
 
-    log_info("function k_day_one_stock end")
+    # log_info("function k_day_one_stock end")
 
     return 
 
@@ -323,7 +325,7 @@ def work():
 #######################################################################
 
 def main():
-    sailog_set("kday0.log")
+    sailog_set("kday.log")
 
     log_info("let's begin here!")
 
