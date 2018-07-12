@@ -14,8 +14,8 @@ export LANG=zh_CN.utf8
 
 
 today=$(date +%Y%m%d)
-log=${LOG}/AUTO_kday_${today}.out
-err=${LOG}/AUTO_kday_${today}.err
+log=${LOG}/AUTO_kday.out
+err=${LOG}/AUTO_kday.err
 
 
 exec 3>${log}
@@ -63,6 +63,6 @@ cd ${PHOME}/src/report && time python  index.py
 exec 3>&-
 exec 4>&-
 
-echo "shell: run kday succeeds."
+echo "shell: [${today}] run DAILY succeeds."
 
 #autokday

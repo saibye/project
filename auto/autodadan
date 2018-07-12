@@ -14,8 +14,8 @@ export LANG=zh_CN.utf8
 
 
 today=$(date +%Y%m%d)
-log=${LOG}/AUTO_dadan_${today}.out
-err=${LOG}/AUTO_dadan_${today}.err
+log=${LOG}/AUTO_dadan.out
+err=${LOG}/AUTO_dadan.err
 
 
 exec 3>${log}
@@ -31,6 +31,6 @@ nohup python rt_dadan.py &
 exec 3>&-
 exec 4>&-
 
-echo "shell: run rt_dadan.py succeeds."
+echo "shell: [${today}] run REALTIME succeeds."
 
 #autodadan

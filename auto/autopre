@@ -14,8 +14,8 @@ export LANG=zh_CN.utf8
 
 
 today=$(date +%Y%m%d)
-log=${LOG}/AUTO_PRE_${today}.out
-err=${LOG}/AUTO_PRE_${today}.err
+log=${LOG}/AUTO_PRE.out
+err=${LOG}/AUTO_PRE.err
 
 
 exec 3>${log}
@@ -31,6 +31,6 @@ nohup python rt_watch.py &
 exec 3>&-
 exec 4>&-
 
-echo "shell: run rt_watch.py succeeds."
+echo "shell: [${today}] run WATCH succeeds."
 
 #autopre

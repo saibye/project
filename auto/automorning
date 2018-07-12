@@ -14,8 +14,8 @@ export LANG=zh_CN.utf8
 
 
 today=$(date +%Y%m%d)
-log=${LOG}/AUTO_morning_${today}.out
-err=${LOG}/AUTO_morning_${today}.err
+log=${LOG}/AUTO_morning.out
+err=${LOG}/AUTO_morning.err
 
 
 exec 3>${log}
@@ -32,6 +32,6 @@ nohup python open_35.py &
 exec 3>&-
 exec 4>&-
 
-echo "shell: run rt_morning.py succeeds."
+echo "shell: [${today}] run MORNING succeeds."
 
 #automorning

@@ -91,8 +91,9 @@ def wine_mail(_case, _body):
     content += saiobj.g_mail_sep
     content += info
 
+    log_debug('mail: %s\n%s', title, content)
+
     if saiobj.g_to_send_mail:
-        log_debug('mail: %s\n%s', title, content)
         saimail_dev(title, content)
 
     return 0
@@ -144,6 +145,44 @@ def wine_find_previous_stage(_start, _width):
             return i
 
     return 0
+
+
+def wine_continuous_high(_start, _width, _which):
+
+    days = 0
+
+    this_price = 0.0
+    last_price = 0.0
+
+    for x in range(_width):
+        i = x + _start
+
+        if i + 1 >= ref_len():
+            log_error('too short: %d < %d', i+1, ref_len())
+            return 0
+
+        rate = 100.00 * (ref_close(i) - ref_close(i+1)) / ref_close(i+1)
+        amp  = 100.00 * (ref_high(i)  - ref_low(i)) / ref_close(i+1)
+        zt   = 100.00 * (ref_close(i) - ref_open(i)) / ref_close(i+1)
+
+        if _which == 'close':
+            this_price = ref_close(i)
+        elif _which == 'high':
+            this_price = ref_high(i)
+        elif _which == 'low':
+            this_price = ref_low(i)
+        elif _which == 'open':
+            this_price = ref_open(i)
+        else:
+            return 0
+
+        if this_price < last_price:
+            days += 1
+            # log_debug('%.2f < %.2f ==> days: %d', this_price, last_price, days)
+
+        last_price = this_price
+
+    return days
 
 
 # pub.py

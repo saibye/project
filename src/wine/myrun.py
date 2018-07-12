@@ -19,6 +19,7 @@ from stage   import *
 from sixc    import *
 
 from qiming  import *
+from warrior import *
 
 
 def my_work_one_day_stock(_txn_list, _one, _date, _db):
@@ -210,7 +211,11 @@ def work():
 if __name__=="__main__":
     sailog_set("wine.log")
 
-    work()
+    if today_is_weekend():
+        log_info('weekend, exit')
+    else:
+        log_info('workday, run')
+        work()
 
     log_debug("--end")
 

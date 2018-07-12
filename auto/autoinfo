@@ -14,8 +14,8 @@ export LANG=zh_CN.utf8
 
 
 today=$(date +%Y%m%d)
-log=${LOG}/AUTO_INFO_${today}.out
-err=${LOG}/AUTO_INFO_${today}.err
+log=${LOG}/AUTO_INFO.out
+err=${LOG}/AUTO_INFO.err
 
 
 exec 3>${log}
@@ -34,6 +34,6 @@ cd ${PHOME}/src/dayend && time python get_xsg.py
 exec 3>&-
 exec 4>&-
 
-echo "shell: run succeeds."
+echo "shell: [${today}] run INFO succeeds."
 
 #autoinfo

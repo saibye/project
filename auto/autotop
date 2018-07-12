@@ -14,8 +14,8 @@ export LANG=zh_CN.utf8
 
 
 today=$(date +%Y%m%d)
-log=${LOG}/AUTO_lhb_${today}.out
-err=${LOG}/AUTO_lhb_${today}.err
+log=${LOG}/AUTO_lhb.out
+err=${LOG}/AUTO_lhb.err
 
 
 exec 3>${log}
@@ -33,6 +33,6 @@ nohup python k_top.py ${today} &
 exec 3>&-
 exec 4>&-
 
-echo "shell: run k_top.py succeeds."
+echo "shell: [${today}] run TOP succeeds."
 
 #autotop

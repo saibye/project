@@ -14,8 +14,8 @@ export LANG=zh_CN.utf8
 
 
 today=$(date +%Y%m%d)
-log=${LOG}/AUTO_test_${today}.out
-err=${LOG}/AUTO_test_${today}.err
+log=${LOG}/AUTO_test.out
+err=${LOG}/AUTO_test.err
 
 
 exec 3>${log}
@@ -30,6 +30,6 @@ cd ${PHOME}/src/wine && time python myrun.py
 exec 3>&-
 exec 4>&-
 
-echo "shell: run test succeeds."
+echo "shell: [${today}] run TEST succeeds."
 
 #autotest
