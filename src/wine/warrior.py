@@ -13,11 +13,7 @@ from pub    import *
 # 603045 福达合金  good
 # ?? 601990 南京证券 on way
 """
-
 """
-
-
-
 
 def warrior_load_cfg():
     saiobj.g_wine_start_rate    = float(sai_conf_get2('warrior', 'start_rate'))
@@ -27,7 +23,6 @@ def warrior_load_cfg():
     # log_debug('warrior config loaded')
 
 
-
 def warrior_run():
     body = ''
 
@@ -35,7 +30,6 @@ def warrior_run():
     this_date = ref_date(0)
 
     log_debug('TRAN warrior: %s -- %s', stock_id, this_date)
-
 
     length = ref_len()
     if length > 50 or length < 15:
@@ -150,7 +144,7 @@ def warrior_run():
 
     # 连续新高
     rule21 = days1 >= 4 and days2 >=4 and days3 >= 4
-    rule22 = days1 >= 3 and days2 >=3 and days3 >= 3 and False
+    rule22 = days1 >= 3 and days2 >=3 and days3 >= 3 and (days1+days2+days3) >= 10 and False
     rule2  = (rule21 or rule22)
 
     # 升幅不大 18
@@ -163,8 +157,8 @@ def warrior_run():
     # 前几日: 暴跌 30
     rule5 = down_rate > saiobj.g_wine_total_down
 
-    # log_debug('this_rule: %s, last_rule: %s, last_last: %s', this_rule, last_rule, last_last)
 
+    # if rule1 and rule2 and rule3:
     if rule1 and rule2 and rule3 and rule4 and rule5:
         log_info('bingo: %s -- %s', stock_id, this_date)
         wine_mail('warrior', body)

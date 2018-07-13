@@ -110,7 +110,7 @@ def my_work_one_day(_date, _stock_list, _txn_list, _db):
 
 
 def regression():
-    sailog_set("re.log")
+    sailog_set("Re.log")
     log_debug('this is regression mode')
 
 
