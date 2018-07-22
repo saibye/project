@@ -69,6 +69,9 @@ and pub_date <= '%s'" % \
     for row_index, row in _df.iterrows():
         counter = counter + 1
 
+        # pub_date = '%s' % (row.loc['date']) # api for  get-k-data
+        pub_date = '%s' % (row_index) # api for  h-data
+
         # 前复权
         sql = "insert into tbl_day \
 (pub_date, stock_id, stock_loc, \
@@ -81,7 +84,7 @@ values ('%s', '%s', '%s',  \
 '%.2f', \
 '%.3f', \
 '%s', '%s')" % \
-       (row.loc['date'], _stock_id, 'cn', 
+       (pub_date, _stock_id, 'cn', 
         row.loc['open'], row.loc['high'], row.loc['close'], row.loc['low'],
         last_close_price,
         row.loc['volume'] / 1000.00, 
@@ -133,6 +136,7 @@ def k_day_one_stock(_stock_id, _db):
     if max_date is None:
         start_date = '2017-01-03'
         start_date = '2016-01-01'
+        start_date = '2017-07-01'
         # start_date = '2014-01-01'
         log_debug("it's first time: [%s]", _stock_id)
     else:
@@ -145,8 +149,8 @@ def k_day_one_stock(_stock_id, _db):
     begin = get_micro_second()
 
     try:
-        df = ts.get_k_data(_stock_id, autype='qfq', start=start_date, end=end_date)
-        # df = ts.get_h_data(_stock_id, autype='qfq', start=start_date, end=end_date, retry_count=5, pause=6)
+        # df = ts.get_k_data(_stock_id, autype='qfq', start=start_date, end=end_date) # reject by tencent since 2018-7-16
+        df = ts.get_h_data(_stock_id, autype='qfq', start=start_date, end=end_date, retry_count=5, pause=6)
         # df = ts.get_h_data(_stock_id, start='2016-08-20', end='2016-10-30')
         # df = ts.get_h_data(_stock_id, autype='qfq')
     except Exception:

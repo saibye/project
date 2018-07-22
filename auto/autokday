@@ -31,7 +31,7 @@ exec 2>&4
 cd ${PHOME}/src/dayend && time python k_day.py
 
 # step. calc k-day tech
-cd ${PHOME}/src/dayend && time python k_day_tech.py
+#cd ${PHOME}/src/dayend && time python k_day_tech.py
 
 
 # thrive.py -- three-five line @2017-9-3
