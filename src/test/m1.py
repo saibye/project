@@ -4,9 +4,6 @@
 import MySQLdb
 
 # 打开数据库连接
-# db = MySQLdb.connect("localhost", "hqdev", "wangfei", "hq" ) # bad
-
-#db = MySQLdb.connect("127.0.0.1", "hqdev", "wangfei", "hq" ) # good 
 db = MySQLdb.connect("127.0.0.1", "tudev", "wangfei", "tu" ) # good 
 
 # 使用cursor()方法获取操作游标 

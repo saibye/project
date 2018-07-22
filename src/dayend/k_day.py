@@ -149,8 +149,8 @@ def k_day_one_stock(_stock_id, _db):
     begin = get_micro_second()
 
     try:
-        # df = ts.get_k_data(_stock_id, autype='qfq', start=start_date, end=end_date) # reject by tencent since 2018-7-16
-        df = ts.get_h_data(_stock_id, autype='qfq', start=start_date, end=end_date, retry_count=5, pause=6)
+        df = ts.get_k_data(_stock_id, autype='qfq', start=start_date, end=end_date) # reject by tencent since 2018-7-16
+        # df = ts.get_h_data(_stock_id, autype='qfq', start=start_date, end=end_date, retry_count=5, pause=6)
         # df = ts.get_h_data(_stock_id, start='2016-08-20', end='2016-10-30')
         # df = ts.get_h_data(_stock_id, autype='qfq')
     except Exception:
