@@ -69,8 +69,8 @@ and pub_date <= '%s'" % \
     for row_index, row in _df.iterrows():
         counter = counter + 1
 
-        # pub_date = '%s' % (row.loc['date']) # api for  get-k-data
-        pub_date = '%s' % (row_index) # api for  h-data
+        pub_date = '%s' % (row.loc['date']) # api for  get-k-data
+        # pub_date = '%s' % (row_index) # api for  h-data
 
         # 前复权
         sql = "insert into tbl_day \
@@ -195,15 +195,15 @@ def k_day_one_check_bad(_stock_id, _db):
 
     df = pd.read_sql_query(sql, _db);
     if df is None :
-        log_error("warn: stock %s is None, next", _stock_id)
+        # log_error("warn: stock %s is None, next", _stock_id)
         return False
 
     if df.empty:
-        log_error("warn: stock %s is empty, return", _stock_id)
+        # log_error("warn: stock %s is empty, return", _stock_id)
         return False
 
     if len(df) <= 2:
-        log_error("warn: stock %s is short, next", _stock_id)
+        # log_error("warn: stock %s is short, next", _stock_id)
         return False
 
     counter = 0
