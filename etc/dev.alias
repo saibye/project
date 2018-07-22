@@ -26,5 +26,6 @@ alias cdsh='cd ${HOME}/project/src/cwh'
 alias cgrep='find ${HOME}/project -name "*.py" |xargs grep'
 
 alias ck='echo "select pub_date, count(1) from tbl_day group by pub_date order by 1"'
+alias re='sudo /etc/init.d/cron restart'
 
 # dev.alias
