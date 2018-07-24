@@ -19,3 +19,18 @@ create table tbl_day_no_fuquan
    primary key (pub_date, stock_id)
 );
 
+/*==============================================================*/
+/* Index: IDX_DAY_NO_FUQUAN_1                                   */
+/*==============================================================*/
+create index IDX_DAY_NO_FUQUAN_1 on tbl_day_no_fuquan
+(
+   stock_id
+);
+
+/*==============================================================*/
+/* Index: IDX_DAY_NO_FUQUAN_2                                   */
+/*==============================================================*/
+create index IDX_DAY_NO_FUQUAN_2 on tbl_day_no_fuquan
+(
+   pub_date
+);

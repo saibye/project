@@ -1,14 +1,16 @@
 #!/bin/bash
 
-export LD_LIBRARY_PATH=/usr/lib64:/usr/local/lib64:/home/sai/tools/lib64:.
+export SAI_HOME=/home/sai
+
+export LD_LIBRARY_PATH=/usr/lib64:/usr/local/lib64:${SAI_HOME}/tools/lib64:.
 export LIBPATH=${LD_LIBRARY_PATH}
-export PATH=/public/anaconda2/bin:/home/sai/project/bin:/home/sai/project/sbin:/usr/local/bin:/usr/local/sbin:/usr/sbin:/home/sai/bin:/public/anaconda2/bin:/home/sai/bin:/home/sai/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/usr/local/mysql/bin
+export PATH=/public/anaconda2/bin:${SAI_HOME}/project/bin:${SAI_HOME}/project/sbin:/usr/local/bin:/usr/local/sbin:/usr/sbin:/public/anaconda2/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/usr/local/mysql/bin
 
-export PYTHONPATH=/home/sai/project/src/common:/home/sai/project/src:/usr/local/lib64/pkgconfig:/usr/lib64/pkgconfig:/usr/local/apr/lib/pkgconfig
+export PYTHONPATH=${SAI_HOME}/project/src/common:${SAI_HOME}/project/src:/usr/local/lib64/pkgconfig:/usr/lib64/pkgconfig:/usr/local/apr/lib/pkgconfig
 
-export PHOME=/home/sai/project
-export DATA=/home/sai/project/data
-export LOG=/home/sai/project/log
+export PHOME=${SAI_HOME}/project
+export DATA=${SAI_HOME}/project/data
+export LOG=${SAI_HOME}/project/log
 
 export LANG=zh_CN.utf8
 

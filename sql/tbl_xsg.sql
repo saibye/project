@@ -10,3 +10,5 @@ create table tbl_xsg
    inst_time            time not null,
    primary key (stock_id, free_date)
 );
+
+create index IDX_XSG_1 on tbl_xsg(stock_id);

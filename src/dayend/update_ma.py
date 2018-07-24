@@ -2,7 +2,6 @@
 # -*- encoding: utf8 -*-
 
 
-from sqlalchemy import create_engine
 import tushare as ts
 import MySQLdb
 import time

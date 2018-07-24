@@ -40,8 +40,5 @@ create table tbl_week_tech
 /*==============================================================*/
 /* Index: IDX_WEEK_TECH_1                                       */
 /*==============================================================*/
-create index IDX_WEEK_TECH_1 on tbl_week_tech
-(
-   stock_id
-);
+create index IDX_WEEK_TECH_1 on tbl_week_tech ( stock_id);
 
