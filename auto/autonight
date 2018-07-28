@@ -30,6 +30,9 @@ exec 2>&4
 cd ${PHOME}/src/dayend && time python k_day_sina.py
 
 
+# step. get  k-profit data
+cd ${PHOME}/src/dayend && time python k_profit.py
+
 
 exec 3>&-
 exec 4>&-

@@ -22,7 +22,7 @@ alias cdsc='cd ${HOME}/project/src/common'
 alias cdst='cd ${HOME}/project/src/test'
 alias cdsr='cd ${HOME}/project/src/report'
 alias cdsa='cd ${HOME}/project/src/analyzer'
-alias cdsh='cd ${HOME}/project/src/cwh'
+alias cdsd='cd ${HOME}/project/src/dayend'
 alias cgrep='find ${HOME}/project -name "*.py" |xargs grep'
 
 alias ck='echo "select pub_date, count(1) from tbl_day group by pub_date order by 1"'
