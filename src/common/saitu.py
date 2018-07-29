@@ -223,6 +223,28 @@ def get_top_list_tu(_trade_date):
     return stock_list
 
 
+
+# 2018-7-29
+def get_last_workday():
+
+    df = ts.get_realtime_quotes(['000001','000002','601398', '600519', '600036', '000651', '601318', '000333'])
+
+    # log_debug(df)
+
+    pub_date = None
+
+    for row_index, row in df.iterrows():
+        # log_debug(row_index)
+        this_date = str(row['date'])
+
+        if pub_date is None or this_date > pub_date:
+            pub_date = this_date
+
+        # log_debug("date -- %s -- %s", pub_date, type(pub_date))
+
+    return pub_date
+
+
 if __name__=="__main__":
     sailog_set("saitu.log")
     subject   = u"goodbye subject"
@@ -237,5 +259,7 @@ if __name__=="__main__":
     log_debug("cyln -- %.2f", get_cyl_rate(stock_id))
     log_debug("ampl -- %.2f", get_amp_rate(stock_id))
 
+    work_date = get_last_workday()
+    log_debug("work-date -- %s -- %s", work_date, type(work_date))
 
 # saitu.py

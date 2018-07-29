@@ -30,8 +30,20 @@ exec 2>&4
 cd ${PHOME}/src/dayend && time python k_day_sina.py
 
 
+# step. get  k_day_today
+cd ${PHOME}/src/dayend && time python k_day_today.py
+
+
 # step. get  k-profit data
+# 分配方案
 cd ${PHOME}/src/dayend && time python k_profit.py
+
+
+# step. get  j-fund data
+# 基金持股
+cd ${PHOME}/src/dayend && time python j_fund.py
+
+
 
 
 exec 3>&-

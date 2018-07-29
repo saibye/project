@@ -14,43 +14,60 @@ from saicalc import *
 from sailog  import *
 from saitu   import *
 
+
+# ts.get_today_all()
+
+
 #######################################################################
 
-def j_fund_to_db(_df, _db):
+def k_today_to_db(_date, _df, _db):
 
     dt = get_today()
     tm = get_time()
 
+    pub_date = _date
 
     # import dataframe to db
     for row_index, row in _df.iterrows():
 
-        stock_id    = '%s' % (row.loc['code'])
+        stock_id    = '%s' % (row_index)
         stock_name  = '%s' % (row.loc['name'])
-        report_date = '%s' % (row.loc['date'])
-        nums        = int(row.loc['nums'])
-        nlast       = int(row.loc['nlast'])
-        count       = float(row.loc['count'])
-        clast       = float(row.loc['clast'])
-        amount      = float(row.loc['amount'])
-        ratio       = float(row.loc['ratio'])
 
-        # 前复权
-        sql = "insert into tbl_fund \
-(stock_id, stock_name, report_date, \
-inst_num, inst_changed, \
-hold_volume, volume_changed, \
-hold_amount, hold_ratio, \
+        open_price  = float(row.loc['open'])
+        close_price = float(row.loc['trade'])
+        high_price  = float(row.loc['high'])
+        low_price   = float(row.loc['low'])
+        last_close  = float(row.loc['settlement'])
+
+        changepercent   = float(row.loc['changepercent'])
+
+        volume      = float(row.loc['volume'])
+        turnoverratio   = float(row.loc['turnoverratio'])
+        amount      = float(row.loc['amount'])
+        per         = float(row.loc['per'])
+        pb          = float(row.loc['pb'])
+        mktcap      = float(row.loc['mktcap'])
+        nmc         = float(row.loc['nmc'])
+
+        # 
+        sql = "insert into tbl_day_today \
+(pub_date, stock_id, stock_loc, \
+open_price, high_price, close_price, low_price, \
+last_close_price, changepercent, \
+deal_total_count, deal_total_amount, \
+turnoverratio, per, pb, mktcap, nmc, \
 inst_date, inst_time) \
 values ('%s', '%s', '%s', \
-'%d', '%d', \
+'%.3f', '%.3f', '%.3f', '%.3f', \
 '%.3f', '%.3f', \
 '%.3f', '%.3f', \
+'%.3f', '%.3f', '%.3f', '%.3f', '%.3f', \
 '%s', '%s')" % \
-       (stock_id, stock_name, report_date, 
-        nums, nlast,
-        count, clast,
-        amount, ratio, 
+       (pub_date, stock_id, 'cn',
+        open_price, high_price, close_price, low_price,
+        last_close,  changepercent,
+        volume, amount, 
+        turnoverratio, per, pb, mktcap, nmc,
         dt, tm)
 
         # log_debug("%s", sql)
@@ -64,20 +81,21 @@ values ('%s', '%s', '%s', \
 
 
 
-def j_fund(_year, _quarter, _db):
+def k_today(_db):
 
     begin = get_micro_second()
 
-    log_debug('year: %d, quarter: %d', _year, _quarter)
+    pub_date = get_last_workday()
+    log_debug('pub_date: %s -- %s', pub_date, type(pub_date))
 
     try:
-        df = ts.fund_holdings(_year, _quarter)
+        df = get_stock_quotation()
     except Exception:
-        log_error("warn:error: %s/%s fund() exception!", _year, _quarter)
+        log_error("warn:error: get_stock_quotation() exception!")
         return -4
 
     # calc cost time
-    log_info("fund [%s, %s] costs %d us", _year, _quarter, get_micro_second()-begin)
+    log_info("get_stock_quotation costs %d us", get_micro_second()-begin)
 
     if df is None :
         log_error("warn: df is None, next")
@@ -91,11 +109,12 @@ def j_fund(_year, _quarter, _db):
         log_error("warn: df is empty, next")
         return -3
 
-    # pd.options.display.max_rows = 1000
+    pd.options.display.max_rows = 1000
     log_debug(df)
+
     begin = get_micro_second()
 
-    j_fund_to_db(df, _db)
+    k_today_to_db(pub_date, df, _db)
 
     log_info("to_db costs %d us", get_micro_second() - begin)
 
@@ -106,15 +125,7 @@ def j_fund(_year, _quarter, _db):
 def work():
     db = db_init()
 
-    quarte = 0
-    year = int(get_year())
-
-    for i in range(4):
-        quarter = i + 1
-
-        j_fund(year-1, quarter, db)
-        j_fund(year,   quarter, db)
-
+    k_today(db)
 
     db_end(db)
 
@@ -122,7 +133,7 @@ def work():
 #######################################################################
 
 def main():
-    sailog_set("jfund.log")
+    sailog_set("k_today.log")
 
     log_info("let's begin here!")
 
@@ -145,4 +156,4 @@ exit()
 #######################################################################
 
 
-# j_fund.py
+# k_today.py
