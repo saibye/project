@@ -74,6 +74,11 @@ def index_dynamic_calc_tech(_df):
     se = calc_sma(sc, 30)
     _df['ma30'] = se;
 
+
+    # sma50
+    se = calc_sma(sc, 50)
+    _df['ma50'] = se;
+
     # sma60
     se = calc_sma(sc, 60)
     _df['ma60'] = se;
