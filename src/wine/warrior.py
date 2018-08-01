@@ -33,7 +33,7 @@ def warrior_run():
 
     length = ref_len()
     if length > 50 or length < 15:
-        log_debug('%s days not meet: %d', stock_id, length)
+        # log_debug('%s days not meet: %d', stock_id, length)
         return 0
 
     # if not saiobj.g_wine_cfg_loaded:
