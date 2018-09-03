@@ -4,7 +4,6 @@
 import tushare as ts
 import pandas as pd
 import numpy as np
-from sqlalchemy import create_engine
 
 from saiutil import *
 from saidb   import *

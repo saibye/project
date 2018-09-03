@@ -14,10 +14,9 @@ export LOG=${SAI_HOME}/project/log
 
 export LANG=zh_CN.utf8
 
-
 today=$(date +%Y%m%d)
-log=${LOG}/AUTO_INFO.out
-err=${LOG}/AUTO_INFO.err
+log=${LOG}/AUTO_night.out
+err=${LOG}/AUTO_night.err
 
 
 exec 3>${log}
@@ -25,17 +24,31 @@ exec 4>${err}
 exec 1>&3
 exec 2>&4
 
-# 1. get  stock-basic
-cd ${PHOME}/src/dayend && time python get_stock_basic.py
+
+#
+# step. get  k-day-sina data
+cd ${PHOME}/src/dayend && time python k_day_sina.py
 
 
-# 2. get xsg info
-cd ${PHOME}/src/dayend && time python get_xsg.py
+# step. get  k_day_today
+cd ${PHOME}/src/dayend && time python k_day_today.py
+
+
+# step. get  k-profit data
+# 分配方案
+cd ${PHOME}/src/dayend && time python k_profit.py
+
+
+# step. get  j-fund data
+# 基金持股
+cd ${PHOME}/src/dayend && time python j_fund.py
+
+
 
 
 exec 3>&-
 exec 4>&-
 
-echo "shell: [${today}] run INFO succeeds."
+echo "shell: [${today}] run DAILY succeeds."
 
-#autoinfo
+#autonight

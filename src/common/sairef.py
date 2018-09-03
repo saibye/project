@@ -37,6 +37,7 @@ g_ref_this_ma5  = None #
 g_ref_this_ma10 = None #
 g_ref_this_ma20 = None #
 g_ref_this_ma30 = None #
+g_ref_this_ma50 = None #
 g_ref_this_ma60 = None #
 g_ref_this_ma150= None #
 g_ref_this_ma200= None #
@@ -75,6 +76,7 @@ def ref_set(_stock_id):
     global g_ref_this_ma10
     global g_ref_this_ma20
     global g_ref_this_ma30
+    global g_ref_this_ma50
     global g_ref_this_ma60
     global g_ref_this_ma150
     global g_ref_this_ma200
@@ -97,6 +99,7 @@ def ref_set(_stock_id):
         g_ref_this_ma10 = g_ref_this['ma10']
         g_ref_this_ma20 = g_ref_this['ma20']
         g_ref_this_ma30 = g_ref_this['ma30']
+        g_ref_this_ma50 = g_ref_this['ma50']
         g_ref_this_ma60 = g_ref_this['ma60']
         g_ref_this_ma150= g_ref_this['ma150']
         g_ref_this_ma200= g_ref_this['ma200']
@@ -163,6 +166,10 @@ def ref_ma20(_offset):
 def ref_ma30(_offset):
     global g_ref_this_ma30
     return float(g_ref_this_ma30[_offset])
+
+def ref_ma50(_offset):
+    global g_ref_this_ma50
+    return float(g_ref_this_ma50[_offset])
 
 def ref_ma60(_offset):
     global g_ref_this_ma60
@@ -359,6 +366,7 @@ def ref_set_tech3(_stock_id):
     global g_ref_this_ma10
     global g_ref_this_ma20
     global g_ref_this_ma30
+    global g_ref_this_ma50
     global g_ref_this_ma60
     global g_ref_this_ma150
     global g_ref_this_ma200
@@ -372,6 +380,7 @@ def ref_set_tech3(_stock_id):
     g_ref_this_ma10 = g_ref_this['ma10']
     g_ref_this_ma20 = g_ref_this['ma20']
     g_ref_this_ma30 = g_ref_this['ma30']
+    g_ref_this_ma50 = g_ref_this['ma50']
     g_ref_this_ma60 = g_ref_this['ma60']
     g_ref_this_ma150= g_ref_this['ma150']
     g_ref_this_ma200= g_ref_this['ma200']
@@ -404,6 +413,7 @@ def ref_set_tech(_stock_id):
     global g_ref_this_ma10
     global g_ref_this_ma20
     global g_ref_this_ma30
+    global g_ref_this_ma50
     global g_ref_this_ma60
     global g_ref_this_ma150
     global g_ref_this_ma200
@@ -417,6 +427,7 @@ def ref_set_tech(_stock_id):
     g_ref_this_ma10 = g_ref_this['ma10']
     g_ref_this_ma20 = g_ref_this['ma20']
     g_ref_this_ma30 = g_ref_this['ma30']
+    g_ref_this_ma50 = g_ref_this['ma50']
     g_ref_this_ma60 = g_ref_this['ma60']
     g_ref_this_ma150= g_ref_this['ma150']
     g_ref_this_ma200= g_ref_this['ma200']
@@ -453,6 +464,7 @@ def ref_set_with_tech(_stock_id):
     global g_ref_this_ma10
     global g_ref_this_ma20
     global g_ref_this_ma30
+    global g_ref_this_ma50
     global g_ref_this_ma60
     global g_ref_this_ma150
     global g_ref_this_ma200
@@ -484,6 +496,9 @@ def ref_set_with_tech(_stock_id):
 
     # sma30
     g_ref_this_ma30 = calc_sma(sc, 30).sort_index(ascending=False)
+
+    # sma50
+    g_ref_this_ma50 = calc_sma(sc, 50).sort_index(ascending=False)
 
     # sma60
     g_ref_this_ma60 = calc_sma(sc, 60).sort_index(ascending=False)
@@ -555,6 +570,7 @@ def ref_set_tech4():
     global g_ref_this_ma10
     global g_ref_this_ma20
     global g_ref_this_ma30
+    global g_ref_this_ma50
     global g_ref_this_ma60
     global g_ref_this_ma150
     global g_ref_this_ma200
@@ -568,6 +584,7 @@ def ref_set_tech4():
     g_ref_this_ma10  = g_ref_detail['ma10']
     g_ref_this_ma20  = g_ref_detail['ma20']
     g_ref_this_ma30  = g_ref_detail['ma30']
+    g_ref_this_ma50  = g_ref_detail['ma50']
     g_ref_this_ma60  = g_ref_detail['ma60']
     g_ref_this_ma150 = g_ref_detail['ma150']
     g_ref_this_ma200 = g_ref_detail['ma200']
@@ -588,6 +605,7 @@ def ref_set_tech5():
     global g_ref_this_ma10
     global g_ref_this_ma20
     global g_ref_this_ma30
+    global g_ref_this_ma50
     global g_ref_this_ma60
     global g_ref_this_ma150
     global g_ref_this_ma200
@@ -602,6 +620,7 @@ def ref_set_tech5():
     g_ref_this_ma10  = g_ref_detail['ma10']
     g_ref_this_ma20  = g_ref_detail['ma20']
     g_ref_this_ma30  = g_ref_detail['ma30']
+    g_ref_this_ma50  = g_ref_detail['ma50']
     g_ref_this_ma60  = g_ref_detail['ma60']
     g_ref_this_ma150 = g_ref_detail['ma150']
     g_ref_this_ma200 = g_ref_detail['ma200']

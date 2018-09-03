@@ -26,3 +26,8 @@ create table tbl_basic
    primary key (stock_id)
 );
 
+create index IDX_TBL_BASIC_1 on tbl_watch
+(  
+   stock_id
+);
+

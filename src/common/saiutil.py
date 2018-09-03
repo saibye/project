@@ -29,6 +29,10 @@ def get_micro_second():
     tm = time.time() * 1000000
     return tm 
 
+def get_year():
+    dt = time.strftime("%Y", time.localtime()) 
+    return str(dt)
+
 
 '''
     if n>=0,date is larger than today

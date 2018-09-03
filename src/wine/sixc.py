@@ -37,7 +37,7 @@ def sixc_run():
 
 
     rate = 100.00 * (ref_close(0) - ref_close(1)) / ref_close(1)
-    log_info("rate: %.2f%%", rate)
+    # log_info("rate: %.2f%%", rate)
     zt   = 100.00 * (ref_close(0) - ref_open(0))  / ref_close(1)
     # log_info("zt:   %.2f%%", zt)
     body += '涨幅: %.2f%%\n' % (rate)
@@ -46,7 +46,7 @@ def sixc_run():
 
     START_RATE = saiobj.g_wine_start_rate
     if rate < START_RATE:
-        log_info('start rate not match: %.2f%% > %.2f%%', rate, START_RATE)
+        # log_info('start rate not match: %.2f%% > %.2f%%', rate, START_RATE)
         return 0
 
 
@@ -68,9 +68,17 @@ def sixc_run():
     log_info("p-max:  %.2f", maxp)
     """
 
+    minp2= min(ref_ma5(0), ref_ma10(0), ref_ma20(0), ref_ma50(0), ref_ma200(0))
+    maxp2= max(ref_ma5(0), ref_ma10(0), ref_ma20(0), ref_ma50(0), ref_ma200(0))
+
     poly = 100.00 * (maxp - minp) / ref_close(1)
     log_info("poly:   %.2f%%", poly)
     body += '聚合: %.2f%%\n' % (poly)
+
+
+    poly2= 100.00 * (maxp2- minp2) / ref_close(1)
+    log_info("poly2:   %.2f%%", poly2)
+    body += '聚合2: %.2f%%\n' % (poly2)
 
     zt1 = 100.00 * (ref_close(0) - maxp) / ref_close(1)
     zt2 = 100.00 * (minp - ref_open(0))  / ref_close(1)
@@ -97,9 +105,9 @@ def sixc_run():
 
     """
     log_info("vol:      %.2f", ref_vol(0))
-    log_info("vma5:     %.2f, this_vr5:  %.2f%%", ref_vma5(0),  this_vr5)
-    log_info("vma10:    %.2f, this_vr10: %.2f%%", ref_vma10(0), this_vr10)
-    log_info("vma50:    %.2f, this_vr50: %.2f%%", ref_vma50(0), this_vr50)
+    log_info("vma5:     %.2f, this_vr5:  %.2f", ref_vma5(0),  this_vr5)
+    log_info("vma10:    %.2f, this_vr10: %.2f", ref_vma10(0), this_vr10)
+    log_info("vma50:    %.2f, this_vr50: %.2f", ref_vma50(0), this_vr50)
     """
 
     # 穿越6线
@@ -119,10 +127,23 @@ def sixc_run():
 
     rule = basic_rule and poly < 2 and macd_rule and addit_rule and vol_rule
 
+    # rule2 2018-7-27
+    basic_rule2= ref_close(0) > maxp2 and ref_open(0) < minp2 # cross
+    macd_rule2 = ref_macd(0) > 0 and \
+                 ref_diff(0) > -0.5 and ref_dea(0) > -0.5 and \
+                 ref_diff(0) < 0.2  and ref_dea(0) < 0.2
+
+    rule2= basic_rule2 and poly2 < 2 and macd_rule2 and  vol_rule
+    log_debug('%s - %s - %s', basic_rule2, macd_rule2, vol_rule)
 
     if rule:
         log_info('bingo: %s -- %s', stock_id, this_date)
         wine_mail('sixc', body)
+        return 1
+
+    if rule2:
+        log_info('bingo: %s -- %s', stock_id, this_date)
+        wine_mail('sixc_weak', body)
         return 1
 
     return 0
@@ -137,11 +158,17 @@ if __name__=="__main__":
     db = db_init()
     saiobj.g_db = db
 
+    saiobj.g_to_send_mail = True
+
     sai_load_conf2('wine.cfg')
 
-    # 
+    #  good
     stock_id = '000860'
     trade_dt = '2018-03-29'
+
+    #  000596
+    stock_id = '000596'
+    trade_dt = '2018-04-24'
 
     sai_fmt_set_fetch_len(220)
     df = sai_fmt_simple(stock_id, trade_dt, db)

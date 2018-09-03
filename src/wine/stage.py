@@ -57,7 +57,7 @@ def stage_run():
     start = 0+1
     k2 = wine_find_previous_stage(start, step)
     if k2 == 0:
-        log_info('not found k2')
+        # log_info('not found k2')
         return 0
     else:
         log_info('got k2 -- %d', k2)

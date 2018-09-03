@@ -42,3 +42,5 @@ create table tbl_net_rank
    primary key (pub_date, stock_id, stock_loc, watcher)
 );
 
+create index IDX_TBL_RANK_1 on tbl_net_rank(stock_id);
+create index IDX_TBL_RANK_2 on tbl_net_rank(pub_date);

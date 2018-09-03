@@ -28,3 +28,7 @@ create index IDX_TOP_LIST_1 on tbl_top_list
    stock_id
 );
 
+create index IDX_TOP_LIST_2 on tbl_top_list
+(
+   pub_date
+);
