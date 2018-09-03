@@ -28,7 +28,8 @@ exec 2>&4
 
 #
 # step. get  k-day data
-cd ${PHOME}/src/dayend && time python k_day.py
+#cd ${PHOME}/src/dayend && time python k_day.py
+cd ${PHOME}/src/dayend && time python k_no_fuquan.py
 
 # step. calc k-day tech
 #cd ${PHOME}/src/dayend && time python k_day_tech.py
@@ -56,8 +57,8 @@ cd ${PHOME}/src/wine && time python myrun.py
 
 ## index  data 
 # 2018-6-22 re-start 放在最后，这样邮件就会在最上面
-cd ${PHOME}/src/dayend && time python  k_index_day.py
-cd ${PHOME}/src/report && time python  index.py
+#cd ${PHOME}/src/dayend && time python  k_index_day.py
+#cd ${PHOME}/src/report && time python  index.py
 
 
 exec 3>&-
