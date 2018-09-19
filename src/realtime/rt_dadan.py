@@ -473,7 +473,8 @@ def rt_timer(_stocks, _db):
             # 收盘前分析资金流向 2016/8/28
             if curr >= pre_end_time and day_rank_checked == 0:
                 day_rank_checked = 1
-                rt_dadan_rank(_stocks, g_stock_date, _db)
+                # disabled at 2018-9-19
+                # rt_dadan_rank(_stocks, g_stock_date, _db)
 
         # 当日结束
         curr = get_time()
