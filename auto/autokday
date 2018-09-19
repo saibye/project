@@ -27,7 +27,8 @@ exec 2>&4
 
 #
 # step. get  k-day data
-cd ${PHOME}/src/dayend && time python k_day.py
+#cd ${PHOME}/src/dayend && time python k_day.py
+cd ${PHOME}/src/dayend && time python k_no_fuquan.py
 
 ## step. calc k-day tech
 ##cd ${PHOME}/src/dayend && time python k_day_tech.py

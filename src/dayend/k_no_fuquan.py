@@ -54,15 +54,15 @@ values ('%s', '%s', \
             last_row.loc['volume'] / 1000.00, 
             dt, tm)
 
-            # begin = get_micro_second()
+            begin = get_micro_second()
 
-            # log_debug("%s", sql)
+            log_debug("%s", sql)
             rv = sql_to_db_nolog(sql, _db)
             if rv != 0:
                 log_error("error: sql_to_db %s", sql)
                 return 1
 
-            # log_info("insert costs %d us", get_micro_second()-begin)
+            log_info("insert costs %d us", get_micro_second()-begin)
 
         last_row  = row
         last_date = pub_date
@@ -87,7 +87,7 @@ def k_no_fuquan_one_stock(_stock_id, _db):
         return -4
 
     # calc cost time
-    log_info("get_k_data [%s] costs %d us", _stock_id, get_micro_second()-begin)
+    log_info("get_data [%s] costs %d us", _stock_id, get_micro_second()-begin)
 
     if df is None :
         log_error("warn: stock %s is None, next", _stock_id)
