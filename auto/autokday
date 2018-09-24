@@ -27,8 +27,8 @@ exec 2>&4
 
 #
 # step. get  k-day data
-#cd ${PHOME}/src/dayend && time python k_day.py
-cd ${PHOME}/src/dayend && time python k_no_fuquan.py
+cd ${PHOME}/src/dayend && time python k_day.py
+#cd ${PHOME}/src/dayend && time python k_no_fuquan.py
 
 ## step. calc k-day tech
 ##cd ${PHOME}/src/dayend && time python k_day_tech.py
@@ -39,6 +39,7 @@ cd ${PHOME}/src/dayend && time python k_no_fuquan.py
 #cd ${PHOME}/src/thrive && time python thrive.py
 
 # pre-thrive.py -- pre-three-five line @2017-9-5
+# enhanced 2018-9-24
 cd ${PHOME}/src/pre_thrive && time python pre_thrive.py
 
 

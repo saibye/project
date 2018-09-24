@@ -219,6 +219,7 @@ def work():
         till_date = get_date_by(0)
         till_date = get_newest_trade_date(db)
         # till_date = "2017-08-25"
+        till_date = "2018-09-18"
         log_info("till_date: %s", till_date)
         pre_thrive_work_one_day(till_date, db)
 

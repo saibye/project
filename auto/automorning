@@ -29,7 +29,8 @@ exec 2>&4
 cd ${PHOME}/src/morning
 
 # pre-thrive case(three-five line with strict filter)
-nohup python open_35.py &
+# disabled 2018-9-24
+#nohup python open_35.py &
 
 exec 3>&-
 exec 4>&-

@@ -406,6 +406,8 @@ values ('%s', '%s', '%s', '%s', \
     log_debug("sql: [%s]", sql)
     rv = sql_to_db(sql, _db)
 
+    saimail_dev(_title, _message)
+
     return rv
 
 # pub_pre_thrive.py

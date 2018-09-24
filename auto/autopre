@@ -28,7 +28,8 @@ exec 2>&4
 
 cd ${PHOME}/src/realtime
 
-nohup python rt_watch.py &
+# disabled 2018-9-24
+#nohup python rt_watch.py &
 
 exec 3>&-
 exec 4>&-
