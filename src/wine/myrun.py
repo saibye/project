@@ -21,6 +21,8 @@ from sixc    import *
 from qiming  import *
 from warrior import *
 
+from sim     import *
+
 
 def my_work_one_day_stock(_txn_list, _one, _date, _db):
     rv = 0

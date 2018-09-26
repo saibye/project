@@ -185,4 +185,40 @@ def wine_continuous_high(_start, _width, _which):
     return days
 
 
+def wine_find_previous_highest_close(_start, _width):
+    highest_price = 0.0
+    highest_day   = 0
+
+    for x in range(_width):
+        i = x + _start
+
+        if i + 2 >= ref_len():
+            log_error('too short: %d < %d', i+2, ref_len())
+            return 0
+
+        if ref_close(i) > highest_price:
+            highest_price = ref_close(i)
+            highest_day   = i
+
+    return highest_day
+
+
+def wine_find_previous_lowest_close(_start, _width):
+    lowest_price = 999999.0
+    lowest_day   = 0
+
+    for x in range(_width):
+        i = x + _start
+
+        if i + 2 >= ref_len():
+            log_error('too short: %d < %d', i+2, ref_len())
+            return 0
+
+        if ref_close(i) < lowest_price:
+            lowest_price = ref_close(i)
+            lowest_day   = i
+
+    return lowest_day
+
+
 # pub.py
