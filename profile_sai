@@ -1,0 +1,7 @@
+
+
+. ${HOME}/project/etc/dev.env
+
+. ${HOME}/project/etc/dev.alias
+
+
