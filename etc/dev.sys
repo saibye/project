@@ -1,8 +1,0 @@
-#
-
-export LANG=zh_CN.utf8
-
-alias my='mysql -hsai-mysql -u tudev -Dtu -pwangfei'
-
-
-#
