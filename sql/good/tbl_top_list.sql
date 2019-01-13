@@ -1,4 +1,3 @@
-drop index IDX_TOP_LIST_1 on tbl_top_list;
 
 drop table if exists tbl_top_list;
 

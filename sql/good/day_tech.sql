@@ -1,11 +1,9 @@
-drop index IDX_WEEK_TECH_1 on tbl_week_tech;
-
-drop table if exists tbl_week_tech;
+drop table if exists tbl_day_tech;
 
 /*==============================================================*/
-/* Table: tbl_week_tech                                         */
+/* Table: tbl_day_tech                                          */
 /*==============================================================*/
-create table tbl_week_tech
+create table tbl_day_tech
 (
    pub_date             date not null,
    stock_id             char(8) not null,
@@ -38,7 +36,10 @@ create table tbl_week_tech
 );
 
 /*==============================================================*/
-/* Index: IDX_WEEK_TECH_1                                       */
+/* Index: IDX_DAY_TECH_1                                        */
 /*==============================================================*/
-create index IDX_WEEK_TECH_1 on tbl_week_tech ( stock_id);
+create index IDX_DAY_TECH_1 on tbl_day_tech
+(
+   stock_id
+);
 
