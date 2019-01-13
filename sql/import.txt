@@ -1,0 +1,7 @@
+
+ls -1 *.sql | while read line
+do
+echo $line
+my < $line
+done
+
