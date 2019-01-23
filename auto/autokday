@@ -40,7 +40,8 @@ cd ${PHOME}/src/dayend && time python k_day.py
 
 # pre-thrive.py -- pre-three-five line @2017-9-5
 # enhanced 2018-9-24
-cd ${PHOME}/src/pre_thrive && time python pre_thrive.py
+# disabled 2018-11-18
+#cd ${PHOME}/src/pre_thrive && time python pre_thrive.py
 
 
 # thrap.py -- three line with loop conditoin @2017-9-20
