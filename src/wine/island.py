@@ -64,10 +64,19 @@ def island_run():
 
     # 取向下的缺口
     STEP = saiobj.g_wine_step
-    pair_day = wine_island_exist(1, STEP)
+    pair_day, region_high = wine_island_exist(1, STEP)
     if pair_day < 0:
         log_debug("不是岛")
         return 0
+
+    # 检查一致性缺口
+    if region_high > lowX:
+        log_debug("sorry: ref_low(0) < region_highest...")
+        return 0
+
+    # 检查价格相近
+    rateS = 100.00 * abs(ref_close(0) - ref_close(pair_day)) / ref_close(0)
+    log_debug("rate-Compare: %.2f%%", rateS)
 
 
     # 岛的起点，要跌破所有均线 TODO
@@ -135,13 +144,21 @@ if __name__=="__main__":
 
     # saiobj.g_to_send_mail = True
 
+    # 海航投资
+    trade_dt = '2018-10-15'
+    stock_id = '000616'
+
     # 初灵信息
     trade_dt = '2019-01-31'
     stock_id = '300250'
 
-    # 海航投资
+    # bad3
     trade_dt = '2018-10-15'
-    stock_id = '000616'
+    stock_id = '603008'
+
+    # bad4
+    trade_dt = '2018-10-15'
+    stock_id = '300638'
 
     sai_fmt_set_fetch_len(200)
     df = sai_fmt_simple(stock_id, trade_dt, db)

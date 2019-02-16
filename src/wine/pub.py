@@ -268,7 +268,7 @@ def wine_island_exist(_start, _width):
 
         if i + 2 >= ref_len():
             log_error('too short: %d < %d', i+2, ref_len())
-            return 0
+            return -1, -1
 
         # log_debug("date: %s, %.2f", ref_date(i), ref_close(i))
 
@@ -294,6 +294,6 @@ def wine_island_exist(_start, _width):
             break
 
 
-    return pair_day
+    return pair_day, highest
 
 # pub.py
