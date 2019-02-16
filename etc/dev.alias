@@ -28,6 +28,7 @@ alias cgrep='find ${HOME}/project -name "*.py" |xargs grep'
 alias ck='echo "select pub_date, count(1) from tbl_day group by pub_date order by 1"'
 alias re='sudo /etc/init.d/cron restart'
 
-alias my='mysql -hsai-mysql -u tudev -Dtu -p123456'
+alias my='mysql -u tudev -Dtu -pwangfei'
+alias m2='mysql -hsai-mysql -u tudev -Dtu -p123456'
 
 # dev.alias

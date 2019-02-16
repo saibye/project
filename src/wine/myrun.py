@@ -22,6 +22,7 @@ from qiming  import *
 from warrior import *
 
 from sim     import *
+from island  import *
 
 
 def my_work_one_day_stock(_txn_list, _one, _date, _db):
@@ -215,6 +216,7 @@ if __name__=="__main__":
 
     if today_is_weekend():
         log_info('weekend, exit')
+        work()
     else:
         log_info('workday, run')
         work()

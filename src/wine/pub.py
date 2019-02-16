@@ -221,4 +221,79 @@ def wine_find_previous_lowest_close(_start, _width):
     return lowest_day
 
 
+#
+# X点往前突破天数
+#
+#
+def wine_break_days(_start, _width):
+
+    days = 0
+    last_date = ""
+    to_count = False
+
+    sen_close = ref_close(_start)
+    sen_high  = ref_high(_start)
+
+    for x in range(_width):
+        i = x + _start
+
+        if i + 2 >= ref_len():
+            log_error('too short: %d < %d', i+2, ref_len())
+            return 0
+
+        log_debug("date: %s, %.2f", ref_date(i), ref_close(i))
+
+        if sen_close > ref_close(i):
+            lowest_price = ref_close(i)
+            lowest_day   = i
+
+
+    return days, last_date
+
+
+
+#
+# start往前，存在点，满足向下跳空
+#
+#
+def wine_island_exist(_start, _width):
+
+    pair_day = -1
+    high = -1
+    low  = 10000
+
+
+    for x in range(_width):
+        i = x + _start
+
+        if i + 2 >= ref_len():
+            log_error('too short: %d < %d', i+2, ref_len())
+            return 0
+
+        # log_debug("date: %s, %.2f", ref_date(i), ref_close(i))
+
+        # track extreme: high
+        if ref_high(i) > high:
+            high = ref_high(i)
+
+        # track extreme: low
+        if ref_low(i)  < low:
+            low = ref_low(i)
+
+        # find GAP
+        if ref_high(i) < ref_high(i+1):
+            pair_day   = i+1
+            # log_debug("pair_date: %s", ref_date(pair_day))
+            # log_debug("region-high: %.2f", high)
+            # log_debug("region-low:  %.2f", low)
+
+            # TODO 检查区间内波动幅度不大
+
+            # TODO 寻找那个收盘价最接近的点
+
+            break
+
+
+    return pair_day
+
 # pub.py
