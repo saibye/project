@@ -259,8 +259,8 @@ def wine_break_days(_start, _width):
 def wine_island_exist(_start, _width):
 
     pair_day = -1
-    high = -1
-    low  = 10000
+    highest = -1
+    lowest  = 10000
 
 
     for x in range(_width):
@@ -273,15 +273,15 @@ def wine_island_exist(_start, _width):
         # log_debug("date: %s, %.2f", ref_date(i), ref_close(i))
 
         # track extreme: high
-        if ref_high(i) > high:
-            high = ref_high(i)
+        if ref_high(i) > highest:
+            highest = ref_high(i)
 
         # track extreme: low
-        if ref_low(i)  < low:
-            low = ref_low(i)
+        if ref_low(i)  < lowest:
+            lowest = ref_low(i)
 
         # find GAP
-        if ref_high(i) < ref_high(i+1):
+        if ref_high(i) < ref_low(i+1) and highest < ref_low(i+1):
             pair_day   = i+1
             # log_debug("pair_date: %s", ref_date(pair_day))
             # log_debug("region-high: %.2f", high)

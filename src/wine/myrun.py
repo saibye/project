@@ -216,7 +216,7 @@ if __name__=="__main__":
 
     if today_is_weekend():
         log_info('weekend, exit')
-        work()
+        # work()
     else:
         log_info('workday, run')
         work()

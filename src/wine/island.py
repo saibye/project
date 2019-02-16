@@ -69,6 +69,19 @@ def island_run():
         log_debug("不是岛")
         return 0
 
+
+    # 岛的起点，要跌破所有均线 TODO
+    close_price = ref_close(pair_day)
+    press_rule =  close_price  < ref_ma5(pair_day) and \
+        close_price < ref_ma10(pair_day) and \
+        close_price < ref_ma20(pair_day) and \
+        close_price < ref_ma50(pair_day)
+    if not press_rule:
+        log_debug("未压制")
+        return 0
+
+
+
     # 岛的起点下沉缺口大小
     gap_rateY = 100.00 * (ref_low(pair_day) - ref_high(pair_day-1)) /  ref_high(pair_day-1)
     body += '缺口Y: %.2f%%\n' % (gap_rateY)
@@ -91,9 +104,6 @@ def island_run():
     body += '涨幅Z: %.2f%%\n' % (rateZ)
 
 
-    # 岛的起点，要跌破所有均线 TODO
-
-    log_info('bingo: %s -- %s', stock_id, this_date)
 
     if True:
         log_info('bingo: %s -- %s', stock_id, this_date)
@@ -114,15 +124,24 @@ if __name__=="__main__":
 
     sai_load_conf2('wine.cfg')
 
-    # 海航投资
-    trade_dt = '2018-10-15'
-    stock_id = '000616'
+
+    # bad1
+    trade_dt = '2019-01-18'
+    stock_id = '300116'
+
+    # bad2
+    trade_dt = '2019-01-03'
+    stock_id = '603016'
+
+    # saiobj.g_to_send_mail = True
 
     # 初灵信息
     trade_dt = '2019-01-31'
     stock_id = '300250'
 
-    # saiobj.g_to_send_mail = True
+    # 海航投资
+    trade_dt = '2018-10-15'
+    stock_id = '000616'
 
     sai_fmt_set_fetch_len(200)
     df = sai_fmt_simple(stock_id, trade_dt, db)
