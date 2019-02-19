@@ -93,7 +93,7 @@ def sim_run():
 
     RATE_RATE = abs(1.0* acc2 / acc1)
     log_info('RATE-RATE: %.2f', RATE_RATE)
-    if RATE_RATE >= 3:
+    if RATE_RATE >= 2.9:
         log_info('bingo: %s -- %s', stock_id, this_date)
         wine_mail('sim', body)
         return 1
@@ -115,6 +115,9 @@ if __name__=="__main__":
 
     stock_id = '300104'
     trade_dt = '2018-09-19'
+
+    stock_id = '600218'
+    trade_dt = '2019-02-01'
 
     # saiobj.g_to_send_mail = True
 

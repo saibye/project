@@ -26,95 +26,108 @@ def gap_run():
     log_debug('TRAN gap: %s -- %s', stock_id, this_date)
 
     length = ref_len()
+    if length < 100:
+        return 0
 
     gap_load_cfg()
 
-    k1 = 0
-    rate = 100.00 * (ref_close(0) - ref_close(1)) / ref_close(1)
-    log_debug("rate: %.2f%%", rate)
-    body += '涨幅: %.2f%%\n' % (rate)
+    # 当天放量
+    k = 0
+    rate = 100.00 * (ref_close(k) - ref_close(k+1)) / ref_close(k+1)
+    log_debug("rateT0: %.2f%%", rate)
+    body += '涨幅T0: %.2f%%\n' % (rate)
 
 
-    START_RATE = saiobj.g_wine_start_rate
+    START_RATE = 8.0  # saiobj.g_wine_start_rate
     if rate < START_RATE:
         log_info('start rate not match: %.2f%% > %.2f%%', rate, START_RATE)
         return 0
 
+    # 取T0成交量比
+    this_vr5     = ref_vol(k) / ref_vma5(k)
+    this_vr10    = ref_vol(k) / ref_vma10(k)
+    this_vr50    = ref_vol(k) / ref_vma50(k)
+    body += 'T0量比(5/10/50): %.2f, %.2f, %.2f\n' % (this_vr5, this_vr10, this_vr50)
+
+    if this_vr50 < 10:
+        log_debug("sorry: T0：量比不足: %.2f", this_vr50)
+        return 0
+    else:
+        log_info("T0: vol:      %.2f", ref_vol(k))
+        log_info("T0: vma5:     %.2f, this_vr5:  %.2f", ref_vma5(k),  this_vr5)
+        log_info("T0: vma10:    %.2f, this_vr10: %.2f", ref_vma10(k), this_vr10)
+        log_info("T0: vma50:    %.2f, this_vr50: %.2f", ref_vma50(k), this_vr50)
+        pass
+
+    # 前一天：涨停+缺口
+    k = 1
+    rate = 100.00 * (ref_close(k) - ref_close(k+1)) / ref_close(k+1)
+    log_debug("rateT1: %.2f%%", rate)
+    body += '涨幅T1: %.2f%%\n' % (rate)
+
+    # START_RATE = saiobj.g_wine_start_rate
+    if rate < 9.8:
+        log_info('start rate not match: %.2f%% > %.2f%%', rate, START_RATE)
+        return 0
+
+
     # 取跳空幅度
-    gap_rate = 100.00 * (ref_low(0) - ref_high(1)) / ref_close(1)
-    log_info("gap: %.2f%%",  gap_rate)
-
-    # 取成交量比
-    this_vr5     = ref_vol(0) / ref_vma5(0)
-    this_vr10    = ref_vol(0) / ref_vma10(0)
-    this_vr50    = ref_vol(0) / ref_vma50(0)
-    body += '今日量比(5/10/50): %.2f, %.2f, %.2f\n' % (this_vr5, this_vr10, this_vr50)
-
-    log_info("vol:      %.2f", ref_vol(0))
-    log_info("vma5:     %.2f, this_vr5:  %.2f", ref_vma5(0),  this_vr5)
-    log_info("vma10:    %.2f, this_vr10: %.2f", ref_vma10(0), this_vr10)
-    log_info("vma50:    %.2f, this_vr50: %.2f", ref_vma50(0), this_vr50)
-
-    # 取突破 
-    # - 天数*3
-    # - 均线
-
-    # 前一天贴近均线
-
-
-    """
-    step1 = saiobj.g_wine_step_down
-    # log_debug('step: %d', step1)
-
-
-    start = k1 + 1
-    k2 = wine_find_previous_highest_close(start, step1)
-    if k2 == 0:
-        # log_info('not found k2')
+    gap_rate = 100.00 * (ref_low(k) - ref_high(k+1)) / ref_high(k+1)
+    body += '缺口T1: %.2f%%\n' % (gap_rate)
+    if gap_rate < 5.0:
+        log_debug("sorry: 缺口不足: %.2f%%",  gap_rate)
         return 0
     else:
-        log_info('got k2 -- %d, %.2f, %s', k2, ref_close(k2), ref_date(k2))
-        body += '前高: ref(%d): %s\n' % (k2, ref_date(k2))
-
-    day1 = k2 - k1
-    acc1 = (ref_close(k1) - ref_close(k2)) * 100.00 / ref_close(k2)
-    log_info('down: days: %d, rate: %.2f%%', day1, acc1)
-    body += '累计跌幅: %.2f%%, %d天\n' % (acc1, day1)
-
-    ACC_RATE1 = saiobj.g_wine_total_down
-    if acc1 > ACC_RATE1:
-        log_info('acc1 rate not match: %.2f%% > %.2f%%', acc1, ACC_RATE1)
-        return 0
+        log_info("GAP: %.2f%%",  gap_rate)
+        pass
 
 
-    start = k2 + 1
-    step2 = saiobj.g_wine_step_up
-    k3 = wine_find_previous_lowest_close(start, step2)
-    if k3 == 0:
-        # log_info('not found k3')
+    # 取T1成交量比
+    this_vr5     = ref_vol(k) / ref_vma5(k)
+    this_vr10    = ref_vol(k) / ref_vma10(k)
+    this_vr50    = ref_vol(k) / ref_vma50(k)
+    body += 'T1量比(5/10/50): %.2f, %.2f, %.2f\n' % (this_vr5, this_vr10, this_vr50)
+
+    if this_vr50 < 5:
+        log_debug("sorry: T1：量比不足: %.2f", this_vr50)
         return 0
     else:
-        log_info('got k3 -- %d, %.2f, %s', k3, ref_close(k3), ref_date(k3))
-        body += '前低: ref(%d): %s\n' % (k3, ref_date(k3))
+        log_info("T1: vol:      %.2f", ref_vol(k))
+        log_info("T1: vma5:     %.2f, this_vr5:  %.2f", ref_vma5(k),  this_vr5)
+        log_info("T1: vma10:    %.2f, this_vr10: %.2f", ref_vma10(k), this_vr10)
+        log_info("T1: vma50:    %.2f, this_vr50: %.2f", ref_vma50(k), this_vr50)
+        pass
 
-    day2 = k3 - k2
-    acc2 = (ref_close(k2) - ref_close(k3)) * 100.00 / ref_close(k3)
-    log_info('up: days: %d, rate: %.2f%%', day2, acc2)
-    body += '累计升幅: %.2f%%, %d天\n' % (acc2, day2)
 
-    ACC_RATE2 = saiobj.g_wine_total_up
-    if acc2 < ACC_RATE2:
-        log_info('acc1 rate not match: %.2f%% < %.2f%%', acc2, ACC_RATE2)
+
+    # 缺口前3天，存在未突破50
+    k = 2
+    rule_break_just_now = ref_close(k)   < ref_ma50(k) or \
+                          ref_close(k+1) < ref_ma50(k+1) or \
+                          ref_close(k+2) < ref_ma50(k+2)
+    if rule_break_just_now:                          
+        log_info("good, break MA50 just now")
+    else:
+        log_debug("sorry, already break long time")
         return 0
+        
+
+    # 取突破天数
+    k = 1
+    b_day = wine_break_days(k, 80)
+    body += '突破天数: %d\n' % (b_day)
+    if b_day < 50:
+        log_debug("sorry: T1突破天数: %d", b_day)
+        return 0
+    else:
+        log_debug("T1突破天数: %d", b_day)
 
 
-    RATE_RATE = abs(1.0* acc2 / acc1)
-    log_info('RATE-RATE: %.2f', RATE_RATE)
-    if RATE_RATE >= 3:
+    body += "\n\n建议在阴线时，贴着均线MA5买入\n"
+    if True:
         log_info('bingo: %s -- %s', stock_id, this_date)
         wine_mail('gap', body)
         return 1
-    """
 
     return 0
 
@@ -132,7 +145,7 @@ if __name__=="__main__":
 
 
     stock_id = '600218'
-    trade_dt = '2019-01-14'
+    trade_dt = '2019-01-15'
 
     # saiobj.g_to_send_mail = True
 

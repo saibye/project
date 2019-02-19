@@ -226,29 +226,23 @@ def wine_find_previous_lowest_close(_start, _width):
 #
 #
 def wine_break_days(_start, _width):
-
     days = 0
-    last_date = ""
-    to_count = False
 
-    sen_close = ref_close(_start)
-    sen_high  = ref_high(_start)
+    sen_low = ref_low(_start)
 
     for x in range(_width):
-        i = x + _start
+        i = x + _start+1
 
         if i + 2 >= ref_len():
             log_error('too short: %d < %d', i+2, ref_len())
-            return 0
+            return days
 
-        log_debug("date: %s, %.2f", ref_date(i), ref_close(i))
+        if sen_low > ref_high(i):
+            days += 1
+        else:
+            break
 
-        if sen_close > ref_close(i):
-            lowest_price = ref_close(i)
-            lowest_day   = i
-
-
-    return days, last_date
+    return days
 
 
 
