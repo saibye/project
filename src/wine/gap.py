@@ -34,7 +34,7 @@ def gap_run():
     # 当天放量
     k = 0
     rate = 100.00 * (ref_close(k) - ref_close(k+1)) / ref_close(k+1)
-    log_debug("rateT0: %.2f%%", rate)
+    # log_debug("rateT0: %.2f%%", rate)
     body += '涨幅T0: %.2f%%\n' % (rate)
 
 
@@ -63,7 +63,7 @@ def gap_run():
     k = 1
     rate = 100.00 * (ref_close(k) - ref_close(k+1)) / ref_close(k+1)
     log_debug("rateT1: %.2f%%", rate)
-    body += '涨幅T1: %.2f%%\n' % (rate)
+    # body += '涨幅T1: %.2f%%\n' % (rate)
 
     # START_RATE = saiobj.g_wine_start_rate
     if rate < 9.8:
@@ -116,7 +116,7 @@ def gap_run():
     k = 1
     b_day = wine_break_days(k, 80)
     body += '突破天数: %d\n' % (b_day)
-    if b_day < 50:
+    if b_day < 10:
         log_debug("sorry: T1突破天数: %d", b_day)
         return 0
     else:
