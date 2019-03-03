@@ -134,10 +134,10 @@ def k_day_one_stock(_stock_id, _db):
 
     # qfq
     if max_date is None:
-        start_date = '2017-01-03'
         start_date = '2016-01-01'
         start_date = '2017-07-01'
         start_date = '2014-01-01'
+        start_date = '2017-01-03'
         log_debug("it's first time: [%s]", _stock_id)
     else:
         start_date = str(max_date)
