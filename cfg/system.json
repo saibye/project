@@ -1,0 +1,14 @@
+{
+
+    "mysql":{
+        "host"      :   "127.0.0.1",
+        "database"  :   "tu",
+        "username"  :   "tudev",
+        "password"  :   "123456",
+        "encoding"  :   "utf8"
+    },
+
+    "log":{
+        "level"     :   "debug"
+    }
+}
