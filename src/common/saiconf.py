@@ -11,6 +11,7 @@ import ConfigParser
 
 from sailog  import *
 
+# saiconf.py is older. 2019-3-3
 
 g_sai_conf = None
 

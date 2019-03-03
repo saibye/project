@@ -2,7 +2,7 @@
     "to_addr_prd":[
         {"email":"xxx@163.com"},
         {"email":"yyy@qq.com"}
-    ]
+    ],
 
     "to_addr_dev":[
         {"email":"zzz@gmail.com"}
