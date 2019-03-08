@@ -35,7 +35,8 @@ def island2_run():
     lowX = ref_low(0) 
 
     if lowX > ref_high(1):
-        log_info ("有缺口: %s -- %s", stock_id, this_date)
+        # log_info ("有缺口: %s -- %s", stock_id, this_date)
+        pass
     else:
         # log_debug("无缺口: %s -- %s", stock_id, this_date)
         return 0
@@ -47,14 +48,15 @@ def island2_run():
     # log_info("gapX: %.2f%%",  gap_rateX)
 
     if gap_rateX > 0.5:
-        log_info("gapX: %.2f%%",  gap_rateX)
+        # log_info("gapX: %.2f%%",  gap_rateX)
+        pass
     else:
         log_debug("gapX: %.2f%% too small",  gap_rateX)
         return 0
 
     # 涨幅
     rateX = 100.00 * (ref_close(0) - ref_close(1)) / ref_close(1)
-    log_debug("rateX: %.2f%%", rateX)
+    # log_debug("rateX: %.2f%%", rateX)
     body += '涨幅X: %.2f%%\n' % (rateX)
 
     START_RATE = saiobj.g_wine_start_rate

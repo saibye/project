@@ -72,12 +72,12 @@ def sixc_run():
     maxp2= max(ref_ma5(0), ref_ma10(0), ref_ma20(0), ref_ma50(0), ref_ma200(0))
 
     poly = 100.00 * (maxp - minp) / ref_close(1)
-    log_info("poly:   %.2f%%", poly)
+    # log_info("poly:   %.2f%%", poly)
     body += '聚合: %.2f%%\n' % (poly)
 
 
     poly2= 100.00 * (maxp2- minp2) / ref_close(1)
-    log_info("poly2:   %.2f%%", poly2)
+    # log_info("poly2:   %.2f%%", poly2)
     body += '聚合2: %.2f%%\n' % (poly2)
 
     zt1 = 100.00 * (ref_close(0) - maxp) / ref_close(1)

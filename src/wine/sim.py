@@ -43,7 +43,7 @@ def sim_run():
 
     START_RATE = saiobj.g_wine_start_rate
     if rate > START_RATE:
-        log_info('start rate not match: %.2f%% > %.2f%%', rate, START_RATE)
+        # log_info('start rate not match: %.2f%% > %.2f%%', rate, START_RATE)
         return 0
 
     step1 = saiobj.g_wine_step_down

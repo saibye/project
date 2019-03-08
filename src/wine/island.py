@@ -46,19 +46,20 @@ def island_run():
     body += '缺口X: %.2f%%\n' % (gap_rateX)
 
     if gap_rateX > 1.0:
-        log_info("gapX: %.2f%%",  gap_rateX)
+        # log_info("gapX: %.2f%%",  gap_rateX)
+        pass
     else:
         log_debug("gapX: %.2f%% too small",  gap_rateX)
         return 0
 
     # 涨幅
     rateX = 100.00 * (ref_close(0) - ref_close(1)) / ref_close(1)
-    log_debug("rateX: %.2f%%", rateX)
+    # log_debug("rateX: %.2f%%", rateX)
     body += '涨幅X: %.2f%%\n' % (rateX)
 
     START_RATE = saiobj.g_wine_start_rate
     if rateX < START_RATE:
-        log_info('start rateX too small: %.2f%% > %.2f%%', rateX, START_RATE)
+        # log_info('start rateX too small: %.2f%% < %.2f%%', rateX, START_RATE)
         return 0
 
 
