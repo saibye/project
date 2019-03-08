@@ -15,6 +15,8 @@ from sairef     import *
 from saisql     import *
 from saitech    import *
 from saitick    import *
+from saijson    import *
+from saiconfig  import *
 
 
 __all__ = ['log_debug',
