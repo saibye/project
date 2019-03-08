@@ -89,9 +89,6 @@ def roo_run():
     zt2   = 100.00 * (ref_close(2) - ref_open(2))  / ref_close(3)
     log_debug("rate2: %.2f%%, zt1:%.2f%%", rate2, zt2)
 
-    if ref_high(1) < ref_low(2):
-        body += "有缺口\n"
-
 
     if rate2 < -3.0:
         pass
@@ -99,6 +96,14 @@ def roo_run():
         log_debug("sorry, day2 not match")
         return 0
         
+    rule2 = ref_high(1) < ref_low(2)
+    if rule2:
+        log_info("day2 has gap")
+        body += "有缺口\n"
+        pass
+    else:
+        log_debug("sorry, day2 gap not match")
+        return 0
 
 
     if True:

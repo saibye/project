@@ -25,6 +25,7 @@ from sim     import *
 from island  import *
 from island_weak  import *
 from gap     import *
+from roo     import *
 
 
 def my_work_one_day_stock(_txn_list, _one, _date, _db):
