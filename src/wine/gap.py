@@ -49,7 +49,7 @@ def gap_run():
     this_vr50    = ref_vol(k) / ref_vma50(k)
     body += 'T0量比(5/10/50): %.2f, %.2f, %.2f\n' % (this_vr5, this_vr10, this_vr50)
 
-    if this_vr50 < 10:
+    if this_vr50 < 3.2:
         log_debug("sorry: T0：量比不足: %.2f", this_vr50)
         return 0
     else:
@@ -88,6 +88,7 @@ def gap_run():
     this_vr50    = ref_vol(k) / ref_vma50(k)
     body += 'T1量比(5/10/50): %.2f, %.2f, %.2f\n' % (this_vr5, this_vr10, this_vr50)
 
+    """
     if this_vr50 < 5:
         log_debug("sorry: T1：量比不足: %.2f", this_vr50)
         return 0
@@ -97,14 +98,16 @@ def gap_run():
         log_info("T1: vma10:    %.2f, this_vr10: %.2f", ref_vma10(k), this_vr10)
         log_info("T1: vma50:    %.2f, this_vr50: %.2f", ref_vma50(k), this_vr50)
         pass
-
+    """
 
 
     # 缺口前3天，存在未突破50
     k = 2
-    rule_break_just_now = ref_close(k)   < ref_ma50(k) or \
-                          ref_close(k+1) < ref_ma50(k+1) or \
-                          ref_close(k+2) < ref_ma50(k+2)
+    disA = 100.00 * abs(ref_close(k) - ref_ma50(k)) / ref_ma50(k)
+    disB = 100.00 * abs(ref_close(k+1) - ref_ma50(k+1)) / ref_ma50(k+1)
+    disC = 100.00 * abs(ref_close(k+2) - ref_ma50(k+2)) / ref_ma50(k+2)
+    log_debug("disABC: %.2f, %.2f, %.2f", disA, disB, disC)
+    rule_break_just_now = min(disA, disB, disC) < 3.0
     if rule_break_just_now:                          
         log_info("good, break MA50 just now")
     else:
@@ -144,8 +147,13 @@ if __name__=="__main__":
     sai_load_conf2('wine.cfg')
 
 
+    # 全柴动力
     stock_id = '600218'
     trade_dt = '2019-01-15'
+
+    # 华仪电气
+    stock_id = '600290'
+    trade_dt = '2019-03-13'
 
     # saiobj.g_to_send_mail = True
 
