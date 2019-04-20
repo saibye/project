@@ -26,6 +26,7 @@ from island  import *
 from island_weak  import *
 from gap     import *
 from roo     import *
+from after_gap import *
 
 
 def my_work_one_day_stock(_txn_list, _one, _date, _db):

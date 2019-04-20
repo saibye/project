@@ -8,29 +8,29 @@ from pub    import *
 
 
 # 缺口
-# code at 2019-1-26
-# 600218 全柴动力
-# strict version
+# code at 2019-4-20
+# 002824 和胜股份
+#
 
-def gap_load_cfg():
-    saiobj.g_wine_start_rate= float(sai_conf_get2('gap', 'start_rate'))
-    #log_debug('gap config loaded')
+def after_gap_load_cfg():
+    saiobj.g_wine_start_rate= float(sai_conf_get2('after_gap', 'start_rate'))
+    #log_debug('after_gap config loaded')
 
 
 
-def gap_run():
+def after_gap_run():
     body = ''
 
     stock_id  = ref_id(0)
     this_date = ref_date(0)
 
-    log_debug('TRAN gap: %s -- %s', stock_id, this_date)
+    log_debug('TRAN after_gap: %s -- %s', stock_id, this_date)
 
     length = ref_len()
     if length < 100:
         return 0
 
-    gap_load_cfg()
+    after_gap_load_cfg()
 
     # 当天放量
     k = 0
@@ -73,13 +73,13 @@ def gap_run():
 
 
     # 取跳空幅度
-    gap_rate = 100.00 * (ref_low(k) - ref_high(k+1)) / ref_high(k+1)
-    body += '缺口T1: %.2f%%\n' % (gap_rate)
-    if gap_rate < 5.0:
-        log_debug("sorry: 缺口不足: %.2f%%",  gap_rate)
+    after_gap_rate = 100.00 * (ref_low(k) - ref_high(k+1)) / ref_high(k+1)
+    body += '缺口T1: %.2f%%\n' % (after_gap_rate)
+    if after_gap_rate < 2.4:
+        log_debug("sorry: 缺口不足: %.2f%%",  after_gap_rate)
         return 0
     else:
-        log_info("GAP: %.2f%%",  gap_rate)
+        log_info("GAP: %.2f%%",  after_gap_rate)
         pass
 
 
@@ -102,45 +102,54 @@ def gap_run():
     """
 
 
-    # 缺口前3天，存在未突破50
+    # 之前三天累计涨幅 < 30%
     k = 2
-    disA = 100.00 * abs(ref_close(k) - ref_ma50(k)) / ref_ma50(k)
-    disB = 100.00 * abs(ref_close(k+1) - ref_ma50(k+1)) / ref_ma50(k+1)
-    disC = 100.00 * abs(ref_close(k+2) - ref_ma50(k+2)) / ref_ma50(k+2)
-    log_debug("disABC: %.2f, %.2f, %.2f", disA, disB, disC)
-    rule_break_just_now = min(disA, disB, disC) < 3.0
+    rate2 = 100.00 * (ref_close(k) - ref_close(k+3)) / ref_close(k+3)
+    rule_break_just_now = rate2 < 20
     if rule_break_just_now:                          
-        log_info("good, break MA50 just now")
+        log_info("good, break not too far: %.2f%%", rate2)
     else:
-        log_debug("sorry, already break long time")
+        log_debug("sorry, already break long time: %.2f%%", rate2)
+        return 0
+
+
+    # T0没有回补T2
+    k = 0
+    if ref_low(k) < ref_high(k+2):
+        log_debug("sorry, already back")
         return 0
         
 
     # 取突破天数
     k = 1
-    b_day = wine_break_days(k, 80)
+    b_day = wine_close_break_days(k, 80)
     body += '突破天数: %d\n' % (b_day)
-    if b_day < 10:
+    if b_day < 4:
         log_debug("sorry: T1突破天数: %d", b_day)
         return 0
     else:
-        log_debug("T1突破天数: %d", b_day)
+        log_debug("T1突破天数: %d+", b_day)
 
 
-    body += "\n\n建议在阴线时，贴着均线MA5买入\n"
+    body += "\n\n+++++务必贴着均线MA5买入\n"
+    body += "++++务必保持趋势/均线向上\n"
+    body += "+++低开加分\n"
+    body += "+++收跌加分\n"
+    body += "++阴线加分\n"
+    body += "+vol(k0)>vol(k1)加分\n"
     if True:
         log_info('bingo: %s -- %s', stock_id, this_date)
-        wine_mail('gap', body)
+        wine_mail('after_gap', body)
         return 1
 
     return 0
 
 
-saiobj.g_func_map['gap'] = gap_run
+saiobj.g_func_map['after_gap'] = after_gap_run
 
 
 if __name__=="__main__":
-    sailog_set("gap.log")
+    sailog_set("after_gap.log")
 
     db = db_init()
     saiobj.g_db = db
@@ -148,27 +157,47 @@ if __name__=="__main__":
     sai_load_conf2('wine.cfg')
 
 
-    # 全柴动力
-    stock_id = '600218'
-    trade_dt = '2019-01-15'
+    # 和胜股份
+    stock_id = '002824'
+    trade_dt = '2019-03-19'
 
-    # 华仪电气
-    stock_id = '600290'
-    trade_dt = '2019-03-13'
+    # 
+    stock_id = '002099'
+    trade_dt = '2019-02-19'
 
-    # 启迪古汉
-    stock_id = '000590'
-    trade_dt = '2019-03-12'
+    # 
+    stock_id = '002124'
+    trade_dt = '2018-11-16'
+
+    # 
+    stock_id = '603329'
+    trade_dt = '2019-04-08'
+
+    # 
+    stock_id = '600775'
+    trade_dt = '2019-02-26'
+
+    # 
+    stock_id = '002496'
+    trade_dt = '2019-04-02'
+
+    # 
+    stock_id = '000792'
+    trade_dt = '2017-09-12'
+
+    # 
+    stock_id = '600846'
+    trade_dt = '2017-07-21'
 
     # saiobj.g_to_send_mail = True
 
     sai_fmt_set_fetch_len(200)
     df = sai_fmt_simple(stock_id, trade_dt, db)
-    gap_run()
+    after_gap_run()
 
     db_end(db)
 
     log_debug("--end")
 
 
-# gap.py
+# after_gap.py

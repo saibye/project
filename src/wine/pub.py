@@ -222,13 +222,37 @@ def wine_find_previous_lowest_close(_start, _width):
 
 
 #
-# X点往前突破天数
+# X点往前突破天数(low)
 #
 #
 def wine_break_days(_start, _width):
     days = 0
 
     sen_low = ref_low(_start)
+
+    for x in range(_width):
+        i = x + _start+1
+
+        if i + 2 >= ref_len():
+            log_error('too short: %d < %d', i+2, ref_len())
+            return days
+
+        if sen_low > ref_high(i):
+            days += 1
+        else:
+            break
+
+    return days
+
+
+#
+# X点往前突破天数(close)
+#
+#
+def wine_close_break_days(_start, _width):
+    days = 0
+
+    sen_low = ref_close(_start)
 
     for x in range(_width):
         i = x + _start+1
