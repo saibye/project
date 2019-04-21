@@ -165,6 +165,10 @@ if __name__=="__main__":
     trade_dt = '2019-02-11'
     stock_id = '600086'
 
+    # 
+    trade_dt = '2018-10-23'
+    stock_id = '002575'
+
     sai_fmt_set_fetch_len(200)
     df = sai_fmt_simple(stock_id, trade_dt, db)
     island_run()

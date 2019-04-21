@@ -75,7 +75,7 @@ def after_gap_run():
     # 取跳空幅度
     after_gap_rate = 100.00 * (ref_low(k) - ref_high(k+1)) / ref_high(k+1)
     body += '缺口T1: %.2f%%\n' % (after_gap_rate)
-    if after_gap_rate < 2.4:
+    if after_gap_rate < 1.9:
         log_debug("sorry: 缺口不足: %.2f%%",  after_gap_rate)
         return 0
     else:
@@ -188,6 +188,14 @@ if __name__=="__main__":
     # 
     stock_id = '600846'
     trade_dt = '2017-07-21'
+
+    # 
+    stock_id = '000651'
+    trade_dt = '2019-04-10'
+
+    # 
+    stock_id = '600396'
+    trade_dt = '2019-02-19'
 
     # saiobj.g_to_send_mail = True
 

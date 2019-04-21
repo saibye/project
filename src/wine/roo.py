@@ -47,7 +47,7 @@ def roo_run():
         return 0
 
     # day0, high
-    rule0 = ref_high(0) > ref_high(1) and zt0 < 2.0
+    rule0 = ref_high(0) > ref_high(1) and zt0 < 8.0
     if rule0:
         log_info("high point matched")
         pass
@@ -68,7 +68,7 @@ def roo_run():
     log_debug("shadow1: %.2f%%", shadow)
                                      
 
-    if rate1 < 1.0 and shadow > 4.0 and zt1 < 2.0:
+    if rate1 < 3.0 and shadow > 4.0 and zt1 < 3.0:
         pass
     else:
         log_debug("sorry, day1 not match")
@@ -96,7 +96,7 @@ def roo_run():
         log_debug("sorry, day2 not match")
         return 0
         
-    rule2 = ref_high(1) < ref_low(2)
+    rule2 = ref_high(1) < ref_low(2) or ref_high(2) < ref_low(3)
     if rule2:
         log_info("day2 has gap")
         body += "有缺口\n"
@@ -131,6 +131,14 @@ if __name__=="__main__":
     # 东信和平
     trade_dt = '2018-12-03'
     stock_id = '002017'
+
+    #
+    trade_dt = '2019-04-01'
+    stock_id = '002742'
+
+    #
+    trade_dt = '2019-02-11'
+    stock_id = '000760'
 
 
     sai_fmt_set_fetch_len(200)

@@ -81,8 +81,7 @@ def island2_run():
     close_price = ref_close(pair_day)
     press_rule =  close_price  < ref_ma5(pair_day) and \
         close_price < ref_ma10(pair_day) and \
-        close_price < ref_ma20(pair_day) and \
-        close_price < ref_ma50(pair_day)
+        close_price < ref_ma20(pair_day)
     if not press_rule:
         log_debug("未压制")
         return 0
@@ -155,6 +154,15 @@ if __name__=="__main__":
     # 南京证券
     trade_dt = '2018-10-23'
     stock_id = '601990'
+
+    # 
+    trade_dt = '2019-02-11'
+    stock_id = '600614'
+
+    # 
+    trade_dt = '2019-01-31'
+    stock_id = '300010'
+
 
     sai_fmt_set_fetch_len(200)
     df = sai_fmt_simple(stock_id, trade_dt, db)
