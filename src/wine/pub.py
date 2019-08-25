@@ -314,4 +314,191 @@ def wine_island_exist(_start, _width):
 
     return pair_day, highest
 
+
+#
+# 从X点开始往前最靠近ma200(close)
+#
+#
+def wine_near_with_ma200(_start, _width):
+    min_rate = 100.00
+    min_idx  = -1
+
+
+    for x in range(_width):
+        i = x + _start+1
+
+        if i + 2 >= ref_len():
+            log_error('too short: %d < %d', i+2, ref_len())
+            return days
+
+        rate = 100.00 * abs(ref_close(i) - ref_ma200(i)) / ref_ma200(i)
+        if rate < min_rate:
+            min_rate = rate
+            min_idx  = i
+            # log_debug("min: %d, %.2f", min_idx, min_rate)
+        else:
+            pass
+
+    return min_rate, min_idx
+
+#
+# 从X点开始往前最靠近ma50(close)
+#
+#
+def wine_near_with_ma50(_start, _width):
+    min_rate = 100.00
+    min_idx  = -1
+
+
+    for x in range(_width):
+        i = x + _start+1
+
+        if i + 2 >= ref_len():
+            log_error('too short: %d < %d', i+2, ref_len())
+            return days
+
+        rate = 100.00 * abs(ref_close(i) - ref_ma50(i)) / ref_ma50(i)
+        if rate < min_rate:
+            min_rate = rate
+            min_idx  = i
+            # log_debug("min: %d, %.2f", min_idx, min_rate)
+        else:
+            pass
+
+    return min_rate, min_idx
+
+
+#
+# X点往前突破天数(volume)
+#
+#
+def wine_volume_break_days(_start, _width):
+    days = 0
+
+    sen_vol = ref_vol(_start)
+
+    for x in range(_width):
+        i = x + _start+1
+
+        if i + 2 >= ref_len():
+            log_error('too short: %d < %d', i+2, ref_len())
+            return days
+
+        if sen_vol > ref_vol(i):
+            days += 1
+        else:
+            break
+
+    return days
+
+
+#
+# X点往前突破天数(close)
+#
+#
+def wine_close_break_days2(_start, _width):
+    days = 0
+
+    sen_price = ref_close(_start)
+
+    for x in range(_width):
+        i = x + _start+1
+
+        if i + 2 >= ref_len():
+            log_error('too short: %d < %d', i+2, ref_len())
+            return days
+
+        if sen_price > ref_close(i):
+            days += 1
+        else:
+            break
+
+    return days
+
+
+#
+# X点往前5/10最近(ma)
+#
+#
+def wine_ma5_twist_ma10(_start, _width):
+    min_rate = 100.00
+    min_idx  = -1
+
+
+    for x in range(_width):
+        i = x + _start+1
+
+        if i + 2 >= ref_len():
+            log_error('too short: %d < %d', i+2, ref_len())
+            return days
+
+        rate = 100.00 * abs(ref_ma5(i) - ref_ma10(i)) / ref_ma10(i)
+        if rate < min_rate:
+            min_rate = rate
+            min_idx  = i
+            # log_debug("min: %d, %.2f", min_idx, min_rate)
+        else:
+            pass
+
+    return min_rate, min_idx
+
+
+#
+# X点往前均线粘合最紧的(ma)
+# ma5, 10, 20, 50, 200
+#
+def wine_ma_twist_5line(_start, _width):
+    min_rate = 100.00
+    min_idx  = -1
+
+
+    for x in range(_width):
+        i = x + _start+1
+
+        if i + 2 >= ref_len():
+            log_error('too short: %d < %d', i+2, ref_len())
+            return days
+
+        maxp = max(ref_ma5(i), ref_ma10(i), ref_ma20(i), ref_ma50(i), ref_ma200(i))
+        minp = min(ref_ma5(i), ref_ma10(i), ref_ma20(i), ref_ma50(i), ref_ma200(i))
+        rate = 100.00 * abs(maxp - minp) / ref_ma200(i)
+        if rate < min_rate:
+            min_rate = rate
+            min_idx  = i
+            # log_debug("min: %d, %.2f", min_idx, min_rate)
+        else:
+            pass
+
+    return min_rate, min_idx
+
+
+#
+# X点往前均线粘合最紧的(ma)
+# ma5, 10, 20, 50
+#
+def wine_ma_twist_4line(_start, _width):
+    min_rate = 100.00
+    min_idx  = -1
+
+
+    for x in range(_width):
+        i = x + _start+1
+
+        if i + 2 >= ref_len():
+            log_error('too short: %d < %d', i+2, ref_len())
+            return days
+
+        maxp = max(ref_ma5(i), ref_ma10(i), ref_ma20(i), ref_ma50(i))
+        minp = min(ref_ma5(i), ref_ma10(i), ref_ma20(i), ref_ma50(i))
+        rate = 100.00 * abs(maxp - minp) / ref_ma50(i)
+        if rate < min_rate:
+            min_rate = rate
+            min_idx  = i
+            # log_debug("min: %d, %.2f", min_idx, min_rate)
+        else:
+            pass
+
+    return min_rate, min_idx
+
+
 # pub.py

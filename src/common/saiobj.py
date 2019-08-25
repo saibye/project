@@ -47,6 +47,12 @@ g_wine_open_rate = -9
 g_wine_gap_rate  = -3
 
 
+g_wine_vol_break = 50
+g_wine_pri_break = 30
+g_wine_lower_edge= -2
+g_wine_upper_edge= 8
+
+
 
 if __name__=="__main__":
     sailog_set("saiobj.log")
