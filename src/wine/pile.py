@@ -44,9 +44,9 @@ def pile_run():
     vr50 = ref_vol(k) / ref_vma50(k)
     vr10 = ref_vol(k) / ref_vma10(k)
     vr5  = ref_vol(k) / ref_vma5(k)
-    body += "vr50: %.2f%%\n" % (vr50)
-    body += "vr10: %.2f%%\n" % (vr10)
-    body += "vr5 : %.2f%%\n" % (vr5)
+    body += "vr50: %.2f\n" % (vr50)
+    body += "vr10: %.2f\n" % (vr10)
+    body += "vr5 : %.2f\n" % (vr5)
     vr_rule = vr50 >= 2 and vr10 >= 2 and vr5 >= 2
 
     log_debug("PILE-DAY: vr50: %.2f", vr50)
