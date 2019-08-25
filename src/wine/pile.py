@@ -44,7 +44,9 @@ def pile_run():
     vr50 = ref_vol(k) / ref_vma50(k)
     vr10 = ref_vol(k) / ref_vma10(k)
     vr5  = ref_vol(k) / ref_vma5(k)
-    body += "vr: %.2f%%\n" % (vr50)
+    body += "vr50: %.2f%%\n" % (vr50)
+    body += "vr10: %.2f%%\n" % (vr10)
+    body += "vr5 : %.2f%%\n" % (vr5)
     vr_rule = vr50 >= 2 and vr10 >= 2 and vr5 >= 2
 
     log_debug("PILE-DAY: vr50: %.2f", vr50)
@@ -67,6 +69,7 @@ def pile_run():
     vol_break_days  = wine_volume_break_days(k, 200)
     vol_break_rule  = vol_break_days >= saiobj.g_wine_vol_break
     log_debug("PILE-DAY: volume break days: %d, rule: %s", vol_break_days, vol_break_rule)
+    body += "volume break days: %d\n" % (vol_break_days)
 
     if vol_break_rule:
         pass
@@ -243,7 +246,7 @@ def pile_run():
 
     ## sum(rate(0, 1, 2)  < 10%
     total_rate  = 100.00 * (ref_close(0) - ref_close(3)) / ref_close(3)
-    total_rate_rule = total_rate < 11
+    total_rate_rule = total_rate < 10
     log_debug("3day: TOTAL-rate: %.2f%%, rule: %s", total_rate, total_rate_rule)
     if total_rate_rule:
         pass
@@ -373,7 +376,7 @@ if __name__=="__main__":
                 ['603811', '2019-08-20', 1],  # 诚意药业
                 ['603658', '2019-08-14', 1],  # 安图生物
                 ['300520', '2017-09-01', 1],  # 科大国创
-                ['300709', '2019-08-14', 1],  # 精研科技 fail price
+                ['300709', '2019-08-14', 1],  # 精研科技 fail 
                 ]
         idx = 0
         for item in check_list:
