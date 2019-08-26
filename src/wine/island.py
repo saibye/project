@@ -114,6 +114,32 @@ def island_run():
     body += '涨幅Z: %.2f%%\n' % (rateZ)
 
 
+    k = 0
+    vr50 = ref_vol(k) / ref_vma50(k)
+    vr10 = ref_vol(k) / ref_vma10(k)
+    vr5  = ref_vol(k) / ref_vma5(k)
+    body += "vr50: %.2f\n" % (vr50)
+    body += "vr10: %.2f\n" % (vr10)
+    body += "vr5 : %.2f\n" % (vr5)
+    log_debug("ISLAND: vr50: %.2f", vr50)
+    log_debug("ISLAND: vr10: %.2f", vr10)
+    log_debug("ISLAND: vr5 : %.2f", vr5)
+
+    counter = 0
+    if vr50 >= 2:
+        counter += 1
+    if vr10 >= 2:
+        counter += 1
+    if vr5  >= 2:
+        counter += 1
+
+    # TODO
+    log_debug("量比超过2的天数: %d", counter)
+    if counter >= 2:
+        pass
+    else:
+        log_info("无量，取消: %d", counter)
+
 
     if True:
         log_info('bingo: %s -- %s', stock_id, this_date)
@@ -135,6 +161,7 @@ if __name__=="__main__":
     sai_load_conf2('wine.cfg')
 
 
+    """
     # bad1
     trade_dt = '2019-01-18'
     stock_id = '300116'
@@ -149,10 +176,6 @@ if __name__=="__main__":
     trade_dt = '2018-10-15'
     stock_id = '000616'
 
-    # 初灵信息
-    trade_dt = '2019-01-31'
-    stock_id = '300250'
-
     # bad3
     trade_dt = '2018-10-15'
     stock_id = '603008'
@@ -161,17 +184,46 @@ if __name__=="__main__":
     trade_dt = '2018-10-15'
     stock_id = '300638'
 
-    # 东方金钰
+    # 东方金钰 TODO
     trade_dt = '2019-02-11'
     stock_id = '600086'
 
-    # 
+    # 群兴玩具 TODO
     trade_dt = '2018-10-23'
     stock_id = '002575'
 
     sai_fmt_set_fetch_len(200)
     df = sai_fmt_simple(stock_id, trade_dt, db)
     island_run()
+    """
+
+
+    check_list = [
+            ['300250', '2019-01-31', 1],  # 初灵信息
+            ['002575', '2018-10-23', 1],  # 群兴玩具 fail
+            ]
+    idx = 0
+    for item in check_list:
+        log_debug("-" * 60)
+        stock_id = item[0]
+        trade_dt = item[1]
+        expect   = item[2]
+        log_debug("idx: %dth, stock_id: %s, trade_date: %s, expect: %d", idx, stock_id, trade_dt, expect)
+
+        sai_fmt_set_fetch_len(220)
+        df = sai_fmt_simple(stock_id, trade_dt, db)
+        rv = island_run()
+        if rv != expect:
+            log_error("sorry: NOT match: %s, %s, %d", stock_id, trade_dt, expect)
+            break
+        else:
+            log_info("nice, RE got matched: %s, %s, %d", stock_id, trade_dt, expect)
+
+        log_debug("-" * 60)
+        idx += 1
+
+    if idx == len(check_list):
+        log_info("bingo: all matched")
 
     db_end(db)
 

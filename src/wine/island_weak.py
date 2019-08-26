@@ -93,7 +93,7 @@ def island2_run():
     body += '缺口Y: %.2f%%\n' % (gap_rateY)
     log_info("gapY: %.2f%%",  gap_rateY)
 
-    if gap_rateY > 0.5:
+    if gap_rateY >= 0.15:
         log_info("gapY: %.2f%%",  gap_rateY)
     else:
         log_debug("gapY: %.2f%% too small",  gap_rateY)
@@ -110,6 +110,34 @@ def island2_run():
     log_debug("rateZ: %.2f%%", rateZ)
     body += '涨幅Z: %.2f%%\n' % (rateZ)
 
+
+    k = 0
+    vr50 = ref_vol(k) / ref_vma50(k)
+    vr10 = ref_vol(k) / ref_vma10(k)
+    vr5  = ref_vol(k) / ref_vma5(k)
+    body += "vr50: %.2f\n" % (vr50)
+    body += "vr10: %.2f\n" % (vr10)
+    body += "vr5 : %.2f\n" % (vr5)
+    log_debug("ISLAND: vr50: %.2f", vr50)
+    log_debug("ISLAND: vr10: %.2f", vr10)
+    log_debug("ISLAND: vr5 : %.2f", vr5)
+
+    counter = 0
+    if vr50 >= 2:
+        counter += 1
+
+    if vr10 >= 2:
+        counter += 1
+
+    if vr5  >= 2:
+        counter += 1
+
+    log_debug("量比超过2的天数: %d", counter)
+    if counter >= 2:
+        pass
+    else:
+        log_info("无量，取消: %d", counter)
+        return 0
 
 
     if True:
@@ -135,38 +163,35 @@ if __name__=="__main__":
     # saiobj.g_to_send_mail = True
 
 
-    # 紫光学大
-    trade_dt = '2018-10-26'
-    stock_id = '000526'
+    check_list = [
+            ['000526', '2018-10-29', 1],  # 紫光学大
+            ['600369', '2018-10-23', 1],  # 西南证券
+            ['601375', '2018-10-23', 1],  # 中原证券
+            ['601990', '2018-10-23', 1],  # 南京证券
+            ['300010', '2019-01-31', 1],  # 立思辰
+            ]
+    idx = 0
+    for item in check_list:
+        log_debug("-" * 60)
+        stock_id = item[0]
+        trade_dt = item[1]
+        expect   = item[2]
+        log_debug("idx: %dth, stock_id: %s, trade_date: %s, expect: %d", idx, stock_id, trade_dt, expect)
 
-    # 新力金融
-    trade_dt = '2019-02-12'
-    stock_id = '600318'
+        sai_fmt_set_fetch_len(220)
+        df = sai_fmt_simple(stock_id, trade_dt, db)
+        rv = island2_run()
+        if rv != expect:
+            log_error("sorry: NOT match: %s, %s, %d", stock_id, trade_dt, expect)
+            break
+        else:
+            log_info("nice, RE got matched: %s, %s, %d", stock_id, trade_dt, expect)
 
-    # 西南证券
-    trade_dt = '2018-10-23'
-    stock_id = '600369'
+        log_debug("-" * 60)
+        idx += 1
 
-    # 中原证券
-    trade_dt = '2018-10-23'
-    stock_id = '601375'
-
-    # 南京证券
-    trade_dt = '2018-10-23'
-    stock_id = '601990'
-
-    # 
-    trade_dt = '2019-02-11'
-    stock_id = '600614'
-
-    # 
-    trade_dt = '2019-01-31'
-    stock_id = '300010'
-
-
-    sai_fmt_set_fetch_len(200)
-    df = sai_fmt_simple(stock_id, trade_dt, db)
-    island2_run()
+    if idx == len(check_list):
+        log_info("bingo: all matched")
 
     db_end(db)
 
