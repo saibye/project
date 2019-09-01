@@ -501,4 +501,128 @@ def wine_ma_twist_4line(_start, _width):
     return min_rate, min_idx
 
 
+#
+# 从X点开始往前找缺口
+#
+#
+def wine_find_previous_gap(_start, _width):
+    idx  = -1
+    rate = 0.0
+
+
+    for x in range(_width):
+        i = x + _start+1
+
+        if i + 2 >= ref_len():
+            log_error('too short: %d < %d', i+2, ref_len())
+            return days
+
+        rule = ref_low(i) > ref_high(i+1)
+        if rule:
+            rate = 100.00 * (ref_close(i) - ref_close(i+1)) / ref_close(i+1)
+            idx  = i
+            # log_debug("gap: %d, %.2f, %s", idx, rate, ref_date(i))
+            break
+        else:
+            pass
+
+    return rate, idx
+
+
+#
+# 区间平均值和方差
+#
+#
+def wine_region_calculation(_start, _width):
+    idx  = -1
+    rate = 0.0
+
+
+    sum = 0.0
+
+    # avg
+    for x in range(_width):
+        i = x + _start+1
+
+        if i + 2 >= ref_len():
+            log_error('too short: %d < %d', i+2, ref_len())
+            return days
+
+        # log_debug("%s", ref_date(i))
+        sum = sum + ref_close(i)
+
+    avg = sum / _width
+    # log_debug("avg: %.2f", avg)
+
+
+    # std
+    sum = 0.0
+    for x in range(_width):
+        i = x + _start+1
+
+        if i + 2 >= ref_len():
+            log_error('too short: %d < %d', i+2, ref_len())
+            return days
+
+        sum = sum + (ref_close(i) - avg) * (ref_close(i) - avg)
+
+    std = sum / _width
+    # log_debug("std: %.2f", std)
+    
+
+    return avg, std
+
+
+#
+# 区间fish
+#
+#
+def wine_find_fish(_start, _width):
+
+    last = 1
+    counter = 0
+
+    lst = []
+
+    # avg
+    for x in range(_width):
+        i = x + _start
+
+        if i + 2 >= ref_len():
+            log_error('too short: %d < %d', i+2, ref_len())
+            return days
+
+        diff = ref_ma5(i) - ref_ma10(i)
+
+        if diff > 0.0:
+            if last > 0:
+                counter += 1
+                # log_debug("%s, %.2f -- POSI-inc", ref_date(i), diff)
+            else:
+                last = 1
+                # save NEGTIVE counter
+                lst.append(counter)
+                # log_debug("%s, %.2f -- POSI-rev: save %d", ref_date(i), diff, counter)
+                counter = 1
+        elif diff < 0.0:
+            if last > 0:
+                last = -1
+                # save POSITIVE counter
+                lst.append(counter)
+                # log_debug("%s, %.2f -- NEG-rev: save %d", ref_date(i), diff, counter)
+                counter = -1
+            else:
+                counter -= 1
+                # log_debug("%s, %.2f -- NEG-inc", ref_date(i), diff)
+        else:
+            # log_debug("it's a zero")
+            continue
+
+    lst.append(counter)
+
+    # log_debug("%s", lst)
+
+    return lst
+
+
 # pub.py
