@@ -329,7 +329,7 @@ def wine_near_with_ma200(_start, _width):
 
         if i + 2 >= ref_len():
             log_error('too short: %d < %d', i+2, ref_len())
-            return days
+            return 100.00, -1
 
         rate = 100.00 * abs(ref_close(i) - ref_ma200(i)) / ref_ma200(i)
         if rate < min_rate:
@@ -354,8 +354,8 @@ def wine_near_with_ma50(_start, _width):
         i = x + _start+1
 
         if i + 2 >= ref_len():
-            log_error('too short: %d < %d', i+2, ref_len())
-            return days
+            log_error('error: too short: %d < %d', i+2, ref_len())
+            return 100.00, -1
 
         rate = 100.00 * abs(ref_close(i) - ref_ma50(i)) / ref_ma50(i)
         if rate < min_rate:
@@ -430,7 +430,7 @@ def wine_ma5_twist_ma10(_start, _width):
 
         if i + 2 >= ref_len():
             log_error('too short: %d < %d', i+2, ref_len())
-            return days
+            return 100.00, -1
 
         rate = 100.00 * abs(ref_ma5(i) - ref_ma10(i)) / ref_ma10(i)
         if rate < min_rate:
@@ -457,7 +457,7 @@ def wine_ma_twist_5line(_start, _width):
 
         if i + 2 >= ref_len():
             log_error('too short: %d < %d', i+2, ref_len())
-            return days
+            return 100.00, -1
 
         maxp = max(ref_ma5(i), ref_ma10(i), ref_ma20(i), ref_ma50(i), ref_ma200(i))
         minp = min(ref_ma5(i), ref_ma10(i), ref_ma20(i), ref_ma50(i), ref_ma200(i))
@@ -486,7 +486,7 @@ def wine_ma_twist_4line(_start, _width):
 
         if i + 2 >= ref_len():
             log_error('too short: %d < %d', i+2, ref_len())
-            return days
+            return 100.00, -1
 
         maxp = max(ref_ma5(i), ref_ma10(i), ref_ma20(i), ref_ma50(i))
         minp = min(ref_ma5(i), ref_ma10(i), ref_ma20(i), ref_ma50(i))
@@ -515,7 +515,7 @@ def wine_find_previous_gap(_start, _width):
 
         if i + 2 >= ref_len():
             log_error('too short: %d < %d', i+2, ref_len())
-            return days
+            return 0.0, -1
 
         rule = ref_low(i) > ref_high(i+1)
         if rule:
@@ -545,8 +545,8 @@ def wine_region_calculation(_start, _width):
         i = x + _start+1
 
         if i + 2 >= ref_len():
-            log_error('too short: %d < %d', i+2, ref_len())
-            return days
+            log_error('error: too short: %d < %d', i+2, ref_len())
+            return 1000.00, 1000.00
 
         # log_debug("%s", ref_date(i))
         sum = sum + ref_close(i)
@@ -561,7 +561,7 @@ def wine_region_calculation(_start, _width):
         i = x + _start+1
 
         if i + 2 >= ref_len():
-            log_error('too short: %d < %d', i+2, ref_len())
+            log_error('error: too short: %d < %d', i+2, ref_len())
             return days
 
         sum = sum + (ref_close(i) - avg) * (ref_close(i) - avg)
@@ -589,7 +589,7 @@ def wine_find_fish(_start, _width):
         i = x + _start
 
         if i + 2 >= ref_len():
-            log_error('too short: %d < %d', i+2, ref_len())
+            log_error('error: too short: %d < %d', i+2, ref_len())
             return days
 
         diff = ref_ma5(i) - ref_ma10(i)
@@ -623,6 +623,42 @@ def wine_find_fish(_start, _width):
     # log_debug("%s", lst)
 
     return lst
+
+
+#
+# 从X点开始往前最靠近ma20(all)
+#
+#
+def wine_near_with_ma20(_start, _width):
+    min_rate = 100.00
+    min_idx  = -1
+
+
+    for x in range(_width):
+        i = x + _start+1
+
+        if i + 2 >= ref_len():
+            log_error('error, too short: %d < %d', i+2, ref_len())
+            return 100.00, -1
+
+        if ref_high(i) >= ref_ma20(i) and ref_low(i) <= ref_ma20(i):
+            min_rate = 0.0
+            min_idx  = i
+            log_debug("touch ma20: %s", ref_date(i))
+            break
+
+        rate1= 100.00 * abs(ref_low(i) - ref_ma20(i)) / ref_ma20(i)
+        rate2= 100.00 * abs(ref_high(i) - ref_ma20(i)) / ref_ma20(i)
+        rate = min(abs(rate1), abs(rate2))
+
+        if rate < min_rate:
+            min_rate = rate
+            min_idx  = i
+            # log_debug("near ma20: %s, %d, %.2f ", ref_ma20(i), min_idx, min_rate)
+        else:
+            pass
+
+    return min_rate, min_idx
 
 
 # pub.py

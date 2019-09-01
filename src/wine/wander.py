@@ -10,6 +10,8 @@ from pub    import *
 # 缺口+放量+徘徊+突破
 # code at 2019-8-28
 # 002273 水晶光电 20190717
+# 601595 上海电影 2019-08-16
+# 300735 光弘科技 2019-07-24 TODO
 
 def wander_load_cfg():
     #log_debug('wander config loaded')
@@ -38,7 +40,7 @@ def wander_run():
     # 突破日: 放量
     k = 0
     rate0 = 100.00 * (ref_close(k) - ref_close(k+1)) / ref_close(k+1)
-    log_debug("GAP-DAY: rate0: %.2f%%", rate0)
+    # log_debug("GAP-DAY: rate0: %.2f%%", rate0)
 
     # 量比
     vr50 = ref_vol(k) / ref_vma50(k)
@@ -250,8 +252,20 @@ def wander_run():
     fish_rule = len(fish_list) == 3 and fish_list[0] >= 2 and fish_list[1] <= -2 and fish_list[2] >= 5
     if fish_rule:
         log_info("is a fish!")
+        pass
     else:
         log_info("sorry, not a fish: %s", fish_list)
+        return 0
+
+
+    # near ma20
+    width = gap_idx - 0
+    near_rate, near_idx =  wine_near_with_ma20(0, width)
+    near_rule = near_rate < 1
+    if near_rule:
+        log_info("near_ma20: %.2f%%, %s", near_rate, ref_date(near_idx))
+    else:
+        log_info("sorry, far from ma20: %.2f%%", near_rate)
         return 0
 
 
