@@ -30,6 +30,7 @@ def pile_run():
 
     length = ref_len()
     if length < 220:
+        # log_debug("days too short: %d", length)
         return 0
 
     pile_load_cfg()
@@ -100,13 +101,13 @@ def pile_run():
     ################################################################
 
     # near ma200
-    near200_rate, near200_day = wine_near_with_ma200(k, 7)
+    near200_rate, near200_day = wine_near_with_ma200(k, 8)
     log_debug("nearest to ma200: %dth, %.2f", near200_day, near200_rate)
     near200_rule = near200_rate < 2
 
 
     # near ma50
-    near50_rate, near50_day = wine_near_with_ma50(k, 7)
+    near50_rate, near50_day = wine_near_with_ma50(k, 8)
     log_debug("nearest to ma50: %dth, %.2f", near50_day, near50_rate)
     near50_rule = near50_rate < 3
 
@@ -367,7 +368,7 @@ if __name__=="__main__":
                 ['603978', '2019-07-04', 1],  # 深圳新星
                 ['000063', '2019-02-18', 1],  # 中兴
                 ['002317', '2019-08-08', 1],  # 众生药业
-                ['000860', '2018-04-09', 1],  # 顺鑫农业
+                # ['000860', '2018-04-09', 1],  # 顺鑫农业 good and done!
                 ########################################################
                 ########################################################
 
@@ -376,6 +377,7 @@ if __name__=="__main__":
                 ['603811', '2019-08-20', 1],  # 诚意药业
                 ['603658', '2019-08-14', 1],  # 安图生物
                 ['300520', '2017-09-01', 1],  # 科大国创
+                ['300107', '2018-01-08', 1],  # 建新股份
                 ['300709', '2019-08-14', 1],  # 精研科技 fail 
                 ]
         idx = 0
@@ -388,6 +390,10 @@ if __name__=="__main__":
 
             sai_fmt_set_fetch_len(220)
             df = sai_fmt_simple(stock_id, trade_dt, db)
+            if df is None:
+                log_error("sorry: sai_fmt_simple lack data: %s, %s", stock_id, trade_dt)
+                break
+
             rv = pile_run()
             if rv != expect:
                 log_error("sorry: NOT match: %s, %s, %d", stock_id, trade_dt, expect)

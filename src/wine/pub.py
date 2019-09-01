@@ -325,11 +325,16 @@ def wine_near_with_ma200(_start, _width):
 
 
     for x in range(_width):
-        i = x + _start+1
+        i = x + _start
 
         if i + 2 >= ref_len():
             log_error('too short: %d < %d', i+2, ref_len())
             return 100.00, -1
+
+        if ref_high(i) >= ref_ma200(i) and ref_low(i) <= ref_ma200(i):
+            min_rate = 0.0
+            min_idx  = i
+            break
 
         rate = 100.00 * abs(ref_close(i) - ref_ma200(i)) / ref_ma200(i)
         if rate < min_rate:
@@ -351,11 +356,16 @@ def wine_near_with_ma50(_start, _width):
 
 
     for x in range(_width):
-        i = x + _start+1
+        i = x + _start
 
         if i + 2 >= ref_len():
             log_error('error: too short: %d < %d', i+2, ref_len())
             return 100.00, -1
+
+        if ref_high(i) >= ref_ma50(i) and ref_low(i) <= ref_ma50(i):
+            min_rate = 0.0
+            min_idx  = i
+            break
 
         rate = 100.00 * abs(ref_close(i) - ref_ma50(i)) / ref_ma50(i)
         if rate < min_rate:
