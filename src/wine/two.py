@@ -119,10 +119,6 @@ if __name__=="__main__":
 
 
 
-    # 锋龙股份
-    stock_id = '002931'
-    trade_dt = '2018-04-27'
-
     # 南都物业
     stock_id = '603506'
     trade_dt = '2018-02-14'
@@ -134,6 +130,11 @@ if __name__=="__main__":
     # 广州港
     stock_id = '601228'
     trade_dt = '2017-04-24'
+
+    # 锋龙股份
+    stock_id = '002931'
+    trade_dt = '2018-04-27'
+
 
     sai_fmt_set_fetch_len(40)
     df = sai_fmt_simple(stock_id, trade_dt, db)
