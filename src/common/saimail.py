@@ -54,7 +54,8 @@ def saimail_old(_subject, _body):
     msg['Bcc']      = to_addr
     msg['Subject']  = Header(_subject, 'utf-8').encode()
 
-    server = smtplib.SMTP(smtp_server, 25)
+    # server = smtplib.SMTP(smtp_server, 25)
+    server = smtplib.SMTP_SSL(smtp_server, 465) 
     ##server.set_debuglevel(1)
     server.login(from_addr, mail_pass)
     server.sendmail(from_addr, to_list, msg.as_string())
@@ -77,7 +78,8 @@ def saimail2(_subject, _body):
     msg['Bcc']      = to_addr
     msg['Subject']  = Header(_subject, 'utf-8').encode()
 
-    server = smtplib.SMTP(smtp_server, 25)
+    # server = smtplib.SMTP(smtp_server, 25)
+    server = smtplib.SMTP_SSL(smtp_server, 465)
     ##server.set_debuglevel(1)
     server.login(from_addr, mail_pass)
     server.sendmail(from_addr, to_list, msg.as_string())
@@ -107,7 +109,8 @@ def saimail_html_old(_subject, _body):
     msg['Bcc']      = to_addr
     msg['Subject']  = Header(_subject, 'utf-8').encode()
 
-    server = smtplib.SMTP(smtp_server, 25)
+    # server = smtplib.SMTP(smtp_server, 25)
+    server = smtplib.SMTP_SSL(smtp_server, 465)
     ##server.set_debuglevel(1)
     server.login(from_addr, mail_pass)
     server.sendmail(from_addr, to_list, msg.as_string())
@@ -131,7 +134,8 @@ def saimail_inner(_subject, _body, _to_addr, _mail_type):
     msg['Subject']  = Header(_subject, encoding).encode()
 
     try :
-        server = smtplib.SMTP(smtp_server, 25)
+        # server = smtplib.SMTP(smtp_server, 25)
+        server = smtplib.SMTP_SSL(smtp_server, 465)
         server.login(from_addr, mail_pass)
         server.sendmail(from_addr, to_list, msg.as_string())
         server.quit()
