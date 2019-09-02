@@ -39,7 +39,7 @@ def warrior_run():
     # if not saiobj.g_wine_cfg_loaded:
     warrior_load_cfg()
 
-    log_debug('len: %d', length)
+    # log_debug('len: %d', length)
 
     #######################################################################
     rate0 = 100.00 * (ref_close(0) - ref_close(1)) / ref_close(1)
@@ -104,35 +104,35 @@ def warrior_run():
 
     # close-price
     days1 = wine_continuous_high(0, 5, 'close')
-    log_info('new high days -- close: %d', days1)
+    # log_info('new high days -- close: %d', days1)
     body += '收盘价新高天数: %d\n' % (days1)
 
     # high-price
     days2 = wine_continuous_high(0, 5, 'high')
-    log_info('new high days -- high: %d', days2)
+    # log_info('new high days -- high: %d', days2)
     body += '最高价新高天数: %d\n' % (days2)
 
     # low-price
     days3 = wine_continuous_high(0, 5, 'low')
-    log_info('new high days -- low: %d', days3)
+    # log_info('new high days -- low: %d', days3)
     body += '最低价新高天数: %d\n' % (days3)
 
 
     # 累计涨幅
     acc_rate = 100.00 *(ref_close(0) - ref_close(4)) / ref_close(4)
-    log_info('5日累计涨幅: %.2f%%', acc_rate)
+    # log_info('5日累计涨幅: %.2f%%', acc_rate)
     body += '5日累计涨幅: %.2f%%\n' % (acc_rate)
 
     # 前一日跌
-    log_info("rate5: %.2f%%", rate5)
-    log_info("zt5:   %.2f%%", zt5)
+    # log_info("rate5: %.2f%%", rate5)
+    # log_info("zt5:   %.2f%%", zt5)
     body += '边界阴线: %.2f%%\n' % (rate5)
 
     # 前3日暴跌
     idx = wine_find_previous_highest(5, 5)
-    log_info('previous-high: %dth, %.2f', idx, ref_high(idx))
+    # log_info('previous-high: %dth, %.2f', idx, ref_high(idx))
     down_rate = 100.00 * (ref_high(idx) - ref_close(5)) / ref_close(5)
-    log_info("deep-down:   %.2f%%", down_rate)
+    # log_info("deep-down:   %.2f%%", down_rate)
     body += '三日下跌: %.2f%%\n' % (down_rate)
 
 
