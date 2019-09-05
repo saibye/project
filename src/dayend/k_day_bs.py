@@ -55,6 +55,7 @@ low_price   = round(low_price * %.3f,   2), \
 high_price  = round(high_price * %.3f,  2), \
 last_close_price = round(last_close_price * %.3f, 2), \
 deal_total_count = round(deal_total_count / %.3f, 0) \
+deal_total_amount = round(deal_total_amount / %.3f, 0) \
 where stock_id = '%s' \
 and pub_date <= '%s'" % \
                    (rate, rate, rate, rate, rate, rate, \
@@ -73,6 +74,11 @@ and pub_date <= '%s'" % \
     # import dataframe to db
     counter = 0
     for row_index, row in _df.iterrows():
+        if row.loc['volume'] < 1.0:
+            log_debug("sorry, no volume: %s, price:%.2f, volume:%.2f",
+                    row.loc['date'], row.loc['close'], row.loc['volume'])
+            continue
+
         counter = counter + 1
 
         pub_date = '%s' % (row.loc['date']) # api for  get-k-data
@@ -83,17 +89,17 @@ and pub_date <= '%s'" % \
 (pub_date, stock_id, stock_loc, \
 open_price, high_price, close_price, low_price, \
 last_close_price, \
-deal_total_count, \
+deal_total_count, deal_total_amount, \
 inst_date, inst_time) \
 values ('%s', '%s', '%s',  \
 '%.2f', '%.2f', '%.2f', '%.2f', \
 '%.2f', \
-'%.3f', \
+'%.3f', '%.3f', \
 '%s', '%s')" % \
        (pub_date, _stock_id, 'cn', 
         row.loc['open'], row.loc['high'], row.loc['close'], row.loc['low'],
         last_close_price,
-        row.loc['volume'] / 1000.00, 
+        row.loc['volume'], row.loc['amount'],
         dt, tm)
 
         last_close_price = row.loc['close']
@@ -302,6 +308,7 @@ def work():
     stock_id = "000932"
     stock_id = "300107"
     stock_id = "300735"
+    stock_id = "000590"
     log_debug("stock: %s", stock_id)
     k_day_one_stock(stock_id, db)
     return 0
