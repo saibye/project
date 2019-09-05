@@ -17,7 +17,7 @@ from saitu   import *
 
 #
 # migrate TUSHARE to BAOSTOCK
-# 2019-9-2
+# 2019-9-2, 9-5
 #
 
 #######################################################################
@@ -35,7 +35,9 @@ def k_day_one_to_db(_stock_id, _df, _st_date, _db):
 
         # 1. compare
         # new_close_price = _df['close'][0]
-        new_close_price = _df.iloc[0,2]
+        # new_close_price = _df.iloc[0,2]
+        # new_close_price = _df.loc[0, ['close']]
+        new_close_price = _df['close'][0]
 
         # the close price of max-pub-date
         tbl_df = get_one_kday(_stock_id, _st_date, _db)
@@ -58,7 +60,9 @@ deal_total_count = round(deal_total_count / %.3f, 0) \
 deal_total_amount = round(deal_total_amount / %.3f, 0) \
 where stock_id = '%s' \
 and pub_date <= '%s'" % \
-                   (rate, rate, rate, rate, rate, rate, \
+                   (rate, rate, rate, \
+                    rate, rate, rate, \
+                    rate, \
                     _stock_id, _st_date)
             rv = sql_to_db(sql, _db)
             if rv != 0:
@@ -69,7 +73,7 @@ and pub_date <= '%s'" % \
 
     # init last close price
     # last_close_price = _df['close'][0]
-    last_close_price = _df.iloc[0,2]
+    # last_close_price = _df.iloc[0,2]
 
     # import dataframe to db
     counter = 0
@@ -98,11 +102,11 @@ values ('%s', '%s', '%s',  \
 '%s', '%s')" % \
        (pub_date, _stock_id, 'cn', 
         row.loc['open'], row.loc['high'], row.loc['close'], row.loc['low'],
-        last_close_price,
+        row.loc['preclose'],
         row.loc['volume'], row.loc['amount'],
         dt, tm)
 
-        last_close_price = row.loc['close']
+        # last_close_price = row.loc['close']
 
         # log_debug("%s", sql)
         rv = sql_to_db_nolog(sql, _db)
@@ -193,7 +197,7 @@ def k_day_one_stock(_stock_id, _db):
         return -4
 
     # calc cost time
-    log_info("get_k_data [%s] costs %d us", _stock_id, get_micro_second()-begin)
+    log_info("get web data [%s] costs %d us", _stock_id, get_micro_second()-begin)
 
     if df is None :
         log_error("warn: stock %s is None, next", _stock_id)
@@ -309,6 +313,7 @@ def work():
     stock_id = "300107"
     stock_id = "300735"
     stock_id = "000590"
+    stock_id = "603996"
     log_debug("stock: %s", stock_id)
     k_day_one_stock(stock_id, db)
     return 0
