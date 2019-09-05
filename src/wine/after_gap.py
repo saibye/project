@@ -51,7 +51,7 @@ def after_gap_run():
     body += 'T0量比(5/10/50): %.2f, %.2f, %.2f\n' % (this_vr5, this_vr10, this_vr50)
 
     if this_vr50 < 3.2:
-        log_debug("sorry: T0：量比不足: %.2f", this_vr50)
+        # log_debug("sorry: T0：量比不足: %.2f", this_vr50)
         return 0
     else:
         log_info("T0: vol:      %.2f", ref_vol(k))

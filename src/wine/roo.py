@@ -37,7 +37,7 @@ def roo_run():
     rate0 = 100.00 * (ref_close(0) - ref_close(1)) / ref_close(1)
     zt0   = 100.00 * (ref_close(0) - ref_open(0))  / ref_close(1)
     body += "zt(-): %.2f%%\n" % (zt0)
-    log_debug("rate0: %.2f%%, zt0:%.2f%%", rate0, zt0)
+    # log_debug("rate0: %.2f%%, zt0:%.2f%%", rate0, zt0)
                                      
 
     if rate0 > 1.0 and zt0 > 1.0:
@@ -49,7 +49,7 @@ def roo_run():
     # day0, high
     rule0 = ref_high(0) > ref_high(1) and zt0 < 8.0
     if rule0:
-        log_info("high point matched")
+        # log_info("high point matched")
         pass
     else:
         log_debug("sorry, high point not match")
@@ -59,25 +59,25 @@ def roo_run():
     # day1 第二天 长下影线
     rate1 = 100.00 * (ref_close(1) - ref_close(2)) / ref_close(2)
     zt1   = 100.00 * (ref_close(1) - ref_open(1))  / ref_close(2)
-    log_debug("rate1: %.2f%%, zt1:%.2f%%", rate1, zt1)
+    # log_debug("rate1: %.2f%%, zt1:%.2f%%", rate1, zt1)
 
     # 下影线
     small = min(ref_close(1), ref_open(1))
     shadow= 100.00 * (small - ref_low(1)) / ref_close(2)
     body += "shadow(+): %.2f%%\n" % (shadow)
-    log_debug("shadow1: %.2f%%", shadow)
+    # log_debug("shadow1: %.2f%%", shadow)
                                      
 
     if rate1 < 3.0 and shadow > 4.0 and zt1 < 3.0:
         pass
     else:
-        log_debug("sorry, day1 not match")
+        # log_debug("sorry, day1 not match")
         return 0
 
     # 下行趋势
     rule1 = ref_close(1) < ref_ma5(1) and ref_close(1) < ref_ma10(1)  and ref_close(1) < ref_ma20(1) 
     if rule1:
-        log_info("day1 MA matched")
+        # log_info("day1 MA matched")
         pass
     else:
         log_debug("sorry, day1 MA not match")
@@ -87,7 +87,7 @@ def roo_run():
     # day2 第三天 阴线
     rate2 = 100.00 * (ref_close(2) - ref_close(3)) / ref_close(3)
     zt2   = 100.00 * (ref_close(2) - ref_open(2))  / ref_close(3)
-    log_debug("rate2: %.2f%%, zt1:%.2f%%", rate2, zt2)
+    # log_debug("rate2: %.2f%%, zt1:%.2f%%", rate2, zt2)
 
 
     if rate2 < -3.0:
