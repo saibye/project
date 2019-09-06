@@ -39,7 +39,7 @@ def pile_run():
     # 立桩日: 放量
     k = 3
     rate3 = 100.00 * (ref_close(k) - ref_close(k+1)) / ref_close(k+1)
-    log_debug("PILE-DAY: rate3: %.2f%%", rate3)
+    # log_debug("PILE-DAY: rate3: %.2f%%", rate3)
 
     # 量比
     vr50 = ref_vol(k) / ref_vma50(k)
@@ -50,10 +50,10 @@ def pile_run():
     body += "vr5 : %.2f\n" % (vr5)
     vr_rule = vr50 >= 2 and vr10 >= 2 and vr5 >= 2
 
-    log_debug("PILE-DAY: vr50: %.2f", vr50)
-    log_debug("PILE-DAY: vr10: %.2f", vr10)
-    log_debug("PILE-DAY: vr5 : %.2f", vr5)
-    log_debug("PILE-DAY: vr rule: %s", vr_rule)
+    # log_debug("PILE-DAY: vr50: %.2f", vr50)
+    # log_debug("PILE-DAY: vr10: %.2f", vr10)
+    # log_debug("PILE-DAY: vr5 : %.2f", vr5)
+    # log_debug("PILE-DAY: vr rule: %s", vr_rule)
 
     if vr_rule:
         pass
@@ -69,7 +69,7 @@ def pile_run():
     ## 量突破天数
     vol_break_days  = wine_volume_break_days(k, 200)
     vol_break_rule  = vol_break_days >= saiobj.g_wine_vol_break
-    log_debug("PILE-DAY: volume break days: %d, rule: %s", vol_break_days, vol_break_rule)
+    # log_debug("PILE-DAY: volume break days: %d, rule: %s", vol_break_days, vol_break_rule)
     body += "volume break days: %d\n" % (vol_break_days)
 
     if vol_break_rule:
@@ -81,7 +81,7 @@ def pile_run():
     ## 价突破天数
     price_break_days= wine_close_break_days2(k, 200)
     price_break_rule= price_break_days >= saiobj.g_wine_pri_break
-    log_debug("PILE-DAY: price  break days: %d, rule: %s", price_break_days, price_break_rule)
+    # log_debug("PILE-DAY: price  break days: %d, rule: %s", price_break_days, price_break_rule)
 
     if price_break_rule:
         pass
@@ -102,13 +102,13 @@ def pile_run():
 
     # near ma200
     near200_rate, near200_day = wine_near_with_ma200(k, 8)
-    log_debug("nearest to ma200: %dth, %.2f", near200_day, near200_rate)
+    # log_debug("nearest to ma200: %dth, %.2f", near200_day, near200_rate)
     near200_rule = near200_rate < 2
 
 
     # near ma50
     near50_rate, near50_day = wine_near_with_ma50(k, 8)
-    log_debug("nearest to ma50: %dth, %.2f", near50_day, near50_rate)
+    # log_debug("nearest to ma50: %dth, %.2f", near50_day, near50_rate)
     near50_rule = near50_rate < 3
 
 
@@ -125,7 +125,7 @@ def pile_run():
 
     # ma20 ascending
     ma20_ascend = ref_ma20(4) > ref_ma20(24) and ref_ma20(6) > ref_ma20(26)
-    log_debug("ma20 asceding: %s(opt)", ma20_ascend)
+    # log_debug("ma20 asceding: %s(opt)", ma20_ascend)
     if ma20_ascend:
         # XXX: add star
         pass
@@ -134,7 +134,7 @@ def pile_run():
     # ma5, 10, 20, 50, 200 twist
     cross5_rate, cross5_day = wine_ma_twist_5line(k, 7)
     cross5_rule = cross5_rate < 3
-    log_debug("ma cross5 at %dth, %.2f%%", cross5_day, cross5_rate)
+    # log_debug("ma cross5 at %dth, %.2f%%", cross5_day, cross5_rate)
     if cross5_rule:
         # XXX: add star
         pass
@@ -143,7 +143,7 @@ def pile_run():
     # ma5, 10, 20, 50 twist
     cross4_rate, cross4_day = wine_ma_twist_4line(k, 7)
     cross4_rule = cross4_rate < 3
-    log_debug("ma cross4 at %dth, %.2f%%", cross4_day, cross4_rate)
+    # log_debug("ma cross4 at %dth, %.2f%%", cross4_day, cross4_rate)
     if cross4_rule:
         # XXX: add star
         pass
@@ -151,7 +151,7 @@ def pile_run():
     # ma5 vs ma10 twisted
     twist_rate, twist_day = wine_ma5_twist_ma10(k, 7)
     twist_rule = twist_rate < 1
-    log_debug("ma5 twist ma10 at: %dth, %.2f%%", twist_day, twist_rate)
+    # log_debug("ma5 twist ma10 at: %dth, %.2f%%", twist_day, twist_rate)
     if twist_rule:
         pass
     else:
@@ -160,11 +160,11 @@ def pile_run():
 
     # exceed ma200
     exceed_ma200 = ref_close(k) > ref_ma200(k)
-    log_debug("exceed ma200: %s", exceed_ma200)
+    # log_debug("exceed ma200: %s", exceed_ma200)
 
     # exceed ma50
     exceed_ma50  = ref_close(k) > ref_ma50(k)
-    log_debug("exceed ma50 : %s",  exceed_ma50)
+    # log_debug("exceed ma50 : %s",  exceed_ma50)
 
     ma200_rule = near200_rule and exceed_ma200
     ma50_rule  = near50_rule  and exceed_ma50
@@ -193,7 +193,7 @@ def pile_run():
     avg_vol     = (ref_vol(k) + ref_vol(k+1) + ref_vol(k+2)) / 3
     avg_vr      = 100.00 * avg_vol / ref_vol(k+3)
     avg_vr_rule = avg_vr < 100
-    log_debug("3day: VOLUME: avg: %.2f,\tvr: %.2f%%,\trule: %s", avg_vol, avg_vr, avg_vr_rule)
+    # log_debug("3day: VOLUME: avg: %.2f,\tvr: %.2f%%,\trule: %s", avg_vol, avg_vr, avg_vr_rule)
     if avg_vr_rule:
         pass
     else:
@@ -205,7 +205,7 @@ def pile_run():
     avg_price   = (ref_close(k) + ref_close(k+1) + ref_close(k+2)) / 3
     avg_pr      = 100.00 * avg_price / ref_close(k+3)
     avg_pr_rule = avg_pr > 100
-    log_debug("3day: PRICE : avg: %.2f,\tpr: %.2f%%,\trule: %s", avg_price, avg_pr, avg_pr_rule)
+    # log_debug("3day: PRICE : avg: %.2f,\tpr: %.2f%%,\trule: %s", avg_price, avg_pr, avg_pr_rule)
     if avg_pr_rule:
         pass
     else:
@@ -214,7 +214,7 @@ def pile_run():
 
     ## price ascending
     price_rule_opt  = ref_close(k) >= ref_close(k+1) and ref_close(k+1) >= ref_close(k+2)
-    log_debug("3day: PRICE ascending rule: %s(opt)", price_rule_opt)
+    # log_debug("3day: PRICE ascending rule: %s(opt)", price_rule_opt)
     if price_rule_opt:
         # XXX: add star
         pass
@@ -226,8 +226,8 @@ def pile_run():
     lower_edge  = 100.00 * (min_price - ref_close(k+3)) / ref_close(k+3)
     upper_edge_rule = upper_edge < saiobj.g_wine_upper_edge
     lower_edge_rule = lower_edge > saiobj.g_wine_lower_edge
-    log_debug("3day: UPPER-edge: %.2f%%, rule: %s", upper_edge, upper_edge_rule)
-    log_debug("3day: LOWER-edge: %.2f%%, rule: %s", lower_edge, lower_edge_rule)
+    # log_debug("3day: UPPER-edge: %.2f%%, rule: %s", upper_edge, upper_edge_rule)
+    # log_debug("3day: LOWER-edge: %.2f%%, rule: %s", lower_edge, lower_edge_rule)
     if upper_edge_rule and lower_edge_rule:
         pass
     else:
@@ -238,7 +238,7 @@ def pile_run():
     v0_rule     = ref_vol(0) >= max(ref_vma10(0), ref_vma50(0))
     v1_rule     = ref_vol(1) >= max(ref_vma10(1), ref_vma50(1))
     v2_rule     = ref_vol(2) >= max(ref_vma10(2), ref_vma50(2))
-    log_debug("3day: VOLUME has: %s, %s, %s", v0_rule, v1_rule, v2_rule)
+    # log_debug("3day: VOLUME has: %s, %s, %s", v0_rule, v1_rule, v2_rule)
     if v0_rule and v1_rule and v2_rule:
         pass
     else:
@@ -248,7 +248,7 @@ def pile_run():
     ## sum(rate(0, 1, 2)  < 10%
     total_rate  = 100.00 * (ref_close(0) - ref_close(3)) / ref_close(3)
     total_rate_rule = total_rate < 10
-    log_debug("3day: TOTAL-rate: %.2f%%, rule: %s", total_rate, total_rate_rule)
+    # log_debug("3day: TOTAL-rate: %.2f%%, rule: %s", total_rate, total_rate_rule)
     if total_rate_rule:
         pass
     else:
@@ -264,12 +264,12 @@ def pile_run():
 
     k = 2
     rate2 = 100.00 * (ref_close(k) - ref_close(k+1)) / ref_close(k+1)
-    log_debug("3day: rate2: %.2f%%, rate1: %.2f%%, rate0: %.2f%%", rate2, rate1, rate0)
+    # log_debug("3day: rate2: %.2f%%, rate1: %.2f%%, rate0: %.2f%%", rate2, rate1, rate0)
 
     max_rate = max(rate0, rate1, rate2)
     min_rate = min(rate0, rate1, rate2)
     max_rate_rule = max_rate < 8
-    log_debug("3day: max-rate: %.2f%%, min-rate: %.2f%%, rule: %s", max_rate, min_rate, max_rate_rule)
+    # log_debug("3day: max-rate: %.2f%%, min-rate: %.2f%%, rule: %s", max_rate, min_rate, max_rate_rule)
     if max_rate_rule:
         pass
     else:
@@ -291,13 +291,13 @@ def pile_run():
         rate_count += 1
     if rate2 > 0:
         rate_count += 1
-    log_debug("3day: rate  count: %d", rate_count)
+    # log_debug("3day: rate  count: %d", rate_count)
 
     price_count = 0
     for i in range(3):
         if ref_close(i) > ref_close(3):
             price_count += 1
-    log_debug("3day: price count: %d", price_count)
+    # log_debug("3day: price count: %d", price_count)
 
     if rate_count >=2 or price_count >= 2:
         pass
@@ -307,7 +307,7 @@ def pile_run():
 
 
     rate0_rule_opt = rate0 > 0
-    log_debug("3day: last-day-upper: %s(opt)", rate0_rule_opt)
+    # log_debug("3day: last-day-upper: %s(opt)", rate0_rule_opt)
     if rate0_rule_opt:
         # XXX: add star
         pass

@@ -63,7 +63,7 @@ def wander_run():
         counter += 1
 
     vr_rule = counter >= 2
-    log_debug("BREAK-DAY: vr rule: %s, %d", vr_rule, counter)
+    # log_debug("BREAK-DAY: vr rule: %s, %d", vr_rule, counter)
     if vr_rule:
         pass
     else:
