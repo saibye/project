@@ -1,9 +1,4 @@
 31 02 * * * /home/sai/project/auto/autokday
 30 06 * * 1 /home/sai/project/auto/autoweek
-#27 09 * * * /home/sai/project/auto/autopre
-#27 09 * * * /home/sai/project/auto/automorning
-53 21 * * * /home/sai/project/auto/autotop
 30 02 * * 1 /home/sai/project/auto/autoinfo
-35 14 * * * /home/sai/project/auto/autodadan
 05 15 * * * /home/sai/project/auto/autoreport
-01 19 * * * /home/sai/project/auto/autonight

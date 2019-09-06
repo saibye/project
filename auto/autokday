@@ -1,10 +1,10 @@
 #!/bin/bash
 
-export SAI_HOME=/home/sai
+export SAI_HOME=/home/sai3
 
 export LD_LIBRARY_PATH=/usr/lib64:/usr/local/lib64:${SAI_HOME}/tools/lib64:.
 export LIBPATH=${LD_LIBRARY_PATH}
-export PATH=/public/anaconda2/bin:${SAI_HOME}/project/bin:${SAI_HOME}/project/sbin:/usr/local/bin:/usr/local/sbin:/usr/sbin:/public/anaconda2/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/usr/local/mysql/bin
+export PATH=/home/public/anaconda3/bin:${SAI_HOME}/project/bin:${SAI_HOME}/project/sbin:/usr/local/bin:/usr/local/sbin:/usr/sbin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/usr/local/mysql/bin
 
 export PYTHONPATH=${SAI_HOME}/project/src/common:${SAI_HOME}/project/src:/usr/local/lib64/pkgconfig:/usr/lib64/pkgconfig:/usr/local/apr/lib/pkgconfig
 
@@ -27,42 +27,12 @@ exec 2>&4
 
 #
 # step. get  k-day data
-cd ${PHOME}/src/dayend && time python k_day.py
-#cd ${PHOME}/src/dayend && time python k_no_fuquan.py
+cd ${PHOME}/src/dayend && time python k_day_bs.py
 
-## step. calc k-day tech
-##cd ${PHOME}/src/dayend && time python k_day_tech.py
-
-
-# thrive.py -- three-five line @2017-9-3
-# disabled at 2018-9-19
-#cd ${PHOME}/src/thrive && time python thrive.py
-
-# pre-thrive.py -- pre-three-five line @2017-9-5
-# enhanced 2018-9-24
-# disabled 2018-11-18
-#cd ${PHOME}/src/pre_thrive && time python pre_thrive.py
-
-
-# thrap.py -- three line with loop conditoin @2017-9-20
-#cd ${PHOME}/src/thrap && time python thrap.py
-
-
-# sao.py -- saohuo
-cd ${PHOME}/src/decision && time python sao.py
 
 # 2018 #
 # wine -- wine-field
 cd ${PHOME}/src/wine && time python myrun.py
-
-
-
-## index  data 
-# 2018-6-22 re-start 放在最后，这样邮件就会在最上面
-cd ${PHOME}/src/dayend && time python  k_index_day.py
-# 2018-9-19 disable
-#cd ${PHOME}/src/report && time python  index.py
-
 
 exec 3>&-
 exec 4>&-
