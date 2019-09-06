@@ -26,7 +26,7 @@ def qiming_run():
     stock_id  = ref_id(0)
     this_date = ref_date(0)
 
-    log_debug('TRAN qiming: %s -- %s', stock_id, this_date)
+    log_info('TRAN qiming: %s -- %s', stock_id, this_date)
 
 
     length = ref_len()

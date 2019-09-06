@@ -83,6 +83,9 @@ def wine_mail(_case, _body):
     info  = ''
     info  = get_basic_info_all(stock_id, saiobj.g_db)
 
+    if len(saiobj.g_subject_prefix) > 0:
+        subject = '%s%s' % (saiobj.g_subject_prefix, subject)
+
     title = ''
     title = '%s: %s#%s' % (subject, stock_id, pub_date)
 
@@ -91,7 +94,7 @@ def wine_mail(_case, _body):
     content += saiobj.g_mail_sep
     content += info
 
-    log_debug('mail: %s\n%s', title, content)
+    log_info('mail: %s\n%s', title, content)
 
     if saiobj.g_to_send_mail:
         saimail_dev(title, content)
@@ -669,6 +672,29 @@ def wine_near_with_ma20(_start, _width):
             pass
 
     return min_rate, min_idx
+
+
+
+#
+# X点往前排名(volume)
+#
+#
+def wine_volume_rank(_start, _width):
+    rank = 0
+
+    sen_vol = ref_vol(_start)
+
+    for x in range(_width):
+        i = x + _start+1
+
+        if i + 2 >= ref_len():
+            log_error('too short: %d < %d', i+2, ref_len())
+            return rank
+
+        if ref_vol(i) > sen_vol:
+            rank += 1
+
+    return rank
 
 
 # pub.py

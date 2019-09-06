@@ -21,12 +21,13 @@ def pile_load_cfg():
 
 
 def pile_run():
+    stars= ''
     body = ''
 
     stock_id  = ref_id(0)
     this_date = ref_date(0)
 
-    log_debug('TRAN pile: %s -- %s', stock_id, this_date)
+    log_info('TRAN pile: %s -- %s', stock_id, this_date)
 
     length = ref_len()
     if length < 220:
@@ -45,15 +46,12 @@ def pile_run():
     vr50 = ref_vol(k) / ref_vma50(k)
     vr10 = ref_vol(k) / ref_vma10(k)
     vr5  = ref_vol(k) / ref_vma5(k)
-    body += "vr50: %.2f\n" % (vr50)
-    body += "vr10: %.2f\n" % (vr10)
-    body += "vr5 : %.2f\n" % (vr5)
     vr_rule = vr50 >= 2 and vr10 >= 2 and vr5 >= 2
 
-    # log_debug("PILE-DAY: vr50: %.2f", vr50)
-    # log_debug("PILE-DAY: vr10: %.2f", vr10)
-    # log_debug("PILE-DAY: vr5 : %.2f", vr5)
-    # log_debug("PILE-DAY: vr rule: %s", vr_rule)
+    log_debug("PILE-DAY: %s vr50: %.2f", stock_id, vr50)
+    log_debug("PILE-DAY: %s vr10: %.2f", stock_id, vr10)
+    log_debug("PILE-DAY: %s vr5 : %.2f", stock_id, vr5)
+    log_debug("PILE-DAY: vr rule: %s", vr_rule)
 
     if vr_rule:
         pass
@@ -69,14 +67,39 @@ def pile_run():
     ## 量突破天数
     vol_break_days  = wine_volume_break_days(k, 200)
     vol_break_rule  = vol_break_days >= saiobj.g_wine_vol_break
-    # log_debug("PILE-DAY: volume break days: %d, rule: %s", vol_break_days, vol_break_rule)
-    body += "volume break days: %d\n" % (vol_break_days)
+    log_debug("PILE-DAY: %s volume break days: %d, rule: %s", stock_id, vol_break_days, vol_break_rule)
+    body += "volume break days: %d+++\n" % (vol_break_days)
 
     if vol_break_rule:
         pass
     else:
         log_info("sorry, volume break days too small: %d", vol_break_days)
         return 0
+
+    # STAR
+    if vol_break_days >= 200:
+        stars += "**"
+    elif vol_break_days >= 100:
+        stars += "*"
+
+    ## 量排名
+    vol_rank = wine_volume_rank(k, 100)
+    body += "volume rank: %d--n" % (vol_rank)
+    # log_debug("PILE-DAY: %s volume rank: %d", stock_id, vol_rank)
+    rank_rule = vol_rank <= 5
+    if rank_rule:
+        pass
+    else:
+        log_info("sorry, volume rank is high: %d", vol_rank)
+        return 0
+
+    if vol_rank <= 1:
+        stars += '*'
+
+
+    body += "vr50: %.2f\n" % (vr50)
+    body += "vr10: %.2f\n" % (vr10)
+    body += "vr5 : %.2f\n" % (vr5)
 
     ## 价突破天数
     price_break_days= wine_close_break_days2(k, 200)
@@ -87,8 +110,17 @@ def pile_run():
         pass
     else:
         if vr50 > 4:
-            price_break_days2   = wine_close_break_days2(k-1, 200)
-            if price_break_days2 >= saiobj.g_wine_pri_break:
+            price_break_days   = wine_close_break_days2(k-1, 200)
+            if price_break_days >= saiobj.g_wine_pri_break:
+                pass
+            else:
+                log_info("sorry, price break(2) days too small: %d", price_break_days)
+                return 0
+        elif ref_close(0) > ref_close(1) and ref_close(1) > ref_close(2):
+            price_break_days   = max(wine_close_break_days2(0, 200),
+                    wine_close_break_days2(1, 200),
+                    wine_close_break_days2(2, 200))
+            if price_break_days >= saiobj.g_wine_pri_break:
                 pass
             else:
                 log_info("sorry, price break(2) days too small: %d", price_break_days2)
@@ -96,6 +128,7 @@ def pile_run():
         else:
             log_info("sorry, price break(1) days too small: %d", price_break_days)
             return 0
+
 
     ################################################################
     ################################################################
@@ -112,14 +145,27 @@ def pile_run():
     near50_rule = near50_rate < 3
 
 
+    near_price = 1.0
     if near200_rule and near50_rule:
         log_info("near to both ma200 and ma50")
+        near_price = ref_close(near200_day)
     elif near200_rule:
         log_info("near to only ma200")
+        near_price = ref_close(near200_day)
     elif near50_rule:
         log_info("near to only ma50")
+        near_price = ref_close(near50_day)
     else:
         log_info("sorry, far from ma200 and ma50: %.2f, %.2f", near200_rate, near50_rate)
+        return 0
+
+    devia_rate = 100.00 * (ref_close(0) - near_price) / near_price
+    log_debug("devia_rate: %.2f%%", devia_rate)
+    devia_rule = devia_rate < 20.0
+    if devia_rule:
+        pass
+    else:
+        log_info("sorry, deviate a lot: %.2f%%", devia_rate)
         return 0
 
 
@@ -127,7 +173,7 @@ def pile_run():
     ma20_ascend = ref_ma20(4) > ref_ma20(24) and ref_ma20(6) > ref_ma20(26)
     # log_debug("ma20 asceding: %s(opt)", ma20_ascend)
     if ma20_ascend:
-        # XXX: add star
+        stars += '*'
         pass
 
 
@@ -136,7 +182,7 @@ def pile_run():
     cross5_rule = cross5_rate < 3
     # log_debug("ma cross5 at %dth, %.2f%%", cross5_day, cross5_rate)
     if cross5_rule:
-        # XXX: add star
+        stars += '*'
         pass
 
 
@@ -216,7 +262,7 @@ def pile_run():
     price_rule_opt  = ref_close(k) >= ref_close(k+1) and ref_close(k+1) >= ref_close(k+2)
     # log_debug("3day: PRICE ascending rule: %s(opt)", price_rule_opt)
     if price_rule_opt:
-        # XXX: add star
+        stars += '*'
         pass
 
     ## edge
@@ -306,14 +352,15 @@ def pile_run():
         return 0
 
 
-    rate0_rule_opt = rate0 > 0
+    rate0_rule_opt = rate0 > 0 and ref_close(0) > ref_open(0)
     # log_debug("3day: last-day-upper: %s(opt)", rate0_rule_opt)
     if rate0_rule_opt:
-        # XXX: add star
+        stars += '*'
         pass
 
 
     if True:
+        saimail_set_subject_prefix(stars)
         log_info('bingo: %s -- %s', stock_id, this_date)
         wine_mail('pile', body)
         return 1
@@ -326,6 +373,7 @@ saiobj.g_func_map['pile'] = pile_run
 
 if __name__=="__main__":
     sailog_set("pile.log")
+    sailog_set_debug()
 
     db = db_init()
     saiobj.g_db = db
@@ -368,7 +416,8 @@ if __name__=="__main__":
                 ['603978', '2019-07-04', 1],  # 深圳新星
                 ['000063', '2019-02-18', 1],  # 中兴
                 ['002317', '2019-08-08', 1],  # 众生药业
-                # ['000860', '2018-04-09', 1],  # 顺鑫农业 good and done!
+                ['000860', '2018-04-09', 1],  # 顺鑫农业
+                ['002384', '2019-07-29', 1],  #
                 ########################################################
                 ########################################################
 
@@ -378,7 +427,11 @@ if __name__=="__main__":
                 ['603658', '2019-08-14', 1],  # 安图生物
                 ['300520', '2017-09-01', 1],  # 科大国创
                 ['300107', '2018-01-08', 1],  # 建新股份
-                ['300709', '2019-08-14', 1],  # 精研科技 fail 
+                ['300709', '2019-08-14', 0],  # 精研科技 fail TODO
+
+                # anti 反例
+                ['000021', '2019-08-27', 0],  # 深科技
+
                 ]
         idx = 0
         for item in check_list:

@@ -26,7 +26,7 @@ def stop_run():
     stock_id  = ref_id(0)
     this_date = ref_date(0)
 
-    log_debug('TRAN stop: %s -- %s', stock_id, this_date)
+    log_info('TRAN stop: %s -- %s', stock_id, this_date)
 
 
     length = ref_len()
