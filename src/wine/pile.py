@@ -373,7 +373,6 @@ saiobj.g_func_map['pile'] = pile_run
 
 if __name__=="__main__":
     sailog_set("pile.log")
-    sailog_set_debug()
 
     db = db_init()
     saiobj.g_db = db
@@ -430,7 +429,7 @@ if __name__=="__main__":
                 ['300709', '2019-08-14', 0],  # 精研科技 fail TODO
 
                 # anti 反例
-                ['000021', '2019-08-27', 0],  # 深科技
+                ['000021', '2019-08-27', 0],  # 深科技 bad
 
                 ]
         idx = 0
