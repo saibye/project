@@ -123,7 +123,7 @@ def pile_run():
             if price_break_days >= saiobj.g_wine_pri_break:
                 pass
             else:
-                log_info("sorry, price break(2) days too small: %d", price_break_days2)
+                log_info("sorry, price break(2) days too small: %d", price_break_days)
                 return 0
         else:
             log_info("sorry, price break(1) days too small: %d", price_break_days)
