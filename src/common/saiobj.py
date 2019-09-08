@@ -21,6 +21,9 @@ g_func_map = {}
 # 
 g_mail_sep = '/_'*20 + '/\n'
 
+g_subject_prefix = ''
+
+
 # fresh
 g_wine_cfg_loaded = False
 g_wine_start_rate = -8
