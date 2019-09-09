@@ -227,7 +227,7 @@ def get_top_list_tu(_trade_date):
 # 2018-7-29
 def get_last_workday():
 
-    df = ts.get_realtime_quotes(['000001','000002','601398', '600519', '600036', '000651', '601318', '000333'])
+    df = ts.get_realtime_quotes('000001')
 
     # log_debug(df)
 
