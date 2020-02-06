@@ -33,7 +33,7 @@ def _sai_json_load(_json_file):
 
     # log_debug("loading json [%s]", path)
     if os.path.isfile(path):
-        fd = file(path)
+        fd = open(path)
         return json.load(fd)
     else :
         log_error("error: invalid path[%s]", path)
@@ -43,8 +43,8 @@ def _sai_json_load(_json_file):
 def _sai_json_get(_parser, _section, _key):
 
     val = ""
-    if _parser.has_key(_section):
-        if _parser[_section].has_key(_key):
+    if _section in _parser:
+        if _key in _parser:
             val = _parser[_section][_key]
         else:
             log_error("error: key[%s] is not found in section[%s]", _key, _section)
@@ -57,7 +57,7 @@ def _sai_json_get(_parser, _section, _key):
 def _sai_json_get_list(_parser, _section):
 
     val = []
-    if _parser.has_key(_section):
+    if _section in _parser:
         val = _parser[_section]
     else:
         log_error("error: section[%s] is not found", _section)
@@ -148,7 +148,7 @@ def sai_json_get_mail(_section):
     val_list = []
     sec_list = _sai_json_get_list(g_cf_mail, _section)
     for item in sec_list:
-        if not item.has_key("email"):
+        if "email" not in item:
             continue
 
         mail = item["email"]

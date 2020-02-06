@@ -7,26 +7,26 @@ from email.mime.text import MIMEText
 from email.utils import parseaddr, formataddr
 import smtplib
 import json
+import saiobj
+
 
 from sailog  import *
 from saiconf import *
 
 
+def saimail_set_subject_prefix(_v):
+    saiobj.g_subject_prefix = _v
+    return
 
 def saimail_init():
     return
 
 
-def _format_addr(s):
-    name, addr = parseaddr(s)
-    return formataddr(( \
-        Header(name, 'utf-8').encode(), \
-        addr.encode('utf-8') if isinstance(addr, unicode) else addr))
 
 def analy_mail_conf():
     mail_conf_path = "%s/.local/mail.conf.json" % os.getenv('HOME')
     if os.path.isfile(mail_conf_path):
-        json_file_fd = file(mail_conf_path)
+        json_file_fd = open(mail_conf_path)
         return json.load(json_file_fd)
     else :
         log_error("mail_conf_path[%s] 错误!", mail_conf_path)
@@ -39,9 +39,9 @@ def saimail_old(_subject, _body):
         log_error("邮箱地址配置文件解析错误!")
         return -1
 
-    smtp_server = mail_conf_js['smtp_server']['host'].encode('utf-8')
-    from_addr   = mail_conf_js['from_addr']['mail'].encode('utf-8')
-    mail_pass   = mail_conf_js['from_addr']['passwd'].encode('utf-8')
+    smtp_server = mail_conf_js['smtp_server']['host']
+    from_addr   = mail_conf_js['from_addr']['mail']
+    mail_pass   = mail_conf_js['from_addr']['passwd']
     to_list = []
     for item in mail_conf_js['to_addrs']:
         to_list.append(item['mail'])
@@ -52,7 +52,7 @@ def saimail_old(_subject, _body):
     msg = MIMEText(_body, 'plain', 'utf-8')
     msg['From']     = from_addr
     msg['Bcc']      = to_addr
-    msg['Subject']  = Header(_subject, 'utf-8').encode()
+    msg['Subject']  = Header(_subject, 'utf-8')
 
     # server = smtplib.SMTP(smtp_server, 25)
     server = smtplib.SMTP_SSL(smtp_server, 465) 
@@ -64,9 +64,9 @@ def saimail_old(_subject, _body):
 
 def saimail2(_subject, _body):
 
-    smtp_server = sai_conf_get("smtp_server", "host").encode('utf-8')
-    from_addr   = sai_conf_get("from_addr",   "mail").encode('utf-8')
-    mail_pass   = sai_conf_get("from_addr",   "passwd").encode('utf-8')
+    smtp_server = sai_conf_get("smtp_server", "host")
+    from_addr   = sai_conf_get("from_addr",   "mail")
+    mail_pass   = sai_conf_get("from_addr",   "passwd")
 
     to_addr = ''
     to_addr = sai_conf_get("to_addr2",  "mail")
@@ -76,7 +76,7 @@ def saimail2(_subject, _body):
     msg = MIMEText(_body, 'plain', 'utf-8')
     msg['From']     = from_addr
     msg['Bcc']      = to_addr
-    msg['Subject']  = Header(_subject, 'utf-8').encode()
+    msg['Subject']  = Header(_subject, 'utf-8')
 
     # server = smtplib.SMTP(smtp_server, 25)
     server = smtplib.SMTP_SSL(smtp_server, 465)
@@ -92,9 +92,9 @@ def saimail_html_old(_subject, _body):
         log_error("邮箱地址配置文件解析错误!")
         return -1
 
-    smtp_server = mail_conf_js['smtp_server']['host'].encode('utf-8')
-    from_addr   = mail_conf_js['from_addr']['mail'].encode('utf-8')
-    mail_pass   = mail_conf_js['from_addr']['passwd'].encode('utf-8')
+    smtp_server = mail_conf_js['smtp_server']['host']
+    from_addr   = mail_conf_js['from_addr']['mail']
+    mail_pass   = mail_conf_js['from_addr']['passwd']
 
     to_list = []
     for item in mail_conf_js['to_addrs']:
@@ -107,7 +107,7 @@ def saimail_html_old(_subject, _body):
     msg = MIMEText(_body, 'html', 'utf-8')
     msg['From']     = from_addr
     msg['Bcc']      = to_addr
-    msg['Subject']  = Header(_subject, 'utf-8').encode()
+    msg['Subject']  = Header(_subject, 'utf-8')
 
     # server = smtplib.SMTP(smtp_server, 25)
     server = smtplib.SMTP_SSL(smtp_server, 465)
@@ -120,9 +120,9 @@ def saimail_html_old(_subject, _body):
 def saimail_inner(_subject, _body, _to_addr, _mail_type):
     encoding = 'utf-8'
 
-    smtp_server = sai_conf_get("smtp_server", "host").encode(encoding)
-    from_addr   = sai_conf_get("from_addr",   "mail").encode(encoding)
-    mail_pass   = sai_conf_get("from_addr",   "passwd").encode(encoding)
+    smtp_server = sai_conf_get("smtp_server", "host")
+    from_addr   = sai_conf_get("from_addr",   "mail")
+    mail_pass   = sai_conf_get("from_addr",   "passwd")
 
     to_addr = _to_addr
     to_list = []
@@ -131,7 +131,7 @@ def saimail_inner(_subject, _body, _to_addr, _mail_type):
     msg = MIMEText(_body, _mail_type, encoding)
     msg['From']     = from_addr
     msg['Bcc']      = to_addr
-    msg['Subject']  = Header(_subject, encoding).encode()
+    msg['Subject']  = Header(_subject, encoding)
 
     try :
         # server = smtplib.SMTP(smtp_server, 25)
@@ -140,7 +140,7 @@ def saimail_inner(_subject, _body, _to_addr, _mail_type):
         server.sendmail(from_addr, to_list, msg.as_string())
         server.quit()
         return 0
-    except Exception, e:
+    except Exception as e:
         log_error("error: send mail failure: %s", e)
         return -1
 
@@ -213,6 +213,10 @@ if __name__=="__main__":
 
     subject   = u"DEV subject"
     body      = u"hello, world, buy buy buy"
+    # saimail_dev(subject, body)
+
+    subject   = u"DEV subject你好"
+    body      = u"hello, world, buy buy buy你好"
     saimail_dev(subject, body)
 
 # saimail.py

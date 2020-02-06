@@ -6,10 +6,10 @@ import logging
 import logging.handlers
 import os
 
-import sys
-
-reload(sys)
-sys.setdefaultencoding('utf8')
+#import sys
+#import importlib
+#importlib.reload(sys)
+#sys.setdefaultencoding('utf8')
 
 logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
@@ -71,6 +71,17 @@ def sailog_set(_log_name):
 
     return 
 
+
+def sailog_set_debug():
+    global logger
+    logger.setLevel(logging.DEBUG)
+    return
+
+
+def sailog_set_info():
+    global logger
+    logger.setLevel(logging.INFO)
+    return
 
 
 if __name__ == "__main__":

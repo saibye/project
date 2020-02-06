@@ -109,7 +109,7 @@ def get_args():
 def sai_analyze_system_config():
     system_config = "%s/sai.conf" % os.getenv('HOME')
     if os.path.isfile(system_config):
-        json_file_fd = file(system_config)
+        json_file_fd = open(system_config)
         return json.load(json_file_fd)
     else :
         log_error("system_config[%s] 错误!", system_config)
@@ -130,14 +130,14 @@ def sai_is_product_mode():
 
 if __name__=="__main__":
     sailog_set("saiutil.log")
-    print today()  
-    print get_date_by(20)
-    print get_date_by(-3)
+    print(today())
+    print(get_date_by(20))
+    print(get_date_by(-3))
 
     if today_is_weekend():
-        print "is weekend"
+        print("is weekend")
     else:
-        print "not"
+        print("not")
 
     if sai_is_product_mode():
         log_debug("is  product mode")

@@ -30,7 +30,7 @@ def sai_load_conf():
     sai_conf_path = "%s/.local/sai.json" % os.getenv('HOME')
     # log_debug("loading config [%s]", sai_conf_path)
     if os.path.isfile(sai_conf_path):
-        json_file_fd = file(sai_conf_path)
+        json_file_fd = open(sai_conf_path)
         return json.load(json_file_fd)
     else :
         log_error("error: invalid sai_conf_path[%s]!", sai_conf_path)
@@ -53,8 +53,8 @@ def sai_conf_get(_section, _key):
         pass
 
     val = ""
-    if g_sai_conf.has_key(_section):
-        if g_sai_conf[_section].has_key(_key):
+    if _section in g_sai_conf:
+        if _key in g_sai_conf[_section]:
             val = g_sai_conf[_section][_key]
         else:
             log_error("error: key[%s] in [%s] not found", _key, _section)

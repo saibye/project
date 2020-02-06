@@ -18,6 +18,7 @@ def db_init():
     db = MySQLdb.connect(host=host, user=user, passwd=passwd, db=dbname, charset=encode)  # 111
     if db is None:
         log_error("error: db_init failure")
+        return db
 
     return db
 

@@ -22,7 +22,7 @@ def sql_to_db_nolog(_sql, _db):
     try:
         cursor.execute(_sql)
         _db.commit()
-    except Exception, e:
+    except Exception as e:
         _db.rollback()
         rv = -1
 
@@ -41,7 +41,7 @@ def sql_to_db(_sql, _db):
         cursor.execute(_sql)
         # 提交到数据库执行
         _db.commit()
-    except Exception, e:
+    except Exception as e:
         # 发生错误时回滚
         log_error("error: sql failed for: %s", e)
         log_error("error: [%s]", _sql)

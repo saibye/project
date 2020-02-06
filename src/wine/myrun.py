@@ -63,7 +63,7 @@ def my_is_valid(_txn_list):
         return False
 
     for one in _txn_list:
-        if not saiobj.g_func_map.has_key(one):
+        if one not in saiobj.g_func_map:
             print('error: txn [%s] not found' % one)
             log_error('error: [%s] no transaction', one)
             return False
@@ -95,6 +95,8 @@ def my_get_trade_date(_trade_date):
     elif _trade_date[0] == '-':
         offset = int(_trade_date)
         trade_date = get_date_by(offset)
+    elif _trade_date[0] == '0':
+        trade_date = get_date_by(0)
     else:
         log_debug('think [%s] as a date', _trade_date)
         trade_date = _trade_date
@@ -219,6 +221,7 @@ def work():
 
 if __name__=="__main__":
     sailog_set("wine.log")
+    sailog_set_info()
 
     if today_is_weekend():
         log_info('weekend, exit')
