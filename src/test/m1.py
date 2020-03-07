@@ -15,7 +15,7 @@ cursor.execute("SELECT VERSION()")
 # 使用 fetchone() 方法获取一条数据库。
 data = cursor.fetchone()
 
-print "Database version : %s " % data
+print("Database version : %s " % data)
 
 # 关闭数据库连接
 db.close()

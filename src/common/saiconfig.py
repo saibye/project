@@ -7,14 +7,14 @@ from email.mime.text import MIMEText
 from email.utils import parseaddr, formataddr
 import smtplib
 import json
-import ConfigParser
+import configparser
 
 from sailog  import *
 
 # saiconfig.py is newer than saiconf.py. 2019-3-3
 
 
-g_cf_user       = ConfigParser.ConfigParser()
+g_cf_user       = configparser.ConfigParser()
 
 
 def _sai_config_load_inner(_parser, _file_name):

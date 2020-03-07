@@ -1,13 +1,13 @@
 #!/usr/bin/env python
 # -*- encoding: utf8 -*-
 
+import configparser
 from email import encoders
 from email.header import Header
 from email.mime.text import MIMEText
 from email.utils import parseaddr, formataddr
 import smtplib
 import json
-import ConfigParser
 
 from sailog  import *
 
@@ -15,7 +15,7 @@ from sailog  import *
 
 g_sai_conf = None
 
-cf = ConfigParser.ConfigParser()
+cf = configparser.ConfigParser()
 
 def sai_load_conf2(_file_name):
     global cf

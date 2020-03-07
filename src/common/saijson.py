@@ -7,7 +7,6 @@ from email.mime.text import MIMEText
 from email.utils import parseaddr, formataddr
 import smtplib
 import json
-import ConfigParser
 
 from sailog  import *
 
