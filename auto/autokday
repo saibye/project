@@ -34,6 +34,10 @@ cd ${PHOME}/src/dayend && time python k_day_bs.py
 # wine -- wine-field
 cd ${PHOME}/src/wine && time python myrun.py
 
+# 2020 #
+# trace -- close-price only
+cd ${PHOME}/src/trace && time python trace.py
+
 exec 3>&-
 exec 4>&-
 
