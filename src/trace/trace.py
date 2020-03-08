@@ -30,32 +30,41 @@ def trace_plot(_date, _uid, _stock_id, _ma_list, _db):
     log_info("new: \n%s", df)
 
 
-    plot_len = int(sai_conf_get2('boot', 'plot_len'))
-    log_info("plot-len: \n%d", plot_len)
-    df = df.tail(plot_len)
+    """
+    df['MA20'] 	= df['close_price'].rolling(20).mean()
+    df['MA50']	= df['close_price'].rolling(50).mean()
+    df['MA200'] = df['close_price'].rolling(200).mean()
+    """
 
+    log_info("ma-list1: %s", _ma_list)
+    for ma in _ma_list:
+        ma_name = 'MA%d' % (ma)
+        df[ma_name] = df['close_price'].rolling(ma).mean()
+
+
+    #---------------------------------------------------------#
+    #---------------------------------------------------------#
+    #---------------------------------------------------------#
+    # plot
+    plot_len = int(sai_conf_get2('boot', 'plot_len'))
+    log_info("plot-len: %d", plot_len)
+    df = df.tail(plot_len)
 
     # This can clear context
     fig = plt.figure()
 
     df['close_price'].plot(label='close price', title=_stock_id, ls='-', lw=0.8, color = 'black', figsize=(10,5))
 
-    log_info("ma-list: %s", _ma_list)
-    for ma in _ma_list:
-        ma_name = 'MA%d' % (ma)
-        df[ma_name] = df['close_price'].rolling(ma).mean()
-        df[ma_name].plot(label=ma_name, lw=0.3)
-        log_info('plot: %s', ma_name)
-
     """
-    df['MA20'] 	= df['close_price'].rolling(20).mean()
-    df['MA50']	= df['close_price'].rolling(50).mean()
-    df['MA200'] = df['close_price'].rolling(200).mean()
-
     df['MA20'].plot(label='MA20', color='red', lw=0.2)
     df['MA50'].plot(label='MA50', color='green', lw=0.3)
     df['MA200'].plot(label='MA200', color='blue', lw=0.5)
     """
+
+    for ma in _ma_list:
+        ma_name = 'MA%d' % (ma)
+        df[ma_name].plot(label=ma_name, lw=0.3)
+        log_info('plot: %s', ma_name)
 
     plt.savefig(photo_path, dpi=300)
 
