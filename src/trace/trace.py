@@ -24,10 +24,10 @@ def trace_plot(_date, _uid, _stock_id, _ma_list, _db):
     till_date = _date
 
     df = sai_fmt_simple(_stock_id, till_date, _db)
-    log_info("simple: \n%s", df)
+    # log_info("simple: \n%s", df)
 
     df = df.set_index('pub_date').sort_index(ascending=True)
-    log_info("new: \n%s", df)
+    # log_info("new: \n%s", df)
 
 
     """
@@ -48,23 +48,108 @@ def trace_plot(_date, _uid, _stock_id, _ma_list, _db):
     # plot
     plot_len = int(sai_conf_get2('boot', 'plot_len'))
     log_info("plot-len: %d", plot_len)
-    df = df.tail(plot_len)
+    # df = df.tail(plot_len)
+
+    ########################################################################
+    #                                                                      #
+    #                                                                      #
+    #                                                                      #
+    ########################################################################
+
 
     # This can clear context
     fig = plt.figure()
 
-    df['close_price'].plot(label='close price', title=_stock_id, ls='-', lw=0.8, color = 'black', figsize=(10,5))
+    # AX1
+    left, bottom, width, height = 0.05, 0.05, 0.9, 0.9
+    ax1 = fig.add_axes([left, bottom, width, height])
+    ax1.spines['right'].set_visible(False)
+    ax1.spines['top'].set_visible(False)
 
-    """
-    df['MA20'].plot(label='MA20', color='red', lw=0.2)
-    df['MA50'].plot(label='MA50', color='green', lw=0.3)
-    df['MA200'].plot(label='MA200', color='blue', lw=0.5)
-    """
+    # 1.1 CLOSE
+    # df['close_price'].plot(label='close price', title=_stock_id, ls='-', lw=0.8, color = 'black', figsize=(10,5))
+    df['close_price'].plot(color='black', title=_stock_id, ls='-', lw=1.2,  figsize=(10, 5))
 
+
+    # 1.3. MA
+    """
+    lw = 0.4
     for ma in _ma_list:
         ma_name = 'MA%d' % (ma)
-        df[ma_name].plot(label=ma_name, lw=0.3)
+        df[ma_name].plot(label=ma_name, lw=lw)
+        lw += 0.2
         log_info('plot: %s', ma_name)
+    """
+    df['MA20'].plot(color='red', lw=0.4)
+    df['MA50'].plot(color='blue', lw=0.6)
+    df['MA200'].plot(color='m', lw=0.8)
+
+
+    # 1.2. LINE
+    cs = df['close_price']
+    cp_max = cs.max()
+    cp_min = cs.min()
+    cp_mid = (cp_max + cp_min) / 2.0
+    
+    cp_cur = cs[len(cs)-1]
+    rate   = (cp_max - cp_cur) / (cp_max - cp_min) * 100.00
+
+
+    fontsize = 8
+    style = 'italic'
+    xsc   = 2
+    text_color = 'green'
+    line_color = 'green'
+    lw = 0.2
+
+    txt = '%.2f' % (cp_max)
+    plt.axhline(y=cp_max, color=line_color, ls='-.', lw=lw)
+    ax1.text(xsc, cp_max, txt, color=text_color, fontsize=fontsize, style=style)
+
+    txt = '%.2f' % (cp_min)
+    plt.axhline(y=cp_min, color=line_color, ls='-.', lw=lw)
+    ax1.text(xsc, cp_min, txt, color=text_color, fontsize=fontsize, style=style)
+
+    txt = '%.2f' % (cp_mid)
+    plt.axhline(y=cp_mid, color=line_color, ls='-.', lw=lw)
+    ax1.text(xsc, cp_mid, txt, color=text_color, fontsize=fontsize, style=style)
+
+    xsc   = 2
+    lw    = 0.4
+    txt = '%.2f, %.2f%%' % (cp_cur, rate)
+    plt.axhline(y=cp_cur, color='black', lw=lw)
+    ax1.text(xsc, cp_cur+0.1, txt, color=text_color, fontsize=fontsize, style=style)
+
+
+    ########################################################################
+    #                                                                      #
+    #                                                                      #
+    #                                                                      #
+    ########################################################################
+
+
+    # AX2
+    left, bottom, width, height = 0.15, 0.55, 0.3, 0.3
+    ax2 = fig.add_axes([left, bottom, width, height])
+
+    ax2.get_xaxis().set_visible(False)
+    ax2.tick_params(axis='both', which='major', labelsize=6)
+    #ax2.xaxis.set_ticklabels([])
+    ax2.spines['right'].set_linewidth(0.2)
+    ax2.spines['top'].set_linewidth(0.2)
+    ax2.spines['left'].set_linewidth(0.2)
+    ax2.spines['bottom'].set_linewidth(0.2)
+    ax2.spines['right'].set_linestyle('-')
+    ax2.spines['top'].set_linestyle('-')
+    ax2.spines['left'].set_linestyle('-')
+    ax2.spines['bottom'].set_linestyle('-')
+
+    df2 = df.tail(50)
+
+    df2['close_price'].plot(color='black', lw=0.8)
+    df2['MA20'].plot(color='red', lw=0.4)
+    df2['MA50'].plot(color='blue', lw=0.4)
+    df2['MA200'].plot(color='m', lw=0.4)
 
     plt.savefig(photo_path, dpi=300)
 
@@ -73,8 +158,8 @@ def trace_plot(_date, _uid, _stock_id, _ma_list, _db):
     # email
     subject = 'T: %s#%s' % (_stock_id, _date)
     body = '%s, %s' % (_date, _stock_id)
-    # saimail_photo(subject, body, photo_path)
-    _thread.start_new_thread(saimail_photo, (subject, body, photo_path) )
+    saimail_photo(subject, body, photo_path)
+    #_thread.start_new_thread(saimail_photo, (subject, body, photo_path) )
 
     log_info('trace_plot: end')
 

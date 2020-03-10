@@ -8,6 +8,7 @@ insert into t_trc_reg (user_id, stock_id) values ('wang', '000725');
 insert into t_trc_reg (user_id, stock_id) values ('wang', '300279');
 insert into t_trc_reg (user_id, stock_id) values ('wang', '300750');
 insert into t_trc_reg (user_id, stock_id) values ('wang', '601066');
+insert into t_trc_reg (user_id, stock_id) values ('wang', '002594');
 
 
 -- ma
