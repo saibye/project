@@ -372,17 +372,17 @@ def production(_db):
     # pd.set_option('display.max_rows', None)
 
     # till date
-    till_date = sai_conf_get2('produciton', 'till_date')
+    till_date = sai_conf_get2('production', 'till_date')
     till_date = trace_get_date(till_date)
     log_info("(P)till-date: [%s]", till_date)
 
     # fetch len
-    fetch_len = int(sai_conf_get2('produciton', 'fetch_len'))
+    fetch_len = int(sai_conf_get2('production', 'fetch_len'))
     sai_fmt_set_fetch_len(fetch_len)
     log_info("(P)fetch-len: [%d]", fetch_len)
 
     # plot len
-    plot_len = int(sai_conf_get2('debug', 'plot_len'))
+    plot_len = int(sai_conf_get2('production', 'plot_len'))
     saiobj.g_plot_len = plot_len
     log_info("(P)plot-len: [%d]", saiobj.g_plot_len)
 
