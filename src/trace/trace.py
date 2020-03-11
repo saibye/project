@@ -13,27 +13,75 @@ import saiobj
 from common  import *
 
 
-g_photo_dir = './'
-
 
 def trace_plot(_date, _uid, _stock_id, _ma_list, _db):
     log_info('trace_plot: begin')
 
-    global g_photo_dir
-    photo_path = '%s/%s.png' % (g_photo_dir, _stock_id)
+    table = ''
+
+    photo_path = '%s/%s.png' % (saiobj.g_photo_dir, _stock_id)
 
     till_date = _date
 
     df = sai_fmt_simple(_stock_id, till_date, _db)
-    # log_info("simple: \n%s", df)
+    if df is None or df.empty or len(df) < 10:
+        log_info('error: sai_fmt_simple invalid:\n%s', df)
+        return ''
 
+    # log_debug("simple: \n%s", df)
+
+    # real till date
+    till_date = df['pub_date'][0]
+    log_info('real till date: [%s] -> [%s]', _date, till_date)
+
+
+    # html-table
+    html_table = """\
+<table width="500" border="1" bordercolor="red" cellspacing="1">
+<tr>
+  <td><strong>日期</strong></td>
+  <td><strong>收盘价</strong></td>
+  <td><strong>涨幅</strong></td>
+</tr>"""
+    # <td><strong>开盘价</strong></td>
+
+    for idx, row in df.iterrows():
+        if idx >= 3:
+            break
+
+        curr = df['close_price'][idx]
+        # open = df['open_price'][idx]
+        last = df['close_price'][idx+1]
+        rate = (curr - last) / last * 100.0
+        # log_debug("rate: [%s]", rate)
+
+        one = "\n<tr>\
+<td> %s </td>\
+<td> %.2f </td>\
+<td> %.2f%% </td>\
+</tr>" % (row['pub_date'], curr, rate)
+
+        html_table += one
+
+
+    html_table += "</table>"
+
+    # log_debug("table:\n%s", html_table)
+
+
+    ###################################################################
+    ###################################################################
+    ###################################################################
+    # sort in-asc-order
     df = df.set_index('pub_date').sort_index(ascending=True)
     # log_info("new: \n%s", df)
 
-
+    # MA
     df['MA20'] 	= df['close_price'].rolling(20).mean()
     df['MA50']	= df['close_price'].rolling(50).mean()
     df['MA200'] = df['close_price'].rolling(200).mean()
+
+
 
     """
     log_info("ma-list1: %s", _ma_list)
@@ -47,9 +95,15 @@ def trace_plot(_date, _uid, _stock_id, _ma_list, _db):
     #---------------------------------------------------------#
     #---------------------------------------------------------#
     # plot
-    plot_len = int(sai_conf_get2('boot', 'plot_len'))
-    log_info("plot-len: %d", plot_len)
-    # df = df.tail(plot_len)
+    df = df.tail(saiobj.g_plot_len)
+
+    length = len(df)
+    # log_debug("after plot, df-len: %d", length)
+
+    # start date
+    start_date = df.index[0]
+    # log_debug('start date: [%s]', start_date)
+
 
     ########################################################################
     #                                                                      #
@@ -57,9 +111,9 @@ def trace_plot(_date, _uid, _stock_id, _ma_list, _db):
     #                                                                      #
     ########################################################################
 
-    #stock_name = get_basic_name(_stock_id, _db)
+    stock_name = get_basic_name(_stock_id, _db)
 
-    title = '%s, %s' % (till_date, _stock_id)
+    plot_title = '%s, %s' % (till_date, _stock_id)
 
 
     # This can clear context
@@ -73,7 +127,7 @@ def trace_plot(_date, _uid, _stock_id, _ma_list, _db):
 
     # 1.1 CLOSE
     # df['close_price'].plot(label='close price', title=_stock_id, ls='-', lw=0.8, color = 'black', figsize=(10,5))
-    df['close_price'].plot(color='black', title=title, ls='-', lw=1.2,  figsize=(10, 5))
+    df['close_price'].plot(color='black', title=plot_title, ls='-', lw=1.2,  figsize=(10, 5))
 
 
     # 1.3. MA
@@ -91,6 +145,7 @@ def trace_plot(_date, _uid, _stock_id, _ma_list, _db):
 
 
     # 1.2. LINE
+    # close-price series
     cs = df['close_price']
     cp_max = cs.max()
     cp_min = cs.min()
@@ -161,8 +216,9 @@ def trace_plot(_date, _uid, _stock_id, _ma_list, _db):
     # plt.show()
 
     # email
-    subject = 'T: %s#%s' % (_stock_id, _date)
-    body = '%s, %s' % (_date, _stock_id)
+    subject = 'T: %s#%s' % (stock_name, till_date)
+    body = '%s<br>[%s, %s](%d)<br>%s' % (_stock_id, start_date, till_date, length, html_table)
+    # log_info('body:\n%s', body)
 
     if saiobj.g_debug == 'yes':
         log_info("(D) -- mail?")
@@ -186,10 +242,10 @@ def trace_one_stock(_date, _uid, _stock_id, _db):
 
     df = pd.read_sql_query(sql, _db);
     if df is None:
-        log_info('error: df is None')
+        log_error('error: df is None')
         return ''
     else :
-        log_info('df-ma length: %d', len(df))
+        log_debug('df-ma length: %d', len(df))
 
     ma_list = []
     for idx, row in df.iterrows():
@@ -231,6 +287,7 @@ def trace_one_user(_date, _uid, _db):
         path = trace_one_stock(_date, _uid, stock_id, _db)
         if len(path) != 0:
             paths.append(path)
+        # break # XXX
 
     if saiobj.g_debug == 'yes':
         log_info('(D) send several photos once: %s', paths)
@@ -261,54 +318,120 @@ def trace_get_date(_trade_date):
     return trade_date
 
 
-def work(_db):
+def debug(_db):
 
-    log_info('begin')
+    log_info('(D)begin')
+
+    # till date
+    till_date = sai_conf_get2('debug', 'till_date')
+    till_date = trace_get_date(till_date)
+    log_info("(D)till-date: [%s]", till_date)
+
+    # fetch len
+    fetch_len = int(sai_conf_get2('debug', 'fetch_len'))
+    sai_fmt_set_fetch_len(fetch_len)
+    log_info("(D)fetch-len: [%d]", fetch_len)
+
+    # plot len
+    plot_len = int(sai_conf_get2('debug', 'plot_len'))
+    saiobj.g_plot_len = plot_len
+    log_info("(D)plot-len: [%d]", saiobj.g_plot_len)
+
+    # stock list
+    stocks = sai_conf_get2('debug', 'stock_list')
+    stock_list = stocks.split(',')
+    log_info("(D)stock_list: %s", stock_list)
+
+    uid = 'DEBUG'
+    ma_list = [20, 50, 200]
+
+    paths = []
+    for i in range(len(stock_list)):
+        stock_id = stock_list[i].strip()
+        log_info('(D)stock: [%s] begin', stock_id)
+
+        path = trace_plot(till_date, uid, stock_id, ma_list, _db)
+        if len(path) != 0:
+            paths.append(path)
+
+    log_info('(D)send several photos once: %s', paths)
+    subject = 'T-all: %s' % (till_date)
+    body = 'Tracing: %s' % (stock_list)
+    saimail_photos(subject, body, paths)
+
+    log_info('(D)end')
+
+    return 0
+
+
+def production(_db):
+
+    log_info('(P)begin')
 
     # pd.set_option('display.max_columns', None)
     # pd.set_option('display.max_rows', None)
 
     # till date
-    till_date = sai_conf_get2('boot', 'till_date')
+    till_date = sai_conf_get2('produciton', 'till_date')
     till_date = trace_get_date(till_date)
-    log_info("till-date: [%s]", till_date)
+    log_info("(P)till-date: [%s]", till_date)
 
     # fetch len
-    fetch_len = int(sai_conf_get2('boot', 'fetch_len'))
+    fetch_len = int(sai_conf_get2('produciton', 'fetch_len'))
     sai_fmt_set_fetch_len(fetch_len)
-    log_info("fetch-len: [%d]", fetch_len)
+    log_info("(P)fetch-len: [%d]", fetch_len)
+
+    # plot len
+    plot_len = int(sai_conf_get2('debug', 'plot_len'))
+    saiobj.g_plot_len = plot_len
+    log_info("(P)plot-len: [%d]", saiobj.g_plot_len)
 
 
-    if saiobj.g_debug == 'yes':
-        sql = "select * from t_trc_user where user_id = 'debug'"
-    else:
-        sql = "select * from t_trc_user where user_id !='debug'"
-    log_info('user sql: [%s]', sql)
+    sql = "select * from t_trc_user where user_id !='debug'"
+    log_info('(P)user sql: [%s]', sql)
 
     df = pd.read_sql_query(sql, _db);
     if df is None:
-        log_info('error: df is None')
+        log_info('(P)error: df is None')
         return -1
     else :
         df.set_index('user_id', inplace=True)
-        log_info('df-user length: %d', len(df))
+        log_info('(P)df-user length: %d', len(df))
 
     for idx, row in df.iterrows():
-        log_info(">> uid: [%s]", idx)
+        log_info("(P)>> uid: [%s]", idx)
         uid = idx 
         uname = row['user_name']
         umail = row['user_mail']
         enable = row['enable']
-        log_info(">> detail: [%s], [%s], [%s]", uname, umail, enable)
+        log_info("(P)>> detail: [%s], [%s], [%s]", uname, umail, enable)
         if enable == '1':
-            log_info('user [%s, %s] enabled', uid, uname)
+            log_info('(P)user [%s, %s] enabled', uid, uname)
         else:
-            log_info('user [%s, %s] disabled, ignore', uid, uname)
+            log_info('(P)user [%s, %s] disabled, ignore', uid, uname)
             continue
 
         trace_one_user(till_date, uid, _db)
 
-    log_info('end')
+    log_info('(P)end')
+
+    return 0
+
+
+
+def work(_db):
+
+    log_info('work begin')
+
+    # pd.set_option('display.max_columns', None)
+    # pd.set_option('display.max_rows', None)
+
+    if saiobj.g_debug == 'yes':
+        debug(_db)
+    else:
+        production(_db)
+
+    log_info('work end')
 
     return 0
 
@@ -318,7 +441,7 @@ def main():
     #
     sai_load_conf2('trace.cfg')
 
-    debug_mode = sai_conf_get2('boot', 'debug')
+    debug_mode = sai_conf_get2('sys', 'debug')
     if debug_mode == 'yes':
         saiobj.g_debug = 'yes'
         log_info('(D) means debug mode.')
@@ -326,9 +449,8 @@ def main():
         saiobj.g_debug = 'no'
         log_info('(P) means production mode.')
 
-    global g_photo_dir
-    g_photo_dir = "%s/project/tmp" % (os.getenv('HOME'))
-    log_info("photo-dir: [%s]", g_photo_dir)
+    saiobj.g_photo_dir = "%s/project/tmp" % (os.getenv('HOME'))
+    log_info("photo-dir: [%s]", saiobj.g_photo_dir)
 
 
     db = db_init()
@@ -337,6 +459,7 @@ def main():
     work(db)
 
     db_end(db)
+
     return
 
 

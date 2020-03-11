@@ -55,7 +55,7 @@ def saimail_old(_subject, _body):
     to_addr = ",".join(to_list)
 
     msg = MIMEText(_body, 'plain', 'utf-8')
-    msg['From']     = from_addr
+    msg['From']     = 'SAI <%s>' % from_addr
     msg['Bcc']      = to_addr
     msg['Subject']  = Header(_subject, 'utf-8')
 
@@ -79,7 +79,7 @@ def saimail2(_subject, _body):
     to_list.append(to_addr)
 
     msg = MIMEText(_body, 'plain', 'utf-8')
-    msg['From']     = from_addr
+    msg['From']     = 'SAI <%s>' % from_addr
     msg['Bcc']      = to_addr
     msg['Subject']  = Header(_subject, 'utf-8')
 
@@ -110,7 +110,7 @@ def saimail_html_old(_subject, _body):
     to_addr = ",".join(to_list)
 
     msg = MIMEText(_body, 'html', 'utf-8')
-    msg['From']     = from_addr
+    msg['From']     = 'SAI <%s>' % from_addr
     msg['Bcc']      = to_addr
     msg['Subject']  = Header(_subject, 'utf-8')
 
@@ -134,7 +134,7 @@ def saimail_inner(_subject, _body, _to_addr, _mail_type):
     to_list.append(to_addr)
 
     msg = MIMEText(_body, _mail_type, encoding)
-    msg['From']     = from_addr
+    msg['From']     = 'SAI <%s>' % from_addr
     msg['Bcc']      = to_addr
     msg['Subject']  = Header(_subject, encoding)
 

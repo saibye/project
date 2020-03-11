@@ -58,6 +58,10 @@ g_wine_lower_edge= -2
 g_wine_upper_edge= 8
 
 
+# 2020-3-11
+g_plot_dir = './'
+g_plot_len = 400
+
 
 if __name__=="__main__":
     sailog_set("saiobj.log")
