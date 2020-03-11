@@ -1,10 +1,10 @@
 #!/bin/bash
 
-export SAI_HOME=/home/sai
+export SAI_HOME=/home/sai3
 
 export LD_LIBRARY_PATH=/usr/lib64:/usr/local/lib64:${SAI_HOME}/tools/lib64:.
 export LIBPATH=${LD_LIBRARY_PATH}
-export PATH=/public/anaconda2/bin:${SAI_HOME}/project/bin:${SAI_HOME}/project/sbin:/usr/local/bin:/usr/local/sbin:/usr/sbin:/public/anaconda2/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/usr/local/mysql/bin
+export PATH=/home/public/anaconda3/bin:${SAI_HOME}/project/bin:${SAI_HOME}/project/sbin:/usr/local/bin:/usr/local/sbin:/usr/sbin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/usr/local/mysql/bin
 
 export PYTHONPATH=${SAI_HOME}/project/src/common:${SAI_HOME}/project/src:/usr/local/lib64/pkgconfig:/usr/lib64/pkgconfig:/usr/local/apr/lib/pkgconfig
 

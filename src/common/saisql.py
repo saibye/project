@@ -553,6 +553,27 @@ def get_stock_list_table_quick(_db):
     else :
         return df.set_index('stock_id')
 
+
+"""
+2020/3/11 get name
+"""
+def get_basic_name(_stock_id, _db):
+    info = ""
+
+    sql = "select stock_name from tbl_basic where stock_id = '%s'" % _stock_id
+    df = pd.read_sql_query(sql, _db);
+    if df is None:
+        log_info("'%s' not found in basic", _stock_id)
+        return info
+    else:
+        # log_info("df: \n%s, len: %d", df, len(df))
+        pass
+
+    if len(df) > 0:
+        info  = "%s" % (df['stock_name'][0])
+
+    return info
+
 #######################################################################
 if __name__=="__main__":
     sailog_set("saisql.log")
@@ -621,6 +642,10 @@ if __name__=="__main__":
         log_debug("%s YES", stock_id)
     else:
         log_debug("%s NO", stock_id)
+
+    stock_id  = "000725"
+    name =  get_basic_name(stock_id, db)
+    log_info("name: [%s]", name)
 
     db_end(db)
     log_info("main ends  bye!")

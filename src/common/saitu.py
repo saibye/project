@@ -262,4 +262,7 @@ if __name__=="__main__":
     work_date = get_last_workday()
     log_debug("work-date -- %s -- %s", work_date, type(work_date))
 
+    name = get_name('000725')
+    log_info("[%s]", name)
+
 # saitu.py

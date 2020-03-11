@@ -5,6 +5,8 @@ from sailog  import *
 
 g_db = None
 
+g_debug = 'no'
+
 
 # fetch N rows from tbl_day
 g_fetch_len = 100
