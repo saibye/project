@@ -59,7 +59,7 @@ def trace_plot(_date, _uid, _stock_id, _ma_list, _db):
 
     #stock_name = get_basic_name(_stock_id, _db)
 
-    title = '%s: %s' % (till_date, _stock_id)
+    title = '%s, %s' % (till_date, _stock_id)
 
 
     # This can clear context
