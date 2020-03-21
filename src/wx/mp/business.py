@@ -13,8 +13,7 @@ from common  import *
 
 class Business(object):
     db = db_init()
-    # life = 86400 * 3 - 10
-    life = 300
+    life = 86400 * 3 - 10
 
     def __init__(self):
         self.__dict = dict()
