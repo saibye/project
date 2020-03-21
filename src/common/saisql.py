@@ -574,6 +574,77 @@ def get_basic_name(_stock_id, _db):
 
     return info
 
+
+"""
+2020/3/21 get trc-image
+"""
+def sai_save_mid(stock_id, pub_date, mid, crt, _db):
+
+    d = dict()
+    d['STOCK_ID'] = stock_id
+    d['PUB_DATE'] = pub_date
+    d['MID'] = mid
+    d['CRT'] = crt
+
+    sql  = ""
+    sql += "insert into t_trc_image (stock_id, pub_date, media_id, created)"
+    sql += "values ('{STOCK_ID}', '{PUB_DATE}', '{MID}', '{CRT}')"
+    sql  = sql.format(**d)
+
+    log_info('[%s]', sql)
+
+    sql_to_db(sql, _db)
+
+
+def sai_delete_mid(stock_id, pub_date, _db):
+
+    d = dict()
+    d['STOCK_ID'] = stock_id
+    d['PUB_DATE'] = pub_date
+
+    sql  = ""
+    sql += "delete from t_trc_image "
+    sql += "where stock_id = '{STOCK_ID}' "
+    sql += "and   pub_date = '{PUB_DATE}'"
+    sql  = sql.format(**d)
+
+    log_info('[%s]', sql)
+
+    sql_to_db(sql, _db)
+
+
+def sai_query_mid(stock_id, pub_date, _db):
+
+    d = dict()
+    d['STOCK_ID'] = stock_id
+    d['PUB_DATE'] = pub_date
+
+    sql  = ""
+    sql += "select media_id, created from t_trc_image "
+    sql += "where stock_id = '{STOCK_ID}' "
+    sql += "and   pub_date = '{PUB_DATE}'"
+    sql  = sql.format(**d)
+
+    log_info('[%s]', sql)
+
+    mid = ''
+    crt = 0
+
+    df = pd.read_sql_query(sql, _db);
+    if df is None:
+        log_info("'%s' not found in basic", _stock_id)
+        return mid, crt
+    else:
+        # log_info("df: \n%s, len: %d", df, len(df))
+        pass
+
+    if len(df) > 0:
+        mid  = df['media_id'][0]
+        crt  = df['created'][0]
+
+    return mid, crt
+
+
 #######################################################################
 if __name__=="__main__":
     sailog_set("saisql.log")
@@ -646,6 +717,14 @@ if __name__=="__main__":
     stock_id  = "000725"
     name =  get_basic_name(stock_id, db)
     log_info("name: [%s]", name)
+
+    stock_id  = "601066"
+    pub_date  = "2019-12-01"
+    mid, crt = sai_query_mid(stock_id, pub_date, db)
+    log_info("[%s]", mid)
+    log_info("[%s]", crt)
+
+    sai_delete_mid(stock_id, pub_date, db)
 
     db_end(db)
     log_info("main ends  bye!")

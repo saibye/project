@@ -25,6 +25,9 @@ alias cdsa='cd ${HOME}/project/src/analyzer'
 alias cdsd='cd ${HOME}/project/src/dayend'
 alias cgrep='find ${HOME}/project -name "*.py" |xargs grep'
 
+alias cdwx='cd ${HOME}/project/src/wx/mp'
+alias cdt='cd ${HOME}/project/src/trace'
+
 alias ck='echo "select pub_date, count(1) from tbl_day group by pub_date order by 1"'
 alias re='sudo /etc/init.d/cron restart'
 

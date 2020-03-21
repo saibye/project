@@ -59,8 +59,11 @@ g_wine_upper_edge= 8
 
 
 # 2020-3-11
-g_plot_dir = './'
+g_photo_dir = '/tmp'
 g_plot_len = 400
+
+g_photo_suffix = '.png'
+
 
 
 if __name__=="__main__":

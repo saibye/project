@@ -164,14 +164,14 @@ def sai_fmt_set(_stock_id, _till_date, _mode, _n, _db):
 
 def sai_fmt_simple(_stock_id, _till_date, _db):
 
-    n   = saiobj.g_fetched_len
+    n   = saiobj.g_fetch_len
     # log_debug("%d", n)
     mode= saiobj.g_fmt_mode
     saiobj.g_subject_prefix = ''
     return sai_fmt_set(_stock_id, _till_date, mode, n, _db)
 
 def sai_fmt_set_fetch_len(_n):
-    saiobj.g_fetched_len = _n 
+    saiobj.g_fetch_len = _n 
 
 
 

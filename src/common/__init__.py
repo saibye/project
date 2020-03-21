@@ -17,6 +17,7 @@ from saitech    import *
 from saitick    import *
 from saijson    import *
 from saiconfig  import *
+from saiplot    import *
 
 
 __all__ = ['log_debug',
@@ -44,6 +45,8 @@ __all__ = ['log_debug',
         'sai_conf_get_mysql_user', 
         'sai_conf_get_mysql_passwd', 
         'sai_conf_get_mysql_encode', 
+        'sai_conf_get_wx_appid', 
+        'sai_conf_get_wx_appsecret', 
         'sai_json_load_system',
         'sai_json_get_system',
         'sai_json_load_secret',
@@ -82,6 +85,7 @@ __all__ = ['log_debug',
         'saimail_photo', 
         'saimail_photos', 
         'saimail_set_subject_prefix', 
+        'sai_plot', 
         'get_buy_sell_rate', 
         'get_buy_sell_sum', 
         'get_buy_sell_sum2', 
@@ -193,6 +197,9 @@ __all__ = ['log_debug',
         'today_is_weekend', 
         'check_time_to_run', 
         'get_args', 
+        'sai_save_mid', 
+        'sai_query_mid', 
+        'sai_delete_mid', 
         'sai_analyze_system_config', 
         'sai_is_product_mode']
 

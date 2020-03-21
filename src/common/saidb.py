@@ -20,6 +20,8 @@ def db_init():
         log_error("error: db_init failure")
         return db
 
+    db.ping(True)
+
     return db
 
 def db_end(_db):

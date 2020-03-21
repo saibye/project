@@ -79,6 +79,13 @@ def sai_conf_get_mysql_passwd():
 def sai_conf_get_mysql_encode():
     return sai_conf_get("mysql", "encode")
 
+def sai_conf_get_wx_appid():
+    return sai_conf_get("wx", "appid")
+
+def sai_conf_get_wx_appsecret():
+    return sai_conf_get("wx", "appsecret")
+
+
 
 if __name__=="__main__":
     sailog_set("saiconf.log")
@@ -106,8 +113,10 @@ if __name__=="__main__":
     log_debug("[%s]", sai_conf_get_mysql_passwd())
     log_debug("[%s]", sai_conf_get_mysql_encode())
 
-    sai_load_conf2('lihua.cfg')
-    log_debug('[%s]', sai_conf_get2('wine', 'start_rate'))
+
+
+    log_debug("[%s]", sai_conf_get_wx_appid())
+    log_debug("[%s]", sai_conf_get_wx_appsecret())
 
 
 # saiconf.py
