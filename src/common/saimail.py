@@ -10,6 +10,9 @@ from email.message import EmailMessage
 from email.utils import make_msgid
 import mimetypes
 
+import threading
+from queue import Queue
+
 import smtplib
 import json
 import saiobj
@@ -381,6 +384,56 @@ def saimail_photos(_subject, _body, _photo_file_path_list):
         saimail_photos_inner(_subject, _body, _photo_file_path_list, to_addr)
 
 
+class SaiMailWorker(threading.Thread):
+    q = Queue()
+
+    def __init__(self):
+        threading.Thread.__init__(self)
+        log_info('obj created: %s', threading.get_ident())
+        pass
+
+    @classmethod
+    def enqueue(cls, mail):
+        log_info('enqueue')
+        q.put(mail)
+
+    @classmethod
+    def dequeue(cls):
+        log_info('dequeue')
+        return q.get
+
+    def run(self):
+        log_info('thread start: %s', threading.get_ident())
+
+        smtp_server = sai_conf_get("smtp_server", "host")
+        from_addr   = sai_conf_get("from_addr",   "mail")
+        mail_pass   = sai_conf_get("from_addr",   "passwd")
+
+        to_addr = '18600129523@163.com'
+        to_list = []
+        to_list.append(to_addr)
+
+        encoding = 'utf-8'
+        mail_type = 'plain'
+
+        body = '1'
+        subject = '2'
+
+        msg = MIMEText(body, mail_type, encoding)
+        msg['From']     = 'SAI <%s>' % from_addr
+        msg['Bcc']      = to_addr
+        msg['Subject']  = Header(subject, encoding)
+
+        try :
+            server = smtplib.SMTP_SSL(smtp_server, 465)
+            server.login(from_addr, mail_pass)
+            server.sendmail(from_addr, to_list, msg.as_string())
+            server.quit()
+        except Exception as e:
+            log_error("error: send mail failure: %s", e)
+            return -1
+
+
 if __name__=="__main__":
     sailog_set("saimail.log")
     subject   = u"xxx subject"
@@ -421,7 +474,11 @@ if __name__=="__main__":
     photo_list = []
     photo_list.append('/home/sai3/project/tmp/000725.png')
     photo_list.append('/home/sai3/project/tmp/002594.png')
-    saimail_photos(subject, body, photo_list)
+    # saimail_photos(subject, body, photo_list)
 
+    log_info(threading.get_ident())
+
+    mailer = SaiMailWorker()
+    mailer.start()
 
 # saimail.py

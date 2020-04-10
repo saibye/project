@@ -696,5 +696,90 @@ def wine_volume_rank(_start, _width):
 
     return rank
 
+#
+# X点往前ma50 > ma200天数
+#
+def wine_ma50_above_ma200_days(_start, _width):
+    days = 0
+
+    for x in range(_width):
+        i = x + _start+1
+
+        if i + 2 >= ref_len():
+            log_error('too short: %d < %d', i+2, ref_len())
+            return days
+
+        if ref_ma50(i) >= ref_ma200(i):
+            days += 1
+        else:
+            break
+
+    return days
+
+#
+# X点往前 near(ma50, ma200): rate > x天数
+#
+def wine_ma50_near_ma200_days(_start, _width, _x):
+    days = 0
+
+    for x in range(_width):
+        i = x + _start+1
+
+        if i + 2 >= ref_len():
+            log_error('error: too short: %d < %d', i+2, ref_len())
+            return days
+
+        a = ref_ma50(i)
+        b = ref_ma200(i)
+        rate = 100.00 * min(a, b) / max(a, b)
+        # log_debug('near: %s - %.2f', ref_date(i), rate)
+        if rate >= _x:
+            days += 1
+        # else:
+        #     break
+
+    return days
+
+
+#
+# X点往前(ma50 > close > ma200) 天数
+#
+def wine_ma50_close_ma200_days(_start, _width):
+    days = 0
+
+    for x in range(_width):
+        i = x + _start+1
+
+        if i + 2 >= ref_len():
+            log_error('error: too short: %d < %d', i+2, ref_len())
+            return days
+
+        a = ref_ma50(i)
+        b = ref_ma200(i)
+        rule = ref_close(i) >= min(a, b) and ref_close(i) <= max(a, b)
+        if rule:
+            days += 1
+
+    return days
+
+#
+# ma200 ascending
+#
+def wine_ma200_ascending_days(_start, _width):
+    days = 0
+
+    for x in range(_width):
+        i = x + _start+1
+        j = i+20
+
+        if j + 2 >= ref_len():
+            log_error('error: too short: %d < %d', j+2, ref_len())
+            return days
+
+        if ref_ma200(i) >= ref_ma200(j):
+            days += 1
+
+    return days
+
 
 # pub.py

@@ -56,17 +56,17 @@ def sim_run():
         # log_info('not found k2')
         return 0
     else:
-        log_info('got k2 -- %d, %.2f, %s', k2, ref_close(k2), ref_date(k2))
+        log_debug('got k2 -- %d, %.2f, %s', k2, ref_close(k2), ref_date(k2))
         body += '前高: ref(%d): %s\n' % (k2, ref_date(k2))
 
     day1 = k2 - k1
     acc1 = (ref_close(k1) - ref_close(k2)) * 100.00 / ref_close(k2)
-    log_info('down: days: %d, rate: %.2f%%', day1, acc1)
+    log_debug('down: days: %d, rate: %.2f%%', day1, acc1)
     body += '累计跌幅: %.2f%%, %d天\n' % (acc1, day1)
 
     ACC_RATE1 = saiobj.g_wine_total_down
     if acc1 > ACC_RATE1:
-        log_info('acc1 rate not match: %.2f%% > %.2f%%', acc1, ACC_RATE1)
+        log_debug('acc1 rate not match: %.2f%% > %.2f%%', acc1, ACC_RATE1)
         return 0
 
 

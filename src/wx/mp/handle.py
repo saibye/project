@@ -25,7 +25,7 @@ class Handle(object):
             timestamp = data.timestamp
             nonce = data.nonce
             echostr = data.echostr
-            token = "xxx"
+            token = "495"
 
             print("timestamp: ", timestamp)
             print("nonce:     ", nonce)
@@ -68,7 +68,7 @@ class Handle(object):
                 if Basic.is_processing(key):
                     log_info('again')
                     # return 'success'
-                    return reply.TextMsg(toUser,  fromUser, 'processing, please wait').send()
+                    return reply.TextMsg(toUser,  fromUser, 'wait 5 seconds, and try again').send()
                 else:
                     log_info('[%s]: first request', messageId)
                     Basic.set_processing(key)

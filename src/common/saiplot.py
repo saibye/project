@@ -127,7 +127,8 @@ def sai_plot(_date, _uid, _stock_id, _ma_list, _db):
 
     # 1.1 CLOSE
     # df['close_price'].plot(label='close price', title=_stock_id, ls='-', lw=0.8, color = 'black', figsize=(10,5))
-    df['close_price'].plot(color='black', title=plot_title, ls='-', lw=1.2,  figsize=(10, 5))
+    # df['close_price'].plot(color='black', title=plot_title, ls='-', lw=1.2,  figsize=(10, 5))
+    df['close_price'].plot(color='black', title=plot_title, ls='-', lw=1.2,  figsize=(16, 9))
 
 
     # 1.3. MA
@@ -239,13 +240,15 @@ if __name__=="__main__":
     sai_fmt_set_fetch_len(700)
     saiobj.g_plot_len = 500
     saiobj.g_photo_suffix = '.svg'
+    saiobj.g_to_send_mail = True
 
     db = db_init()
 
-    date = '2020-03-16'
+    date = '2020-03-24'
     uid  = 'fei'
     stock_id = '000100'
     stock_id = '000002'
+    stock_id = '002406'
     ma_list = [20, 50, 200]
 
     pp = sai_plot(date, uid, stock_id, ma_list, db)

@@ -632,10 +632,9 @@ def sai_query_mid(stock_id, pub_date, _db):
 
     df = pd.read_sql_query(sql, _db);
     if df is None:
-        log_info("'%s' not found in basic", _stock_id)
+        log_info("'%s' not found in t_trc_image", stock_id)
         return mid, crt
     else:
-        # log_info("df: \n%s, len: %d", df, len(df))
         pass
 
     if len(df) > 0:

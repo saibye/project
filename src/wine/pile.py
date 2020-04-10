@@ -56,7 +56,7 @@ def pile_run():
     if vr_rule:
         pass
     else:
-        log_info("sorry, vr not exeed 2")
+        log_debug("sorry, vr not exeed 2")
         return 0
 
 
@@ -153,7 +153,7 @@ def pile_run():
         log_info("near to only ma200")
         near_price = ref_close(near200_day)
     elif near50_rule:
-        log_info("near to only ma50")
+        log_debug("near to only ma50")
         near_price = ref_close(near50_day)
     else:
         log_info("sorry, far from ma200 and ma50: %.2f, %.2f", near200_rate, near50_rate)
@@ -255,7 +255,7 @@ def pile_run():
     if avg_pr_rule:
         pass
     else:
-        log_info("sorry, avg(price) not high enough: %.2f%%", avg_pr)
+        log_debug("sorry, avg(price) not high enough: %.2f%%", avg_pr)
         return 0
 
     ## price ascending
